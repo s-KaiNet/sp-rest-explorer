@@ -1,0 +1,25 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "parse": "ts-node src/index.ts",
+    "build": "tsc -p ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/xml2js": "^0.4.2",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "tslint-config-standard": "^7.0.0",
+    "typescript": "^2.7.2"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "node-sp-auth-config": "^2.4.5",
+    "sp-request": "^2.1.3",
+    "xml2js": "^0.4.19"
+  }
+}
