@@ -12,5 +12,5 @@ export async function parse() {
     let parser = new MetadataParser(result);
     let parsed = await parser.parseMetadata();
 
-    fs.writeFileSync('./output/out.json', JSON.stringify(parsed));
+    fs.writeFileSync('./output/out.json', JSON.stringify(parsed, null, 4));
 }

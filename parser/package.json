@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "parse": "ts-node src/index.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "serve": "node static-server.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/xml2js": "^0.4.2",
+    "node-static": "^0.7.10",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
     "tslint-config-standard": "^7.0.0",
