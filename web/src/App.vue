@@ -1,9 +1,7 @@
 <template>
   <div id="app">
-    <el-container>
-      <app-header></app-header>
-      <router-view />
-    </el-container>
+    <app-header></app-header>
+    <router-view />
   </div>
 </template>
 
@@ -24,6 +22,8 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
+<style lang="scss">
+#app {
 
+}
 </style>

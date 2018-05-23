@@ -115,7 +115,8 @@ export class MetadataParser {
                     let name = relationship.substring(indx + 1, relationship.length);
                     let association = this.associations.get(name);
                     entityType.navigationProperties.push({
-                        typeName: association.roles[toRole]
+                        typeName: association.roles[toRole],
+                        name: navigationProperty.$.Name
                     });
                 }
             }

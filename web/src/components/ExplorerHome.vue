@@ -1,5 +1,52 @@
 <template>
-    <div>
+    <div class="explorer-home">
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+         <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
+        <h2>Use left side pane for navigation</h2>
         <h2>Use left side pane for navigation</h2>
     </div>
 </template>
@@ -10,3 +57,7 @@ export default Vue.extend({
   name: 'explorer-home'
 })
 </script>
+
+<style lang="scss" scoped>
+
+</style>

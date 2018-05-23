@@ -41,7 +41,7 @@ export default Vue.extend({
     line-height: 50px;
   }
   .icon {
-    width: 38px;
+    width: 44px;
     margin-right: 10px;
   }
 }

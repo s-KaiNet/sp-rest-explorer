@@ -3120,10 +3120,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.ApiMetadata"
+                    "typeName": "SP.ApiMetadata",
+                    "name": "Current"
                 },
                 {
-                    "typeName": "SP.TypeInformation"
+                    "typeName": "SP.TypeInformation",
+                    "name": "Types"
                 }
             ]
         },
@@ -3407,31 +3409,40 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Audit"
+                    "typeName": "SP.Audit",
+                    "name": "Audit"
                 },
                 {
-                    "typeName": "SP.ScriptSafeDomain"
+                    "typeName": "SP.ScriptSafeDomain",
+                    "name": "CustomScriptSafeDomains"
                 },
                 {
-                    "typeName": "SP.EventReceiverDefinition"
+                    "typeName": "SP.EventReceiverDefinition",
+                    "name": "EventReceivers"
                 },
                 {
-                    "typeName": "SP.Feature"
+                    "typeName": "SP.Feature",
+                    "name": "Features"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "SP.RecycleBinItem"
+                    "typeName": "SP.RecycleBinItem",
+                    "name": "RecycleBin"
                 },
                 {
-                    "typeName": "SP.Web"
+                    "typeName": "SP.Web",
+                    "name": "RootWeb"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "SecondaryContact"
                 },
                 {
-                    "typeName": "SP.UserCustomAction"
+                    "typeName": "SP.UserCustomAction",
+                    "name": "UserCustomActions"
                 }
             ]
         },
@@ -3578,10 +3589,12 @@
             "baseTypeName": "SP.Principal",
             "navigationProperties": [
                 {
-                    "typeName": "SP.Alert"
+                    "typeName": "SP.Alert",
+                    "name": "Alerts"
                 },
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "Groups"
                 }
             ]
         },
@@ -3667,16 +3680,20 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.PropertyValues"
+                    "typeName": "SP.PropertyValues",
+                    "name": "AllProperties"
                 },
                 {
-                    "typeName": "SP.ListItem"
+                    "typeName": "SP.ListItem",
+                    "name": "Item"
                 },
                 {
-                    "typeName": "SP.List"
+                    "typeName": "SP.List",
+                    "name": "List"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "User"
                 }
             ]
         },
@@ -3703,10 +3720,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.SecurableObject"
+                    "typeName": "SP.SecurableObject",
+                    "name": "FirstUniqueAncestorSecurableObject"
                 },
                 {
-                    "typeName": "SP.RoleAssignment"
+                    "typeName": "SP.RoleAssignment",
+                    "name": "RoleAssignments"
                 }
             ]
         },
@@ -3722,10 +3741,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Principal"
+                    "typeName": "SP.Principal",
+                    "name": "Member"
                 },
                 {
-                    "typeName": "SP.RoleDefinition"
+                    "typeName": "SP.RoleDefinition",
+                    "name": "RoleDefinitionBindings"
                 }
             ]
         },
@@ -3827,43 +3848,56 @@
             "baseTypeName": "SP.SecurableObject",
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity"
+                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "name": "Activities"
                 },
                 {
-                    "typeName": "SP.Attachment"
+                    "typeName": "SP.Attachment",
+                    "name": "AttachmentFiles"
                 },
                 {
-                    "typeName": "SP.ContentType"
+                    "typeName": "SP.ContentType",
+                    "name": "ContentType"
                 },
                 {
-                    "typeName": "SP.DlpPolicyTip"
+                    "typeName": "SP.DlpPolicyTip",
+                    "name": "GetDlpPolicyTip"
                 },
                 {
-                    "typeName": "SP.FieldStringValues"
+                    "typeName": "SP.FieldStringValues",
+                    "name": "FieldValuesAsHtml"
                 },
                 {
-                    "typeName": "SP.FieldStringValues"
+                    "typeName": "SP.FieldStringValues",
+                    "name": "FieldValuesAsText"
                 },
                 {
-                    "typeName": "SP.FieldStringValues"
+                    "typeName": "SP.FieldStringValues",
+                    "name": "FieldValuesForEdit"
                 },
                 {
-                    "typeName": "SP.File"
+                    "typeName": "SP.File",
+                    "name": "File"
                 },
                 {
-                    "typeName": "SP.Folder"
+                    "typeName": "SP.Folder",
+                    "name": "Folder"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Likes.likedByInformation"
+                    "typeName": "Microsoft.SharePoint.Likes.likedByInformation",
+                    "name": "LikedByInformation"
                 },
                 {
-                    "typeName": "SP.List"
+                    "typeName": "SP.List",
+                    "name": "ParentList"
                 },
                 {
-                    "typeName": "SP.PropertyValues"
+                    "typeName": "SP.PropertyValues",
+                    "name": "Properties"
                 },
                 {
-                    "typeName": "SP.ListItemVersion"
+                    "typeName": "SP.ListItemVersion",
+                    "name": "Versions"
                 }
             ]
         },
@@ -3993,22 +4027,28 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.FieldLink"
+                    "typeName": "SP.FieldLink",
+                    "name": "FieldLinks"
                 },
                 {
-                    "typeName": "SP.Field"
+                    "typeName": "SP.Field",
+                    "name": "Fields"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "NameResource"
                 },
                 {
-                    "typeName": "SP.ContentType"
+                    "typeName": "SP.ContentType",
+                    "name": "Parent"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowAssociation"
+                    "typeName": "SP.Workflow.WorkflowAssociation",
+                    "name": "WorkflowAssociations"
                 }
             ]
         },
@@ -4238,10 +4278,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "TitleResource"
                 }
             ]
         },
@@ -4425,34 +4467,44 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Author"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "CheckedOutByUser"
                 },
                 {
-                    "typeName": "SP.EffectiveInformationRightsManagementSettings"
+                    "typeName": "SP.EffectiveInformationRightsManagementSettings",
+                    "name": "EffectiveInformationRightsManagementSettings"
                 },
                 {
-                    "typeName": "SP.InformationRightsManagementFileSettings"
+                    "typeName": "SP.InformationRightsManagementFileSettings",
+                    "name": "InformationRightsManagementSettings"
                 },
                 {
-                    "typeName": "SP.ListItem"
+                    "typeName": "SP.ListItem",
+                    "name": "ListItemAllFields"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "LockedByUser"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "ModifiedBy"
                 },
                 {
-                    "typeName": "SP.PropertyValues"
+                    "typeName": "SP.PropertyValues",
+                    "name": "Properties"
                 },
                 {
-                    "typeName": "SP.FileVersionEvent"
+                    "typeName": "SP.FileVersionEvent",
+                    "name": "VersionEvents"
                 },
                 {
-                    "typeName": "SP.FileVersion"
+                    "typeName": "SP.FileVersion",
+                    "name": "Versions"
                 }
             ]
         },
@@ -4697,7 +4749,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "CreatedBy"
                 }
             ]
         },
@@ -4767,25 +4820,32 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity"
+                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "name": "Activities"
                 },
                 {
-                    "typeName": "SP.File"
+                    "typeName": "SP.File",
+                    "name": "Files"
                 },
                 {
-                    "typeName": "SP.ListItem"
+                    "typeName": "SP.ListItem",
+                    "name": "ListItemAllFields"
                 },
                 {
-                    "typeName": "SP.Folder"
+                    "typeName": "SP.Folder",
+                    "name": "ParentFolder"
                 },
                 {
-                    "typeName": "SP.PropertyValues"
+                    "typeName": "SP.PropertyValues",
+                    "name": "Properties"
                 },
                 {
-                    "typeName": "SP.StorageMetrics"
+                    "typeName": "SP.StorageMetrics",
+                    "name": "StorageMetrics"
                 },
                 {
-                    "typeName": "SP.Folder"
+                    "typeName": "SP.Folder",
+                    "name": "Folders"
                 }
             ]
         },
@@ -5160,55 +5220,72 @@
             "baseTypeName": "SP.SecurableObject",
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity"
+                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "name": "Activities"
                 },
                 {
-                    "typeName": "SP.ContentType"
+                    "typeName": "SP.ContentType",
+                    "name": "ContentTypes"
                 },
                 {
-                    "typeName": "SP.CreatablesInfo"
+                    "typeName": "SP.CreatablesInfo",
+                    "name": "CreatablesInfo"
                 },
                 {
-                    "typeName": "SP.View"
+                    "typeName": "SP.View",
+                    "name": "DefaultView"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.EventReceiverDefinition"
+                    "typeName": "SP.EventReceiverDefinition",
+                    "name": "EventReceivers"
                 },
                 {
-                    "typeName": "SP.Field"
+                    "typeName": "SP.Field",
+                    "name": "Fields"
                 },
                 {
-                    "typeName": "SP.Form"
+                    "typeName": "SP.Form",
+                    "name": "Forms"
                 },
                 {
-                    "typeName": "SP.InformationRightsManagementSettings"
+                    "typeName": "SP.InformationRightsManagementSettings",
+                    "name": "InformationRightsManagementSettings"
                 },
                 {
-                    "typeName": "SP.ListItem"
+                    "typeName": "SP.ListItem",
+                    "name": "Items"
                 },
                 {
-                    "typeName": "SP.Web"
+                    "typeName": "SP.Web",
+                    "name": "ParentWeb"
                 },
                 {
-                    "typeName": "SP.Folder"
+                    "typeName": "SP.Folder",
+                    "name": "RootFolder"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Webhooks.Subscription"
+                    "typeName": "Microsoft.SharePoint.Webhooks.Subscription",
+                    "name": "Subscriptions"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "TitleResource"
                 },
                 {
-                    "typeName": "SP.UserCustomAction"
+                    "typeName": "SP.UserCustomAction",
+                    "name": "UserCustomActions"
                 },
                 {
-                    "typeName": "SP.View"
+                    "typeName": "SP.View",
+                    "name": "Views"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowAssociation"
+                    "typeName": "SP.Workflow.WorkflowAssociation",
+                    "name": "WorkflowAssociations"
                 }
             ]
         },
@@ -5434,7 +5511,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.ViewFieldCollection"
+                    "typeName": "SP.ViewFieldCollection",
+                    "name": "ViewFields"
                 }
             ]
         },
@@ -5857,130 +5935,172 @@
             "baseTypeName": "SP.SecurableObject",
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity"
+                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "name": "Activities"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Internal.ActivityLogger"
+                    "typeName": "Microsoft.SharePoint.Internal.ActivityLogger",
+                    "name": "ActivityLogger"
                 },
                 {
-                    "typeName": "SP.Alert"
+                    "typeName": "SP.Alert",
+                    "name": "Alerts"
                 },
                 {
-                    "typeName": "SP.PropertyValues"
+                    "typeName": "SP.PropertyValues",
+                    "name": "AllProperties"
                 },
                 {
-                    "typeName": "SP.AppTile"
+                    "typeName": "SP.AppTile",
+                    "name": "AppTiles"
                 },
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "AssociatedMemberGroup"
                 },
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "AssociatedOwnerGroup"
                 },
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "AssociatedVisitorGroup"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Author"
                 },
                 {
-                    "typeName": "SP.ContentType"
+                    "typeName": "SP.ContentType",
+                    "name": "AvailableContentTypes"
                 },
                 {
-                    "typeName": "SP.Field"
+                    "typeName": "SP.Field",
+                    "name": "AvailableFields"
                 },
                 {
-                    "typeName": "SP.ClientWebPart"
+                    "typeName": "SP.ClientWebPart",
+                    "name": "ClientWebParts"
                 },
                 {
-                    "typeName": "SP.ContentType"
+                    "typeName": "SP.ContentType",
+                    "name": "ContentTypes"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "CurrentUser"
                 },
                 {
-                    "typeName": "SP.SPDataLeakagePreventionStatusInfo"
+                    "typeName": "SP.SPDataLeakagePreventionStatusInfo",
+                    "name": "DataLeakagePreventionStatusInfo"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.EventReceiverDefinition"
+                    "typeName": "SP.EventReceiverDefinition",
+                    "name": "EventReceivers"
                 },
                 {
-                    "typeName": "SP.Feature"
+                    "typeName": "SP.Feature",
+                    "name": "Features"
                 },
                 {
-                    "typeName": "SP.Field"
+                    "typeName": "SP.Field",
+                    "name": "Fields"
                 },
                 {
-                    "typeName": "SP.Folder"
+                    "typeName": "SP.Folder",
+                    "name": "Folders"
                 },
                 {
-                    "typeName": "SP.List"
+                    "typeName": "SP.List",
+                    "name": "Lists"
                 },
                 {
-                    "typeName": "SP.ListTemplate"
+                    "typeName": "SP.ListTemplate",
+                    "name": "ListTemplates"
                 },
                 {
-                    "typeName": "SP.Navigation"
+                    "typeName": "SP.Navigation",
+                    "name": "Navigation"
                 },
                 {
-                    "typeName": "SP.Sharing.SharedDocumentInfo"
+                    "typeName": "SP.Sharing.SharedDocumentInfo",
+                    "name": "OneDriveSharedItems"
                 },
                 {
-                    "typeName": "SP.WebInformation"
+                    "typeName": "SP.WebInformation",
+                    "name": "ParentWeb"
                 },
                 {
-                    "typeName": "SP.PushNotificationSubscriber"
+                    "typeName": "SP.PushNotificationSubscriber",
+                    "name": "PushNotificationSubscribers"
                 },
                 {
-                    "typeName": "SP.RecycleBinItem"
+                    "typeName": "SP.RecycleBinItem",
+                    "name": "RecycleBin"
                 },
                 {
-                    "typeName": "SP.RegionalSettings"
+                    "typeName": "SP.RegionalSettings",
+                    "name": "RegionalSettings"
                 },
                 {
-                    "typeName": "SP.RoleDefinition"
+                    "typeName": "SP.RoleDefinition",
+                    "name": "RoleDefinitions"
                 },
                 {
-                    "typeName": "SP.Folder"
+                    "typeName": "SP.Folder",
+                    "name": "RootFolder"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.SiteCollectionCorporateCatalogAccessor"
+                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.SiteCollectionCorporateCatalogAccessor",
+                    "name": "SiteCollectionAppCatalog"
                 },
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "SiteGroups"
                 },
                 {
-                    "typeName": "SP.List"
+                    "typeName": "SP.List",
+                    "name": "SiteUserInfoList"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "SiteUsers"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.TenantCorporateCatalogAccessor"
+                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.TenantCorporateCatalogAccessor",
+                    "name": "TenantAppCatalog"
                 },
                 {
-                    "typeName": "SP.ThemeInfo"
+                    "typeName": "SP.ThemeInfo",
+                    "name": "ThemeInfo"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "TitleResource"
                 },
                 {
-                    "typeName": "SP.UserCustomAction"
+                    "typeName": "SP.UserCustomAction",
+                    "name": "UserCustomActions"
                 },
                 {
-                    "typeName": "SP.Web"
+                    "typeName": "SP.Web",
+                    "name": "Webs"
                 },
                 {
-                    "typeName": "SP.WebInformation"
+                    "typeName": "SP.WebInformation",
+                    "name": "WebInfos"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowAssociation"
+                    "typeName": "SP.Workflow.WorkflowAssociation",
+                    "name": "WorkflowAssociations"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowTemplate"
+                    "typeName": "SP.Workflow.WorkflowTemplate",
+                    "name": "WorkflowTemplates"
                 }
             ]
         },
@@ -6130,10 +6250,12 @@
             "baseTypeName": "SP.Principal",
             "navigationProperties": [
                 {
-                    "typeName": "SP.Principal"
+                    "typeName": "SP.Principal",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Users"
                 }
             ]
         },
@@ -6251,10 +6373,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.NavigationNode"
+                    "typeName": "SP.NavigationNode",
+                    "name": "QuickLaunch"
                 },
                 {
-                    "typeName": "SP.NavigationNode"
+                    "typeName": "SP.NavigationNode",
+                    "name": "TopNavigationBar"
                 }
             ]
         },
@@ -6298,7 +6422,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.NavigationNode"
+                    "typeName": "SP.NavigationNode",
+                    "name": "Children"
                 }
             ]
         },
@@ -6394,7 +6519,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "User"
                 }
             ]
         },
@@ -6470,10 +6596,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Author"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "DeletedBy"
                 }
             ]
         },
@@ -6619,13 +6747,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.LanguageCollection"
+                    "typeName": "SP.LanguageCollection",
+                    "name": "InstalledLanguages"
                 },
                 {
-                    "typeName": "SP.TimeZone"
+                    "typeName": "SP.TimeZone",
+                    "name": "TimeZone"
                 },
                 {
-                    "typeName": "SP.TimeZone"
+                    "typeName": "SP.TimeZone",
+                    "name": "TimeZones"
                 }
             ]
         },
@@ -6766,10 +6897,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.UserResource"
+                    "typeName": "SP.UserResource",
+                    "name": "TitleResource"
                 }
             ]
         },
@@ -6799,13 +6932,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "CreatedBy"
                 },
                 {
-                    "typeName": "SP.Field"
+                    "typeName": "SP.Field",
+                    "name": "Fields"
                 },
                 {
-                    "typeName": "SP.FileVersion"
+                    "typeName": "SP.FileVersion",
+                    "name": "FileVersion"
                 }
             ]
         },
@@ -7176,13 +7312,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.ObjectSharingInformation"
+                    "typeName": "SP.ObjectSharingInformation",
+                    "name": "ObjectSharingInformation"
                 },
                 {
-                    "typeName": "SP.SharePointSharingSettings"
+                    "typeName": "SP.SharePointSharingSettings",
+                    "name": "SharePointSettings"
                 },
                 {
-                    "typeName": "SP.SharingPermissionInformation"
+                    "typeName": "SP.SharingPermissionInformation",
+                    "name": "SharingPermissions"
                 }
             ]
         },
@@ -7265,7 +7404,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.ObjectSharingInformationUser"
+                    "typeName": "SP.ObjectSharingInformationUser",
+                    "name": "SharedWithUsersCollection"
                 }
             ]
         },
@@ -7348,10 +7488,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Principal"
+                    "typeName": "SP.Principal",
+                    "name": "Principal"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "User"
                 }
             ]
         },
@@ -7434,7 +7576,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.PickerSettings"
+                    "typeName": "SP.PickerSettings",
+                    "name": "PickerProperties"
                 }
             ]
         },
@@ -7572,13 +7715,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "GroupsSharedWith"
                 },
                 {
-                    "typeName": "SP.Group"
+                    "typeName": "SP.Group",
+                    "name": "GroupUsersAddedTo"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "UsersWithAccessRequests"
                 }
             ]
         },
@@ -7605,10 +7751,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Site"
+                    "typeName": "SP.Site",
+                    "name": "Site"
                 },
                 {
-                    "typeName": "SP.Web"
+                    "typeName": "SP.Web",
+                    "name": "Web"
                 }
             ]
         },
@@ -7890,7 +8038,8 @@
             "baseTypeName": "SP.Change",
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Creator"
                 }
             ]
         },
@@ -7967,7 +8116,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "CheckedOutBy"
                 }
             ]
         },
@@ -8020,16 +8170,20 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.RequestContext"
+                    "typeName": "SP.RequestContext",
+                    "name": "Current"
                 },
                 {
-                    "typeName": "SP.List"
+                    "typeName": "SP.List",
+                    "name": "List"
                 },
                 {
-                    "typeName": "SP.Site"
+                    "typeName": "SP.Site",
+                    "name": "Site"
                 },
                 {
-                    "typeName": "SP.Web"
+                    "typeName": "SP.Web",
+                    "name": "Web"
                 }
             ]
         },
@@ -8614,7 +8768,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.List"
+                    "typeName": "SP.List",
+                    "name": "LookupList"
                 }
             ]
         },
@@ -8640,7 +8795,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Web"
+                    "typeName": "SP.Web",
+                    "name": "Web"
                 }
             ]
         },
@@ -8656,10 +8812,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.RequestUserContext"
+                    "typeName": "SP.RequestUserContext",
+                    "name": "Current"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "User"
                 }
             ]
         },
@@ -8734,7 +8892,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.View"
+                    "typeName": "SP.View",
+                    "name": "AppMappedViews"
                 }
             ]
         },
@@ -8823,7 +8982,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.TenantSettings"
+                    "typeName": "SP.TenantSettings",
+                    "name": "Current"
                 }
             ]
         },
@@ -8839,7 +8999,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.AppPrincipalIdentityProvider"
+                    "typeName": "SP.AppPrincipalIdentityProvider",
+                    "name": "External"
                 }
             ]
         },
@@ -9035,10 +9196,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Directory.User"
+                    "typeName": "SP.Directory.User",
+                    "name": "members"
                 },
                 {
-                    "typeName": "SP.Directory.User"
+                    "typeName": "SP.Directory.User",
+                    "name": "owners"
                 }
             ]
         },
@@ -9222,13 +9385,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Directory.Group"
+                    "typeName": "SP.Directory.Group",
+                    "name": "membership"
                 },
                 {
-                    "typeName": "SP.Directory.Group"
+                    "typeName": "SP.Directory.Group",
+                    "name": "ownership"
                 },
                 {
-                    "typeName": "SP.Directory.Group"
+                    "typeName": "SP.Directory.Group",
+                    "name": "rankedMembership"
                 }
             ]
         },
@@ -9264,7 +9430,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Directory.Group"
+                    "typeName": "SP.Directory.Group",
+                    "name": "Group"
                 }
             ]
         },
@@ -9628,7 +9795,8 @@
             "baseTypeName": "MS.FileServices.FileSystemItem",
             "navigationProperties": [
                 {
-                    "typeName": "MS.FileServices.FileSystemItem"
+                    "typeName": "MS.FileServices.FileSystemItem",
+                    "name": "Children"
                 }
             ]
         },
@@ -10268,58 +10436,76 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.AllowedDataLocation"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.AllowedDataLocation",
+                    "name": "AllowedDataLocations"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.ContentDbSchemaVersion"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.ContentDbSchemaVersion",
+                    "name": "ContentDbSchemaVersion"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmGroupMoveJob"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmGroupMoveJob",
+                    "name": "CrossFarmGroupMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmSiteMoveJob"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmSiteMoveJob",
+                    "name": "CrossFarmSiteMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmUserMoveJob"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmUserMoveJob",
+                    "name": "CrossFarmUserMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantBYOK"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantBYOK",
+                    "name": "CrossGeoTenantBYOK"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantCompatibility"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantCompatibility",
+                    "name": "CrossGeoTenantCompatibility"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantProperty"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantProperty",
+                    "name": "CrossGeoTenantProperties"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoAdministrator"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoAdministrator",
+                    "name": "GeoAdministrators"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoExperience"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoExperience",
+                    "name": "GeoExperience"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoTenantInstanceInformation"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoTenantInstanceInformation",
+                    "name": "GeoTenantInstanceInformationCollection"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GlobalAdminCheck"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GlobalAdminCheck",
+                    "name": "GlobalAdminCheck"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GroupMoveJob"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GroupMoveJob",
+                    "name": "GroupMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.SiteMoveJob"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.SiteMoveJob",
+                    "name": "SiteMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.StorageQuota"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.StorageQuota",
+                    "name": "StorageQuotas"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.TaxonomyReplicationParameters"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.TaxonomyReplicationParameters",
+                    "name": "TaxonomyReplicationParameters"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.UnifiedGroup"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.UnifiedGroup",
+                    "name": "UnifiedGroups"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.UserMoveJob"
+                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.UserMoveJob",
+                    "name": "UserMoveJobs"
                 }
             ]
         },
@@ -13010,10 +13196,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.UserProfiles.FollowedContent"
+                    "typeName": "SP.UserProfiles.FollowedContent",
+                    "name": "FollowedContent"
                 },
                 {
-                    "typeName": "SP.Site"
+                    "typeName": "SP.Site",
+                    "name": "PersonalSite"
                 }
             ]
         },
@@ -14362,7 +14550,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 }
             ]
         },
@@ -14454,13 +14643,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.EntityType"
+                    "typeName": "PS.EntityType",
+                    "name": "EntityType"
                 },
                 {
-                    "typeName": "PS.LookupEntry"
+                    "typeName": "PS.LookupEntry",
+                    "name": "LookupEntries"
                 },
                 {
-                    "typeName": "PS.LookupTable"
+                    "typeName": "PS.LookupTable",
+                    "name": "LookupTable"
                 }
             ]
         },
@@ -14532,7 +14724,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.LookupEntry"
+                    "typeName": "PS.LookupEntry",
+                    "name": "Entries"
                 }
             ]
         },
@@ -14642,7 +14835,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "Calendar"
                 }
             ]
         },
@@ -14682,7 +14876,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CalendarException"
+                    "typeName": "PS.CalendarException",
+                    "name": "BaseCalendarExceptions"
                 }
             ]
         },
@@ -14891,16 +15086,20 @@
             "baseTypeName": "PS.Assignment",
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "PS.DraftAssignment"
+                    "typeName": "PS.DraftAssignment",
+                    "name": "Parent"
                 },
                 {
-                    "typeName": "PS.DraftProjectResource"
+                    "typeName": "PS.DraftProjectResource",
+                    "name": "Resource"
                 },
                 {
-                    "typeName": "PS.DraftTask"
+                    "typeName": "PS.DraftTask",
+                    "name": "Task"
                 }
             ]
         },
@@ -15208,10 +15407,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource"
+                    "typeName": "PS.EnterpriseResource",
+                    "name": "EnterpriseResource"
                 }
             ]
         },
@@ -15333,37 +15534,48 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.StatusAssignment"
+                    "typeName": "PS.StatusAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "BaseCalendar"
                 },
                 {
-                    "typeName": "PS.EnterpriseResourceCostRateTable"
+                    "typeName": "PS.EnterpriseResourceCostRateTable",
+                    "name": "CostRateTables"
                 },
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "DefaultAssignmentOwner"
                 },
                 {
-                    "typeName": "PS.ResourceEngagement"
+                    "typeName": "PS.ResourceEngagement",
+                    "name": "Engagements"
                 },
                 {
-                    "typeName": "PS.UserPermission"
+                    "typeName": "PS.UserPermission",
+                    "name": "UserPermissions"
                 },
                 {
-                    "typeName": "PS.CalendarException"
+                    "typeName": "PS.CalendarException",
+                    "name": "ResourceCalendarExceptions"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource"
+                    "typeName": "PS.EnterpriseResource",
+                    "name": "Self"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "TimesheetManager"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "User"
                 }
             ]
         },
@@ -15525,19 +15737,24 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.StatusAssignmentHistoryLine"
+                    "typeName": "PS.StatusAssignmentHistoryLine",
+                    "name": "History"
                 },
                 {
-                    "typeName": "PS.PublishedProject"
+                    "typeName": "PS.PublishedProject",
+                    "name": "Project"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource"
+                    "typeName": "PS.EnterpriseResource",
+                    "name": "Resource"
                 },
                 {
-                    "typeName": "PS.StatusTask"
+                    "typeName": "PS.StatusTask",
+                    "name": "Task"
                 }
             ]
         },
@@ -15572,7 +15789,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Author"
                 }
             ]
         },
@@ -15766,31 +15984,40 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "CheckedOutBy"
                 },
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.ProjectEngagement"
+                    "typeName": "PS.ProjectEngagement",
+                    "name": "Engagements"
                 },
                 {
-                    "typeName": "PS.EnterpriseProjectType"
+                    "typeName": "PS.EnterpriseProjectType",
+                    "name": "EnterpriseProjectType"
                 },
                 {
-                    "typeName": "PS.UserPermission"
+                    "typeName": "PS.UserPermission",
+                    "name": "UserPermissions"
                 },
                 {
-                    "typeName": "PS.Phase"
+                    "typeName": "PS.Phase",
+                    "name": "Phase"
                 },
                 {
-                    "typeName": "PS.ProjectSummaryTask"
+                    "typeName": "PS.ProjectSummaryTask",
+                    "name": "ProjectSummaryTask"
                 },
                 {
-                    "typeName": "PS.QueueJob"
+                    "typeName": "PS.QueueJob",
+                    "name": "QueueJobs"
                 },
                 {
-                    "typeName": "PS.Stage"
+                    "typeName": "PS.Stage",
+                    "name": "Stage"
                 }
             ]
         },
@@ -15840,22 +16067,28 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.EngagementComment"
+                    "typeName": "PS.EngagementComment",
+                    "name": "Comments"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "ModifiedBy"
                 },
                 {
-                    "typeName": "PS.Project"
+                    "typeName": "PS.Project",
+                    "name": "Project"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource"
+                    "typeName": "PS.EnterpriseResource",
+                    "name": "Resource"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "ReviewedBy"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "SubmittedBy"
                 }
             ]
         },
@@ -15880,7 +16113,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Author"
                 }
             ]
         },
@@ -16035,7 +16269,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.ProjectDetailPage"
+                    "typeName": "PS.ProjectDetailPage",
+                    "name": "ProjectDetailPages"
                 }
             ]
         },
@@ -16060,7 +16295,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.ListItem"
+                    "typeName": "SP.ListItem",
+                    "name": "Item"
                 }
             ]
         },
@@ -16099,7 +16335,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Stage"
+                    "typeName": "PS.Stage",
+                    "name": "Stages"
                 }
             ]
         },
@@ -16137,16 +16374,20 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.StageCustomField"
+                    "typeName": "PS.StageCustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.Phase"
+                    "typeName": "PS.Phase",
+                    "name": "Phase"
                 },
                 {
-                    "typeName": "PS.StageDetailPage"
+                    "typeName": "PS.StageDetailPage",
+                    "name": "ProjectDetailPages"
                 },
                 {
-                    "typeName": "PS.ProjectDetailPage"
+                    "typeName": "PS.ProjectDetailPage",
+                    "name": "WorkflowStatusPage"
                 }
             ]
         },
@@ -16176,7 +16417,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Stage"
+                    "typeName": "PS.Stage",
+                    "name": "Stage"
                 }
             ]
         },
@@ -16206,10 +16448,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.ProjectDetailPage"
+                    "typeName": "PS.ProjectDetailPage",
+                    "name": "Page"
                 },
                 {
-                    "typeName": "PS.Stage"
+                    "typeName": "PS.Stage",
+                    "name": "Stage"
                 }
             ]
         },
@@ -16728,10 +16972,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.PublishedProject"
+                    "typeName": "PS.PublishedProject",
+                    "name": "SubProject"
                 }
             ]
         },
@@ -16907,34 +17153,44 @@
             "baseTypeName": "PS.Project",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment"
+                    "typeName": "PS.PublishedAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "Calendar"
                 },
                 {
-                    "typeName": "PS.DraftProject"
+                    "typeName": "PS.DraftProject",
+                    "name": "Draft"
                 },
                 {
-                    "typeName": "PS.EntityLink"
+                    "typeName": "PS.EntityLink",
+                    "name": "EntityLinks"
                 },
                 {
-                    "typeName": "PS.PublishedProject"
+                    "typeName": "PS.PublishedProject",
+                    "name": "IncludeCustomFields"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "PS.PublishedProjectResource"
+                    "typeName": "PS.PublishedProjectResource",
+                    "name": "ProjectResources"
                 },
                 {
-                    "typeName": "PS.ProjectWorkflowInstance"
+                    "typeName": "PS.ProjectWorkflowInstance",
+                    "name": "ProjectWorkflowInstance"
                 },
                 {
-                    "typeName": "PS.PublishedTaskLink"
+                    "typeName": "PS.PublishedTaskLink",
+                    "name": "TaskLinks"
                 },
                 {
-                    "typeName": "PS.PublishedTask"
+                    "typeName": "PS.PublishedTask",
+                    "name": "Tasks"
                 }
             ]
         },
@@ -17127,16 +17383,20 @@
             "baseTypeName": "PS.Assignment",
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "PS.PublishedAssignment"
+                    "typeName": "PS.PublishedAssignment",
+                    "name": "Parent"
                 },
                 {
-                    "typeName": "PS.PublishedProjectResource"
+                    "typeName": "PS.PublishedProjectResource",
+                    "name": "Resource"
                 },
                 {
-                    "typeName": "PS.PublishedTask"
+                    "typeName": "PS.PublishedTask",
+                    "name": "Task"
                 }
             ]
         },
@@ -17225,10 +17485,12 @@
             "baseTypeName": "PS.ProjectResource",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment"
+                    "typeName": "PS.PublishedAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "DefaultAssignmentOwner"
                 }
             ]
         },
@@ -17442,28 +17704,36 @@
             "baseTypeName": "PS.Task",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment"
+                    "typeName": "PS.PublishedAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "Calendar"
                 },
                 {
-                    "typeName": "PS.EntityLink"
+                    "typeName": "PS.EntityLink",
+                    "name": "EntityLinks"
                 },
                 {
-                    "typeName": "PS.PublishedTask"
+                    "typeName": "PS.PublishedTask",
+                    "name": "Parent"
                 },
                 {
-                    "typeName": "PS.PublishedTaskLink"
+                    "typeName": "PS.PublishedTaskLink",
+                    "name": "Predecessors"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "StatusManager"
                 },
                 {
-                    "typeName": "PS.PublishedTaskLink"
+                    "typeName": "PS.PublishedTaskLink",
+                    "name": "Successors"
                 },
                 {
-                    "typeName": "PS.TaskPlanLink"
+                    "typeName": "PS.TaskPlanLink",
+                    "name": "TaskPlanLink"
                 }
             ]
         },
@@ -17520,10 +17790,12 @@
             "baseTypeName": "PS.TaskLink",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedTask"
+                    "typeName": "PS.PublishedTask",
+                    "name": "End"
                 },
                 {
-                    "typeName": "PS.PublishedTask"
+                    "typeName": "PS.PublishedTask",
+                    "name": "Start"
                 }
             ]
         },
@@ -17724,25 +17996,32 @@
             "baseTypeName": "PS.Project",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftAssignment"
+                    "typeName": "PS.DraftAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "Calendar"
                 },
                 {
-                    "typeName": "PS.DraftProject"
+                    "typeName": "PS.DraftProject",
+                    "name": "IncludeCustomFields"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "PS.DraftProjectResource"
+                    "typeName": "PS.DraftProjectResource",
+                    "name": "ProjectResources"
                 },
                 {
-                    "typeName": "PS.DraftTaskLink"
+                    "typeName": "PS.DraftTaskLink",
+                    "name": "TaskLinks"
                 },
                 {
-                    "typeName": "PS.DraftTask"
+                    "typeName": "PS.DraftTask",
+                    "name": "Tasks"
                 }
             ]
         },
@@ -17831,10 +18110,12 @@
             "baseTypeName": "PS.ProjectResource",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftAssignment"
+                    "typeName": "PS.DraftAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "DefaultAssignmentOwner"
                 }
             ]
         },
@@ -17861,10 +18142,12 @@
             "baseTypeName": "PS.TaskLink",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftTask"
+                    "typeName": "PS.DraftTask",
+                    "name": "End"
                 },
                 {
-                    "typeName": "PS.DraftTask"
+                    "typeName": "PS.DraftTask",
+                    "name": "Start"
                 }
             ]
         },
@@ -18088,22 +18371,28 @@
             "baseTypeName": "PS.Task",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftAssignment"
+                    "typeName": "PS.DraftAssignment",
+                    "name": "Assignments"
                 },
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "Calendar"
                 },
                 {
-                    "typeName": "PS.DraftTask"
+                    "typeName": "PS.DraftTask",
+                    "name": "Parent"
                 },
                 {
-                    "typeName": "PS.DraftTaskLink"
+                    "typeName": "PS.DraftTaskLink",
+                    "name": "Predecessors"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "StatusManager"
                 },
                 {
-                    "typeName": "PS.DraftTaskLink"
+                    "typeName": "PS.DraftTaskLink",
+                    "name": "Successors"
                 }
             ]
         },
@@ -18143,13 +18432,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Project"
+                    "typeName": "PS.Project",
+                    "name": "Project"
                 },
                 {
-                    "typeName": "SP.WorkflowServices.WorkflowInstance"
+                    "typeName": "SP.WorkflowServices.WorkflowInstance",
+                    "name": "WorkflowInstance"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "WorkflowInstanceOwner"
                 }
             ]
         },
@@ -18295,10 +18587,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Project"
+                    "typeName": "PS.Project",
+                    "name": "Project"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Submitter"
                 }
             ]
         },
@@ -18470,10 +18764,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "StatusManager"
                 }
             ]
         },
@@ -18489,7 +18785,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.EnterpriseResourceCostRate"
+                    "typeName": "PS.EnterpriseResourceCostRate",
+                    "name": "CostRates"
                 }
             ]
         },
@@ -18657,16 +18954,20 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.EntityType"
+                    "typeName": "PS.EntityType",
+                    "name": "AssignmentEntity"
                 },
                 {
-                    "typeName": "PS.EntityType"
+                    "typeName": "PS.EntityType",
+                    "name": "ProjectEntity"
                 },
                 {
-                    "typeName": "PS.EntityType"
+                    "typeName": "PS.EntityType",
+                    "name": "ResourceEntity"
                 },
                 {
-                    "typeName": "PS.EntityType"
+                    "typeName": "PS.EntityType",
+                    "name": "TaskEntity"
                 }
             ]
         },
@@ -18731,7 +19032,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Event"
+                    "typeName": "PS.Event",
+                    "name": "Event"
                 }
             ]
         },
@@ -18813,7 +19115,8 @@
             "baseTypeName": "PS.LookupEntry",
             "navigationProperties": [
                 {
-                    "typeName": "PS.LookupText"
+                    "typeName": "PS.LookupText",
+                    "name": "Parent"
                 }
             ]
         },
@@ -18904,13 +19207,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.PlanAssignmentInterval"
+                    "typeName": "PS.PlanAssignmentInterval",
+                    "name": "Intervals"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource"
+                    "typeName": "PS.EnterpriseResource",
+                    "name": "Resource"
                 }
             ]
         },
@@ -19004,58 +19310,76 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Calendar"
+                    "typeName": "PS.Calendar",
+                    "name": "Calendars"
                 },
                 {
-                    "typeName": "PS.CustomField"
+                    "typeName": "PS.CustomField",
+                    "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.EnterpriseProjectType"
+                    "typeName": "PS.EnterpriseProjectType",
+                    "name": "EnterpriseProjectTypes"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource"
+                    "typeName": "PS.EnterpriseResource",
+                    "name": "EnterpriseResources"
                 },
                 {
-                    "typeName": "PS.EntityTypes"
+                    "typeName": "PS.EntityTypes",
+                    "name": "EntityTypes"
                 },
                 {
-                    "typeName": "PS.EventHandler"
+                    "typeName": "PS.EventHandler",
+                    "name": "EventHandlers"
                 },
                 {
-                    "typeName": "PS.Event"
+                    "typeName": "PS.Event",
+                    "name": "Events"
                 },
                 {
-                    "typeName": "PS.LookupTable"
+                    "typeName": "PS.LookupTable",
+                    "name": "LookupTables"
                 },
                 {
-                    "typeName": "PS.Phase"
+                    "typeName": "PS.Phase",
+                    "name": "Phases"
                 },
                 {
-                    "typeName": "PS.ProjectDetailPage"
+                    "typeName": "PS.ProjectDetailPage",
+                    "name": "ProjectDetailPages"
                 },
                 {
-                    "typeName": "PS.PublishedProject"
+                    "typeName": "PS.PublishedProject",
+                    "name": "Projects"
                 },
                 {
-                    "typeName": "PS.ProjectWorkflowInstance"
+                    "typeName": "PS.ProjectWorkflowInstance",
+                    "name": "ProjectWorkflowInstances"
                 },
                 {
-                    "typeName": "PS.Settings"
+                    "typeName": "PS.Settings",
+                    "name": "Settings"
                 },
                 {
-                    "typeName": "PS.Stage"
+                    "typeName": "PS.Stage",
+                    "name": "Stages"
                 },
                 {
-                    "typeName": "PS.TimeSheetPeriod"
+                    "typeName": "PS.TimeSheetPeriod",
+                    "name": "TimeSheetPeriods"
                 },
                 {
-                    "typeName": "PS.UserPermission"
+                    "typeName": "PS.UserPermission",
+                    "name": "UserPermissions"
                 },
                 {
-                    "typeName": "PS.WorkflowActivities"
+                    "typeName": "PS.WorkflowActivities",
+                    "name": "WorkflowActivities"
                 },
                 {
-                    "typeName": "PS.WorkflowDesigner"
+                    "typeName": "PS.WorkflowDesigner",
+                    "name": "WorkflowDesigner"
                 }
             ]
         },
@@ -19124,7 +19448,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.TimeSheet"
+                    "typeName": "PS.TimeSheet",
+                    "name": "TimeSheet"
                 }
             ]
         },
@@ -19243,16 +19568,20 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Creator"
                 },
                 {
-                    "typeName": "PS.TimeSheetLine"
+                    "typeName": "PS.TimeSheetLine",
+                    "name": "Lines"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Manager"
                 },
                 {
-                    "typeName": "PS.TimeSheetPeriod"
+                    "typeName": "PS.TimeSheetPeriod",
+                    "name": "Period"
                 }
             ]
         },
@@ -19309,13 +19638,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment"
+                    "typeName": "PS.PublishedAssignment",
+                    "name": "Assignment"
                 },
                 {
-                    "typeName": "PS.TimeSheet"
+                    "typeName": "PS.TimeSheet",
+                    "name": "TimeSheet"
                 },
                 {
-                    "typeName": "PS.TimeSheetWork"
+                    "typeName": "PS.TimeSheetWork",
+                    "name": "Work"
                 }
             ]
         },
@@ -19437,7 +19769,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.WorkflowDesignerField"
+                    "typeName": "PS.WorkflowDesignerField",
+                    "name": "Fields"
                 }
             ]
         },
@@ -19472,7 +19805,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.LookupEntry"
+                    "typeName": "PS.LookupEntry",
+                    "name": "LookupEntries"
                 }
             ]
         },
@@ -19526,7 +19860,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.PlanAssignment"
+                    "typeName": "PS.PlanAssignment",
+                    "name": "Assignments"
                 }
             ]
         },
@@ -19563,7 +19898,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.StatusAssignment"
+                    "typeName": "PS.StatusAssignment",
+                    "name": "Assignments"
                 }
             ]
         },
@@ -20758,13 +21094,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Author"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Owner"
                 },
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "PeopleInMedia"
                 }
             ]
         },
@@ -20941,7 +21280,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.File"
+                    "typeName": "SP.File",
+                    "name": "images"
                 }
             ]
         },
@@ -20957,22 +21297,28 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.File"
+                    "typeName": "SP.File",
+                    "name": "bannerimages"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingUser"
+                    "typeName": "SP.Publishing.PointPublishingUser",
+                    "name": "contributors"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingUser"
+                    "typeName": "SP.Publishing.PointPublishingUser",
+                    "name": "creators"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingMagazineProps"
+                    "typeName": "SP.Publishing.PointPublishingMagazineProps",
+                    "name": "magazineprops"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingPost"
+                    "typeName": "SP.Publishing.PointPublishingPost",
+                    "name": "posts"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingUser"
+                    "typeName": "SP.Publishing.PointPublishingUser",
+                    "name": "viewers"
                 }
             ]
         },
@@ -21221,10 +21567,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.UserInfo"
+                    "typeName": "SP.Publishing.UserInfo",
+                    "name": "CreatedBy"
                 },
                 {
-                    "typeName": "SP.Publishing.UserInfo"
+                    "typeName": "SP.Publishing.UserInfo",
+                    "name": "LastModifiedBy"
                 }
             ]
         },
@@ -21370,13 +21718,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.CommunicationSite"
+                    "typeName": "SP.Publishing.CommunicationSite",
+                    "name": "CommunicationSite"
                 },
                 {
-                    "typeName": "SP.Publishing.SitePage"
+                    "typeName": "SP.Publishing.SitePage",
+                    "name": "Pages"
                 },
                 {
-                    "typeName": "SP.Publishing.PublishingSite"
+                    "typeName": "SP.Publishing.PublishingSite",
+                    "name": "PublishingSite"
                 }
             ]
         },
@@ -21409,7 +21760,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.VideoChannel"
+                    "typeName": "SP.Publishing.VideoChannel",
+                    "name": "Channel"
                 }
             ]
         },
@@ -21484,13 +21836,16 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.Search"
+                    "typeName": "SP.Publishing.Search",
+                    "name": "Search"
                 },
                 {
-                    "typeName": "SP.Publishing.SpotlightVideo"
+                    "typeName": "SP.Publishing.SpotlightVideo",
+                    "name": "SpotlightVideos"
                 },
                 {
-                    "typeName": "SP.Publishing.VideoItem"
+                    "typeName": "SP.Publishing.VideoItem",
+                    "name": "Videos"
                 }
             ]
         },
@@ -21530,7 +21885,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.VideoItem"
+                    "typeName": "SP.Publishing.VideoItem",
+                    "name": "Video"
                 }
             ]
         },
@@ -21565,7 +21921,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User"
+                    "typeName": "SP.User",
+                    "name": "Users"
                 }
             ]
         },
@@ -21664,19 +22021,24 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.VideoChannel"
+                    "typeName": "SP.Publishing.VideoChannel",
+                    "name": "CanEditChannels"
                 },
                 {
-                    "typeName": "SP.Publishing.VideoChannel"
+                    "typeName": "SP.Publishing.VideoChannel",
+                    "name": "Channels"
                 },
                 {
-                    "typeName": "SP.Publishing.Search"
+                    "typeName": "SP.Publishing.Search",
+                    "name": "Search"
                 },
                 {
-                    "typeName": "SP.Publishing.SpotlightChannel"
+                    "typeName": "SP.Publishing.SpotlightChannel",
+                    "name": "SpotlightChannels"
                 },
                 {
-                    "typeName": "SP.Publishing.SpotlightVideo"
+                    "typeName": "SP.Publishing.SpotlightVideo",
+                    "name": "SpotlightVideos"
                 }
             ]
         },
@@ -23262,7 +23624,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.OAuth.TokenResponse"
+                    "typeName": "SP.OAuth.TokenResponse",
+                    "name": "Token"
                 }
             ]
         },
@@ -25241,7 +25604,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.PickerSettings"
+                    "typeName": "SP.PickerSettings",
+                    "name": "pickerSettings"
                 }
             ]
         },
@@ -25393,7 +25757,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Administration.SPFarm"
+                    "typeName": "Microsoft.SharePoint.Administration.SPFarm",
+                    "name": "Local"
                 }
             ]
         },
@@ -25452,7 +25817,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Site"
+                    "typeName": "SP.Site",
+                    "name": "Sites"
                 }
             ]
         },
@@ -25468,10 +25834,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Administration.SPWebService"
+                    "typeName": "Microsoft.SharePoint.Administration.SPWebService",
+                    "name": "ContentService"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Administration.SPWebApplication"
+                    "typeName": "Microsoft.SharePoint.Administration.SPWebApplication",
+                    "name": "WebApplications"
                 }
             ]
         },
@@ -25647,10 +26015,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Likes.userEntity"
+                    "typeName": "Microsoft.SharePoint.Likes.userEntity",
+                    "name": "likedBy"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Comments.comment"
+                    "typeName": "Microsoft.SharePoint.Comments.comment",
+                    "name": "replies"
                 }
             ]
         },
@@ -26481,7 +26851,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Utilities.ThemeManager"
+                    "typeName": "SP.Utilities.ThemeManager",
+                    "name": "ContextThemeManager"
                 }
             ]
         },
@@ -26637,7 +27008,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WebParts.WebPartDefinition"
+                    "typeName": "SP.WebParts.WebPartDefinition",
+                    "name": "WebParts"
                 }
             ]
         },
@@ -26657,7 +27029,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WebParts.WebPart"
+                    "typeName": "SP.WebParts.WebPart",
+                    "name": "WebPart"
                 }
             ]
         },
@@ -26700,7 +27073,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.PropertyValues"
+                    "typeName": "SP.PropertyValues",
+                    "name": "Properties"
                 }
             ]
         },
@@ -28542,7 +28916,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.SiteProperties"
+                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.SiteProperties",
+                    "name": "Sites"
                 }
             ]
         },
@@ -29105,19 +29480,24 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Location"
+                    "typeName": "SP.WorkManagement.OM.Location",
+                    "name": "AllLocatons"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.PersistedProperties"
+                    "typeName": "SP.WorkManagement.OM.PersistedProperties",
+                    "name": "PersistedProperties"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.RefreshHistory"
+                    "typeName": "SP.WorkManagement.OM.RefreshHistory",
+                    "name": "RefreshHistory"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.DashboardScriptExtensionInfo"
+                    "typeName": "SP.WorkManagement.OM.DashboardScriptExtensionInfo",
+                    "name": "ScriptExtensions"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.UserSettings"
+                    "typeName": "SP.WorkManagement.OM.UserSettings",
+                    "name": "UserSettings"
                 }
             ]
         },
@@ -29163,7 +29543,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.RefreshResult"
+                    "typeName": "SP.WorkManagement.OM.RefreshResult",
+                    "name": "Refreshes"
                 }
             ]
         },
@@ -29193,10 +29574,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.ProviderRefreshStatus"
+                    "typeName": "SP.WorkManagement.OM.ProviderRefreshStatus",
+                    "name": "ProviderStatuses"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.LocationUpdateResult"
+                    "typeName": "SP.WorkManagement.OM.LocationUpdateResult",
+                    "name": "TaskChangesByLocation"
                 }
             ]
         },
@@ -29339,7 +29722,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.ProviderErrorInfo"
+                    "typeName": "SP.WorkManagement.OM.ProviderErrorInfo",
+                    "name": "ProviderErrors"
                 }
             ]
         },
@@ -29372,10 +29756,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.TaskQuery"
+                    "typeName": "SP.WorkManagement.OM.TaskQuery",
+                    "name": "CoreQuery"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.OrderInfo"
+                    "typeName": "SP.WorkManagement.OM.OrderInfo",
+                    "name": "Order"
                 }
             ]
         },
@@ -29401,16 +29787,20 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.CustomAttributeFilter"
+                    "typeName": "SP.WorkManagement.OM.CustomAttributeFilter",
+                    "name": "CustomAttributeFilter"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.TaskFilter"
+                    "typeName": "SP.WorkManagement.OM.TaskFilter",
+                    "name": "FieldFilter"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.DateRangeCriterion"
+                    "typeName": "SP.WorkManagement.OM.DateRangeCriterion",
+                    "name": "LastModifiedDateRangeFilter"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.LocationFilter"
+                    "typeName": "SP.WorkManagement.OM.LocationFilter",
+                    "name": "LocationFilter"
                 }
             ]
         },
@@ -29431,19 +29821,24 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.BooleanCriterion"
+                    "typeName": "SP.WorkManagement.OM.BooleanCriterion",
+                    "name": "CompletedCriterion"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.DateRangeCriterion"
+                    "typeName": "SP.WorkManagement.OM.DateRangeCriterion",
+                    "name": "DueDateRangeCriterion"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.BooleanCriterion"
+                    "typeName": "SP.WorkManagement.OM.BooleanCriterion",
+                    "name": "IsNewCriterion"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.NameCriterion"
+                    "typeName": "SP.WorkManagement.OM.NameCriterion",
+                    "name": "NameCriterion"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.DateRangeCriterion"
+                    "typeName": "SP.WorkManagement.OM.DateRangeCriterion",
+                    "name": "StartDateRangeCriterion"
                 }
             ]
         },
@@ -29463,7 +29858,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Task"
+                    "typeName": "SP.WorkManagement.OM.Task",
+                    "name": "Results"
                 }
             ]
         },
@@ -29483,7 +29879,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Task"
+                    "typeName": "SP.WorkManagement.OM.Task",
+                    "name": "Results"
                 }
             ]
         },
@@ -29504,7 +29901,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Task"
+                    "typeName": "SP.WorkManagement.OM.Task",
+                    "name": "Result"
                 }
             ]
         },
@@ -29524,7 +29922,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Task"
+                    "typeName": "SP.WorkManagement.OM.Task",
+                    "name": "Result"
                 }
             ]
         },
@@ -29773,7 +30172,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkflowServices.WorkflowInstanceService"
+                    "typeName": "SP.WorkflowServices.WorkflowInstanceService",
+                    "name": "Current"
                 }
             ]
         },
@@ -29789,7 +30189,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkflowServices.InteropService"
+                    "typeName": "SP.WorkflowServices.InteropService",
+                    "name": "Current"
                 }
             ]
         },
@@ -29819,7 +30220,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkflowServices.WorkflowServicesManager"
+                    "typeName": "SP.WorkflowServices.WorkflowServicesManager",
+                    "name": "Current"
                 }
             ]
         },
@@ -29886,7 +30288,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkflowServices.WorkflowSubscriptionService"
+                    "typeName": "SP.WorkflowServices.WorkflowSubscriptionService",
+                    "name": "Current"
                 }
             ]
         },
@@ -29929,7 +30332,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Likes.userEntity"
+                    "typeName": "Microsoft.SharePoint.Likes.userEntity",
+                    "name": "likedBy"
                 }
             ]
         },
@@ -29984,7 +30388,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata"
+                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata",
+                    "name": "AvailableApps"
                 }
             ]
         },
@@ -30043,10 +30448,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata"
+                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata",
+                    "name": "AvailableApps"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.SiteCollectionAppCatalogAllowedItem"
+                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.SiteCollectionAppCatalogAllowedItem",
+                    "name": "SiteCollectionAppCatalogsSites"
                 }
             ]
         },
@@ -30643,7 +31050,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.BusinessData.Runtime.EntityFieldValueDictionary"
+                    "typeName": "SP.BusinessData.Runtime.EntityFieldValueDictionary",
+                    "name": "ReturnParameterCollection"
                 }
             ]
         },
@@ -30663,7 +31071,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.BusinessData.EntityField"
+                    "typeName": "SP.BusinessData.EntityField",
+                    "name": "Fields"
                 }
             ]
         },
@@ -30967,10 +31376,12 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionGrant"
+                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionGrant",
+                    "name": "PermissionGrants"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionRequest"
+                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionRequest",
+                    "name": "PermissionRequests"
                 }
             ]
         },
@@ -31028,7 +31439,8 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantManagement.ExternalUser"
+                    "typeName": "Microsoft.Online.SharePoint.TenantManagement.ExternalUser",
+                    "name": "ExternalUserCollection"
                 }
             ]
         },
