@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { MetadataReader } from './metaDataReader';
 import { MetadataParser } from './metadataParser';
 
-export async function parse() {
+export async function parse(): Promise<any> {
     let metaDataReader = new MetadataReader('./config/_private.creds.json');
     let result = await metaDataReader.readSharePointMetaData();
 
@@ -12,5 +12,5 @@ export async function parse() {
     let parser = new MetadataParser(result);
     let parsed = await parser.parseMetadata();
 
-    fs.writeFileSync('./output/out.json', JSON.stringify(parsed, null, 4));
+    fs.writeFileSync('./output/out.json', JSON.stringify(parsed));
 }

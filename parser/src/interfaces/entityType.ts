@@ -7,5 +7,6 @@ export interface EntityType {
     alias?: string;
     baseTypeName?: string;
     properties: Property[];
+    functions: number[];
     navigationProperties?: NavigationProperty[];
 }

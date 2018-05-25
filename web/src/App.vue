@@ -8,11 +8,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import ElementUI from 'element-ui'
+const locale = require('element-ui/lib/locale/lang/en')
 import 'element-ui/lib/theme-chalk/index.css'
 
-import AppHeader from '@/components/AppHeader.vue'
+import AppHeader from '@/components/header/AppHeader.vue'
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, { locale })
 
 export default Vue.extend({
   name: 'App',

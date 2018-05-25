@@ -6,5 +6,6 @@ export interface FunctionImport {
     isComposable: boolean;
     isBindable: boolean;
     returnType: string;
-    parameters?: Parameter[];
+    parameters: Parameter[];
+    id: number;
 }

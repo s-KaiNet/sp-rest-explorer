@@ -1,9 +1,10 @@
 import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
+import 'es6-promise/auto'
 import axios from 'axios'
 
-import 'es6-promise/auto'
+import App from './App.vue'
+import router from './router'
+import store from './store'
 
 const VueAxios = require('vue-axios')
 
@@ -17,5 +18,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

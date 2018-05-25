@@ -3,5 +3,5 @@ import { FunctionImport } from './functionImport';
 
 export interface Metadata {
     entities: { [key: string]: EntityType };
-    functions: FunctionImport[];
+    functions: { [key: number]: FunctionImport };
 }

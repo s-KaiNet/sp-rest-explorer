@@ -3222,7 +3222,7 @@
 				<EntitySet Name="LogExports" EntityType="Microsoft.Online.SharePoint.SPLogger.LogExport" />
 				<EntitySet Name="LogFileInfos" EntityType="Microsoft.Online.SharePoint.SPLogger.LogFileInfo" />
 				<EntitySet Name="DDIAdapters" EntityType="Microsoft.Online.SharePoint.TenantAdmin.MiddleTier.DDIAdapter" />
-				<EntitySet Name="SucceededAndFailedSiteIdss" EntityType="Microsoft.Online.SharePoint.TenantAdministration.SucceededAndFailedSiteIds" />
+				<EntitySet Name=" SucceededAndFailedSiteIdss" EntityType="Microsoft.Online.SharePoint.TenantAdministration. SucceededAndFailedSiteIds" />
 				<EntitySet Name="EmailResponses" EntityType="Microsoft.Online.SharePoint.TenantAdministration.EmailResponse" />
 				<EntitySet Name="HubSitePropertiess" EntityType="Microsoft.Online.SharePoint.TenantAdministration.HubSiteProperties" />
 				<EntitySet Name="SPOWebAppServicePrincipals" EntityType="Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipal" />
@@ -6601,6 +6601,9 @@
 					<Parameter Name="url" Type="Edm.String" />
 				</FunctionImport>
 				<FunctionImport Name="SP_Publishing_RepostPageCollection" ReturnType="Collection(SP.Publishing.RepostPage)" IsComposable="true" EntitySet="SitePageMetadatas" />
+				<FunctionImport Name="IsContentTypeAvailable" ReturnType="Edm.Boolean" IsSideEffecting="false" IsBindable="true">
+					<Parameter Name="this" Type="Collection(SP.Publishing.RepostPage)" />
+				</FunctionImport>
 				<FunctionImport Name="CheckOut" ReturnType="Edm.Boolean" IsBindable="true">
 					<Parameter Name="this" Type="SP.Publishing.SitePage" />
 				</FunctionImport>
@@ -10763,6 +10766,11 @@
 					<Parameter Name="id" Type="Edm.Guid" Nullable="false" />
 					<Parameter Name="principalNames" Type="Collection(Edm.String)" />
 				</FunctionImport>
+				<FunctionImport Name="Microsoft_SharePoint_Utilities_WebTemplateExtensions_SiteScriptUtility_SetSiteScriptStageOutcome">
+					<Parameter Name="webUrl" Type="Edm.String" />
+					<Parameter Name="stageId" Type="Edm.Guid" Nullable="false" />
+					<Parameter Name="outcome" Type="Edm.Int64" Nullable="false" />
+				</FunctionImport>
 				<FunctionImport Name="Microsoft_SharePoint_Utilities_WebTemplateExtensions_SiteScriptUtility_UpdateSiteDesign" ReturnType="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteDesignMetadata">
 					<Parameter Name="updateInfo" Type="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteDesignMetadata" />
 				</FunctionImport>
@@ -14625,6 +14633,9 @@
 			<Annotations Target="SP.Publishing.RepostPage">
 				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
 			</Annotations>
+			<Annotations Target="SP.Publishing.RepostPage/IsBannerImageUrlExternal">
+				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
+			</Annotations>
 			<Annotations Target="SP.Publishing.RepostPage/OriginalSourceItemId">
 				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
 			</Annotations>
@@ -15229,6 +15240,9 @@
 				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
 			</Annotations>
 			<Annotations Target="SP.ApiData/SP_Publishing_RepostPageCollection()">
+				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
+			</Annotations>
+			<Annotations Target="SP.ApiData/IsContentTypeAvailable(Collection(SP.Publishing.RepostPage))">
 				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
 			</Annotations>
 			<Annotations Target="SP.ApiData/CheckOut(SP.Publishing.SitePage)">
@@ -16009,6 +16023,9 @@
 				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
 			</Annotations>
 			<Annotations Target="SP.ApiData/Microsoft_SharePoint_Utilities_WebTemplateExtensions_SiteScriptUtility_RevokeSiteDesignRights(Edm.Guid, Collection(Edm.String))">
+				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
+			</Annotations>
+			<Annotations Target="SP.ApiData/Microsoft_SharePoint_Utilities_WebTemplateExtensions_SiteScriptUtility_SetSiteScriptStageOutcome(Edm.String, Edm.Guid, Edm.Int64)">
 				<ValueAnnotation Term="Com.Microsoft.VisualStudio.CodeGen.IsBeta" Bool="true" />
 			</Annotations>
 			<Annotations Target="SP.ApiData/Microsoft_SharePoint_Utilities_WebTemplateExtensions_SiteScriptUtility_UpdateSiteDesign(Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteDesignMetadata)">
@@ -20045,6 +20062,7 @@
 				<Property Name="LayoutWebpartsContent" Type="Edm.String" />
 			</EntityType>
 			<EntityType Name="RepostPage" BaseType="SP.Publishing.SitePage">
+				<Property Name="IsBannerImageUrlExternal" Type="Edm.Boolean" Nullable="false" />
 				<Property Name="OriginalSourceItemId" Type="Edm.Guid" Nullable="false" />
 				<Property Name="OriginalSourceListId" Type="Edm.Guid" Nullable="false" />
 				<Property Name="OriginalSourceSiteId" Type="Edm.Guid" Nullable="false" />
@@ -21297,6 +21315,7 @@
 				<Property Name="sharingLinkTemplates" Type="SP.Sharing.SharingLinkTemplateCollection" />
 				<Property Name="sharingStatus" Type="Edm.Int32" Nullable="false" />
 				<Property Name="showExternalSharingWarning" Type="Edm.Boolean" Nullable="false" />
+				<Property Name="webTemplateId" Type="Edm.Int32" Nullable="false" />
 				<Property Name="webUrl" Type="Edm.String" />
 				<NavigationProperty Name="pickerSettings" Relationship="SP.SP_Sharing_SharingInformation_pickerSettings_SP_PickerSettings_pickerSettingsPartner" ToRole="pickerSettings" FromRole="pickerSettingsPartner" />
 			</EntityType>

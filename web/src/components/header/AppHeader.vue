@@ -2,7 +2,7 @@
   <el-header class="app-header" height="90">
     <top-line></top-line>
     <div class="links">
-      <router-link class="link" to="/" :exact="true">Home</router-link>
+      <router-link class="link" to="/" :exact="true">Explore</router-link>
       <router-link class="link" to="/how-it-works" :exact="true">How it works</router-link>
     </div>
   </el-header>
@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import TopHeaderLine from '@/components/TopHeaderLine.vue'
+import TopHeaderLine from './TopHeaderLine.vue'
 
 export default Vue.extend({
   name: 'app-header',
@@ -27,7 +27,7 @@ export default Vue.extend({
   border-radius: 8px 8px 0 0;
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
     0 3px 3px -2px rgba(0, 0, 0, 0.12);
-  z-index: 1;
+  z-index: 2;
 
   .links {
     justify-content: flex-start;

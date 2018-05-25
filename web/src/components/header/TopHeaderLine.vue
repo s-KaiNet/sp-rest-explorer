@@ -2,12 +2,12 @@
   <div class="top-header-line">
     <div>
       <div class="logo">
-        <img class="icon" src="./../assets/sp_logo.png">
-        <span>SharePoint REST API Explorer</span>
+        <img class="icon" src="./../../assets/sp_logo.png">
+        <span>SharePoint REST API Metadata Explorer</span>
       </div>
     </div>
     <div>
-      <a class="link" href="#" target="_blank"> <img class="github" src="./../assets/github_logo.png"> GitHub </a>
+      <a class="link" href="#" target="_blank"> <img class="github" src="./../../assets/github_logo.png"> GitHub </a>
     </div>
   </div>
 </template>

@@ -30,14 +30,84 @@ export class MetadataParser {
 
         let metadata: Metadata = {
             entities: {},
-            functions: this.functions
+            functions: {}
         };
 
         this.entities.forEach((entity, key) => {
             metadata.entities[key] = entity;
         });
 
+        this.functions.forEach((func) => {
+            metadata.functions[func.id] = func;
+        });
+
+        // TODO - sort
+        /*
+        metadata.functions.sort((a, b) => {
+            if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                return -1;
+            }
+            if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1;
+            }
+            return 0;
+        });
+        */
+
+        this.populateWithCollectionObjects(metadata);
+        this.populateEntitiesWithMethods(metadata);
+
         return metadata;
+    }
+
+    private populateWithCollectionObjects(metadata: Metadata): void {
+        for (const entityFullName in metadata.entities) {
+            if (metadata.entities.hasOwnProperty(entityFullName)) {
+                const entity = metadata.entities[entityFullName];
+                entity.properties.forEach(prop => {
+                    this.ensureCollectionEntityType(prop.typeName, metadata.entities);
+                });
+            }
+        }
+    }
+
+    private ensureCollectionEntityType(typeName: string, entities: { [key: string]: EntityType }): void {
+        if (typeName.indexOf('Collection') === 0 && !entities[typeName]) {
+            entities[typeName] = {
+                fullName: typeName,
+                functions: [],
+                name: typeName,
+                properties: []
+            };
+        }
+    }
+
+    private populateEntitiesWithMethods(metadata: Metadata): void {
+        for (const funcId in metadata.functions) {
+            if (metadata.functions.hasOwnProperty(funcId)) {
+                const func = metadata.functions[funcId];
+                let thisParam = this.getThisParameter(func);
+                if (!thisParam) {
+                    continue;
+                }
+
+                // special case for collections, because they are not separate nodes in $metadata
+                this.ensureCollectionEntityType(thisParam, metadata.entities);
+
+                let entity = metadata.entities[thisParam];
+                entity.functions.push(func.id);
+            }
+        }
+    }
+
+    private getThisParameter(func: FunctionImport): string {
+        let param = func.parameters.filter(f => f.name === 'this')[0];
+
+        if (param) {
+            return param.typeName;
+        }
+
+        return null;
     }
 
     private extractFunctionImports(schemas: any): void {
@@ -57,17 +127,19 @@ export class MetadataParser {
     }
 
     private extractFunctions(funcs: any): void {
+        let i = 1;
         for (const func of funcs) {
             let funcImport: FunctionImport = {
                 isBindable: func.$.IsBindable ? func.$.IsBindable === 'true' : undefined,
                 isComposable: func.$.IsComposable ? func.$.IsComposable === 'true' : undefined,
                 name: func.$.Name,
                 returnType: func.$.ReturnType,
-                isRoot: true
+                isRoot: true,
+                parameters: [],
+                id: i++
             };
 
             if (func.Parameter) {
-                funcImport.parameters = [];
                 for (const param of func.Parameter) {
                     funcImport.parameters.push({
                         name: param.$.Name,
@@ -82,6 +154,12 @@ export class MetadataParser {
                 }
             }
 
+            // optimize size of json - leave only props with true values
+            if (!funcImport.isRoot) {
+                delete funcImport.isRoot;
+            }
+
+            funcImport.name = funcImport.name.replace(/_/gi, '.');
             this.functions.push(funcImport);
         }
     }
@@ -134,7 +212,8 @@ export class MetadataParser {
         let entityType: EntityType = {
             name: metadataType.$.Name,
             fullName: fullName,
-            properties: []
+            properties: [],
+            functions: []
         };
         if (metadataType.$.BaseType) {
             entityType.baseTypeName = metadataType.$.BaseType;
