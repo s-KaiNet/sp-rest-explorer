@@ -41,6 +41,7 @@ export default Vue.extend({
   }
   .aside {
     min-width: 250px;
+    max-width: 500px;
     flex-shrink: 0;
     background-color: #e5e9f2;
     box-shadow: 1px 0px 8px 0 rgba(0, 0, 0, 0.2),

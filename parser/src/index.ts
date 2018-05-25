@@ -1,13 +1,13 @@
-import { parse } from './parser';
+import { parse } from './parser'
 
-console.time('parse');
+console.time('parse')
 
 parse()
     .then(() => {
-        console.timeEnd('parse');
+      console.timeEnd('parse')
     })
     .catch(e => {
-        console.error('Error occured:');
-        console.log(e);
-        throw e;
-    });
+      console.error('Error occured:')
+      console.log(e)
+      throw e
+    })

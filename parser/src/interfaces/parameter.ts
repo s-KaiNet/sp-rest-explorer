@@ -1,5 +1,5 @@
 export interface Parameter {
-    name: string;
-    typeName: string;
-    nullable: boolean;
+  name: string
+  typeName: string
+  nullable: boolean
 }

@@ -1,4 +1,4 @@
 export interface Association {
-    name: string;
-    roles: { [key: string]: string };
+  name: string
+  roles: { [key: string]: string }
 }
