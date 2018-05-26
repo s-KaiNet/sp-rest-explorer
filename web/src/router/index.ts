@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Explorer from '@/components/Explorer.vue'
-import HowItWorks from '@/components/HowItWorks.vue'
-import ExplorerHome from '@/components/ExplorerHome.vue'
-import TypeDetails from '@/components/TypeDetails.vue'
+import Explorer from '@/components/explorer/Explorer.vue'
+import HowItWorks from '@/components/pages/HowItWorks.vue'
+import DocsView from '@/components/explorer/docs-area/DocsView.vue'
 
 Vue.use(Router)
 
@@ -16,15 +15,11 @@ export default new Router({
       children: [
         {
           path: '',
-          component: ExplorerHome
+          component: DocsView
         },
         {
-          path: 'type/method/:name',
-          component: TypeDetails
-        },
-        {
-          path: 'type/:name',
-          component: TypeDetails
+          path: '_api/*',
+          component: DocsView
         }
       ]
     },

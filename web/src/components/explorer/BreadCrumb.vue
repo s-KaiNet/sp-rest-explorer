@@ -17,7 +17,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .breadcrumb-menu {
-  background-color: #81c0fd5c;
+  background-color: #b6dafd5c;
   padding: 15px;
   margin: 15px;
   border-radius: 4px;

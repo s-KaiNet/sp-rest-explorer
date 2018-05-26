@@ -150,6 +150,7 @@ export class MetadataParser {
         id: i++
       }
 
+      // TODO - reduces number of root functions - remove later on
       if (funcImport.name.indexOf('_') !== -1) {
         continue
       }
@@ -207,6 +208,7 @@ export class MetadataParser {
           let indx = relationship.lastIndexOf('.')
           let name = relationship.substring(indx + 1, relationship.length)
           let association = this.associations.get(name)
+
           entityType.navigationProperties.push({
             typeName: association.roles[toRole],
             name: navigationProperty.$.Name
@@ -253,8 +255,19 @@ export class MetadataParser {
       if (schema.Association) {
         for (const association of schema.Association) {
           let roles: any = {}
-          roles[association['End'][0].$.Role] = association['End'][0].$.Type
-          roles[association['End'][1].$.Role] = association['End'][1].$.Type
+          let multiplicity = association['End'][0].$.Multiplicity
+          if (multiplicity.indexOf('*') !== -1) {
+            roles[association['End'][0].$.Role] = `Collection(${association['End'][0].$.Type})`
+          } else {
+            roles[association['End'][0].$.Role] = association['End'][0].$.Type
+          }
+
+          multiplicity = association['End'][1].$.Multiplicity
+          if (multiplicity.indexOf('*') !== -1) {
+            roles[association['End'][1].$.Role] = `Collection(${association['End'][1].$.Type})`
+          } else {
+            roles[association['End'][1].$.Role] = association['End'][1].$.Type
+          }
 
           this.associations.set(association.$.Name, {
             name: association.$.Name,

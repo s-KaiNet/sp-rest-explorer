@@ -1,5 +1,5 @@
 import { Metadata, EntityType } from './../../../parser/src/interfaces'
-import { TreeNode } from '../models/TreeNode'
+import { TreeNode, TreeNodeType } from '../models/TreeNode'
 
 export class TreeBuilder {
   private separator = '/'
@@ -17,14 +17,13 @@ export class TreeBuilder {
             children: [],
             fullTypeName: func.returnType,
             path: func.name,
-            hasChilds: false,
-            leaf: true
+            leaf: true,
+            type: TreeNodeType.Function
           }
 
           let entity = this.metadata.entities[func.returnType]
-          node.hasChilds = this.hasChilds(entity)
 
-          if (node.hasChilds) node.leaf = false
+          node.leaf = !this.hasChilds(entity)
 
           results.push(node)
         }
@@ -44,15 +43,13 @@ export class TreeBuilder {
           label: prop.name,
           children: [],
           fullTypeName: prop.typeName,
-          hasChilds: false,
           path: currentNode.path + this.separator + prop.name,
-          leaf: true
+          leaf: true,
+          type: TreeNodeType.Entity
         }
 
         let entity = this.metadata.entities[prop.typeName]
-        node.hasChilds = this.hasChilds(entity)
-
-        if (node.hasChilds) node.leaf = false
+        node.leaf = !this.hasChilds(entity)
 
         results.push(node)
       })
@@ -61,20 +58,17 @@ export class TreeBuilder {
     if (entity.functions) {
       entity.functions.forEach(id => {
         let func = this.metadata.functions[id]
-        let returnType = func.returnType ? func.returnType : ''
         let node: TreeNode = {
           label: func.name,
           fullTypeName: func.returnType,
-          hasChilds: false,
-          path: currentNode.path + this.separator + func.name + '()',
+          path: currentNode.path + this.separator + func.name,
           children: [],
-          leaf: true
+          leaf: true,
+          type: TreeNodeType.Function
         }
 
         let entity = this.metadata.entities[func.returnType]
-        node.hasChilds = this.hasChilds(entity)
-
-        if (node.hasChilds) node.leaf = false
+        node.leaf = !this.hasChilds(entity)
 
         results.push(node)
       })

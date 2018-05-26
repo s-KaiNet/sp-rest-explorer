@@ -1,8 +1,13 @@
+export enum TreeNodeType {
+  Entity,
+  Function
+}
+
 export interface TreeNode {
   label: string
   path: string
   fullTypeName: string
   children: TreeNode[]
-  hasChilds: boolean
   leaf: boolean
+  type: TreeNodeType
 }

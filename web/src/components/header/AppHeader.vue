@@ -2,7 +2,7 @@
   <el-header class="app-header" height="90">
     <top-line></top-line>
     <div class="links">
-      <router-link class="link" to="/" :exact="true">Explore</router-link>
+      <router-link class="link" to="/">Explore</router-link>
       <router-link class="link" to="/how-it-works" :exact="true">How it works</router-link>
     </div>
   </el-header>

@@ -3224,7 +3224,7 @@
                     "name": "Current"
                 },
                 {
-                    "typeName": "SP.TypeInformation",
+                    "typeName": "Collection(SP.TypeInformation)",
                     "name": "Types"
                 }
             ]
@@ -3553,15 +3553,15 @@
                     "name": "Audit"
                 },
                 {
-                    "typeName": "SP.ScriptSafeDomain",
+                    "typeName": "Collection(SP.ScriptSafeDomain)",
                     "name": "CustomScriptSafeDomains"
                 },
                 {
-                    "typeName": "SP.EventReceiverDefinition",
+                    "typeName": "Collection(SP.EventReceiverDefinition)",
                     "name": "EventReceivers"
                 },
                 {
-                    "typeName": "SP.Feature",
+                    "typeName": "Collection(SP.Feature)",
                     "name": "Features"
                 },
                 {
@@ -3569,7 +3569,7 @@
                     "name": "Owner"
                 },
                 {
-                    "typeName": "SP.RecycleBinItem",
+                    "typeName": "Collection(SP.RecycleBinItem)",
                     "name": "RecycleBin"
                 },
                 {
@@ -3581,7 +3581,7 @@
                     "name": "SecondaryContact"
                 },
                 {
-                    "typeName": "SP.UserCustomAction",
+                    "typeName": "Collection(SP.UserCustomAction)",
                     "name": "UserCustomActions"
                 }
             ]
@@ -3744,11 +3744,11 @@
             "baseTypeName": "SP.Principal",
             "navigationProperties": [
                 {
-                    "typeName": "SP.Alert",
+                    "typeName": "Collection(SP.Alert)",
                     "name": "Alerts"
                 },
                 {
-                    "typeName": "SP.Group",
+                    "typeName": "Collection(SP.Group)",
                     "name": "Groups"
                 }
             ]
@@ -3887,7 +3887,7 @@
                     "name": "FirstUniqueAncestorSecurableObject"
                 },
                 {
-                    "typeName": "SP.RoleAssignment",
+                    "typeName": "Collection(SP.RoleAssignment)",
                     "name": "RoleAssignments"
                 }
             ]
@@ -3912,7 +3912,7 @@
                     "name": "Member"
                 },
                 {
-                    "typeName": "SP.RoleDefinition",
+                    "typeName": "Collection(SP.RoleDefinition)",
                     "name": "RoleDefinitionBindings"
                 }
             ]
@@ -4044,11 +4044,11 @@
             "baseTypeName": "SP.SecurableObject",
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "typeName": "Collection(Microsoft.SharePoint.Activities.SPActivityEntity)",
                     "name": "Activities"
                 },
                 {
-                    "typeName": "SP.Attachment",
+                    "typeName": "Collection(SP.Attachment)",
                     "name": "AttachmentFiles"
                 },
                 {
@@ -4092,7 +4092,7 @@
                     "name": "Properties"
                 },
                 {
-                    "typeName": "SP.ListItemVersion",
+                    "typeName": "Collection(SP.ListItemVersion)",
                     "name": "Versions"
                 }
             ]
@@ -4235,11 +4235,11 @@
                     "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.FieldLink",
+                    "typeName": "Collection(SP.FieldLink)",
                     "name": "FieldLinks"
                 },
                 {
-                    "typeName": "SP.Field",
+                    "typeName": "Collection(SP.Field)",
                     "name": "Fields"
                 },
                 {
@@ -4251,7 +4251,7 @@
                     "name": "Parent"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowAssociation",
+                    "typeName": "Collection(SP.Workflow.WorkflowAssociation)",
                     "name": "WorkflowAssociations"
                 }
             ]
@@ -4754,11 +4754,11 @@
                     "name": "Properties"
                 },
                 {
-                    "typeName": "SP.FileVersionEvent",
+                    "typeName": "Collection(SP.FileVersionEvent)",
                     "name": "VersionEvents"
                 },
                 {
-                    "typeName": "SP.FileVersion",
+                    "typeName": "Collection(SP.FileVersion)",
                     "name": "Versions"
                 }
             ]
@@ -5096,11 +5096,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "typeName": "Collection(Microsoft.SharePoint.Activities.SPActivityEntity)",
                     "name": "Activities"
                 },
                 {
-                    "typeName": "SP.File",
+                    "typeName": "Collection(SP.File)",
                     "name": "Files"
                 },
                 {
@@ -5120,7 +5120,7 @@
                     "name": "StorageMetrics"
                 },
                 {
-                    "typeName": "SP.Folder",
+                    "typeName": "Collection(SP.Folder)",
                     "name": "Folders"
                 }
             ]
@@ -5546,11 +5546,11 @@
             "baseTypeName": "SP.SecurableObject",
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "typeName": "Collection(Microsoft.SharePoint.Activities.SPActivityEntity)",
                     "name": "Activities"
                 },
                 {
-                    "typeName": "SP.ContentType",
+                    "typeName": "Collection(SP.ContentType)",
                     "name": "ContentTypes"
                 },
                 {
@@ -5566,15 +5566,15 @@
                     "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.EventReceiverDefinition",
+                    "typeName": "Collection(SP.EventReceiverDefinition)",
                     "name": "EventReceivers"
                 },
                 {
-                    "typeName": "SP.Field",
+                    "typeName": "Collection(SP.Field)",
                     "name": "Fields"
                 },
                 {
-                    "typeName": "SP.Form",
+                    "typeName": "Collection(SP.Form)",
                     "name": "Forms"
                 },
                 {
@@ -5582,7 +5582,7 @@
                     "name": "InformationRightsManagementSettings"
                 },
                 {
-                    "typeName": "SP.ListItem",
+                    "typeName": "Collection(SP.ListItem)",
                     "name": "Items"
                 },
                 {
@@ -5594,7 +5594,7 @@
                     "name": "RootFolder"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Webhooks.Subscription",
+                    "typeName": "Collection(Microsoft.SharePoint.Webhooks.Subscription)",
                     "name": "Subscriptions"
                 },
                 {
@@ -5602,15 +5602,15 @@
                     "name": "TitleResource"
                 },
                 {
-                    "typeName": "SP.UserCustomAction",
+                    "typeName": "Collection(SP.UserCustomAction)",
                     "name": "UserCustomActions"
                 },
                 {
-                    "typeName": "SP.View",
+                    "typeName": "Collection(SP.View)",
                     "name": "Views"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowAssociation",
+                    "typeName": "Collection(SP.Workflow.WorkflowAssociation)",
                     "name": "WorkflowAssociations"
                 }
             ]
@@ -6357,7 +6357,7 @@
             "baseTypeName": "SP.SecurableObject",
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Activities.SPActivityEntity",
+                    "typeName": "Collection(Microsoft.SharePoint.Activities.SPActivityEntity)",
                     "name": "Activities"
                 },
                 {
@@ -6365,7 +6365,7 @@
                     "name": "ActivityLogger"
                 },
                 {
-                    "typeName": "SP.Alert",
+                    "typeName": "Collection(SP.Alert)",
                     "name": "Alerts"
                 },
                 {
@@ -6373,7 +6373,7 @@
                     "name": "AllProperties"
                 },
                 {
-                    "typeName": "SP.AppTile",
+                    "typeName": "Collection(SP.AppTile)",
                     "name": "AppTiles"
                 },
                 {
@@ -6393,19 +6393,19 @@
                     "name": "Author"
                 },
                 {
-                    "typeName": "SP.ContentType",
+                    "typeName": "Collection(SP.ContentType)",
                     "name": "AvailableContentTypes"
                 },
                 {
-                    "typeName": "SP.Field",
+                    "typeName": "Collection(SP.Field)",
                     "name": "AvailableFields"
                 },
                 {
-                    "typeName": "SP.ClientWebPart",
+                    "typeName": "Collection(SP.ClientWebPart)",
                     "name": "ClientWebParts"
                 },
                 {
-                    "typeName": "SP.ContentType",
+                    "typeName": "Collection(SP.ContentType)",
                     "name": "ContentTypes"
                 },
                 {
@@ -6421,27 +6421,27 @@
                     "name": "DescriptionResource"
                 },
                 {
-                    "typeName": "SP.EventReceiverDefinition",
+                    "typeName": "Collection(SP.EventReceiverDefinition)",
                     "name": "EventReceivers"
                 },
                 {
-                    "typeName": "SP.Feature",
+                    "typeName": "Collection(SP.Feature)",
                     "name": "Features"
                 },
                 {
-                    "typeName": "SP.Field",
+                    "typeName": "Collection(SP.Field)",
                     "name": "Fields"
                 },
                 {
-                    "typeName": "SP.Folder",
+                    "typeName": "Collection(SP.Folder)",
                     "name": "Folders"
                 },
                 {
-                    "typeName": "SP.List",
+                    "typeName": "Collection(SP.List)",
                     "name": "Lists"
                 },
                 {
-                    "typeName": "SP.ListTemplate",
+                    "typeName": "Collection(SP.ListTemplate)",
                     "name": "ListTemplates"
                 },
                 {
@@ -6449,7 +6449,7 @@
                     "name": "Navigation"
                 },
                 {
-                    "typeName": "SP.Sharing.SharedDocumentInfo",
+                    "typeName": "Collection(SP.Sharing.SharedDocumentInfo)",
                     "name": "OneDriveSharedItems"
                 },
                 {
@@ -6457,11 +6457,11 @@
                     "name": "ParentWeb"
                 },
                 {
-                    "typeName": "SP.PushNotificationSubscriber",
+                    "typeName": "Collection(SP.PushNotificationSubscriber)",
                     "name": "PushNotificationSubscribers"
                 },
                 {
-                    "typeName": "SP.RecycleBinItem",
+                    "typeName": "Collection(SP.RecycleBinItem)",
                     "name": "RecycleBin"
                 },
                 {
@@ -6469,7 +6469,7 @@
                     "name": "RegionalSettings"
                 },
                 {
-                    "typeName": "SP.RoleDefinition",
+                    "typeName": "Collection(SP.RoleDefinition)",
                     "name": "RoleDefinitions"
                 },
                 {
@@ -6481,7 +6481,7 @@
                     "name": "SiteCollectionAppCatalog"
                 },
                 {
-                    "typeName": "SP.Group",
+                    "typeName": "Collection(SP.Group)",
                     "name": "SiteGroups"
                 },
                 {
@@ -6489,7 +6489,7 @@
                     "name": "SiteUserInfoList"
                 },
                 {
-                    "typeName": "SP.User",
+                    "typeName": "Collection(SP.User)",
                     "name": "SiteUsers"
                 },
                 {
@@ -6505,23 +6505,23 @@
                     "name": "TitleResource"
                 },
                 {
-                    "typeName": "SP.UserCustomAction",
+                    "typeName": "Collection(SP.UserCustomAction)",
                     "name": "UserCustomActions"
                 },
                 {
-                    "typeName": "SP.Web",
+                    "typeName": "Collection(SP.Web)",
                     "name": "Webs"
                 },
                 {
-                    "typeName": "SP.WebInformation",
+                    "typeName": "Collection(SP.WebInformation)",
                     "name": "WebInfos"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowAssociation",
+                    "typeName": "Collection(SP.Workflow.WorkflowAssociation)",
                     "name": "WorkflowAssociations"
                 },
                 {
-                    "typeName": "SP.Workflow.WorkflowTemplate",
+                    "typeName": "Collection(SP.Workflow.WorkflowTemplate)",
                     "name": "WorkflowTemplates"
                 }
             ]
@@ -6680,7 +6680,7 @@
                     "name": "Owner"
                 },
                 {
-                    "typeName": "SP.User",
+                    "typeName": "Collection(SP.User)",
                     "name": "Users"
                 }
             ]
@@ -6809,11 +6809,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.NavigationNode",
+                    "typeName": "Collection(SP.NavigationNode)",
                     "name": "QuickLaunch"
                 },
                 {
-                    "typeName": "SP.NavigationNode",
+                    "typeName": "Collection(SP.NavigationNode)",
                     "name": "TopNavigationBar"
                 }
             ]
@@ -6862,7 +6862,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.NavigationNode",
+                    "typeName": "Collection(SP.NavigationNode)",
                     "name": "Children"
                 }
             ]
@@ -7207,7 +7207,7 @@
                     "name": "TimeZone"
                 },
                 {
-                    "typeName": "SP.TimeZone",
+                    "typeName": "Collection(SP.TimeZone)",
                     "name": "TimeZones"
                 }
             ]
@@ -7406,7 +7406,7 @@
                     "name": "CreatedBy"
                 },
                 {
-                    "typeName": "SP.Field",
+                    "typeName": "Collection(SP.Field)",
                     "name": "Fields"
                 },
                 {
@@ -7812,7 +7812,7 @@
                     "name": "SharePointSettings"
                 },
                 {
-                    "typeName": "SP.SharingPermissionInformation",
+                    "typeName": "Collection(SP.SharingPermissionInformation)",
                     "name": "SharingPermissions"
                 }
             ]
@@ -7899,7 +7899,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.ObjectSharingInformationUser",
+                    "typeName": "Collection(SP.ObjectSharingInformationUser)",
                     "name": "SharedWithUsersCollection"
                 }
             ]
@@ -8217,7 +8217,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Group",
+                    "typeName": "Collection(SP.Group)",
                     "name": "GroupsSharedWith"
                 },
                 {
@@ -8225,7 +8225,7 @@
                     "name": "GroupUsersAddedTo"
                 },
                 {
-                    "typeName": "SP.User",
+                    "typeName": "Collection(SP.User)",
                     "name": "UsersWithAccessRequests"
                 }
             ]
@@ -9553,7 +9553,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.View",
+                    "typeName": "Collection(SP.View)",
                     "name": "AppMappedViews"
                 }
             ]
@@ -9879,11 +9879,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Directory.User",
+                    "typeName": "Collection(SP.Directory.User)",
                     "name": "members"
                 },
                 {
-                    "typeName": "SP.Directory.User",
+                    "typeName": "Collection(SP.Directory.User)",
                     "name": "owners"
                 }
             ]
@@ -10071,15 +10071,15 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Directory.Group",
+                    "typeName": "Collection(SP.Directory.Group)",
                     "name": "membership"
                 },
                 {
-                    "typeName": "SP.Directory.Group",
+                    "typeName": "Collection(SP.Directory.Group)",
                     "name": "ownership"
                 },
                 {
-                    "typeName": "SP.Directory.Group",
+                    "typeName": "Collection(SP.Directory.Group)",
                     "name": "rankedMembership"
                 }
             ]
@@ -10513,7 +10513,7 @@
             "baseTypeName": "MS.FileServices.FileSystemItem",
             "navigationProperties": [
                 {
-                    "typeName": "MS.FileServices.FileSystemItem",
+                    "typeName": "Collection(MS.FileServices.FileSystemItem)",
                     "name": "Children"
                 }
             ]
@@ -11210,7 +11210,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.AllowedDataLocation",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.AllowedDataLocation)",
                     "name": "AllowedDataLocations"
                 },
                 {
@@ -11218,15 +11218,15 @@
                     "name": "ContentDbSchemaVersion"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmGroupMoveJob",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmGroupMoveJob)",
                     "name": "CrossFarmGroupMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmSiteMoveJob",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmSiteMoveJob)",
                     "name": "CrossFarmSiteMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmUserMoveJob",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.CrossFarmUserMoveJob)",
                     "name": "CrossFarmUserMoveJobs"
                 },
                 {
@@ -11238,11 +11238,11 @@
                     "name": "CrossGeoTenantCompatibility"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantProperty",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.CrossGeoTenantProperty)",
                     "name": "CrossGeoTenantProperties"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoAdministrator",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.GeoAdministrator)",
                     "name": "GeoAdministrators"
                 },
                 {
@@ -11250,7 +11250,7 @@
                     "name": "GeoExperience"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GeoTenantInstanceInformation",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.GeoTenantInstanceInformation)",
                     "name": "GeoTenantInstanceInformationCollection"
                 },
                 {
@@ -11258,15 +11258,15 @@
                     "name": "GlobalAdminCheck"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.GroupMoveJob",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.GroupMoveJob)",
                     "name": "GroupMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.SiteMoveJob",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.SiteMoveJob)",
                     "name": "SiteMoveJobs"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.StorageQuota",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.StorageQuota)",
                     "name": "StorageQuotas"
                 },
                 {
@@ -11274,11 +11274,11 @@
                     "name": "TaxonomyReplicationParameters"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.UnifiedGroup",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.UnifiedGroup)",
                     "name": "UnifiedGroups"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.MultiGeo.Service.UserMoveJob",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.MultiGeo.Service.UserMoveJob)",
                     "name": "UserMoveJobs"
                 }
             ]
@@ -15636,7 +15636,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 }
             ]
@@ -15736,7 +15736,7 @@
                     "name": "EntityType"
                 },
                 {
-                    "typeName": "PS.LookupEntry",
+                    "typeName": "Collection(PS.LookupEntry)",
                     "name": "LookupEntries"
                 },
                 {
@@ -15819,7 +15819,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.LookupEntry",
+                    "typeName": "Collection(PS.LookupEntry)",
                     "name": "Entries"
                 }
             ]
@@ -15978,7 +15978,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CalendarException",
+                    "typeName": "Collection(PS.CalendarException)",
                     "name": "BaseCalendarExceptions"
                 }
             ]
@@ -16516,7 +16516,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
@@ -16647,7 +16647,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.StatusAssignment",
+                    "typeName": "Collection(PS.StatusAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -16655,11 +16655,11 @@
                     "name": "BaseCalendar"
                 },
                 {
-                    "typeName": "PS.EnterpriseResourceCostRateTable",
+                    "typeName": "Collection(PS.EnterpriseResourceCostRateTable)",
                     "name": "CostRateTables"
                 },
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
@@ -16667,15 +16667,15 @@
                     "name": "DefaultAssignmentOwner"
                 },
                 {
-                    "typeName": "PS.ResourceEngagement",
+                    "typeName": "Collection(PS.ResourceEngagement)",
                     "name": "Engagements"
                 },
                 {
-                    "typeName": "PS.UserPermission",
+                    "typeName": "Collection(PS.UserPermission)",
                     "name": "UserPermissions"
                 },
                 {
-                    "typeName": "PS.CalendarException",
+                    "typeName": "Collection(PS.CalendarException)",
                     "name": "ResourceCalendarExceptions"
                 },
                 {
@@ -16854,11 +16854,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.StatusAssignmentHistoryLine",
+                    "typeName": "Collection(PS.StatusAssignmentHistoryLine)",
                     "name": "History"
                 },
                 {
@@ -17112,11 +17112,11 @@
                     "name": "CheckedOutBy"
                 },
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.ProjectEngagement",
+                    "typeName": "Collection(PS.ProjectEngagement)",
                     "name": "Engagements"
                 },
                 {
@@ -17124,7 +17124,7 @@
                     "name": "EnterpriseProjectType"
                 },
                 {
-                    "typeName": "PS.UserPermission",
+                    "typeName": "Collection(PS.UserPermission)",
                     "name": "UserPermissions"
                 },
                 {
@@ -17136,7 +17136,7 @@
                     "name": "ProjectSummaryTask"
                 },
                 {
-                    "typeName": "PS.QueueJob",
+                    "typeName": "Collection(PS.QueueJob)",
                     "name": "QueueJobs"
                 },
                 {
@@ -17192,7 +17192,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.EngagementComment",
+                    "typeName": "Collection(PS.EngagementComment)",
                     "name": "Comments"
                 },
                 {
@@ -17402,7 +17402,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.ProjectDetailPage",
+                    "typeName": "Collection(PS.ProjectDetailPage)",
                     "name": "ProjectDetailPages"
                 }
             ]
@@ -17473,7 +17473,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Stage",
+                    "typeName": "Collection(PS.Stage)",
                     "name": "Stages"
                 }
             ]
@@ -17515,7 +17515,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.StageCustomField",
+                    "typeName": "Collection(PS.StageCustomField)",
                     "name": "CustomFields"
                 },
                 {
@@ -17523,7 +17523,7 @@
                     "name": "Phase"
                 },
                 {
-                    "typeName": "PS.StageDetailPage",
+                    "typeName": "Collection(PS.StageDetailPage)",
                     "name": "ProjectDetailPages"
                 },
                 {
@@ -18120,7 +18120,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
@@ -18312,7 +18312,7 @@
             "baseTypeName": "PS.Project",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment",
+                    "typeName": "Collection(PS.PublishedAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -18324,7 +18324,7 @@
                     "name": "Draft"
                 },
                 {
-                    "typeName": "PS.EntityLink",
+                    "typeName": "Collection(PS.EntityLink)",
                     "name": "EntityLinks"
                 },
                 {
@@ -18336,7 +18336,7 @@
                     "name": "Owner"
                 },
                 {
-                    "typeName": "PS.PublishedProjectResource",
+                    "typeName": "Collection(PS.PublishedProjectResource)",
                     "name": "ProjectResources"
                 },
                 {
@@ -18344,11 +18344,11 @@
                     "name": "ProjectWorkflowInstance"
                 },
                 {
-                    "typeName": "PS.PublishedTaskLink",
+                    "typeName": "Collection(PS.PublishedTaskLink)",
                     "name": "TaskLinks"
                 },
                 {
-                    "typeName": "PS.PublishedTask",
+                    "typeName": "Collection(PS.PublishedTask)",
                     "name": "Tasks"
                 }
             ]
@@ -18646,7 +18646,7 @@
             "baseTypeName": "PS.ProjectResource",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment",
+                    "typeName": "Collection(PS.PublishedAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -18869,7 +18869,7 @@
             "baseTypeName": "PS.Task",
             "navigationProperties": [
                 {
-                    "typeName": "PS.PublishedAssignment",
+                    "typeName": "Collection(PS.PublishedAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -18877,7 +18877,7 @@
                     "name": "Calendar"
                 },
                 {
-                    "typeName": "PS.EntityLink",
+                    "typeName": "Collection(PS.EntityLink)",
                     "name": "EntityLinks"
                 },
                 {
@@ -18885,7 +18885,7 @@
                     "name": "Parent"
                 },
                 {
-                    "typeName": "PS.PublishedTaskLink",
+                    "typeName": "Collection(PS.PublishedTaskLink)",
                     "name": "Predecessors"
                 },
                 {
@@ -18893,7 +18893,7 @@
                     "name": "StatusManager"
                 },
                 {
-                    "typeName": "PS.PublishedTaskLink",
+                    "typeName": "Collection(PS.PublishedTaskLink)",
                     "name": "Successors"
                 },
                 {
@@ -19182,7 +19182,7 @@
             "baseTypeName": "PS.Project",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftAssignment",
+                    "typeName": "Collection(PS.DraftAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -19198,15 +19198,15 @@
                     "name": "Owner"
                 },
                 {
-                    "typeName": "PS.DraftProjectResource",
+                    "typeName": "Collection(PS.DraftProjectResource)",
                     "name": "ProjectResources"
                 },
                 {
-                    "typeName": "PS.DraftTaskLink",
+                    "typeName": "Collection(PS.DraftTaskLink)",
                     "name": "TaskLinks"
                 },
                 {
-                    "typeName": "PS.DraftTask",
+                    "typeName": "Collection(PS.DraftTask)",
                     "name": "Tasks"
                 }
             ]
@@ -19299,7 +19299,7 @@
             "baseTypeName": "PS.ProjectResource",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftAssignment",
+                    "typeName": "Collection(PS.DraftAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -19566,7 +19566,7 @@
             "baseTypeName": "PS.Task",
             "navigationProperties": [
                 {
-                    "typeName": "PS.DraftAssignment",
+                    "typeName": "Collection(PS.DraftAssignment)",
                     "name": "Assignments"
                 },
                 {
@@ -19578,7 +19578,7 @@
                     "name": "Parent"
                 },
                 {
-                    "typeName": "PS.DraftTaskLink",
+                    "typeName": "Collection(PS.DraftTaskLink)",
                     "name": "Predecessors"
                 },
                 {
@@ -19586,7 +19586,7 @@
                     "name": "StatusManager"
                 },
                 {
-                    "typeName": "PS.DraftTaskLink",
+                    "typeName": "Collection(PS.DraftTaskLink)",
                     "name": "Successors"
                 }
             ]
@@ -19968,7 +19968,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
@@ -19990,7 +19990,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.EnterpriseResourceCostRate",
+                    "typeName": "Collection(PS.EnterpriseResourceCostRate)",
                     "name": "CostRates"
                 }
             ]
@@ -20446,11 +20446,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.PlanAssignmentInterval",
+                    "typeName": "Collection(PS.PlanAssignmentInterval)",
                     "name": "Intervals"
                 },
                 {
@@ -20557,19 +20557,19 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.Calendar",
+                    "typeName": "Collection(PS.Calendar)",
                     "name": "Calendars"
                 },
                 {
-                    "typeName": "PS.CustomField",
+                    "typeName": "Collection(PS.CustomField)",
                     "name": "CustomFields"
                 },
                 {
-                    "typeName": "PS.EnterpriseProjectType",
+                    "typeName": "Collection(PS.EnterpriseProjectType)",
                     "name": "EnterpriseProjectTypes"
                 },
                 {
-                    "typeName": "PS.EnterpriseResource",
+                    "typeName": "Collection(PS.EnterpriseResource)",
                     "name": "EnterpriseResources"
                 },
                 {
@@ -20577,31 +20577,31 @@
                     "name": "EntityTypes"
                 },
                 {
-                    "typeName": "PS.EventHandler",
+                    "typeName": "Collection(PS.EventHandler)",
                     "name": "EventHandlers"
                 },
                 {
-                    "typeName": "PS.Event",
+                    "typeName": "Collection(PS.Event)",
                     "name": "Events"
                 },
                 {
-                    "typeName": "PS.LookupTable",
+                    "typeName": "Collection(PS.LookupTable)",
                     "name": "LookupTables"
                 },
                 {
-                    "typeName": "PS.Phase",
+                    "typeName": "Collection(PS.Phase)",
                     "name": "Phases"
                 },
                 {
-                    "typeName": "PS.ProjectDetailPage",
+                    "typeName": "Collection(PS.ProjectDetailPage)",
                     "name": "ProjectDetailPages"
                 },
                 {
-                    "typeName": "PS.PublishedProject",
+                    "typeName": "Collection(PS.PublishedProject)",
                     "name": "Projects"
                 },
                 {
-                    "typeName": "PS.ProjectWorkflowInstance",
+                    "typeName": "Collection(PS.ProjectWorkflowInstance)",
                     "name": "ProjectWorkflowInstances"
                 },
                 {
@@ -20609,15 +20609,15 @@
                     "name": "Settings"
                 },
                 {
-                    "typeName": "PS.Stage",
+                    "typeName": "Collection(PS.Stage)",
                     "name": "Stages"
                 },
                 {
-                    "typeName": "PS.TimeSheetPeriod",
+                    "typeName": "Collection(PS.TimeSheetPeriod)",
                     "name": "TimeSheetPeriods"
                 },
                 {
-                    "typeName": "PS.UserPermission",
+                    "typeName": "Collection(PS.UserPermission)",
                     "name": "UserPermissions"
                 },
                 {
@@ -20829,7 +20829,7 @@
                     "name": "Creator"
                 },
                 {
-                    "typeName": "PS.TimeSheetLine",
+                    "typeName": "Collection(PS.TimeSheetLine)",
                     "name": "Lines"
                 },
                 {
@@ -20907,7 +20907,7 @@
                     "name": "TimeSheet"
                 },
                 {
-                    "typeName": "PS.TimeSheetWork",
+                    "typeName": "Collection(PS.TimeSheetWork)",
                     "name": "Work"
                 }
             ]
@@ -21060,7 +21060,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.WorkflowDesignerField",
+                    "typeName": "Collection(PS.WorkflowDesignerField)",
                     "name": "Fields"
                 }
             ]
@@ -21097,7 +21097,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.LookupEntry",
+                    "typeName": "Collection(PS.LookupEntry)",
                     "name": "LookupEntries"
                 }
             ]
@@ -21163,7 +21163,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "PS.PlanAssignment",
+                    "typeName": "Collection(PS.PlanAssignment)",
                     "name": "Assignments"
                 }
             ]
@@ -21205,7 +21205,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "PS.StatusAssignment",
+                    "typeName": "Collection(PS.StatusAssignment)",
                     "name": "Assignments"
                 }
             ]
@@ -22470,7 +22470,7 @@
                     "name": "Owner"
                 },
                 {
-                    "typeName": "SP.User",
+                    "typeName": "Collection(SP.User)",
                     "name": "PeopleInMedia"
                 }
             ]
@@ -22655,7 +22655,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.File",
+                    "typeName": "Collection(SP.File)",
                     "name": "images"
                 }
             ]
@@ -22681,15 +22681,15 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.File",
+                    "typeName": "Collection(SP.File)",
                     "name": "bannerimages"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingUser",
+                    "typeName": "Collection(SP.Publishing.PointPublishingUser)",
                     "name": "contributors"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingUser",
+                    "typeName": "Collection(SP.Publishing.PointPublishingUser)",
                     "name": "creators"
                 },
                 {
@@ -22697,11 +22697,11 @@
                     "name": "magazineprops"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingPost",
+                    "typeName": "Collection(SP.Publishing.PointPublishingPost)",
                     "name": "posts"
                 },
                 {
-                    "typeName": "SP.Publishing.PointPublishingUser",
+                    "typeName": "Collection(SP.Publishing.PointPublishingUser)",
                     "name": "viewers"
                 }
             ]
@@ -23173,7 +23173,7 @@
                     "name": "CommunicationSite"
                 },
                 {
-                    "typeName": "SP.Publishing.SitePage",
+                    "typeName": "Collection(SP.Publishing.SitePage)",
                     "name": "Pages"
                 },
                 {
@@ -23303,11 +23303,11 @@
                     "name": "Search"
                 },
                 {
-                    "typeName": "SP.Publishing.SpotlightVideo",
+                    "typeName": "Collection(SP.Publishing.SpotlightVideo)",
                     "name": "SpotlightVideos"
                 },
                 {
-                    "typeName": "SP.Publishing.VideoItem",
+                    "typeName": "Collection(SP.Publishing.VideoItem)",
                     "name": "Videos"
                 }
             ]
@@ -23399,7 +23399,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.User",
+                    "typeName": "Collection(SP.User)",
                     "name": "Users"
                 }
             ]
@@ -23505,11 +23505,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Publishing.VideoChannel",
+                    "typeName": "Collection(SP.Publishing.VideoChannel)",
                     "name": "CanEditChannels"
                 },
                 {
-                    "typeName": "SP.Publishing.VideoChannel",
+                    "typeName": "Collection(SP.Publishing.VideoChannel)",
                     "name": "Channels"
                 },
                 {
@@ -23517,11 +23517,11 @@
                     "name": "Search"
                 },
                 {
-                    "typeName": "SP.Publishing.SpotlightChannel",
+                    "typeName": "Collection(SP.Publishing.SpotlightChannel)",
                     "name": "SpotlightChannels"
                 },
                 {
-                    "typeName": "SP.Publishing.SpotlightVideo",
+                    "typeName": "Collection(SP.Publishing.SpotlightVideo)",
                     "name": "SpotlightVideos"
                 }
             ]
@@ -27516,7 +27516,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.Site",
+                    "typeName": "Collection(SP.Site)",
                     "name": "Sites"
                 }
             ]
@@ -27538,7 +27538,7 @@
                     "name": "ContentService"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Administration.SPWebApplication",
+                    "typeName": "Collection(Microsoft.SharePoint.Administration.SPWebApplication)",
                     "name": "WebApplications"
                 }
             ]
@@ -27727,11 +27727,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Likes.userEntity",
+                    "typeName": "Collection(Microsoft.SharePoint.Likes.userEntity)",
                     "name": "likedBy"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Comments.comment",
+                    "typeName": "Collection(Microsoft.SharePoint.Comments.comment)",
                     "name": "replies"
                 }
             ]
@@ -28787,7 +28787,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WebParts.WebPartDefinition",
+                    "typeName": "Collection(SP.WebParts.WebPartDefinition)",
                     "name": "WebParts"
                 }
             ]
@@ -30821,7 +30821,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.SiteProperties",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.TenantAdministration.SiteProperties)",
                     "name": "Sites"
                 }
             ]
@@ -31478,7 +31478,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Location",
+                    "typeName": "Collection(SP.WorkManagement.OM.Location)",
                     "name": "AllLocatons"
                 },
                 {
@@ -31490,7 +31490,7 @@
                     "name": "RefreshHistory"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.DashboardScriptExtensionInfo",
+                    "typeName": "Collection(SP.WorkManagement.OM.DashboardScriptExtensionInfo)",
                     "name": "ScriptExtensions"
                 },
                 {
@@ -31543,7 +31543,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.RefreshResult",
+                    "typeName": "Collection(SP.WorkManagement.OM.RefreshResult)",
                     "name": "Refreshes"
                 }
             ]
@@ -31575,11 +31575,11 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.ProviderRefreshStatus",
+                    "typeName": "Collection(SP.WorkManagement.OM.ProviderRefreshStatus)",
                     "name": "ProviderStatuses"
                 },
                 {
-                    "typeName": "SP.WorkManagement.OM.LocationUpdateResult",
+                    "typeName": "Collection(SP.WorkManagement.OM.LocationUpdateResult)",
                     "name": "TaskChangesByLocation"
                 }
             ]
@@ -31728,7 +31728,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.ProviderErrorInfo",
+                    "typeName": "Collection(SP.WorkManagement.OM.ProviderErrorInfo)",
                     "name": "ProviderErrors"
                 }
             ]
@@ -31892,7 +31892,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Task",
+                    "typeName": "Collection(SP.WorkManagement.OM.Task)",
                     "name": "Results"
                 }
             ]
@@ -31914,7 +31914,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.WorkManagement.OM.Task",
+                    "typeName": "Collection(SP.WorkManagement.OM.Task)",
                     "name": "Results"
                 }
             ]
@@ -32488,7 +32488,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Likes.userEntity",
+                    "typeName": "Collection(Microsoft.SharePoint.Likes.userEntity)",
                     "name": "likedBy"
                 }
             ]
@@ -32549,7 +32549,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata",
+                    "typeName": "Collection(Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata)",
                     "name": "AvailableApps"
                 }
             ]
@@ -32620,11 +32620,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata",
+                    "typeName": "Collection(Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.CorporateCatalogAppMetadata)",
                     "name": "AvailableApps"
                 },
                 {
-                    "typeName": "Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.SiteCollectionAppCatalogAllowedItem",
+                    "typeName": "Collection(Microsoft.SharePoint.Marketplace.CorporateCuratedGallery.SiteCollectionAppCatalogAllowedItem)",
                     "name": "SiteCollectionAppCatalogsSites"
                 }
             ]
@@ -33302,7 +33302,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "SP.BusinessData.Runtime.EntityFieldValueDictionary",
+                    "typeName": "Collection(SP.BusinessData.Runtime.EntityFieldValueDictionary)",
                     "name": "ReturnParameterCollection"
                 }
             ]
@@ -33329,7 +33329,7 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "SP.BusinessData.EntityField",
+                    "typeName": "Collection(SP.BusinessData.EntityField)",
                     "name": "Fields"
                 }
             ]
@@ -33692,11 +33692,11 @@
             ],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionGrant",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionGrant)",
                     "name": "PermissionGrants"
                 },
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionRequest",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.TenantAdministration.Internal.SPOWebAppServicePrincipalPermissionRequest)",
                     "name": "PermissionRequests"
                 }
             ]
@@ -33757,7 +33757,7 @@
             "functions": [],
             "navigationProperties": [
                 {
-                    "typeName": "Microsoft.Online.SharePoint.TenantManagement.ExternalUser",
+                    "typeName": "Collection(Microsoft.Online.SharePoint.TenantManagement.ExternalUser)",
                     "name": "ExternalUserCollection"
                 }
             ]

@@ -13,7 +13,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import ApiTree from '@/components/api-tree/ApiTree.vue'
-import BreadCrumb from '@/components/BreadCrumb.vue'
+import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 
 export default Vue.extend({
   name: 'explorer',

@@ -1,6 +1,5 @@
 <template>
   <div class="api-tree">
-    <div class="apiLabel">_api/</div>
     <div class="content">
       <el-tree :expand-on-click-node="false" :props="treeProps" lazy :load="expandNode" @node-click="nodeCllick" class="tree">
         <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -15,8 +14,8 @@
 import Vue from 'vue'
 
 import { ApiService } from '../../services/api'
+import { consts } from '../../services/consts'
 import { uiTypes } from '../../store/modules/ui'
-import { navigationTypes } from '../../store/modules/navigation'
 import { TreeBuilder } from '../../services/treeBuilder'
 import { TreeNode } from '../../models/TreeNode'
 import { Metadata } from '../../../../parser/src/interfaces'
@@ -41,8 +40,7 @@ export default Vue.extend({
   methods: {
     expandNode(node: any, resolve: (data: TreeNode[]) => void) {
       if (node.level === 0) {
-        let api = new ApiService()
-        api
+        ApiService
           .getMetaData()
           .then(data => {
             this.$store.commit(uiTypes.SET_DATA_LOADING, {
@@ -63,9 +61,7 @@ export default Vue.extend({
       }
     },
     nodeCllick(node: TreeNode) {
-      this.$store.commit(navigationTypes.SET_BREADCRUMB, {
-        breadcrumb: node.path
-      })
+      this.$router.push('/' + consts.apiPrefix + '/' + node.path)
     }
   }
 })
@@ -80,15 +76,6 @@ export default Vue.extend({
 
   .tree {
     background-color: #e5e9f2;
-  }
-
-  .apiLabel {
-    margin: 10px;
-    text-align: left;
-    font-size: 17px;
-    font-weight: bold;
-    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-      Arial, sans-serif;
   }
 }
 </style>
