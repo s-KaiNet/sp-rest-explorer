@@ -16,7 +16,6 @@ import AppHeader from '@/components/header/AppHeader.vue'
 Vue.use(ElementUI, { locale })
 
 export default Vue.extend({
-  name: 'App',
   components: {
     'app-header': AppHeader
   }

@@ -13,7 +13,6 @@ import Vue from 'vue'
 import TopHeaderLine from './TopHeaderLine.vue'
 
 export default Vue.extend({
-  name: 'app-header',
   components: {
     'top-line': TopHeaderLine
   }

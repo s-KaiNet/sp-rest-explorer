@@ -27,7 +27,6 @@ interface Data {
 let metadata: Metadata
 
 export default Vue.extend({
-  name: 'api-tree',
   data(): Data {
     return {
       treeProps: {

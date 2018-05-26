@@ -25,7 +25,6 @@ interface Data {
 }
 
 export default Vue.extend({
-  name: 'docs-view',
   components: {
     'entity-view': EntityDocs,
     'function-view': FunctionDocs

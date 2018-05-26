@@ -24,19 +24,13 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import { docsMixin } from '../../../mixins'
+
 export default Vue.extend({
+  mixins: [docsMixin],
   props: {
     properties: Array,
     title: String
-  },
-  methods: {
-    getPropertyName(typeName: string): string {
-      if (typeName.indexOf('Edm.') !== -1) {
-        return typeName.replace(/Edm\./gi, '')
-      }
-
-      return typeName
-    }
   }
 })
 </script>

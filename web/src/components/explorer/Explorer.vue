@@ -16,7 +16,6 @@ import ApiTree from '@/components/api-tree/ApiTree.vue'
 import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 
 export default Vue.extend({
-  name: 'explorer',
   components: {
     'api-tree': ApiTree,
     breadcrumb: BreadCrumb
