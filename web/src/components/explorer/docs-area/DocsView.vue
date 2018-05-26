@@ -19,8 +19,8 @@ import FunctionDocs from './FunctionDocs.vue'
 import EntityDocs from './EntityDocs.vue'
 
 interface Data {
-  entity: any,
-  func: any,
+  entity: any
+  func: any
   resolved: boolean
 }
 
@@ -42,26 +42,25 @@ export default Vue.extend({
       let path = route.path
       if (path.indexOf(consts.apiPrefix) !== -1) {
         this.resolved = true
-        ApiService
-      .getMetaData()
-      .then(metadata => {
-        let parser = new MetadataParser(metadata)
-        let object = parser.getObjectByPath(path)
-        if (parser.isFunctionImport(object)) {
-          this.entity = null
-          this.func = object
-        } else {
-          this.entity = object
-          this.func = null
-        }
+        ApiService.getMetaData()
+          .then(metadata => {
+            let parser = new MetadataParser(metadata)
+            let object = parser.getObjectByPath(path)
+            if (parser.isFunctionImport(object)) {
+              this.entity = null
+              this.func = object
+            } else {
+              this.entity = object
+              this.func = null
+            }
 
-        this.$store.commit(navigationTypes.SET_BREADCRUMB, {
-          breadcrumb: parser.buildUriTemplate(path)
-        })
-      })
-      .catch(err => {
-        throw err
-      })
+            this.$store.commit(navigationTypes.SET_BREADCRUMB, {
+              breadcrumb: parser.buildUriTemplate(path)
+            })
+          })
+          .catch(err => {
+            throw err
+          })
       } else {
         this.func = null
         this.entity = null

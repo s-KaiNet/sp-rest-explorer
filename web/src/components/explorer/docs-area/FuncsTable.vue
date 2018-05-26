@@ -1,0 +1,43 @@
+<template>
+  <div v-if="funcs && funcs.length > 0" class="props-table">
+    <h5 class="attributeName">
+      <i class="el-icon-minus"></i> {{title}}</h5>
+    <table class="objectGroup">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Return Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="func in funcs" :key="func.name">
+          <td>{{func.name}}</td>
+          <td>{{func.returnType ? getPropertyName(func.returnType): '-'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  props: {
+    funcs: Array,
+    title: String
+  },
+  methods: {
+    getPropertyName(typeName: string): string {
+      if (typeName.indexOf('Edm.') !== -1) {
+        return typeName.replace(/Edm\./gi, '')
+      }
+
+      return typeName
+    }
+  }
+})
+</script>
+
+<style lang="scss" scoped>
+</style>

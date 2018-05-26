@@ -55,8 +55,8 @@ export class TreeBuilder {
       })
     }
 
-    if (entity.functions) {
-      entity.functions.forEach(id => {
+    if (entity.functionIds) {
+      entity.functionIds.forEach(id => {
         let func = this.metadata.functions[id]
         let node: TreeNode = {
           label: func.name,
@@ -80,7 +80,7 @@ export class TreeBuilder {
   private hasChilds(entity: EntityType): boolean {
     return (
       entity &&
-      ((entity.functions && entity.functions.length > 0) ||
+      ((entity.functionIds && entity.functionIds.length > 0) ||
         (!!entity.navigationProperties &&
           entity.navigationProperties.length > 0))
     )

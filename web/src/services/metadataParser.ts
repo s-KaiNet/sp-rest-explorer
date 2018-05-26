@@ -3,11 +3,12 @@ import {
   EntityType,
   Metadata
 } from '../../../parser/src/interfaces'
+import { Entity } from '../models/Entity'
 
 export class MetadataParser {
   constructor(private metadata: Metadata) {}
 
-  public getObjectByPath(path: string): FunctionImport | EntityType {
+  public getObjectByPath(path: string): FunctionImport | Entity {
     let objects = path.split('/').splice(2)
     let firstFunc = this.getFirstObject(path)
 
@@ -21,14 +22,22 @@ export class MetadataParser {
     for (const propertyName of objects) {
       nextObject = this.getObject(nextObject, propertyName)
     }
-
-    return nextObject
+    if (!this.isFunctionImport(nextObject)) {
+      (nextObject as any).functions = this.getFunctions(nextObject.functionIds)
+    }
+    return nextObject as any
   }
 
   public buildUriTemplate(path: string): string {
     let objects = path.split('/').splice(2)
     let firstFunc = this.getFirstObject(path)
-    let basePath = `${firstFunc.name}(...)/`
+    let basePath = ''
+
+    if (firstFunc.parameters && firstFunc.parameters.length > 0) {
+      basePath += `${firstFunc.name}(...)/`
+    } else {
+      basePath += `${firstFunc.name}/`
+    }
 
     if (objects.length === 1) {
       return basePath
@@ -40,7 +49,11 @@ export class MetadataParser {
 
     for (const propertyName of objects) {
       nextObject = this.getObject(nextObject, propertyName)
-      if (this.isFunctionImport(nextObject)) {
+      if (
+        this.isFunctionImport(nextObject) &&
+        nextObject.parameters &&
+        nextObject.parameters.length > 0
+      ) {
         basePath += `${propertyName}(...)/`
       } else {
         basePath += `${propertyName}/`
@@ -52,6 +65,18 @@ export class MetadataParser {
 
   public isFunctionImport(T: FunctionImport | EntityType): T is FunctionImport {
     return (T as FunctionImport).id != null
+  }
+
+  public getFunctions(ids: number[]): FunctionImport[] {
+    if (!ids) {
+      return []
+    }
+    let results: FunctionImport[] = []
+    for (const id of ids) {
+      results.push(this.metadata.functions[id])
+    }
+
+    return results
   }
 
   private getFirstObject(path: string): FunctionImport {
@@ -86,13 +111,12 @@ export class MetadataParser {
         }
       }
 
-      for (const funcId of returnType.functions) {
+      for (const funcId of returnType.functionIds) {
         let func = this.metadata.functions[funcId]
         if (func.name === propertyName) {
           return func
         }
       }
-
     } else {
       if (currentObject.navigationProperties) {
         for (const prop of currentObject.navigationProperties) {
@@ -102,7 +126,7 @@ export class MetadataParser {
         }
       }
 
-      for (const funcId of currentObject.functions) {
+      for (const funcId of currentObject.functionIds) {
         let func = this.metadata.functions[funcId]
         if (func.name === propertyName) {
           return func
@@ -110,5 +134,4 @@ export class MetadataParser {
       }
     }
   }
-
 }

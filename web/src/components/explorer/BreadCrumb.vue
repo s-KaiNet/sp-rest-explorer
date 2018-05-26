@@ -23,7 +23,6 @@ export default Vue.extend({
   border-radius: 4px;
   font-size: 17px;
   font-weight: bold;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
-    Arial, sans-serif;
+  font-family: $textFontFamily;
 }
 </style>

@@ -86,7 +86,7 @@ export class MetadataParser {
     if (typeName && typeName.indexOf('Collection') === 0 && !entities[typeName]) {
       entities[typeName] = {
         fullName: typeName,
-        functions: [],
+        functionIds: [],
         name: typeName,
         properties: []
       }
@@ -106,7 +106,7 @@ export class MetadataParser {
         this.ensureCollectionEntityType(thisParam, metadata.entities)
 
         let entity = metadata.entities[thisParam]
-        entity.functions.push(func.id)
+        entity.functionIds.push(func.id)
       }
     }
   }
@@ -230,7 +230,7 @@ export class MetadataParser {
       name: metadataType.$.Name,
       fullName: fullName,
       properties: [],
-      functions: []
+      functionIds: []
     }
     if (metadataType.$.BaseType) {
       entityType.baseTypeName = metadataType.$.BaseType
