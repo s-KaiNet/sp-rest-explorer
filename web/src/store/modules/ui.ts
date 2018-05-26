@@ -10,11 +10,11 @@ export interface Types {
   [SET_DATA_LOADING]: string
 }
 
-export interface IUiState {
+export interface UIState {
   dataLoading: boolean
 }
 
-export interface IUiMutations {
+export interface UIMutations {
   [SET_DATA_LOADING]: {
     loading: boolean
   }
@@ -24,17 +24,17 @@ export const uiTypes: Types = {
   [SET_DATA_LOADING]: `${namespace}/${SET_DATA_LOADING}`
 }
 
-export const uiState: IUiState = {
+export const uiState: UIState = {
   dataLoading: true
 }
 
-const mutations: DefineMutations<IUiMutations, IUiState> = {
-  [SET_DATA_LOADING](uiState: IUiState, { loading }): void {
+const mutations: DefineMutations<UIMutations, UIState> = {
+  [SET_DATA_LOADING](uiState: UIState, { loading }): void {
     uiState.dataLoading = loading
   }
 }
 
-export const uiModule: Module<IUiState, IRootState> = {
+export const uiModule: Module<UIState, IRootState> = {
   state: uiState,
   mutations,
   namespaced: true

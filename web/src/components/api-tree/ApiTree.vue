@@ -1,14 +1,10 @@
 <template>
   <div class="api-tree">
+    <div class="apiLabel">_api/</div>
     <div class="content">
-      <el-tree :data="functions" :expand-on-click-node="false" default-expand-all class="tree">
+      <el-tree :expand-on-click-node="false" :props="treeProps" lazy :load="expandNode" @node-click="nodeCllick" class="tree">
         <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
-          <span>
-            <el-button type="text" size="mini" v-if="data.hasChilds" @click="() => expandNode(data)">
-              Expand
-            </el-button>
-          </span>
         </span>
       </el-tree>
     </div>
@@ -20,49 +16,57 @@ import Vue from 'vue'
 
 import { ApiService } from '../../services/api'
 import { uiTypes } from '../../store/modules/ui'
+import { navigationTypes } from '../../store/modules/navigation'
 import { TreeBuilder } from '../../services/treeBuilder'
-import { ITreeNode } from '../../models/ITreeNode'
+import { TreeNode } from '../../models/TreeNode'
 import { Metadata } from '../../../../parser/src/interfaces'
 
-interface IData {
-  functions: any[]
-  data: any
+interface Data {
+  treeProps: any
 }
 
 let metadata: Metadata
 
 export default Vue.extend({
   name: 'api-tree',
-  data(): IData {
+  data(): Data {
     return {
-      data: null,
-      functions: []
+      treeProps: {
+        label: 'label',
+        children: 'children',
+        isLeaf: 'leaf'
+      }
     }
   },
   methods: {
-    expandNode(node: ITreeNode) {
-      let treeBuilder = new TreeBuilder(metadata)
-      let children = treeBuilder.getChildren(node)
+    expandNode(node: any, resolve: (data: TreeNode[]) => void) {
+      if (node.level === 0) {
+        let api = new ApiService()
+        api
+          .getMetaData()
+          .then(data => {
+            this.$store.commit(uiTypes.SET_DATA_LOADING, {
+              loading: false
+            })
+            metadata = data
 
-      node.children = children
+            let treeBuilder = new TreeBuilder(metadata)
+            resolve(treeBuilder.buildRootTree())
+          })
+          .catch(err => {
+            throw err
+          })
+      }
+      if (node.level > 0) {
+        let treeBuilder = new TreeBuilder(metadata)
+        resolve(treeBuilder.getChildren(node.data))
+      }
+    },
+    nodeCllick(node: TreeNode) {
+      this.$store.commit(navigationTypes.SET_BREADCRUMB, {
+        breadcrumb: node.path
+      })
     }
-  },
-  mounted() {
-    let api = new ApiService()
-    api
-      .getMetaData()
-      .then(data => {
-        this.$store.commit(uiTypes.SET_DATA_LOADING, {
-          loading: false
-        })
-        metadata = data
-
-        let treeBuilder = new TreeBuilder(data)
-        this.functions = treeBuilder.buildRootTree()
-      })
-      .catch(err => {
-        throw err
-      })
   }
 })
 </script>
@@ -73,8 +77,18 @@ export default Vue.extend({
   white-space: nowrap;
   min-width: 100%;
   margin-right: 10px;
+
   .tree {
     background-color: #e5e9f2;
+  }
+
+  .apiLabel {
+    margin: 10px;
+    text-align: left;
+    font-size: 17px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+      Arial, sans-serif;
   }
 }
 </style>

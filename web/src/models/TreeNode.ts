@@ -1,7 +1,8 @@
-export interface ITreeNode {
+export interface TreeNode {
   label: string
   path: string
   fullTypeName: string
-  children: ITreeNode[]
+  children: TreeNode[]
   hasChilds: boolean
+  leaf: boolean
 }

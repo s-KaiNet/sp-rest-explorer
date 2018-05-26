@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex, { Store, StoreOptions } from 'vuex'
-import { IUiState, uiModule, uiState } from './modules/ui'
+import { UIState, uiModule, uiState } from './modules/ui'
+import { NavigationState, navigationModule, navigationState } from './modules/navigation'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -8,18 +9,21 @@ Vue.use(Vuex)
 
 export interface IRootState {
   version: string,
-  ui: IUiState
+  ui: UIState,
+  navigation: NavigationState
 }
 
 const rootState: IRootState = {
   version: '1.0',
-  ui: uiState
+  ui: uiState,
+  navigation: navigationState
 }
 
 const storeOptions: StoreOptions<IRootState> = {
   state: rootState,
   modules: {
-    ui: uiModule
+    ui: uiModule,
+    navigation: navigationModule
   },
   strict: debug
 }

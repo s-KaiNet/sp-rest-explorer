@@ -1,27 +1,30 @@
 import { Metadata, EntityType } from './../../../parser/src/interfaces'
-import { ITreeNode } from '../models/ITreeNode'
+import { TreeNode } from '../models/TreeNode'
 
 export class TreeBuilder {
-  private separator = '->'
+  private separator = '/'
 
   constructor(private metadata: Metadata) {}
 
-  public buildRootTree(): ITreeNode[] {
-    let results: ITreeNode[] = []
+  public buildRootTree(): TreeNode[] {
+    let results: TreeNode[] = []
     for (const funcId in this.metadata.functions) {
       if (this.metadata.functions.hasOwnProperty(funcId)) {
         const func = this.metadata.functions[funcId]
         if (func.isRoot) {
-          let node: ITreeNode = {
+          let node: TreeNode = {
             label: func.name,
             children: [],
             fullTypeName: func.returnType,
-            path: func.returnType,
-            hasChilds: false
+            path: func.name,
+            hasChilds: false,
+            leaf: true
           }
 
           let entity = this.metadata.entities[func.returnType]
           node.hasChilds = this.hasChilds(entity)
+
+          if (node.hasChilds) node.leaf = false
 
           results.push(node)
         }
@@ -31,22 +34,25 @@ export class TreeBuilder {
     return results
   }
 
-  public getChildren(currentNode: ITreeNode): ITreeNode[] {
-    let results: ITreeNode[] = []
+  public getChildren(currentNode: TreeNode): TreeNode[] {
+    let results: TreeNode[] = []
     let entity = this.metadata.entities[currentNode.fullTypeName]
 
     if (entity.navigationProperties) {
       entity.navigationProperties.forEach(prop => {
-        let node: ITreeNode = {
+        let node: TreeNode = {
           label: prop.name,
           children: [],
           fullTypeName: prop.typeName,
           hasChilds: false,
-          path: currentNode.path + this.separator + prop.typeName
+          path: currentNode.path + this.separator + prop.name,
+          leaf: true
         }
 
         let entity = this.metadata.entities[prop.typeName]
         node.hasChilds = this.hasChilds(entity)
+
+        if (node.hasChilds) node.leaf = false
 
         results.push(node)
       })
@@ -56,16 +62,19 @@ export class TreeBuilder {
       entity.functions.forEach(id => {
         let func = this.metadata.functions[id]
         let returnType = func.returnType ? func.returnType : ''
-        let node: ITreeNode = {
+        let node: TreeNode = {
           label: func.name,
           fullTypeName: func.returnType,
           hasChilds: false,
-          path: currentNode.path + this.separator + returnType,
-          children: []
+          path: currentNode.path + this.separator + func.name + '()',
+          children: [],
+          leaf: true
         }
 
         let entity = this.metadata.entities[func.returnType]
         node.hasChilds = this.hasChilds(entity)
+
+        if (node.hasChilds) node.leaf = false
 
         results.push(node)
       })
@@ -75,67 +84,11 @@ export class TreeBuilder {
   }
 
   private hasChilds(entity: EntityType): boolean {
-    return entity && (!!entity.functions || !!entity.navigationProperties)
-  }
-  private populateChildren(
-    currentChildren: ITreeNode[],
-    type: string,
-    parent: ITreeNode
-  ): void {
-    if (!type || type.indexOf('Edm') === 0) {
-      return
-    }
-
-    let entity = this.metadata.entities[type]
-
-    if (entity.navigationProperties) {
-      entity.navigationProperties.forEach(prop => {
-        let node: ITreeNode = {
-          label: prop.name,
-          children: [],
-          fullTypeName: prop.typeName,
-          hasChilds: false,
-          path: parent.path + this.separator + prop.typeName
-        }
-
-        currentChildren.push(node)
-
-        if (!this.hasInfiniteTypeRecursion(parent.path, prop.typeName)) {
-          this.populateChildren(node.children, prop.typeName, node)
-        }
-      })
-    }
-
-    if (entity.functions) {
-      entity.functions.forEach(id => {
-        let func = this.metadata.functions[id]
-        let returnType = func.returnType ? func.returnType : ''
-        let node: ITreeNode = {
-          label: func.name,
-          fullTypeName: func.returnType,
-          hasChilds: false,
-          path: parent.path + this.separator + returnType,
-          children: []
-        }
-
-        currentChildren.push(node)
-
-        if (!this.hasInfiniteTypeRecursion(parent.path, func.returnType)) {
-          this.populateChildren(node.children, func.returnType, node)
-        }
-      })
-    }
-  }
-
-  private hasInfiniteTypeRecursion(
-    parentPath: string,
-    typeToCheck: string
-  ): boolean {
-    if (!typeToCheck) {
-      return false
-    }
-
-    let parents = parentPath.split(this.separator)
-    return parents.indexOf(typeToCheck) !== -1
+    return (
+      entity &&
+      ((entity.functions && entity.functions.length > 0) ||
+        (!!entity.navigationProperties &&
+          entity.navigationProperties.length > 0))
+    )
   }
 }
