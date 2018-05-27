@@ -14,7 +14,7 @@ import { Route } from 'vue-router'
 import { consts } from '../../../services/consts'
 import { navigationTypes } from '../../../store/modules/navigation'
 import { MetadataParser } from '../../../services/metadataParser'
-import { ApiService } from '../../../services/api'
+import { Api } from '../../../services/api'
 import FunctionDocs from './FunctionDocs.vue'
 import EntityDocs from './EntityDocs.vue'
 
@@ -41,25 +41,19 @@ export default Vue.extend({
       let path = route.path
       if (path.indexOf(consts.apiPrefix) !== -1) {
         this.resolved = true
-        ApiService.getMetaData()
-          .then(metadata => {
-            let parser = new MetadataParser(metadata)
-            let object = parser.getObjectByPath(path)
-            if (parser.isFunctionImport(object)) {
-              this.entity = this.func = null
-              this.func = object
-            } else {
-              this.entity = this.func = null
-              this.entity = object
-            }
+        let parser = new MetadataParser(Api.Metadata)
+        let object = parser.getObjectByPath(path)
+        if (parser.isFunctionImport(object)) {
+          this.entity = this.func = null
+          this.func = object
+        } else {
+          this.entity = this.func = null
+          this.entity = object
+        }
 
-            this.$store.commit(navigationTypes.SET_BREADCRUMB, {
-              breadcrumb: parser.buildUriTemplate(path)
-            })
-          })
-          .catch(err => {
-            throw err
-          })
+        this.$store.commit(navigationTypes.SET_BREADCRUMB, {
+          breadcrumb: parser.buildUriTemplate(path)
+        })
       } else {
         this.func = null
         this.entity = null

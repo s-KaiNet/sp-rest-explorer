@@ -1,5 +1,5 @@
 <template>
-  <div class="explorer-container" v-loading="loading">
+  <div class="explorer-container">
     <el-aside width="auto" class="aside">
       <api-tree></api-tree>
     </el-aside>
@@ -19,11 +19,6 @@ export default Vue.extend({
   components: {
     'api-tree': ApiTree,
     breadcrumb: BreadCrumb
-  },
-  computed: {
-    loading(): boolean {
-      return this.$store.state.ui.dataLoading
-    }
   }
 })
 </script>

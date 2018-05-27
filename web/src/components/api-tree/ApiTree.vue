@@ -13,18 +13,14 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { ApiService } from '../../services/api'
+import { Api } from '../../services/api'
 import { consts } from '../../services/consts'
-import { uiTypes } from '../../store/modules/ui'
 import { TreeBuilder } from '../../services/treeBuilder'
 import { TreeNode } from '../../models/TreeNode'
-import { Metadata } from '../../../../parser/src/interfaces'
 
 interface Data {
   treeProps: any
 }
-
-let metadata: Metadata
 
 export default Vue.extend({
   data(): Data {
@@ -39,23 +35,11 @@ export default Vue.extend({
   methods: {
     expandNode(node: any, resolve: (data: TreeNode[]) => void) {
       if (node.level === 0) {
-        ApiService
-          .getMetaData()
-          .then(data => {
-            this.$store.commit(uiTypes.SET_DATA_LOADING, {
-              loading: false
-            })
-            metadata = data
-
-            let treeBuilder = new TreeBuilder(metadata)
-            resolve(treeBuilder.buildRootTree())
-          })
-          .catch(err => {
-            throw err
-          })
+        let treeBuilder = new TreeBuilder(Api.Metadata)
+        resolve(treeBuilder.buildRootTree())
       }
       if (node.level > 0) {
-        let treeBuilder = new TreeBuilder(metadata)
+        let treeBuilder = new TreeBuilder(Api.Metadata)
         resolve(treeBuilder.getChildren(node.data))
       }
     },
