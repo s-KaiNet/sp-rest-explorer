@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import 'es6-promise/auto'
 import axios from 'axios'
+import { AppInsights } from 'applicationinsights-js'
 
 import App from './App.vue'
 import router from './router'
@@ -9,6 +10,13 @@ import store from './store'
 const VueAxios = require('vue-axios')
 
 import './sass/main.scss'
+
+if (process.env.NODE_ENV === 'production') {
+  AppInsights.downloadAndSetup({
+    instrumentationKey: '88b60418-430f-416c-b4c3-dc4392385c3b'
+  })
+  AppInsights.trackPageView()
+}
 
 Vue.use(VueAxios, axios)
 
