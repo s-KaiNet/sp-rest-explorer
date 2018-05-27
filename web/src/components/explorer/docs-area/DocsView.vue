@@ -46,11 +46,11 @@ export default Vue.extend({
             let parser = new MetadataParser(metadata)
             let object = parser.getObjectByPath(path)
             if (parser.isFunctionImport(object)) {
-              this.entity = null
+              this.entity = this.func = null
               this.func = object
             } else {
+              this.entity = this.func = null
               this.entity = object
-              this.func = null
             }
 
             this.$store.commit(navigationTypes.SET_BREADCRUMB, {

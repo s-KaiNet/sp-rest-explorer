@@ -4,6 +4,7 @@ import {
   Metadata
 } from '../../../parser/src/interfaces'
 import { Entity } from '../models/Entity'
+import { ObjectHelper } from './objectHelper'
 
 export class MetadataParser {
   constructor(private metadata: Metadata) {}
@@ -25,7 +26,7 @@ export class MetadataParser {
     if (!this.isFunctionImport(nextObject)) {
       (nextObject as any).functions = this.getFunctions(nextObject.functionIds)
     }
-    return nextObject as any
+    return ObjectHelper.clone(nextObject) as FunctionImport | Entity
   }
 
   public buildUriTemplate(path: string): string {

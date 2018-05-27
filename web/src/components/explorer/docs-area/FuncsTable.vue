@@ -1,7 +1,6 @@
 <template>
   <div v-if="funcs && funcs.length > 0" class="props-table">
-    <h5 class="attributeName">
-      <i class="el-icon-minus"></i> {{title}}</h5>
+    <h5 class="attributeName">{{title}}</h5>
     <table class="objectGroup">
       <thead>
         <tr>
