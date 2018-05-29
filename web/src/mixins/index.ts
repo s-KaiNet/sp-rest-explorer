@@ -1,3 +1,8 @@
+import Vue from 'vue'
+
+import { Metadata } from '../../../parser/src/interfaces'
+import { Api } from '../services/api'
+
 export let docsMixin = {
   methods: {
     getPropertyName(typeName: string): string {
@@ -9,3 +14,11 @@ export let docsMixin = {
     }
   }
 }
+
+export let metadataMixin = Vue.extend({
+  computed: {
+    metadata(): Metadata {
+      return Api.getMetadata((this as any).$store.state.filter.filters)
+    }
+  }
+})

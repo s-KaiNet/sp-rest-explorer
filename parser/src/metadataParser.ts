@@ -12,6 +12,10 @@ export class MetadataParser {
   private entities: Map<string, EntityType>
   private functions: FunctionImport[]
 
+  private aliases: { [key: string]: string } = {
+    'Microsoft_Office_Server_Search_REST_SearchService': 'search'
+  }
+
   constructor(private content: string) {
     this.associations = new Map()
     this.entities = new Map()
@@ -70,6 +74,9 @@ export class MetadataParser {
         entity.properties.forEach(prop => {
           this.ensureCollectionEntityType(prop.typeName, metadata.entities)
         })
+        entity.navigationProperties.forEach(prop => {
+          this.ensureCollectionEntityType(prop.typeName, metadata.entities)
+        })
       }
     }
 
@@ -88,7 +95,8 @@ export class MetadataParser {
         fullName: typeName,
         functionIds: [],
         name: typeName,
-        properties: []
+        properties: [],
+        navigationProperties: []
       }
     }
   }
@@ -150,9 +158,18 @@ export class MetadataParser {
         id: i++
       }
 
+      // exclude "Internal" APIs
+      if (funcImport.name.indexOf('Internal') !== -1 || (funcImport.returnType && funcImport.returnType.indexOf('Internal') !== -1)) {
+        continue
+      }
+
       // TODO - reduces number of root functions - remove later on
       if (funcImport.name.indexOf('_') !== -1) {
-        continue
+        // continue
+      }
+
+      if (this.aliases[funcImport.name]) {
+        funcImport.name = this.aliases[funcImport.name]
       }
 
       if (func.Parameter) {
@@ -230,7 +247,8 @@ export class MetadataParser {
       name: metadataType.$.Name,
       fullName: fullName,
       properties: [],
-      functionIds: []
+      functionIds: [],
+      navigationProperties: []
     }
     if (metadataType.$.BaseType) {
       entityType.baseTypeName = metadataType.$.BaseType

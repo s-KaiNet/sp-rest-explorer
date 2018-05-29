@@ -8,5 +8,5 @@ export interface EntityType {
   baseTypeName?: string
   properties: Property[]
   functionIds: number[]
-  navigationProperties?: NavigationProperty[]
+  navigationProperties: NavigationProperty[]
 }

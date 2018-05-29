@@ -14,9 +14,9 @@ import { Route } from 'vue-router'
 import { consts } from '../../../services/consts'
 import { navigationTypes } from '../../../store/modules/navigation'
 import { MetadataParser } from '../../../services/metadataParser'
-import { Api } from '../../../services/api'
 import FunctionDocs from './FunctionDocs.vue'
 import EntityDocs from './EntityDocs.vue'
+import { metadataMixin } from '../../../mixins'
 
 interface Data {
   entity: any
@@ -29,6 +29,7 @@ export default Vue.extend({
     'entity-view': EntityDocs,
     'function-view': FunctionDocs
   },
+  mixins: [metadataMixin],
   data(): Data {
     return {
       resolved: false,
@@ -41,7 +42,7 @@ export default Vue.extend({
       let path = route.path
       if (path.indexOf(consts.apiPrefix) !== -1) {
         this.resolved = true
-        let parser = new MetadataParser(Api.Metadata)
+        let parser = new MetadataParser(this.metadata)
         let object = parser.getObjectByPath(path)
         if (parser.isFunctionImport(object)) {
           this.entity = this.func = null

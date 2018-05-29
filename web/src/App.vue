@@ -34,8 +34,8 @@ export default Vue.extend({
     'app-header': AppHeader
   },
   mounted() {
-    Api.getMetaData()
-      .then(data => {
+    Api.fetchMetaData()
+      .then((data) => {
         this.$store.commit(uiTypes.SET_DATA_LOADING, {
           loading: false
         })
