@@ -3,10 +3,10 @@
     <div class="filters" @click="dialogVisible = true">
       <a>Filter settings</a>
     </div>
-    <el-dialog title="Modify default endpoint filters" :visible.sync="dialogVisible" :append-to-body="true" :width="'40%'" @open="onDialogOpen">
+    <el-dialog title="Modify default endpoint filters" :visible.sync="dialogVisible" :append-to-body="true" :width="'45%'" @open="onDialogOpen">
       <div>
         <div>
-          <h3 class="top">Below namespaces are hidden from tree. Uncheck appropriate namespace if you want to show it:</h3>
+          <h3 class="top">Below namespaces are hidden from the tree. Uncheck appropriate namespace if you want to show it:</h3>
         </div>
 
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="onSelectAll">Check all</el-checkbox>
@@ -82,10 +82,8 @@ export default Vue.extend({
     onDialogOpen() {
       this.selectedFilters = this.$store.state.filter.filters.slice(0)
 
-      this.isIndeterminate =
-        this.selectedFilters.length !== FilterManager.DefaultFilters.length
-      this.checkAll =
-        this.selectedFilters.length === FilterManager.DefaultFilters.length
+      this.isIndeterminate = this.selectedFilters.length !== FilterManager.DefaultFilters.length
+      this.checkAll = this.selectedFilters.length === FilterManager.DefaultFilters.length
     },
     saveFilters() {
       this.$store.commit(filterTypes.REPLACE_FILTERS, {
@@ -102,7 +100,7 @@ export default Vue.extend({
 .filters-dialog {
   .filters {
     text-align: left;
-    padding: 15px;
+    padding: 10px;
     border-bottom: 1px solid #d2d1d1;
     cursor: pointer;
 

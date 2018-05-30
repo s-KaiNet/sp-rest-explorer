@@ -57046,14 +57046,6 @@
             ],
             "id": 1173
         },
-        "1174": {
-            "isComposable": true,
-            "name": "SP.MicroService.MicroServiceManager",
-            "returnType": "SP.MicroService.MicroServiceManager",
-            "isRoot": true,
-            "parameters": [],
-            "id": 1174
-        },
         "1175": {
             "isBindable": true,
             "name": "AddMicroserviceWorkItem",

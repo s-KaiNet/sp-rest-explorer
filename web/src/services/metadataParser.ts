@@ -32,13 +32,7 @@ export class MetadataParser {
   public buildUriTemplate(path: string): string {
     let objects = path.split('/').splice(2)
     let firstFunc = this.getFirstObject(path)
-    let basePath = ''
-
-    if (firstFunc.parameters && firstFunc.parameters.length > 0) {
-      basePath += `${firstFunc.name}(...)/`
-    } else {
-      basePath += `${firstFunc.name}/`
-    }
+    let basePath = this.getFuncTemplateString(firstFunc)
 
     if (objects.length === 1) {
       return basePath
@@ -50,12 +44,8 @@ export class MetadataParser {
 
     for (const propertyName of objects) {
       nextObject = this.getObject(nextObject, propertyName)
-      if (
-        this.isFunctionImport(nextObject) &&
-        nextObject.parameters &&
-        nextObject.parameters.length > 0
-      ) {
-        basePath += `${propertyName}(...)/`
+      if (this.isFunctionImport(nextObject)) {
+        basePath += this.getFuncTemplateString(nextObject)
       } else {
         basePath += `${propertyName}/`
       }
@@ -78,6 +68,25 @@ export class MetadataParser {
     }
 
     return results
+  }
+
+  private getFuncTemplateString(func: FunctionImport): string {
+    if (this.hasParameters(func)) {
+      return `${func.name}(...)/`
+    }
+    return `${func.name}/`
+  }
+
+  private hasParameters(func: FunctionImport): boolean {
+    if (!func.parameters || func.parameters.length === 0) {
+      return false
+    }
+
+    if (func.parameters.length === 1 && func.parameters[0].name === 'this') {
+      return false
+    }
+
+    return true
   }
 
   private getFirstObject(path: string): FunctionImport {

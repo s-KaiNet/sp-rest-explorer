@@ -1,5 +1,5 @@
 export class FilterManager {
-  public static DefaultFilters: string[] = [
+  public static filters: string[] = [
     'SP.WorkManagement',
     'SP.Directory',
     'SP.CompliancePolicy',
@@ -28,10 +28,36 @@ export class FilterManager {
     'SP.TeamChannelManager',
     'SP.HashtagStoreManager',
     'SP.MountPoint',
-    'SP.ObjectSharingInformation'
+    'SP.ObjectSharingInformation',
+    'SP.ApiMetadata',
+    'SP.DocumentManagement',
+    'SP.MetadataNavigation',
+    'SPO',
+    'Microsoft.BusinessData',
+    'SP.BusinessData',
+    'SP.AppCatalog',
+    'SP.AppInstance',
+    'SP.OAuth',
+    'SP.AppPrincipal',
+    'SP.PageInstrumentation',
+    'SP.AppSite',
+    'SP.AppTile',
+    'SP.CurrencyList',
+    'SP.File',
+    'SP.Request',
+    'SP.RoleDefinition'
   ]
 
+  private static sortedFilters: string[]
+
   private static key = '_filters_'
+
+  public static get DefaultFilters(): string[] {
+    if (!this.sortedFilters) {
+      this.sortedFilters = this.filters.sort()
+    }
+    return this.sortedFilters
+  }
 
   public static load(): string[] {
     let filters = window.localStorage.getItem(this.key)

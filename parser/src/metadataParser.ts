@@ -17,7 +17,8 @@ export class MetadataParser {
     'Microsoft_AppServices_AppCollection': 'Apps',
     'SP_Publishing_SitePageService': 'sitepages',
     'SP_Social_SocialRestFollowingManager': 'social.following',
-    'SP_Social_SocialRestFeedManager': 'social.feed'
+    'SP_Social_SocialRestFeedManager': 'social.feed',
+    'SP_MicroService_MicroServiceManager': 'microservicemanager'
   }
 
   constructor(private content: string) {

@@ -1,7 +1,7 @@
 <template>
   <div class="api-tree">
     <filters-dialog />
-    <el-tooltip class="item" effect="light" content="Filters out the first level of the tree. Minimum 3 letters required." placement="bottom">
+    <el-tooltip class="item" effect="light" content="Filters out the root level of the tree. Minimum 3 letters required." placement="bottom">
       <el-input size="small" class="search" placeholder="Search" prefix-icon="el-icon-search" v-model="search" :clearable="true"> </el-input>
     </el-tooltip>
     <div class="content" v-if="!refreshing">

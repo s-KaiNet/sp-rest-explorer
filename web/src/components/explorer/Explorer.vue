@@ -1,6 +1,6 @@
 <template>
   <div class="explorer-container">
-    <el-aside width="auto" class="aside">
+    <el-aside width="auto" class="aside" v-mydir>
       <api-tree></api-tree>
     </el-aside>
     <div class="content">
@@ -12,6 +12,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import * as interact from 'interactjs'
+
 import ApiTree from '@/components/api-tree/ApiTree.vue'
 import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 
@@ -19,6 +21,35 @@ export default Vue.extend({
   components: {
     'api-tree': ApiTree,
     breadcrumb: BreadCrumb
+  },
+  directives: {
+    mydir: {
+      // directive definition
+      inserted: function(el) {
+        interact(el)
+          .resizable({
+            edges: {
+              right: true
+            }
+          })
+          .on('resizemove', function(event: any) {
+            let target = event.target
+            let x = parseFloat(target.getAttribute('data-x')) || 0
+            let y = parseFloat(target.getAttribute('data-y')) || 0
+
+            // update the element's style
+            target.style.maxWidth = 'none'
+            target.style.width = event.rect.width + 'px'
+            target.style.height = event.rect.height + 'px'
+
+            // translate when resizing from top or left edges
+            x += event.deltaRect.left
+            y += event.deltaRect.top
+            target.setAttribute('data-x', x)
+            target.setAttribute('data-y', y)
+          })
+      }
+    }
   }
 })
 </script>
@@ -36,6 +67,7 @@ export default Vue.extend({
   .aside {
     min-width: 250px;
     max-width: 500px;
+    border-right: 3px solid transparent;
     flex-shrink: 0;
     background-color: #e5e9f2;
     box-shadow: 1px 0px 8px 0 rgba(0, 0, 0, 0.2),
