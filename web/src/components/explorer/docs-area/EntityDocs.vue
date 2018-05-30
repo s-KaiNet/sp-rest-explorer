@@ -21,12 +21,6 @@ export default Vue.extend({
   },
   props: {
     entity: Object
-  },
-  watch: {
-    entity(to, from) {
-      console.log(to)
-      console.log(from)
-    }
   }
 })
 </script>

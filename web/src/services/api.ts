@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { decompressFromUTF16 } from 'lz-string'
-import { Metadata } from '../../../parser/src/interfaces'
+import { Metadata, FunctionImport } from '../../../parser/src/interfaces'
 import { ObjectHelper } from './objectHelper'
 
 let jsonUrl = process.env.JSON_SOURCE_URL
@@ -9,7 +9,7 @@ export class Api {
   private static apiMetadata: Metadata
   private static cachedMetadataResults: { [key: number]: Metadata } = {}
 
-  public static getMetadata(filters: string[]) {
+  public static getMetadata(filters: string[], search = '') {
     if (!this.apiMetadata) {
       throw new Error('Metadata is not loaded yet')
     }
@@ -17,7 +17,7 @@ export class Api {
     if (!filters) {
       throw new Error('filters cannot be empty')
     }
-    let hash = ObjectHelper.hash(filters.join(''))
+    let hash = ObjectHelper.hash(filters.join('') + search)
     if (this.cachedMetadataResults[hash]) {
       return this.cachedMetadataResults[hash]
     }
@@ -28,11 +28,9 @@ export class Api {
     for (const funcId in newMetadata.functions) {
       if (newMetadata.functions.hasOwnProperty(funcId)) {
         const func = newMetadata.functions[funcId]
-        for (const filter of filters) {
-          if (func.name.indexOf(filter) === 0) {
-            funcIdsToRemove.push(func.id)
-            delete newMetadata.functions[func.id]
-          }
+        if (this.shouldRemoveFunction(func, filters, search)) {
+          funcIdsToRemove.push(func.id)
+          delete newMetadata.functions[func.id]
         }
       }
     }
@@ -58,5 +56,22 @@ export class Api {
       this.apiMetadata = apiMetadata
       return apiMetadata
     })
+  }
+
+  private static shouldRemoveFunction(func: FunctionImport, filters: string[], search: string): boolean {
+    if (!func.isRoot) {
+      return false
+    }
+    if (search && !(new RegExp(search, 'i').test(func.name))) {
+      return true
+    }
+
+    for (const filter of filters) {
+      if (func.name.indexOf(filter) === 0) {
+        return true
+      }
+    }
+
+    return false
   }
 }

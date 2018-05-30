@@ -2,6 +2,8 @@ import Vue from 'vue'
 
 import { Metadata } from '../../../parser/src/interfaces'
 import { Api } from '../services/api'
+import { Store } from 'vuex'
+import { IRootState } from '../store'
 
 export let docsMixin = {
   methods: {
@@ -18,7 +20,8 @@ export let docsMixin = {
 export let metadataMixin = Vue.extend({
   computed: {
     metadata(): Metadata {
-      return Api.getMetadata((this as any).$store.state.filter.filters)
+      let store = ((this as any).$store) as Store<IRootState>
+      return Api.getMetadata(store.state.filter.filters, store.state.filter.search)
     }
   }
 })

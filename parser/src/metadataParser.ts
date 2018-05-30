@@ -13,7 +13,11 @@ export class MetadataParser {
   private functions: FunctionImport[]
 
   private aliases: { [key: string]: string } = {
-    'Microsoft_Office_Server_Search_REST_SearchService': 'search'
+    'Microsoft_Office_Server_Search_REST_SearchService': 'search',
+    'Microsoft_AppServices_AppCollection': 'Apps',
+    'SP_Publishing_SitePageService': 'sitepages',
+    'SP_Social_SocialRestFollowingManager': 'social.following',
+    'SP_Social_SocialRestFeedManager': 'social.feed'
   }
 
   constructor(private content: string) {
@@ -168,8 +172,10 @@ export class MetadataParser {
         // continue
       }
 
-      if (this.aliases[funcImport.name]) {
+      if (this.aliases[funcImport.name] && this.functions.filter(f => f.name === this.aliases[funcImport.name]).length === 0) {
         funcImport.name = this.aliases[funcImport.name]
+      } else if (this.aliases[funcImport.name] && this.functions.filter(f => f.name === this.aliases[funcImport.name]).length > 0) {
+        continue
       }
 
       if (func.Parameter) {

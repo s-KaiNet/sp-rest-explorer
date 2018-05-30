@@ -45,9 +45,6 @@ export default Vue.extend({
   .aside,
   .content {
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
     overflow-y: auto;
   }
 }

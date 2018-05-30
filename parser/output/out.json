@@ -39627,14 +39627,6 @@
             "parameters": [],
             "id": 144
         },
-        "145": {
-            "isComposable": true,
-            "name": "Microsoft.AppServices.AppCollection",
-            "returnType": "Microsoft.AppServices.AppCollection",
-            "isRoot": true,
-            "parameters": [],
-            "id": 145
-        },
         "146": {
             "isBindable": true,
             "name": "GetAppsFromStore",
@@ -44134,7 +44126,7 @@
         },
         "437": {
             "isComposable": true,
-            "name": "SP.Social.SocialRestFeedManager",
+            "name": "social.feed",
             "returnType": "SP.Social.SocialRestFeedManager",
             "isRoot": true,
             "parameters": [],
@@ -44240,7 +44232,7 @@
         },
         "444": {
             "isComposable": true,
-            "name": "SP.Social.SocialRestFollowingManager",
+            "name": "social.following",
             "returnType": "SP.Social.SocialRestFollowingManager",
             "isRoot": true,
             "parameters": [],
@@ -50453,7 +50445,7 @@
         },
         "849": {
             "isComposable": true,
-            "name": "SP.Publishing.SitePageService",
+            "name": "sitepages",
             "returnType": "SP.Publishing.SitePageService",
             "isRoot": true,
             "parameters": [],
