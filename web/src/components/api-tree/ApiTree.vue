@@ -7,6 +7,8 @@
     <div class="content" v-if="!refreshing">
       <el-tree :expand-on-click-node="false" :props="treeProps" lazy :load="expandNode" @node-click="nodeCllick" class="tree">
         <span class="custom-tree-node" slot-scope="{ node, data }">
+          <img class="funcIcon" src="../../assets/func-icon.png" v-if="node.level > 1 && data.type === 1">
+          <img class="propIcon" src="../../assets/nav-prop-icon.png" v-if="node.level > 1 && data.type === 0">
           <span>{{ node.label }}</span>
         </span>
       </el-tree>
@@ -84,6 +86,16 @@ $color: #606266;
   white-space: nowrap;
   min-width: 100%;
   text-align: left;
+
+  .propIcon {
+    width: 10px;
+    vertical-align: baseline;
+  }
+
+  .funcIcon {
+    width: 10px;
+    vertical-align: middle;
+  }
 
   .search {
     width: 230px;

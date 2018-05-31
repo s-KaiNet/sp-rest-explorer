@@ -1,5 +1,4 @@
 import { Parser } from 'xml2js'
-import * as fs from 'fs'
 import { promisify } from 'bluebird'
 import { Association } from './interfaces/association'
 import { EntityType } from './interfaces/EntityType'
@@ -207,9 +206,7 @@ export class MetadataParser {
   private extractTypesInfo(schemas: any): void {
     for (const schema of schemas) {
       let namespace = schema.$.Namespace
-      if (namespace === 'SP.Data') {
-        continue
-      }
+
       if (schema.ComplexType) {
         this.extractComplexTypes(namespace, schema.ComplexType)
       }

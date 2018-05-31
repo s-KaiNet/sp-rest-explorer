@@ -10,8 +10,15 @@
       </thead>
       <tbody>
         <tr v-for="func in funcs" :key="func.name">
-          <td>{{func.name}}</td>
-          <td>{{func.returnType ? getPropertyName(func.returnType): '-'}}</td>
+          <td>
+            <doc-link :full-type-name="func.name" :is-function="true" :entity-full-name="entity.fullName" />
+          </td>
+          <td>
+            <template v-if="func.returnType">
+              <doc-link :full-type-name="func.returnType" :is-function="false" />
+            </template>
+            <template v-else>-</template>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -20,17 +27,31 @@
 
 <script lang="ts">
 import Vue from 'vue'
-
-import { docsMixin } from '../../../mixins'
+import DocLink from './DocLink.vue'
 
 export default Vue.extend({
-  mixins: [docsMixin],
+  components: {
+    'doc-link': DocLink
+  },
+  computed: {
+    funcs(): any[] {
+      return this.entity.functions
+    }
+  },
   props: {
-    funcs: Array,
+    entity: {
+      type: Object,
+      required: true
+    },
     title: String
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.props-table{
+  tr:nth-child(2n){
+    background-color: $backColor
+  }
+}
 </style>

@@ -63,8 +63,8 @@ export class FilterManager {
     let filters = window.localStorage.getItem(this.key)
 
     if (!filters) {
-      this.save(this.DefaultFilters)
-      return this.DefaultFilters
+      this.save([])
+      return []
     }
 
     return JSON.parse(filters)
@@ -75,6 +75,6 @@ export class FilterManager {
   }
 
   public static restoreDefaults(): void {
-    window.localStorage.setItem(this.key, JSON.stringify(this.DefaultFilters))
+    window.localStorage.setItem(this.key, JSON.stringify([]))
   }
 }

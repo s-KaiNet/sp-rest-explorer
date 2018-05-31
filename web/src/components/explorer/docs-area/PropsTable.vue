@@ -1,30 +1,34 @@
 <template>
   <div v-if="properties && properties.length > 0" class="props-table">
-      <h5 class="attributeName">{{title}}</h5>
-      <table class="objectGroup">
-        <thead>
-          <tr>
-            <th>Property</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="prop in properties" :key="prop.name">
-            <td>{{prop.name}}</td>
-            <td>{{getPropertyName(prop.typeName)}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <h5 class="attributeName">{{title}}</h5>
+    <table class="objectGroup">
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="prop in properties" :key="prop.name">
+          <td class="name">{{prop.name}}</td>
+          <td>
+            <doc-link :full-type-name="prop.typeName" :is-function="false" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-import { docsMixin } from '../../../mixins'
+import DocLink from './DocLink.vue'
 
 export default Vue.extend({
-  mixins: [docsMixin],
+  components: {
+    'doc-link': DocLink
+  },
   props: {
     properties: Array,
     title: String
@@ -33,5 +37,11 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
+.props-table{
+  .name{
+    &:hover{
 
+    }
+  }
+}
 </style>

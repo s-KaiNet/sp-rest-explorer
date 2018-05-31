@@ -4,8 +4,8 @@
       <api-tree></api-tree>
     </el-aside>
     <div class="content">
-      <breadcrumb />
-      <router-view />
+      <router-view name="breadcrumb" />
+      <router-view name="docs" />
     </div>
   </div>
 </template>
@@ -15,12 +15,10 @@ import Vue from 'vue'
 import * as interact from 'interactjs'
 
 import ApiTree from '@/components/api-tree/ApiTree.vue'
-import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 
 export default Vue.extend({
   components: {
-    'api-tree': ApiTree,
-    breadcrumb: BreadCrumb
+    'api-tree': ApiTree
   },
   directives: {
     mydir: {
@@ -67,7 +65,7 @@ export default Vue.extend({
   .aside {
     min-width: 250px;
     max-width: 500px;
-    border-right: 3px solid transparent;
+    border-right: 4px solid transparent;
     flex-shrink: 0;
     background-color: #e5e9f2;
     box-shadow: 1px 0px 8px 0 rgba(0, 0, 0, 0.2),

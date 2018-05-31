@@ -54,6 +54,26 @@ export class MetadataParser {
     return basePath
   }
 
+  public getFunction(entity: Entity, name: string): FunctionImport {
+    for (const func of entity.functions) {
+      if (func.name === name) {
+        return func
+      }
+    }
+
+    return null
+  }
+
+  public getEntity(fullName: string): Entity {
+    let entity: Entity = {
+      ...this.metadata.entities[fullName],
+      functions: []
+    }
+
+    entity.functions = this.getFunctions(this.metadata.entities[fullName].functionIds)
+    return entity
+  }
+
   public isFunctionImport(T: FunctionImport | EntityType): T is FunctionImport {
     return (T as FunctionImport).id != null
   }

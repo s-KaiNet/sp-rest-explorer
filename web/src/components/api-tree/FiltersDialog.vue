@@ -6,7 +6,7 @@
     <el-dialog title="Modify default endpoint filters" :visible.sync="dialogVisible" :append-to-body="true" :width="'45%'" @open="onDialogOpen">
       <div>
         <div>
-          <h3 class="top">Below namespaces are hidden from the tree. Uncheck appropriate namespace if you want to show it:</h3>
+          <h3 class="top">Below namespaces are hidden from the tree. Check appropriate namespace if you want to show it:</h3>
         </div>
 
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="onSelectAll">Check all</el-checkbox>
@@ -82,7 +82,7 @@ export default Vue.extend({
     onDialogOpen() {
       this.selectedFilters = this.$store.state.filter.filters.slice(0)
 
-      this.isIndeterminate = this.selectedFilters.length !== FilterManager.DefaultFilters.length
+      this.isIndeterminate = this.selectedFilters.length !== FilterManager.DefaultFilters.length && this.selectedFilters.length !== 0
       this.checkAll = this.selectedFilters.length === FilterManager.DefaultFilters.length
     },
     saveFilters() {
