@@ -33,3 +33,23 @@ export let metadataMixin = Vue.extend({
     }
   }
 })
+
+export let toggleTableMixin = Vue.extend({
+  data() {
+    return {
+      activeClass: null,
+      collapsedClass: 'el-icon-minus'
+    }
+  },
+  methods: {
+    toggleVisibility(): void {
+      if (!this.activeClass) {
+        this.activeClass = 'hide'
+        this.collapsedClass = 'el-icon-plus'
+      } else {
+        this.activeClass = null
+        this.collapsedClass = 'el-icon-minus'
+      }
+    }
+  }
+})

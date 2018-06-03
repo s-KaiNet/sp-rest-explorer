@@ -2,19 +2,36 @@
   <el-header class="app-header" height="90">
     <top-line></top-line>
     <div class="links">
-      <router-link class="link" to="/">Explore</router-link>
+      <router-link class="link" to="/" :class="linkActive" :exact="true">Explore</router-link>
       <router-link class="link" to="/how-it-works" :exact="true">How it works</router-link>
+      <router-link class="link" to="/important" :exact="true">Important</router-link>
     </div>
   </el-header>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import { Route } from 'vue-router'
 import TopHeaderLine from './TopHeaderLine.vue'
+import { consts } from '../../services/consts'
 
 export default Vue.extend({
   components: {
     'top-line': TopHeaderLine
+  },
+  data() {
+    return {
+      linkActive: null
+    }
+  },
+  watch: {
+    $route(to: Route): void {
+      if (to.path.indexOf(consts.apiPrefix) !== -1) {
+        this.linkActive = 'router-link-active'
+      } else {
+        this.linkActive = null
+      }
+    }
   }
 })
 </script>

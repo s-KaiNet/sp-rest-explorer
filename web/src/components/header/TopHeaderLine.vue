@@ -7,7 +7,7 @@
       </div>
     </div>
     <div>
-      <a class="link" href="#" target="_blank"> <img class="github" src="./../../assets/github_logo.png"> GitHub </a>
+      <a class="link" href="#" target="_blank">Like it? Star it!<img class="github" src="./../../assets/github_logo.png"> GitHub </a>
     </div>
   </div>
 </template>

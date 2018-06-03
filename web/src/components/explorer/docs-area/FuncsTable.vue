@@ -1,7 +1,7 @@
 <template>
   <div v-if="funcs && funcs.length > 0" class="props-table">
-    <h5 class="attributeName">{{title}}</h5>
-    <table class="objectGroup">
+    <h5 class="attributeName" @click="toggleVisibility"> <i :class="collapsedClass"></i> {{title}}</h5>
+    <table class="objectGroup" :class="activeClass">
       <thead>
         <tr>
           <th>Name</th>
@@ -28,11 +28,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import DocLink from './DocLink.vue'
+import { toggleTableMixin } from '../../../mixins'
 
 export default Vue.extend({
   components: {
     'doc-link': DocLink
   },
+  mixins: [toggleTableMixin],
   computed: {
     funcs(): any[] {
       return this.entity.functions

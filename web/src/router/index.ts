@@ -3,6 +3,7 @@ import Router from 'vue-router'
 
 import Explorer from '@/components/explorer/Explorer.vue'
 import HowItWorks from '@/components/pages/HowItWorks.vue'
+import Important from '@/components/pages/Important.vue'
 import DocsView from '@/components/explorer/docs-area/DocsView.vue'
 import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 import FunctionDocs from '@/components/explorer/docs-area/FunctionDocs.vue'
@@ -77,6 +78,10 @@ export default new Router({
     {
       path: '/how-it-works',
       component: HowItWorks
+    },
+    {
+      path: '/important',
+      component: Important
     }
   ]
 })
