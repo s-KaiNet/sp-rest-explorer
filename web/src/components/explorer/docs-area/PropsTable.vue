@@ -12,7 +12,7 @@
         <tr v-for="prop in properties" :key="prop.name">
           <td class="name">{{prop.name}}</td>
           <td>
-            <doc-link :full-type-name="prop.typeName" :is-function="false" />
+            <doc-link :full-type-name="prop.typeName" :doc-link-type="1" />
           </td>
         </tr>
       </tbody>
@@ -37,11 +37,5 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.props-table{
-  .name{
-    &:hover{
 
-    }
-  }
-}
 </style>

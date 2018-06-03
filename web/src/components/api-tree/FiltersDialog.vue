@@ -1,7 +1,7 @@
 <template>
   <div class="filters-dialog">
     <div class="filters" @click="dialogVisible = true">
-      <a>Filter settings</a>
+      <i class="el-icon-setting"></i> <a>Filter settings</a>
     </div>
     <el-dialog title="Modify default endpoint filters" :visible.sync="dialogVisible" :append-to-body="true" :width="'45%'" @open="onDialogOpen">
       <div>

@@ -45,7 +45,8 @@ export class FilterManager {
     'SP.CurrencyList',
     'SP.File',
     'SP.Request',
-    'SP.RoleDefinition'
+    'SP.RoleDefinition',
+    'SP.TenantSettings'
   ]
 
   private static sortedFilters: string[]

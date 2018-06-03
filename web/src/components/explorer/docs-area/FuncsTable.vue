@@ -11,11 +11,11 @@
       <tbody>
         <tr v-for="func in funcs" :key="func.name">
           <td>
-            <doc-link :full-type-name="func.name" :is-function="true" :entity-full-name="entity.fullName" />
+            <doc-link :full-type-name="func.name" :doc-link-type="0" :entity-full-name="entity.fullName" />
           </td>
           <td>
             <template v-if="func.returnType">
-              <doc-link :full-type-name="func.returnType" :is-function="false" />
+              <doc-link :full-type-name="func.returnType" :doc-link-type="1" />
             </template>
             <template v-else>-</template>
           </td>
@@ -49,9 +49,4 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.props-table{
-  tr:nth-child(2n){
-    background-color: $backColor
-  }
-}
 </style>

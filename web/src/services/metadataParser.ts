@@ -1,7 +1,8 @@
 import {
   FunctionImport,
   EntityType,
-  Metadata
+  Metadata,
+  Property
 } from '../../../parser/src/interfaces'
 import { Entity } from '../models/Entity'
 import { ObjectHelper } from './objectHelper'
@@ -10,7 +11,7 @@ export class MetadataParser {
   constructor(private metadata: Metadata) {}
 
   public getObjectByPath(path: string): FunctionImport | Entity {
-    let objects = path.split('/').splice(2)
+    let objects = path.split('/')
     let firstFunc = this.getFirstObject(path)
 
     if (objects.length === 1) {
@@ -30,7 +31,7 @@ export class MetadataParser {
   }
 
   public buildUriTemplate(path: string): string {
-    let objects = path.split('/').splice(2)
+    let objects = path.split('/')
     let firstFunc = this.getFirstObject(path)
     let basePath = this.getFuncTemplateString(firstFunc)
 
@@ -74,6 +75,16 @@ export class MetadataParser {
     return entity
   }
 
+  public getProperty(entity: Entity, prop: string): Property {
+    for (const property of entity.properties) {
+      if (property.name === prop) {
+        return property
+      }
+    }
+
+    return null
+  }
+
   public isFunctionImport(T: FunctionImport | EntityType): T is FunctionImport {
     return (T as FunctionImport).id != null
   }
@@ -110,7 +121,7 @@ export class MetadataParser {
   }
 
   private getFirstObject(path: string): FunctionImport {
-    let objects = path.split('/').splice(2)
+    let objects = path.split('/')
     let firstFuncName = objects[0]
     let firstFunc: FunctionImport = null
 

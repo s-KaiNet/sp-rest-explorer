@@ -1,8 +1,8 @@
 <template>
   <span class="doc-link">
     <template v-if="isRouterLink">
-      <router-link class="link" v-if="!isFunction" :to="'/entity/' + fullTypeName">{{fullTypeName}}</router-link>
-      <router-link class="link" v-if="isFunction" :to="'/entity/' + entityFullName + '/' + fullTypeName">{{fullTypeName}}</router-link>
+      <router-link v-if="docLinkType === 1" class="link" :to="'/entity/' + fullTypeName">{{fullTypeName}}</router-link>
+      <router-link v-else-if="docLinkType === 0" class="link" :to="'/entity/' + entityFullName + '/func/' + fullTypeName">{{fullTypeName}}</router-link>
     </template>
     <template v-else>
       {{getPropertyName(fullTypeName)}}
@@ -28,7 +28,7 @@ export default Vue.extend({
   props: {
     fullTypeName: String,
     entityFullName: String,
-    isFunction: Boolean
+    docLinkType: Number
   }
 })
 </script>
@@ -38,7 +38,7 @@ export default Vue.extend({
   .link {
     color: inherit;
     text-decoration: none;
-    border-bottom: 2px dashed #0e69ff;
+    border-bottom: 2px dashed #0e69ff91;
   }
 }
 </style>

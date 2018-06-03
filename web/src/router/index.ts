@@ -23,14 +23,16 @@ export default new Router({
           }
         },
         {
-          path: '_api/*',
+          path: '_api/:apiPath*',
           components: {
             docs: DocsView,
             breadcrumb: BreadCrumb
           },
+          props: { docs: true, breadcrumb: true },
           children: [
             {
               path: '',
+              props: { 'entity-docs': true, 'function-docs': true },
               components: {
                 'entity-docs': EntityDocs,
                 'function-docs': FunctionDocs
@@ -39,16 +41,18 @@ export default new Router({
           ]
         },
         {
-          path: 'entity/:typeName/:funcName',
+          path: 'entity/:typeName/func/:funcName',
           components: {
             docs: DocsView
           },
+          props: { docs: true },
           children: [
             {
               path: '',
               components: {
                 'function-docs': FunctionDocs
-              }
+              },
+              props: { 'function-docs': true }
             }
           ]
         },
@@ -57,12 +61,14 @@ export default new Router({
           components: {
             docs: DocsView
           },
+          props: { docs: true },
           children: [
             {
               path: '',
               components: {
                 'entity-docs': EntityDocs
-              }
+              },
+              props: { 'entity-docs': true }
             }
           ]
         }

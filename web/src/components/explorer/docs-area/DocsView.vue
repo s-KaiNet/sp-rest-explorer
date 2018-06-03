@@ -9,31 +9,31 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Route } from 'vue-router'
 
-import { consts } from '../../../services/consts'
 import { navigationTypes } from '../../../store/modules/navigation'
 import { MetadataParser } from '../../../services/metadataParser'
 import { Api } from '../../../services/api'
 
 export default Vue.extend({
+  props: {
+    apiPath: String
+  },
   methods: {
-    bindDocs(route: Route): void {
-      let path = route.path
-      if (path.indexOf(consts.apiPrefix) !== -1) {
+    bindDocs(): void {
+      if (this.apiPath) {
         let parser = new MetadataParser(Api.getMetadata([]))
         this.$store.commit(navigationTypes.SET_BREADCRUMB, {
-          breadcrumb: parser.buildUriTemplate(path)
+          breadcrumb: parser.buildUriTemplate(this.apiPath)
         })
       }
     }
   },
   mounted() {
-    this.bindDocs(this.$route)
+    this.bindDocs()
   },
   watch: {
-    $route(to: Route) {
-      this.bindDocs(to)
+    apiPath(): void {
+      this.bindDocs()
     }
   }
 })

@@ -19,12 +19,16 @@
       font-weight: 600;
       text-align: left;
       line-height: 1.6;
+      min-width: 300px;
     }
     td {
       padding: 10px;
       text-align: left;
       vertical-align: top;
       line-height: 1.6;
+    }
+    tr:nth-child(2n){
+      background-color: #f7faff;
     }
   }
 }
