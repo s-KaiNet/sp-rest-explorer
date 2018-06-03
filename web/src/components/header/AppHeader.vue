@@ -4,7 +4,6 @@
     <div class="links">
       <router-link class="link" to="/" :class="linkActive" :exact="true">Explore</router-link>
       <router-link class="link" to="/how-it-works" :exact="true">How it works</router-link>
-      <router-link class="link" to="/important" :exact="true">Important</router-link>
     </div>
   </el-header>
 </template>
