@@ -8,8 +8,8 @@
         <span>
           <i class="el-icon-info"></i>
         </span>
-        This API has official documentation here:
-        <a href="" target="_blank">some link goes here</a>
+        This API has an official documentation here:
+        <a :href="info.url" target="_blank">{{info.name}}</a>
       </div>
     </div>
   </div>
@@ -17,13 +17,19 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { DocLinks } from '../../services/docLinks'
+import { DocLink } from '../../models/DocLink'
+
 export default Vue.extend({
   computed: {
     path(): string {
       return this.$store.state.navigation.breadcrumb
     },
     hasInfo(): boolean {
-      return true
+      return DocLinks.hasLink(this.path)
+    },
+    info(): DocLink {
+      return DocLinks.getLink(this.path)
     }
   }
 })
@@ -32,7 +38,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .breadcrumb-menu {
   .breadcrumb {
-    background-color: #b6dafd5c;
+    background-color: #cce5ff;
     padding: 15px;
     margin: 15px;
     border-radius: 4px;
@@ -46,7 +52,7 @@ export default Vue.extend({
   }
 
   .info {
-    padding: 15px;
+    padding: 10px;
     margin: 15px 15px 0 15px;
     border-radius: 4px;
     font-size: 19px;

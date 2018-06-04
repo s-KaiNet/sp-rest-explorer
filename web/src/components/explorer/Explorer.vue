@@ -63,7 +63,7 @@ export default Vue.extend({
     width: 100%;
   }
   .aside {
-    min-width: 250px;
+    min-width: 280px;
     max-width: 500px;
     border-right: 4px solid transparent;
     flex-shrink: 0;

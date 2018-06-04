@@ -38,7 +38,7 @@ export default Vue.extend({
   .link {
     color: inherit;
     text-decoration: none;
-    border-bottom: 2px dashed #0e69ff91;
+    border-bottom: 2px dashed #5293fd;
   }
 }
 </style>
