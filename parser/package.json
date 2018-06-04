@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "parse": "ts-node src/index.ts",
-    "build": "tsc -p .",
-    "serve": "node static-server.js"
+    "cli": "ts-node src/cli.ts",
+    "build": "tsc",
+    "dev": "tsc -w",
+    "serve": "node static-server.js",
+    "af:host": "npm run build && func host start",
+    "af:run": "npm run build && func run GenerateMetadata"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +23,7 @@
     "typescript": "^2.7.2"
   },
   "dependencies": {
+    "azure-storage": "^2.9.0-preview",
     "bluebird": "^3.5.1",
     "lz-string": "^1.4.4",
     "node-sp-auth-config": "^2.4.5",

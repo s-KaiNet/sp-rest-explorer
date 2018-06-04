@@ -1,0 +1,32 @@
+{
+  "disabled": false,
+  "bindings": [
+    {
+      "name": "myTimer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "*/30 * * * * *"
+    },
+    {
+      "name": "latestJson",
+      "type": "blob",
+      "path": "api-files/metadata.latest.json",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    },
+    {
+      "name": "latestZippedJson",
+      "type": "blob",
+      "path": "api-files/metadata.latest.zip.json",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    },
+    {
+      "name": "latestXml",
+      "type": "blob",
+      "path": "api-files/metadata.latest.xml",
+      "connection": "AzureWebJobsStorage",
+      "direction": "out"
+    }
+  ]
+}

@@ -1,4 +1,13 @@
 {
     "tslint.autoFixOnSave": true,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "files.exclude": {
+        "**/*.js": {
+            "when": "$(basename).ts"
+        },
+        "**/*.map": {
+            "when": "$(basename).map"
+        }
+    },
+    "files.autoSave": "onFocusChange"
 }

@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { compress, compressToUTF16 } from 'lz-string'
 
-import { MetadataReader } from './metaDataReader'
+import { MetadataReader } from './metadataReader'
 import { MetadataParser } from './metadataParser'
 import { Utils } from './utils'
 

@@ -1,5 +1,4 @@
-import { EntityType } from './EntityType'
-import { FunctionImport } from './functionImport'
+import { EntityType, FunctionImport } from './'
 
 export interface Metadata {
   entities: { [key: string]: EntityType }

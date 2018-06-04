@@ -12,4 +12,9 @@ export class Utils {
     // Return array of year and week number
     return weekNo
   }
+
+  public static getEnvironmentSetting(name: string): string {
+    return process.env[name] as string
+  }
+
 }

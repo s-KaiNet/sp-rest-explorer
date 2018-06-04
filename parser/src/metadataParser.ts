@@ -1,7 +1,7 @@
 import { Parser } from 'xml2js'
 import { promisify } from 'bluebird'
 import { Association } from './interfaces/association'
-import { EntityType } from './interfaces/EntityType'
+import { EntityType } from './interfaces/entityType'
 import { Metadata } from './interfaces/metadata'
 import { FunctionImport } from './interfaces/functionImport'
 

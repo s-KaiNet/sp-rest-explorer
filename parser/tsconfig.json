@@ -5,12 +5,10 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./lib",
-    "rootDir": "src",
     "skipLibCheck": true,
-    "declaration": true
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts"
+    "GenerateMetadata"
   ]
 }

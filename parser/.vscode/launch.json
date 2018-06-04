@@ -1,19 +1,17 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "ts-node",
-			"runtimeArgs": [
-				"-r",
-				"ts-node/register"
-			],
-			"args": [
-				"${workspaceFolder}/src/index.ts"
-			],
-			"cwd": "${workspaceFolder}",
-			"sourceMaps": true
-		}
-	]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ts-node",
+      "type": "node",
+      "request": "launch",
+      "port": 0
+    },
+    {
+      "name": "Attach to Azure Functions",
+      "type": "node",
+      "request": "attach",
+      "port": 5858
+    }
+  ]
 }
