@@ -11,9 +11,9 @@
     </div>
 
     <h2>Important</h2>
-    <code>$metadata</code> is just a description of a web service. In case of SharePoint it doesn't give you examples on how to construct REST queries. It doesn't provide you an information about HTTP method you should use. However you can discover REST API urls structure, methods, types and parameters. For examples or detailed information please refer to the official docs here -
+    <code>$metadata</code> is just a description of a web service. In case of SharePoint it doesn't give you examples on how to construct REST queries. It doesn't provide you with information about HTTP method you should use. However you can discover REST API urls structure, methods, types and parameters. For examples or detailed information please refer to the official docs here -
     <a href="https://docs.microsoft.com/en-us/sharepoint/dev/sp-add-ins/get-to-know-the-sharepoint-rest-service#sharepoint-rest-service-topics" target="_blank">SharePoint REST service topics</a>.
-    <code>SharePoint REST API Metadata Explorer</code> has a built-in mechanism to show you links to the official docs, where it is possible.
+    <code>SharePoint REST API Metadata Explorer</code> has a built-in mechanism to show you links to the official docs, whenever it's possible.
     <div>
       <code>SharePoint REST API Metadata Explorer</code> uses <code>$metadata</code> from SharePoint Online tenant with Targeted release (formerly known as First release). That's why you always see the latest available snapshot of SharePoint REST API. Some API might be in preview and not available in your tenant. </div>
     <h2>Architecture</h2>
