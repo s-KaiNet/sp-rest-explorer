@@ -6,7 +6,7 @@ import { MetadataParser } from './metadataParser'
 import { Utils } from './utils'
 
 export async function parse(): Promise<any> {
-  let metaDataReader = new MetadataReader('./config/_private.creds.json')
+  let metaDataReader = new MetadataReader()
   let result = await metaDataReader.readSharePointMetaData()
 
   let now = new Date()

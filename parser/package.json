@@ -8,14 +8,19 @@
     "build": "tsc",
     "dev": "tsc -w",
     "serve": "node static-server.js",
-    "af:host": "npm run build && func host start",
-    "af:run": "npm run build && func run GenerateMetadata"
+    "af": "npm run build && func run GenerateMetadata",
+    "package": "npm run build && funcpack pack --copyToOutput ./ && copyfiles host.json .funcpack && npm run zip",
+    "zip": "cross-zip .funcpack funcpack.zip",
+    "deploy": "npm run package && npm run deploy-helper",
+    "deploy-helper": "az functionapp deployment source config-zip -g sp-rest-api-explorer -n sp-rest-explorer --src funcpack.zip"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/lz-string": "^1.3.32",
     "@types/xml2js": "^0.4.2",
+    "copyfiles": "^2.0.0",
+    "cross-zip-cli": "^1.0.0",
     "node-static": "^0.7.10",
     "ts-node": "^5.0.1",
     "tslint": "^5.9.1",
@@ -26,7 +31,6 @@
     "azure-storage": "^2.9.0-preview",
     "bluebird": "^3.5.1",
     "lz-string": "^1.4.4",
-    "node-sp-auth-config": "^2.4.5",
     "sp-request": "^2.1.3",
     "xml2js": "^0.4.19"
   }

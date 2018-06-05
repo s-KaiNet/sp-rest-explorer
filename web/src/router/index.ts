@@ -11,6 +11,7 @@ import EntityDocs from '@/components/explorer/docs-area/EntityDocs.vue'
 Vue.use(Router)
 
 export default new Router({
+  base: process.env.BASE_URL,
   routes: [
     {
       path: '/',

@@ -8,7 +8,7 @@ import { Utils } from './../src/utils'
 
 const container = 'api-files'
 
-export function run(context: any, timer: any): void {
+export = function run(context: any, timer: any): void {
   execute(context)
       .catch((err: any) => {
         context.log.error(err)
@@ -20,7 +20,7 @@ export function run(context: any, timer: any): void {
 async function execute(context: any): Promise<any> {
   context.log.info('Generating metadata files')
 
-  let metaDataReader = new MetadataReader('./GenerateMetadata/_private.creds.json')
+  let metaDataReader = new MetadataReader()
   let result = await metaDataReader.readSharePointMetaData()
 
   let now = new Date()

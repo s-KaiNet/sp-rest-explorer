@@ -1,19 +1,13 @@
-import { AuthConfig } from 'node-sp-auth-config'
 import * as sprequest from 'sp-request'
+import { Utils } from './utils'
 
 export class MetadataReader {
-  constructor(private configPath: string) { }
-
   public async readSharePointMetaData(): Promise<string> {
-    const authConfig = new AuthConfig({
-      configPath: this.configPath,
-      encryptPassword: true,
-      saveConfigOnDisk: true
+    let spr = sprequest.create({
+      username: Utils.getEnvironmentSetting('SP_User'),
+      password: Utils.getEnvironmentSetting('SP_Password')
     })
-
-    let ctx = await authConfig.getContext()
-    let spr = sprequest.create(ctx.authOptions)
-    let result = await spr.get(`${ctx.siteUrl}/_api/$metadata`)
+    let result = await spr.get(`${Utils.getEnvironmentSetting('SP_Url')}/_api/$metadata`)
 
     return result.body
   }

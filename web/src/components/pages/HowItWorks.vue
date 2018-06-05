@@ -51,7 +51,7 @@ export default Vue.extend({})
   font-size: 18px;
   font-family: $textFontFamily;
   color: #2f2f2f;
-  line-height: 24px;
+  line-height: 26px;
 
   div {
     margin: 6px 0;

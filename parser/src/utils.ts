@@ -14,7 +14,12 @@ export class Utils {
   }
 
   public static getEnvironmentSetting(name: string): string {
-    return process.env[name] as string
+    if (process.env[name]) {
+      return process.env[name]
+    }
+
+    // try to get from custom connection strings
+    return process.env[`CUSTOMCONNSTR_${name}`] as string
   }
 
 }
