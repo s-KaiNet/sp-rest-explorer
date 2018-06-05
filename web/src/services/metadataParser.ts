@@ -3,7 +3,7 @@ import {
   EntityType,
   Metadata,
   Property
-} from '../../../parser/src/interfaces'
+} from '../../../azure-funcs/src/interfaces'
 import { Entity } from '../models/Entity'
 import { ObjectHelper } from './objectHelper'
 

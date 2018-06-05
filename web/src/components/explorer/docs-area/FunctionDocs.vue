@@ -19,7 +19,7 @@ import PropsTable from './PropsTable.vue'
 import DocLink from './DocLink.vue'
 import { MetadataParser } from '../../../services/metadataParser'
 import { Api } from '../../../services/api'
-import { FunctionImport } from '../../../../../parser/src/interfaces'
+import { FunctionImport } from '../../../../../azure-funcs/src/interfaces'
 
 export default Vue.extend({
   components: {
