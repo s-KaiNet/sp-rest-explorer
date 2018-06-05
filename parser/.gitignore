@@ -1,5 +1,5 @@
 node_modules/
-*/**/_private*.*
 output/
 *.js
 *.js.map
+local.settings.json
