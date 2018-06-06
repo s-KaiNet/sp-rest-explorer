@@ -36,7 +36,7 @@
     <h2>Feedback</h2>
     <div>
       For any feedback, please use GitHub
-      <a href="">issues</a>, or write to me directly via social networks or email.
+      <a href="https://github.com/s-KaiNet/sp-rest-explorer/issues">issues</a>, or write to me directly via social networks or email.
     </div>
   </div>
 </template>
