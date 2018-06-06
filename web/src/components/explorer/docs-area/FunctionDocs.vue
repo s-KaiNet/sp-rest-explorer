@@ -72,7 +72,7 @@ export default Vue.extend({
       }
 
       if (this.func.parameters[0].name === 'this') {
-        return this.func.parameters.splice(1)
+        return this.func.parameters.slice(1)
       }
 
       return this.func.parameters
