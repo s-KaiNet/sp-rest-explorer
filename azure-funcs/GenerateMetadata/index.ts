@@ -12,8 +12,7 @@ export = function run(context: any, timer: any): void {
   execute(context)
       .catch((err: any) => {
         context.log.error(err)
-        context.done()
-        throw err
+        context.done(err)
       })
 }
 
