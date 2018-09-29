@@ -9,6 +9,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "GenerateMetadata"
+    "GenerateMetadata",
+    "GenerateDiff"
   ]
 }

@@ -1,0 +1,37 @@
+{
+  "name": "parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w",
+    "af": "npm run build && func start --debug VSCode",
+    "package": "npm run build && funcpack pack --copyToOutput ./ && copyfiles host.json extensions.csproj .funcpack && npm run zip",
+    "zip": "cross-zip .funcpack funcpack.zip",
+    "deploy": "npm run package && npm run deploy-az",
+    "restore-extensions": "dotnet build -o bin",
+    "deploy-az": "az functionapp deployment source config-zip -g sp-rest-api-explorer -n sharepoint-rest-explorer --src funcpack.zip"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/lz-string": "^1.3.32",
+    "@types/xml2js": "^0.4.3",
+    "azure-functions-pack": "^1.0.0",
+    "copyfiles": "^2.1.0",
+    "cross-zip-cli": "^1.0.0",
+    "node-static": "^0.7.11",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.1.1"
+  },
+  "dependencies": {
+    "azure-storage": "^2.10.1",
+    "bluebird": "^3.5.2",
+    "lz-string": "^1.4.4",
+    "sp-request": "^2.1.3",
+    "xml2js": "^0.4.19"
+  }
+}

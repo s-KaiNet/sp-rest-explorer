@@ -1,7 +1,0 @@
-node_modules/
-output/
-*.js
-*.js.map
-local.settings.json
-.funcpack
-funcpack.zip

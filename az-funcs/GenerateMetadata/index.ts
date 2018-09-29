@@ -1,4 +1,4 @@
-import { compress, compressToUTF16 } from 'lz-string'
+import { compressToUTF16 } from 'lz-string'
 import { createBlobService, BlobService } from 'azure-storage'
 import { promisify } from 'bluebird'
 
