@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import { Metadata } from '../../../azure-funcs/src/interfaces'
+import { Metadata } from '../../../az-funcs/src/interfaces'
 import { Api } from '../services/api'
 import { Store } from 'vuex'
 import { IRootState } from '../store'

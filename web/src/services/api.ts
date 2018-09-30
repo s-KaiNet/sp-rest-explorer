@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { decompressFromUTF16 } from 'lz-string'
-import { Metadata, FunctionImport } from '../../../azure-funcs/src/interfaces'
+import { Metadata, FunctionImport } from '../../../az-funcs/src/interfaces'
 import { ObjectHelper } from './objectHelper'
 
 let jsonUrl = process.env.JSON_SOURCE_URL

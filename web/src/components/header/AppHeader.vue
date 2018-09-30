@@ -3,6 +3,7 @@
     <top-line></top-line>
     <div class="links">
       <router-link class="link" to="/" :class="linkActive" :exact="true">Explore</router-link>
+      <router-link class="link" to="/api-diff" :exact="true">API Changelog</router-link>
       <router-link class="link" to="/how-it-works" :exact="true">How it works</router-link>
     </div>
   </el-header>

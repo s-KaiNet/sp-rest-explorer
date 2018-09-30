@@ -22,4 +22,16 @@ export class Utils {
     return process.env[`CUSTOMCONNSTR_${name}`] as string
   }
 
+  public static generateWeekBlobName(date?: Date): string {
+    date = date || new Date()
+
+    return `${date.getFullYear()}y_w${Utils.getWeekNumber(date)}_metadata`
+  }
+
+  public static generateMonthBlobName(date?: Date): string {
+    date = date || new Date()
+
+    return `${date.getFullYear()}y_m${date.getMonth()}_metadata`
+  }
+
 }

@@ -7,6 +7,7 @@ import DocsView from '@/components/explorer/docs-area/DocsView.vue'
 import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 import FunctionDocs from '@/components/explorer/docs-area/FunctionDocs.vue'
 import EntityDocs from '@/components/explorer/docs-area/EntityDocs.vue'
+import DiffApi from '@/components/diff-api/DiffApi.vue'
 
 Vue.use(Router)
 
@@ -78,6 +79,10 @@ export default new Router({
     {
       path: '/how-it-works',
       component: HowItWorks
+    },
+    {
+      path: '/api-diff',
+      component: DiffApi
     }
   ]
 })

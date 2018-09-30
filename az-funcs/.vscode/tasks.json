@@ -20,6 +20,11 @@
             "type": "npm",
             "script": "serve",
             "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "dev",
+            "problemMatcher": []
         }
     ]
 }

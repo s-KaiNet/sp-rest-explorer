@@ -1,4 +1,4 @@
-import { EntityType, FunctionImport } from './../../../azure-funcs/src/interfaces'
+import { EntityType, FunctionImport } from './../../../az-funcs/src/interfaces'
 
 export interface Entity extends EntityType {
   functions: FunctionImport[]

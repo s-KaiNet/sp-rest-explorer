@@ -1,4 +1,4 @@
-import { Metadata, EntityType } from './../../../azure-funcs/src/interfaces'
+import { Metadata, EntityType } from './../../../az-funcs/src/interfaces'
 import { TreeNode, TreeNodeType } from '../models/TreeNode'
 
 export class TreeBuilder {
