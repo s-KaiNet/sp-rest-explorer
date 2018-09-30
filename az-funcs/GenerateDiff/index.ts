@@ -41,7 +41,8 @@ async function execute(context: any): Promise<any> {
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `${Utils.generateMonthBlobName()}_diff.json`, JSON.stringify(diffJson, null, 4))
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `metadata.latest.diff.json`, JSON.stringify(diffJson, null, 4))
 
-  let result = TemplateGenerator.GenerateTemplate(diffJson, path.join(context.executionContext.functionDirectory, 'generator.hbs'))
+  let templateGenerator = new TemplateGenerator()
+  let result = templateGenerator.GenerateTemplate(diffJson, context.executionContext.functionDirectory)
 
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `${Utils.generateMonthBlobName()}_diff.html`, result)
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `metadata.latest.diff.html`, result)

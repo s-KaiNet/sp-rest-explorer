@@ -1,10 +1,26 @@
-import axios from 'axios'
+import axios, { AxiosPromise } from 'axios'
 import { decompressFromUTF16 } from 'lz-string'
 import { Metadata, FunctionImport } from '../../../az-funcs/src/interfaces'
 import { ObjectHelper } from './objectHelper'
+import { MonthDiffData } from '../models/MonthDiffData'
 
 let jsonUrl = process.env.JSON_SOURCE_URL
+let diffUrl = process.env.DIFF_SOURCE_URL
 
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
 export class Api {
   private static apiMetadata: Metadata
   private static cachedMetadataResults: { [key: number]: Metadata } = {}
@@ -58,11 +74,43 @@ export class Api {
     })
   }
 
-  private static shouldRemoveFunction(func: FunctionImport, filters: string[], search: string): boolean {
+  public static loadChangesData(): Promise<MonthDiffData[]> {
+    let dataPromises: Promise<MonthDiffData>[] = []
+    let today = new Date()
+    for (let i = 0; i < 6; i++) {
+      let now = new Date()
+      now.setMonth(now.getMonth() - i)
+      let fileUrl = diffUrl + this.getFileName(now)
+      dataPromises.push(
+        ((monthName: string, year: number): Promise<MonthDiffData> => {
+          return axios.get<string>(fileUrl).then(result => {
+            return {
+              monthName: monthName,
+              htmlValue: result.data,
+              current: monthName === monthNames[today.getMonth()],
+              year: year
+            }
+          })
+        })(monthNames[now.getMonth()], now.getFullYear())
+      )
+    }
+
+    return Promise.all(dataPromises)
+  }
+
+  private static getFileName(date: Date): string {
+    return `${date.getFullYear()}y_m${date.getMonth()}_metadata_diff.html`
+  }
+
+  private static shouldRemoveFunction(
+    func: FunctionImport,
+    filters: string[],
+    search: string
+  ): boolean {
     if (!func.isRoot) {
       return false
     }
-    if (search && !(new RegExp(search, 'i').test(func.name))) {
+    if (search && !new RegExp(search, 'i').test(func.name)) {
       return true
     }
 

@@ -6,7 +6,8 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": [
     "GenerateMetadata",

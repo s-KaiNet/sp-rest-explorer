@@ -7,7 +7,7 @@ export class DiffGenerator {
     let jsdiff = jsondiffpatch.create({
       objectHash: (obj: any, index: number) => {
           // try to find an id property, otherwise just use the index in the array
-        return obj.name || obj.id || obj._id || '$$index:' + index
+        return obj.id || obj.name || obj._id || '$$index:' + index
       },
       propertyFilter: function(name: string) {
         return !name.startsWith('SP.Data.')
@@ -17,7 +17,7 @@ export class DiffGenerator {
     let latestFixed = this.fixJson(latest)
     let previousFixed = this.fixJson(previous)
 
-    return jsdiff.diff(latestFixed, previousFixed)
+    return jsdiff.diff(previousFixed, latestFixed)
   }
 
   private static fixJson(metadata: Metadata): Metadata {
@@ -29,7 +29,7 @@ export class DiffGenerator {
         const func = copy.functions[funcId]
         const uniqueName = this.getUniqueFunctionName(func)
         newFuncs[uniqueName] = func
-        delete newFuncs[uniqueName].id
+        newFuncs[uniqueName].id = uniqueName as any
       }
     }
 
@@ -44,7 +44,8 @@ export class DiffGenerator {
         newEntity.functionIds = []
         for (const id of entity.functionIds) {
           let originalFunction = metadata.functions[id]
-          newEntity.functionIds.push(this.getUniqueFunctionName(originalFunction))
+          const uniqueName = this.getUniqueFunctionName(originalFunction)
+          newEntity.functionIds.push(copy.functions[uniqueName])
         }
       }
     }
