@@ -3,7 +3,7 @@
     <h2 class="head">
       SharePoint REST API Change Log
     </h2>
-    <div class="desc">What's new and what's changed in SharePoint REST API in last 6 months (changes data is available starting from September, 2018)</div>
+    <div class="desc">What's new and what's changed in SharePoint REST API in last 6 months (changes data is available starting from July, 2018)</div>
     <div class="legend">
       <p class="colorSample"><span class="color -green"></span><span class="text"> - Added</span></p>
       <p class="colorSample"><span class="color -yellow"></span><span class="text"> - Updated</span></p>
