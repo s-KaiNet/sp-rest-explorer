@@ -2,7 +2,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as hbs from 'handlebars'
 
-import { DiffChanges, ChangeType, DiffEntity } from './interfaces/diffChanges'
+import { DiffChanges, ChangeType, DiffEntity, DiffFunction } from './interfaces/diffChanges'
+import { Utils } from './utils'
 
 export class TemplateGenerator {
 
@@ -11,14 +12,17 @@ export class TemplateGenerator {
   private FunctionIdsKey = 'functionIds'
 
   public GenerateTemplate(diffJson: any, localPath: string): string {
+
     let hbsTemplate = fs.readFileSync(path.join(localPath, 'generator.hbs')).toString()
     let stylesTemplate = fs.readFileSync(path.join(localPath, 'styles.hbs')).toString()
     hbs.registerPartial('styles', hbs.compile(stylesTemplate))
 
     let template = hbs.compile(hbsTemplate)
+    this.registerHelpers()
 
     let diffChanges: DiffChanges = {
-      entities: []
+      entities: [],
+      functions: []
     }
 
     for (const name in diffJson.entities) {
@@ -33,14 +37,17 @@ export class TemplateGenerator {
           name: name
         }
 
-        if (entity instanceof Array) {                         // new entity was added
+        if (entity instanceof Array) {                         // entity was added or deleted
           entityChange.changeType = this.detectChangeType(entity)
 
           if (entityChange.changeType === ChangeType.Add) {
-            entityChange.value = entity[0]
+            let addedEntity = entity[0]
+            this.copyAddedProperties('properties', addedEntity, entityChange)
+            this.copyAddedProperties('navigationProperties', addedEntity, entityChange)
+            this.copyAddedProperties('functionIds', addedEntity, entityChange)
           }
         } else {                                               // properties inside entity were updated
-          entityChange.changeType = ChangeType.NoChange
+          entityChange.changeType = ChangeType.Update
 
           this.populateChildProperties(entity, entityChange, this.PropertiesKey)
           this.populateChildProperties(entity, entityChange, this.NavigationPropertiesKey)
@@ -49,12 +56,45 @@ export class TemplateGenerator {
         }
 
         diffChanges.entities.push(entityChange)
-
       }
     }
 
+    for (const name in diffJson.functions) {
+      if (!name.startsWith('_is_root_')) continue
+
+      const func = diffJson.functions[name]
+
+      if (!(func instanceof Array)) continue // do not detect changes in function properties, only detect add\delete
+      let funcDiff: DiffFunction = {
+        changeType: this.detectChangeType(func),
+        name: func[0].name,
+        returnType: func[0].returnType
+      }
+
+      diffChanges.functions.push(funcDiff)
+    }
+
+    diffChanges.entities = diffChanges.entities.sort((a: DiffEntity, b: DiffEntity) => {
+      return a.name.localeCompare(b.name)
+    })
+
+    diffChanges.functions = diffChanges.functions.sort((a: DiffFunction, b: DiffFunction) => {
+      return a.name.localeCompare(b.name)
+    })
+
     return template({
-      changes: diffChanges
+      changes: diffChanges,
+      requestId: Utils.makeid()
+    })
+  }
+
+  private copyAddedProperties(propName: string, addedEntity: any, entityChange: DiffEntity): any {
+    addedEntity[propName].forEach((prop: any) => {
+      entityChange[propName].push({
+        changeType: ChangeType.Add,
+        name: prop.name,
+        typeName: prop.typeName || prop.returnType
+      })
     })
   }
 
@@ -70,7 +110,8 @@ export class TemplateGenerator {
 
           diffEntity[propName].push({
             changeType: this.detectChangeType(propertyValue),
-            name: propertyValue[0].name
+            name: propertyValue[0].name,
+            typeName: propertyValue[0].typeName || propertyValue[0].returnType
           })
         }
       }
@@ -78,6 +119,7 @@ export class TemplateGenerator {
   }
 
   private detectChangeType(node: any[]): ChangeType {
+    // https://github.com/benjamine/jsondiffpatch/blob/master/docs/deltas.md
     if (node.length === 1) {
       return ChangeType.Add
     }
@@ -91,5 +133,34 @@ export class TemplateGenerator {
     }
 
     throw new Error('Unsupported change type')
+  }
+
+  private registerHelpers(): void {
+    hbs.registerHelper('changeColorClass', (changeType: ChangeType) => {
+      switch (changeType) {
+        case ChangeType.Add: return 'added'
+        case ChangeType.Delete: return 'deleted'
+        case ChangeType.Update: return 'updated'
+        default:
+          return ''
+      }
+    })
+
+    hbs.registerHelper('greater-than', (a: number, b: number) => {
+      return a > b
+    })
+
+    hbs.registerHelper('hasChanges', (entity: DiffEntity, options: hbs.HelperOptions) => {
+      let fnTrue = options.fn
+      let fnFalse = options.inverse
+
+      if ((entity.properties && entity.properties.length > 0)
+        || (entity.navigationProperties && entity.navigationProperties.length > 0)
+        || (entity.functionIds && entity.functionIds.length > 0)) {
+        return fnTrue(entity)
+      }
+
+      return fnFalse(entity)
+    })
   }
 }

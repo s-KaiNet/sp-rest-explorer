@@ -1,7 +1,7 @@
 import { createBlobService, BlobService } from 'azure-storage'
 import { Utils } from '../src/utils'
 import { promisify } from 'bluebird'
-import * as path from 'path'
+import * as fs from 'fs'
 
 import { ContainerApiFilesName, ContainerDiffFilesName } from '../src/consts'
 import { DiffGenerator } from '../src/diffGenerator'
@@ -18,11 +18,20 @@ export = function run(context: any, timer: any): void {
 async function execute(context: any): Promise<any> {
   context.log.info('Generating diff files')
 
+  let diffJson = await getDiff()
+
+  await saveDiff(diffJson)
+
+  await generateAndSaveTemplate(diffJson, context.executionContext.functionDirectory)
+
+  context.log.info('Finished generation')
+  context.done()
+}
+
+async function getDiff(): Promise<any> {
   let blobService = createBlobService(Utils.getEnvironmentSetting('AzureWebJobsStorage'))
 
   let getBlobToTextAsync = promisify<string, string, string, BlobService.GetBlobRequestOptions>(blobService.getBlobToText.bind(blobService))
-  let createContainerIfNotExistsAsync = promisify<any, string, BlobService.CreateContainerOptions>(blobService.createContainerIfNotExists.bind(blobService))
-  let createBlockBlobFromTextAsync = promisify<any, string, string, string>(blobService.createBlockBlobFromText.bind(blobService))
 
   let latestBlobName = `${Utils.generateMonthBlobName()}.json`
 
@@ -32,7 +41,14 @@ async function execute(context: any): Promise<any> {
   let latestJson = JSON.parse(await getBlobToTextAsync(ContainerApiFilesName, latestBlobName, {}))
   let previousJson = JSON.parse(await getBlobToTextAsync(ContainerApiFilesName, previousBlobName, {}))
 
-  let diffJson = DiffGenerator.GenerateDiff(latestJson, previousJson)
+  return DiffGenerator.GenerateDiff(latestJson, previousJson)
+}
+
+async function saveDiff(diffJson: any): Promise<void> {
+  let blobService = createBlobService(Utils.getEnvironmentSetting('AzureWebJobsStorage'))
+
+  let createContainerIfNotExistsAsync = promisify<any, string, BlobService.CreateContainerOptions>(blobService.createContainerIfNotExists.bind(blobService))
+  let createBlockBlobFromTextAsync = promisify<any, string, string, string>(blobService.createBlockBlobFromText.bind(blobService))
 
   await createContainerIfNotExistsAsync(ContainerDiffFilesName, {
     publicAccessLevel: 'blob'
@@ -40,13 +56,21 @@ async function execute(context: any): Promise<any> {
 
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `${Utils.generateMonthBlobName()}_diff.json`, JSON.stringify(diffJson, null, 4))
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `metadata.latest.diff.json`, JSON.stringify(diffJson, null, 4))
+}
+
+async function generateAndSaveTemplate(diffJson: any, localPath: any): Promise<void> {
+  let blobService = createBlobService(Utils.getEnvironmentSetting('AzureWebJobsStorage'))
+
+  let createBlockBlobFromTextAsync = promisify<any, string, string, string>(blobService.createBlockBlobFromText.bind(blobService))
 
   let templateGenerator = new TemplateGenerator()
-  let result = templateGenerator.GenerateTemplate(diffJson, context.executionContext.functionDirectory)
+  let result = templateGenerator.GenerateTemplate(diffJson, localPath)
 
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `${Utils.generateMonthBlobName()}_diff.html`, result)
   await createBlockBlobFromTextAsync(ContainerDiffFilesName, `metadata.latest.diff.html`, result)
 
-  context.log.info('Finished generation')
-  context.done()
+  let nextMonth = new Date()
+  nextMonth.setMonth(nextMonth.getMonth() + 1)
+  // explicitly set empty template for next month to avoid errors on 1st day of a month
+  await createBlockBlobFromTextAsync(ContainerDiffFilesName, `${Utils.generateMonthBlobName(nextMonth)}_diff.html`, '<div>No data available</div>')
 }

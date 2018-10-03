@@ -34,4 +34,15 @@ export class Utils {
     return `${date.getFullYear()}y_m${date.getMonth()}_metadata`
   }
 
+  public static makeid(): string {
+    let text = ''
+    let possible = 'abcdefghijklmnopqrstuvwxyz'
+
+    for (let i = 0; i < 7; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+
+    return text
+  }
+
 }

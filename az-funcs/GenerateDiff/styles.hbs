@@ -1,5 +1,37 @@
 <style>
-  .api-changes{
-    color: red;
+  .{{requestId}} .title td {
+    text-align: center;
+    background-color: #e2edff;
+    font-weight: bold;
+    font-style: italic;
+  }
+  .{{requestId}} .sub-title td {
+    font-weight: bold;
+  }
+  .{{requestId}} table.changes {
+    width: 60%;
+    text-align: left;
+    border-collapse: collapse;
+  }
+
+  .{{requestId}} .changes td {
+    border: 3px solid #AAAAAA;
+    padding: 6px 7px;
+    font-size: 16px;
+  }
+
+  .{{requestId}} .added {
+    background-color: rgba(103, 194, 58, 0.5);
+  } 
+  .{{requestId}} .updated {
+    background-color: rgba(230, 215, 60, 0.5);
+  } 
+  .{{requestId}} .deleted {
+    background-color: rgba(245, 108, 108, 0.5);
+  } 
+
+  .{{requestId}} .entity-name {
+    width: fit-content;
+    padding: 5px;
   }
 </style>

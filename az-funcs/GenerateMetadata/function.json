@@ -5,7 +5,7 @@
       "name": "myTimer",
       "type": "timerTrigger",
       "direction": "in",
-      "schedule": "0 1 0 * * *"
+      "schedule": "0 0 1 * * *"
     },
     {
       "name": "latestJson",

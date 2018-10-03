@@ -1,27 +1,32 @@
-import { Property } from './property'
-import { NavigationProperty } from './navigationProperty'
-import { EntityType } from './entityType'
-
 export interface DiffChanges {
   entities: DiffEntity[]
+  functions: DiffFunction[]
 }
 
 export interface DiffEntity {
   changeType: ChangeType,
   name?: string,
-  value?: EntityType,
   properties?: {
     changeType: ChangeType,
-    name: string
+    name: string,
+    typeName: string
   }[],
   functionIds?: {
     changeType: ChangeType,
-    name: string
+    name: string,
+    typeName: string
   }[],
   navigationProperties?: {
     changeType: ChangeType,
-    name: string
+    name: string,
+    typeName: string
   }[]
+}
+
+export interface DiffFunction {
+  changeType: ChangeType,
+  name?: string,
+  returnType?: string
 }
 
 export enum ChangeType {

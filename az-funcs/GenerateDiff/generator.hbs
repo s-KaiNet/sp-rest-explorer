@@ -1,6 +1,65 @@
 {{> styles}}
-<div class="api-changes">
-  {{#each entities}}
-  <div>{{this}}</div>
+<div class="{{requestId}}">
+  {{#if (greater-than changes.functions.length 0) }}
+    <h2>Root functions (_api/...)</h2>
+    <table class="changes">
+      <tr class="sub-title">
+        <td>Name</td>
+        <td>Return type</td>
+      </tr>
+      {{#each changes.functions}}
+        <tr class="{{changeColorClass changeType}}">
+              <td>{{name}}</td>
+              <td>{{returnType}}</td>
+            </tr>
+      {{/each}}
+    </table>
+  {{/if}}
+  <h2>Entities</h2>
+  {{#each changes.entities}}
+    {{#hasChanges this}}
+      <h3 class="entity-name {{changeColorClass changeType}}">{{name}}</h3>
+      <table class="changes">
+        {{#if (greater-than properties.length 0) }}
+          <tr class="title"><td colspan="2">Properties</td></tr>
+          <tr class="sub-title">
+            <td>Name</td>
+            <td>Type</td>
+          </tr>
+          {{#each properties}}
+            <tr class="{{changeColorClass changeType}}">
+              <td>{{name}}</td>
+              <td>{{typeName}}</td>
+            </tr>
+          {{/each}}
+        {{/if}}
+        {{#if (greater-than navigationProperties.length 0) }}
+          <tr class="title"><td colspan="2">Navigation properties</td></tr>
+           <tr class="sub-title">
+            <td>Name</td>
+            <td>Type</td>
+          </tr>
+          {{#each navigationProperties}}
+            <tr class="{{changeColorClass changeType}}">
+              <td>{{name}}</td>
+              <td>{{typeName}}</td>
+            </tr>
+          {{/each}}
+        {{/if}}
+        {{#if (greater-than functionIds.length 0) }}
+          <tr class="title"><td colspan="2">Functions</td></tr>
+           <tr class="sub-title">
+            <td>Name</td>
+            <td>Return type</td>
+          </tr>
+          {{#each functionIds}}
+            <tr class="{{changeColorClass changeType}}">
+              <td>{{name}}</td>
+              <td>{{typeName}}</td>
+            </tr>
+          {{/each}}
+        {{/if}}
+      </table>
+    {{/hasChanges}}
   {{/each}}
 </div>

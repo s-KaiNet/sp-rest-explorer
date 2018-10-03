@@ -60,7 +60,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .diff-api {
-  margin: 20px 0 20px 20px;
+  margin: 0 0 0 20px;
   overflow: auto;
   font-size: 18px;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
@@ -87,7 +87,7 @@ export default Vue.extend({
     width: 30px;
     height: 15px;
     vertical-align: middle;
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   > .legend > .colorSample {
