@@ -3,6 +3,7 @@ import * as path from 'path'
 import * as hbs from 'handlebars'
 
 import { DiffChanges, ChangeType, DiffEntity, DiffFunction } from './interfaces/diffChanges'
+import { DiffResult } from './interfaces/diffResult'
 import { Utils } from './utils'
 
 export class TemplateGenerator {
@@ -11,7 +12,7 @@ export class TemplateGenerator {
   private NavigationPropertiesKey = 'navigationProperties'
   private FunctionIdsKey = 'functionIds'
 
-  public GenerateTemplate(diffJson: any, localPath: string): string {
+  public GenerateTemplate(diffJson: any, localPath: string): DiffResult {
 
     let hbsTemplate = fs.readFileSync(path.join(localPath, 'generator.hbs')).toString()
     let stylesTemplate = fs.readFileSync(path.join(localPath, 'styles.hbs')).toString()
@@ -82,10 +83,15 @@ export class TemplateGenerator {
       return a.name.localeCompare(b.name)
     })
 
-    return template({
+    let html = template({
       changes: diffChanges,
       requestId: Utils.makeid()
     })
+
+    return {
+      html: html,
+      diffChanges: diffChanges
+    }
   }
 
   private copyAddedProperties(propName: string, addedEntity: any, entityChange: DiffEntity): any {

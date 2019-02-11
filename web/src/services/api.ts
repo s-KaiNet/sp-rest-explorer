@@ -1,4 +1,4 @@
-import axios, { AxiosPromise } from 'axios'
+import axios from 'axios'
 import { decompressFromUTF16 } from 'lz-string'
 import { Metadata, FunctionImport } from '../../../az-funcs/src/interfaces'
 import { ObjectHelper } from './objectHelper'
@@ -74,19 +74,31 @@ export class Api {
     })
   }
 
-  public static loadChangesData(): Promise<MonthDiffData[]> {
+  public static loadChangesJson(): Promise<MonthDiffData[]> {
     let dataPromises: Promise<MonthDiffData>[] = []
     let today = new Date()
     for (let i = 0; i < 6; i++) {
       let now = new Date()
       now.setMonth(now.getMonth() - i)
-      let fileUrl = diffUrl + this.getFileName(now)
+      let fileUrl = diffUrl + this.getJsonFileName(now)
       dataPromises.push(
         ((monthName: string, year: number): Promise<MonthDiffData> => {
-          return axios.get<string>(fileUrl).then(result => {
+          return axios.get<any>(fileUrl).then(result => {
+
+            // init hasChanges
+            if (result.data && result.data.entities) {
+              result.data.entities.forEach((entity: any) => {
+                entity.hasChanges =
+                  (entity.properties && entity.properties.length > 0) ||
+                  (entity.navigationProperties &&
+                    entity.navigationProperties.length > 0) ||
+                  (entity.functionIds && entity.functionIds.length > 0)
+              })
+            }
+
             return {
               monthName: monthName,
-              htmlValue: result.data,
+              data: result.data,
               current: monthName === monthNames[today.getMonth()],
               year: year
             }
@@ -98,8 +110,8 @@ export class Api {
     return Promise.all(dataPromises)
   }
 
-  private static getFileName(date: Date): string {
-    return `${date.getFullYear()}y_m${date.getMonth()}_metadata_diff.html`
+  private static getJsonFileName(date: Date): string {
+    return `${date.getFullYear()}y_m${date.getMonth()}_metadata_diffChanges.json`
   }
 
   private static shouldRemoveFunction(

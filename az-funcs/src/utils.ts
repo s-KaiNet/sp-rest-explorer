@@ -28,7 +28,7 @@ export class Utils {
     return `${date.getFullYear()}y_w${Utils.getWeekNumber(date)}_metadata`
   }
 
-  public static generateMonthBlobName(date?: Date): string {
+  public static generateMonthBlobName(date: Date): string {
     date = date || new Date()
 
     return `${date.getFullYear()}y_m${date.getMonth()}_metadata`
