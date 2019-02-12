@@ -19,6 +19,7 @@
     <div
       class="content"
       v-if="!refreshing"
+      ref="tree"
     >
       <el-tree
         node-key="path"
@@ -33,6 +34,7 @@
         <span
           class="custom-tree-node"
           slot-scope="{ node, data }"
+          :class="{current: data.path === apiPath}"
         >
           <img
             class="funcIcon"
@@ -65,6 +67,7 @@ interface Data {
   treeProps: any
   refreshing: boolean
   search: string
+  scrolled: boolean
 }
 
 export default Vue.extend({
@@ -79,6 +82,7 @@ export default Vue.extend({
     return {
       refreshing: false,
       search: '',
+      scrolled: false,
       treeProps: {
         label: 'label',
         children: 'children',
@@ -100,10 +104,8 @@ export default Vue.extend({
     getDefaultExpanded(): any[] {
       let defaultExpanded = []
 
-      if (this.$route.params.apiPath) {
-        let apiPathParts = this.$route.params.apiPath.split(
-          consts.pathSeparator
-        )
+      if (this.apiPath) {
+        let apiPathParts = this.apiPath.split(consts.pathSeparator)
         apiPathParts.pop()
 
         let currentPath = ''
@@ -122,6 +124,15 @@ export default Vue.extend({
     nodeCllick(node: TreeNode): void {
       this.$router.push('/' + consts.apiPrefix + '/' + node.path)
     }
+  },
+  mounted() {
+    let element = (this.$refs.tree as HTMLElement).querySelector('.current')
+    element.scrollIntoView({
+      behavior: 'auto',
+      block: 'center'
+    })
+    element.parentElement.parentElement.classList.add('is-current')
+    element.parentElement.parentElement.focus()
   },
   watch: {
     metadata(data: any) {
@@ -163,7 +174,7 @@ $color: #606266;
   }
 
   .tree {
-    background-color: #e5e9f2;
+    background-color: #dae0ec;
   }
 
   .info {

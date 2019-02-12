@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Explorer from '@/components/explorer/Explorer.vue'
+import ApiTree from '@/components/api-tree/ApiTree.vue'
 import HowItWorks from '@/components/pages/HowItWorks.vue'
 import DocsView from '@/components/explorer/docs-area/DocsView.vue'
 import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
@@ -10,6 +11,7 @@ import EntityDocs from '@/components/explorer/docs-area/EntityDocs.vue'
 import DiffApi from '@/components/diff-api/DiffApi.vue'
 import MonthDiff from '@/components/diff-api/MonthDiff.vue'
 import LatestMonthRedirect from '@/components/diff-api/LatestMonthRedirect.vue'
+import TypesTree from '@/components/types-tree/TypesTree.vue'
 
 Vue.use(Router)
 
@@ -23,16 +25,18 @@ export default new Router({
         {
           path: '',
           components: {
-            docs: DocsView
+            docs: DocsView,
+            tree: ApiTree
           }
         },
         {
           path: '_api/:apiPath*',
           components: {
             docs: DocsView,
-            breadcrumb: BreadCrumb
+            breadcrumb: BreadCrumb,
+            tree: ApiTree
           },
-          props: { docs: true, breadcrumb: true },
+          props: { docs: true, breadcrumb: true, tree: true },
           children: [
             {
               path: '',
@@ -47,9 +51,10 @@ export default new Router({
         {
           path: 'entity/:typeName/func/:funcName',
           components: {
-            docs: DocsView
+            docs: DocsView,
+            tree: TypesTree
           },
-          props: { docs: true },
+          props: { docs: true, tree: true },
           children: [
             {
               path: '',
@@ -63,9 +68,10 @@ export default new Router({
         {
           path: 'entity/:typeName',
           components: {
-            docs: DocsView
+            docs: DocsView,
+            tree: TypesTree
           },
-          props: { docs: true },
+          props: { docs: true, tree: true },
           children: [
             {
               path: '',
@@ -75,6 +81,13 @@ export default new Router({
               props: { 'entity-docs': true }
             }
           ]
+        },
+        {
+          path: 'entity',
+          components: {
+            docs: DocsView,
+            tree: TypesTree
+          }
         }
       ]
     },

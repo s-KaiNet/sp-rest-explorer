@@ -2,7 +2,8 @@
   <el-header class="app-header" height="90">
     <top-line></top-line>
     <div class="links">
-      <router-link class="link" to="/" :class="linkActive" :exact="true">Explore</router-link>
+      <router-link class="link" to="/" :class="linkActive" :exact="true">Explore API</router-link>
+      <router-link class="link" to="/entity">Explore Types</router-link>
       <router-link class="link" to="/api-diff">API Changelog</router-link>
       <router-link class="link" to="/how-it-works" :exact="true">How it works</router-link>
     </div>

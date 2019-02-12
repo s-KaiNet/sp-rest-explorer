@@ -1,6 +1,6 @@
 <template>
   <div class="docs-view">
-    <h2 v-if="$route.path === '/'">Use left side pane for navigation</h2>
+    <h2 v-if="$route.path === '/' || $route.path === '/entity'">Use left side pane for navigation</h2>
 
     <router-view name="entity-docs" />
     <router-view name="function-docs" />

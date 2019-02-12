@@ -1,7 +1,7 @@
 <template>
   <div class="explorer-container">
     <el-aside width="auto" class="aside" v-mydir>
-      <api-tree></api-tree>
+      <router-view name="tree"></router-view>
     </el-aside>
     <div class="content">
       <router-view name="breadcrumb" />
@@ -14,12 +14,7 @@
 import Vue from 'vue'
 import * as interact from 'interactjs'
 
-import ApiTree from '@/components/api-tree/ApiTree.vue'
-
 export default Vue.extend({
-  components: {
-    'api-tree': ApiTree
-  },
   directives: {
     mydir: {
       // directive definition
@@ -67,7 +62,7 @@ export default Vue.extend({
     max-width: 500px;
     border-right: 4px solid transparent;
     flex-shrink: 0;
-    background-color: #e5e9f2;
+    background-color: #dae0ec;
     box-shadow: 1px 0px 8px 0 rgba(0, 0, 0, 0.2),
       3px 0 4px 0 rgba(0, 0, 0, 0.14), 3px 0 3px -2px rgba(0, 0, 0, 0.12);
     z-index: 1;

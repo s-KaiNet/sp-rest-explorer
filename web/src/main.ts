@@ -2,10 +2,13 @@ import Vue from 'vue'
 import 'es6-promise/auto'
 import axios from 'axios'
 import { AppInsights } from 'applicationinsights-js'
+const smoothscroll = require('smoothscroll-polyfill')
 
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+smoothscroll.polyfill()
 
 const VueAxios = require('vue-axios')
 

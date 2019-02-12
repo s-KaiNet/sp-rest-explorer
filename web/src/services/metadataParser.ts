@@ -30,6 +30,33 @@ export class MetadataParser {
     return ObjectHelper.clone(nextObject) as FunctionImport | Entity
   }
 
+  public getEntities(): EntityType[] {
+    let entities = []
+    let collections = []
+    for (const entityKey in this.metadata.entities) {
+      if (this.metadata.entities.hasOwnProperty(entityKey)) {
+        const entity = this.metadata.entities[entityKey]
+        if (entity.fullName.indexOf('SP.Data.') !== -1) {
+          continue
+        }
+        if (entity.fullName.indexOf('Collection(') === 0) {
+          collections.push(entity)
+        } else {
+          entities.push(entity)
+        }
+      }
+    }
+
+    entities.sort((a, b) => {
+      return a.fullName.localeCompare(b.fullName)
+    })
+    collections.sort((a, b) => {
+      return a.fullName.localeCompare(b.fullName)
+    })
+
+    return [...entities, ...collections]
+  }
+
   public buildUriTemplate(path: string): string {
     let objects = path.split('/')
     let firstFunc = this.getFirstObject(path)
@@ -71,7 +98,9 @@ export class MetadataParser {
       functions: []
     }
 
-    entity.functions = this.getFunctions(this.metadata.entities[fullName].functionIds)
+    entity.functions = this.getFunctions(
+      this.metadata.entities[fullName].functionIds
+    )
     return entity
   }
 
