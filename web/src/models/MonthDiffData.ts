@@ -1,7 +1,8 @@
 export interface MonthDiffData {
   monthName: string
-  htmlValue?: string
-  data?: any
+  monthKey: string
+  data: any
+  key: number
   year: number
   current: boolean
 }

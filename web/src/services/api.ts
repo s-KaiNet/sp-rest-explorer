@@ -23,6 +23,7 @@ const monthNames = [
 ]
 export class Api {
   private static apiMetadata: Metadata
+  private static diffMetadata: MonthDiffData[]
   private static cachedMetadataResults: { [key: number]: Metadata } = {}
 
   public static getMetadata(filters: string[], search = '') {
@@ -75,6 +76,9 @@ export class Api {
   }
 
   public static loadChangesJson(): Promise<MonthDiffData[]> {
+    if (this.diffMetadata) {
+      return Promise.resolve(this.diffMetadata)
+    }
     let dataPromises: Promise<MonthDiffData>[] = []
     let today = new Date()
     for (let i = 0; i < 6; i++) {
@@ -82,9 +86,12 @@ export class Api {
       now.setMonth(now.getMonth() - i)
       let fileUrl = diffUrl + this.getJsonFileName(now)
       dataPromises.push(
-        ((monthName: string, year: number): Promise<MonthDiffData> => {
+        ((
+          monthName: string,
+          year: number,
+          now: Date
+        ): Promise<MonthDiffData> => {
           return axios.get<any>(fileUrl).then(result => {
-
             // init hasChanges
             if (result.data && result.data.entities) {
               result.data.entities.forEach((entity: any) => {
@@ -98,16 +105,24 @@ export class Api {
 
             return {
               monthName: monthName,
+              monthKey: monthName.substr(0, 3) + '-' + year,
               data: result.data,
+              key: now.getTime(),
               current: monthName === monthNames[today.getMonth()],
               year: year
             }
           })
-        })(monthNames[now.getMonth()], now.getFullYear())
+        })(monthNames[now.getMonth()], now.getFullYear(), now)
       )
     }
 
-    return Promise.all(dataPromises)
+    return Promise.all(dataPromises).then(data => {
+      this.diffMetadata = data.sort((a, b) => {
+        return b.key - a.key
+      })
+
+      return this.diffMetadata
+    })
   }
 
   private static getJsonFileName(date: Date): string {

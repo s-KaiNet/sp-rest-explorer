@@ -8,6 +8,8 @@ import BreadCrumb from '@/components/explorer/BreadCrumb.vue'
 import FunctionDocs from '@/components/explorer/docs-area/FunctionDocs.vue'
 import EntityDocs from '@/components/explorer/docs-area/EntityDocs.vue'
 import DiffApi from '@/components/diff-api/DiffApi.vue'
+import MonthDiff from '@/components/diff-api/MonthDiff.vue'
+import LatestMonthRedirect from '@/components/diff-api/LatestMonthRedirect.vue'
 
 Vue.use(Router)
 
@@ -82,7 +84,23 @@ export default new Router({
     },
     {
       path: '/api-diff',
-      component: DiffApi
+      component: DiffApi,
+      props: true,
+      children: [
+        {
+          path: '',
+          components: {
+            monthDiff: LatestMonthRedirect
+          }
+        },
+        {
+          path: ':monthKey',
+          components: {
+            monthDiff: MonthDiff
+          },
+          props: { monthDiff: true }
+        }
+      ]
     }
   ]
 })

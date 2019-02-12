@@ -2,7 +2,11 @@
   <div id="app">
     <app-header></app-header>
     <router-view v-if="loaded" />
-    <div v-if="!loaded" class="loading" v-loading="loading"></div>
+    <div
+      v-if="!loaded"
+      class="loading"
+      v-loading="loading"
+    ></div>
   </div>
 </template>
 
@@ -34,8 +38,11 @@ export default Vue.extend({
     'app-header': AppHeader
   },
   mounted() {
-    Api.fetchMetaData()
-      .then((data) => {
+    Api.loadChangesJson()
+      .then(() => {
+        return Api.fetchMetaData()
+      })
+      .then(data => {
         this.$store.commit(uiTypes.SET_DATA_LOADING, {
           loading: false
         })
