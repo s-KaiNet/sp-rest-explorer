@@ -1,14 +1,49 @@
 <template>
   <div class="api-tree">
     <filters-dialog />
-    <el-tooltip class="item" effect="light" content="Filters out the root level of the tree. Minimum 3 letters required." placement="bottom">
-      <el-input size="small" class="search" placeholder="Search" prefix-icon="el-icon-search" v-model="search" :clearable="true"> </el-input>
+    <el-tooltip
+      class="item"
+      effect="light"
+      content="Filters out the root level of the tree. Minimum 3 letters required."
+      placement="bottom"
+    >
+      <el-input
+        size="small"
+        class="search"
+        placeholder="Search"
+        prefix-icon="el-icon-search"
+        v-model="search"
+        :clearable="true"
+      > </el-input>
     </el-tooltip>
-    <div class="content" v-if="!refreshing">
-      <el-tree :expand-on-click-node="false" :props="treeProps" lazy :load="expandNode" @node-click="nodeCllick" class="tree">
-        <span class="custom-tree-node" slot-scope="{ node, data }">
-          <img class="funcIcon" src="../../assets/func-icon.png" v-if="node.level > 1 && data.type === 1">
-          <img class="propIcon" src="../../assets/nav-prop-icon.png" v-if="node.level > 1 && data.type === 0">
+    <div
+      class="content"
+      v-if="!refreshing"
+    >
+      <el-tree
+        node-key="path"
+        :default-expanded-keys="getDefaultExpanded()"
+        :expand-on-click-node="false"
+        :props="treeProps"
+        lazy
+        :load="expandNode"
+        @node-click="nodeCllick"
+        class="tree"
+      >
+        <span
+          class="custom-tree-node"
+          slot-scope="{ node, data }"
+        >
+          <img
+            class="funcIcon"
+            src="../../assets/func-icon.png"
+            v-if="node.level > 1 && data.type === 1"
+          >
+          <img
+            class="propIcon"
+            src="../../assets/nav-prop-icon.png"
+            v-if="node.level > 1 && data.type === 0"
+          >
           <span>{{ node.label }}</span>
         </span>
       </el-tree>
@@ -37,6 +72,9 @@ export default Vue.extend({
     'filters-dialog': FiltersDialog
   },
   mixins: [metadataMixin],
+  props: {
+    apiPath: String
+  },
   data(): Data {
     return {
       refreshing: false,
@@ -58,6 +96,28 @@ export default Vue.extend({
         let treeBuilder = new TreeBuilder(this.metadata)
         resolve(treeBuilder.getChildren(node.data))
       }
+    },
+    getDefaultExpanded(): any[] {
+      let defaultExpanded = []
+
+      if (this.$route.params.apiPath) {
+        let apiPathParts = this.$route.params.apiPath.split(
+          consts.pathSeparator
+        )
+        apiPathParts.pop()
+
+        let currentPath = ''
+        for (const apiPath of apiPathParts) {
+          if (currentPath) {
+            defaultExpanded.push(currentPath + consts.pathSeparator + apiPath)
+          } else {
+            defaultExpanded.push(apiPath)
+          }
+
+          currentPath = defaultExpanded[defaultExpanded.length - 1]
+        }
+      }
+      return defaultExpanded
     },
     nodeCllick(node: TreeNode): void {
       this.$router.push('/' + consts.apiPrefix + '/' + node.path)

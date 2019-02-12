@@ -1,3 +1,4 @@
 export let consts = {
-  apiPrefix: '_api'
+  apiPrefix: '_api',
+  pathSeparator: '/'
 }

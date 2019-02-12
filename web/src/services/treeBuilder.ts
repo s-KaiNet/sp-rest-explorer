@@ -1,9 +1,8 @@
 import { Metadata, EntityType } from './../../../az-funcs/src/interfaces'
 import { TreeNode, TreeNodeType } from '../models/TreeNode'
+import { consts } from './consts'
 
 export class TreeBuilder {
-  private separator = '/'
-
   constructor(private metadata: Metadata) {}
 
   public buildRootTree(): TreeNode[] {
@@ -43,7 +42,7 @@ export class TreeBuilder {
           label: prop.name,
           children: [],
           fullTypeName: prop.typeName,
-          path: currentNode.path + this.separator + prop.name,
+          path: currentNode.path + consts.pathSeparator + prop.name,
           leaf: true,
           type: TreeNodeType.Entity
         }
@@ -61,7 +60,7 @@ export class TreeBuilder {
         let node: TreeNode = {
           label: func.name,
           fullTypeName: func.returnType,
-          path: currentNode.path + this.separator + func.name,
+          path: currentNode.path + consts.pathSeparator + func.name,
           children: [],
           leaf: true,
           type: TreeNodeType.Function

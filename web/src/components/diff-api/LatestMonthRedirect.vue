@@ -14,7 +14,7 @@ export default Vue.extend({
   mounted(): void {
     Api.loadChangesJson()
       .then(data => {
-        this.$router.push({
+        this.$router.replace({
           path: '/api-diff/' + data[0].monthKey
         })
       })

@@ -29,7 +29,7 @@ export default Vue.extend({
       if (to.path.indexOf(consts.apiPrefix) !== -1) {
         this.linkActive = 'router-link-active'
       } else {
-        this.linkActive = null
+        this.linkActive = ''
       }
     }
   }
