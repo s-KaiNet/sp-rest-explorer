@@ -1,5 +1,21 @@
 <template>
   <div class="types-tree">
+    <div class="search">
+      <el-tooltip
+        class="item"
+        effect="light"
+        content="Minimum 3 letters required."
+        placement="bottom"
+      >
+        <el-input
+          size="small"
+          placeholder="Search"
+          prefix-icon="el-icon-search"
+          v-model="search"
+          :clearable="true"
+        > </el-input>
+      </el-tooltip>
+    </div>
     <ul
       class="typesList"
       ref="typesList"
@@ -34,13 +50,21 @@ export default Vue.extend({
   data(): any {
     return {
       types: [],
-      scrolled: false
+      scrolled: false,
+      search: ''
     }
   },
   props: {
     typeName: String
   },
-
+  watch: {
+    search(value: string) {
+      if (!value || value.length > 2) {
+        let parser = new MetadataParser(Api.getMetadata([]))
+        this.types = parser.getEntities(value)
+      }
+    }
+  },
   updated() {
     if (this.typeName && !this.scrolled) {
       let element = this.$refs.typesList.querySelector('.active')
@@ -67,10 +91,20 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .types-tree {
   cursor: pointer;
+  text-align: left;
+
+  .search {
+    width: 230px;
+    margin: 10px;
+    position: fixed;
+    top: 90px;
+  }
+
   .typesList {
     list-style: none;
     text-align: left;
-    padding-left: 0;
+    padding: 0;
+    margin-top: 45px;
 
     li {
       padding-left: 15px;

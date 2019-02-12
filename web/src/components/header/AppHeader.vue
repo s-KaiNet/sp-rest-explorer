@@ -25,13 +25,21 @@ export default Vue.extend({
       linkActive: null
     }
   },
-  watch: {
-    $route(to: Route): void {
+  methods: {
+    setLink(to: Route) {
       if (to.path.indexOf(consts.apiPrefix) !== -1) {
         this.linkActive = 'router-link-active'
       } else {
         this.linkActive = ''
       }
+    }
+  },
+  mounted() {
+    this.setLink(this.$route)
+  },
+  watch: {
+    $route(to: Route): void {
+      this.setLink(to)
     }
   }
 })

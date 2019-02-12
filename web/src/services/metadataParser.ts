@@ -30,13 +30,14 @@ export class MetadataParser {
     return ObjectHelper.clone(nextObject) as FunctionImport | Entity
   }
 
-  public getEntities(): EntityType[] {
+  public getEntities(search?: string): EntityType[] {
     let entities = []
     let collections = []
+    search = search || ''
     for (const entityKey in this.metadata.entities) {
       if (this.metadata.entities.hasOwnProperty(entityKey)) {
         const entity = this.metadata.entities[entityKey]
-        if (entity.fullName.indexOf('SP.Data.') !== -1) {
+        if (entity.fullName.indexOf('SP.Data.') !== -1 || entity.fullName.toLowerCase().indexOf(search.toLowerCase()) === -1) {
           continue
         }
         if (entity.fullName.indexOf('Collection(') === 0) {

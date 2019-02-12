@@ -127,12 +127,14 @@ export default Vue.extend({
   },
   mounted() {
     let element = (this.$refs.tree as HTMLElement).querySelector('.current')
-    element.scrollIntoView({
-      behavior: 'auto',
-      block: 'center'
-    })
-    element.parentElement.parentElement.classList.add('is-current')
-    element.parentElement.parentElement.focus()
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'auto',
+        block: 'center'
+      })
+      element.parentElement.parentElement.classList.add('is-current')
+      element.parentElement.parentElement.focus()
+    }
   },
   watch: {
     metadata(data: any) {
