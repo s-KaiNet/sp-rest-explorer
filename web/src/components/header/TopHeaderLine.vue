@@ -2,12 +2,12 @@
   <div class="top-header-line">
     <div>
       <div class="logo">
-        <img class="icon" src="./../../assets/sp_logo.png">
+        <img class="icon" src="./../../assets/sharepoint.png">
         <span>SharePoint REST API Metadata Explorer</span>
       </div>
     </div>
     <div>
-      <a class="link" href="https://github.com/s-KaiNet/sp-rest-explorer" target="_blank">Like it? Star it!<img class="github" src="./../../assets/github_logo.png"> GitHub </a>
+      <a class="link" href="https://github.com/s-KaiNet/sp-rest-explorer" target="_blank">Like it? Star it!<img class="github" src="./../../assets/github_logo_new.png"> GitHub </a>
     </div>
   </div>
 </template>
@@ -40,7 +40,7 @@ export default Vue.extend({
     line-height: 50px;
   }
   .icon {
-    width: 44px;
+    width: 40px;
     margin-right: 10px;
   }
 }

@@ -47,7 +47,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .app-header {
-  background-color: #006cc6;
+  background-color: #14969D;
   border-top: 4px solid white;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14),
