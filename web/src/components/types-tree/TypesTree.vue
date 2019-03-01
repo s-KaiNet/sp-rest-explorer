@@ -58,6 +58,19 @@ export default Vue.extend({
   props: {
     typeName: String
   },
+  methods: {
+    isScrolledIntoView(el: HTMLElement) {
+      const rect = el.getBoundingClientRect()
+      const elemTop = rect.top
+      const elemBottom = rect.bottom
+
+      // Only completely visible elements return true:
+      const isVisible = elemTop >= 0 && elemBottom <= window.innerHeight
+      // Partially visible elements return true:
+      // isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+      return isVisible
+    }
+  },
   watch: {
     search(value: string) {
       if (!value || value.length > 2) {
@@ -69,10 +82,12 @@ export default Vue.extend({
   updated() {
     if (this.typeName) {
       let element = this.$refs.typesList.querySelector('.active')
-      element.scrollIntoView({
-        behavior: 'auto',
-        block: 'center'
-      })
+      if (element && !this.isScrolledIntoView(element)) {
+        element.scrollIntoView({
+          behavior: 'auto',
+          block: 'center'
+        })
+      }
       this.scrolled = true
     }
   },
