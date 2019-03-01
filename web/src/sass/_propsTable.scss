@@ -30,8 +30,11 @@
       vertical-align: top;
       line-height: 1.6;
     }
-    tr:nth-child(2n){
-      background-color: #f7faff;
+    thead tr {
+      background-color: white !important;
+    }
+    tr:nth-child(2n + 1){
+      background-color: #edf1f9;
     }
   }
 }
