@@ -4,15 +4,32 @@
     :class="{fullWidth: fullWidth}"
   >
     <template v-if="isRouterLink">
-      <router-link
-        v-if="docLinkType === 1"
-        class="link"
-        :class="{underlined: underlined, fullWidth: fullWidth}"
-        :to="'/entity/' + fullTypeName"
-      >{{fullTypeName}}</router-link>
+      <template v-if="isCollection">
+        <router-link
+          v-if="docLinkType === 1"
+          class="link"
+          :class="{underlined: underlined, fullWidth: fullWidth}"
+          :to="'/entity/' + fullTypeName"
+        >Collection</router-link>
+        <router-link
+          v-if="docLinkType === 1"
+          class="link"
+          :class="{underlined: underlined, fullWidth: fullWidth}"
+          :to="'/entity/' + getFullNameFromCollection(fullTypeName)"
+        >({{getFullNameFromCollection(fullTypeName)}})</router-link>
+      </template>
+      <template v-if="!isCollection">
+        <router-link
+          v-if="docLinkType === 1"
+          class="link"
+          :class="{underlined: underlined, fullWidth: fullWidth}"
+          :to="'/entity/' + fullTypeName"
+        >{{fullTypeName}}</router-link>
+      </template>
       <router-link
         v-else-if="docLinkType === 0"
         class="link"
+        :class="{underlined: underlined}"
         :to="'/entity/' + entityFullName + '/func/' + fullTypeName"
       >{{fullTypeName}}</router-link>
     </template>
@@ -35,6 +52,11 @@ export default Vue.extend({
     },
     isCollection(): boolean {
       return this.fullTypeName.indexOf('Collection(') === 0
+    }
+  },
+  methods: {
+    getFullNameFromCollection(typeName: string): string {
+      return typeName.substring(11, typeName.length - 1)
     }
   },
   props: {

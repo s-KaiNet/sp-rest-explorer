@@ -16,7 +16,7 @@
           v-bind:class="{added: func.changeType == 0, deleted: func.changeType == 2, updated: func.changeType == 1}"
         >
           <td>{{func.name}}</td>
-          <td>{{func.returnType}}</td>
+          <td><doc-link v-if="func.returnType" :full-type-name="func.returnType" :doc-link-type="1"/></td>
         </tr>
       </table>
     </div>
@@ -29,7 +29,7 @@
         <h3
           class="entity-name"
           v-bind:class="{added: entity.changeType == 0, deleted: entity.changeType == 2, updated: entity.changeType == 1}"
-        >{{entity.name}}</h3>
+        ><doc-link :full-type-name="entity.name" :doc-link-type="1"/></h3>
         <table class="changes">
           <template v-if="entity.properties.length > 0">
             <tr class="title">
@@ -45,7 +45,7 @@
               v-bind:class="{added: prop.changeType == 0, deleted: prop.changeType == 2, updated: prop.changeType == 1}"
             >
               <td>{{prop.name}}</td>
-              <td>{{prop.typeName}}</td>
+              <td><doc-link :full-type-name="prop.typeName" :doc-link-type="1"/></td>
             </tr>
           </template>
           <template v-if="entity.navigationProperties.length > 0">
@@ -62,7 +62,7 @@
               v-bind:class="{added: prop.changeType == 0, deleted: prop.changeType == 2, updated: prop.changeType == 1}"
             >
               <td>{{prop.name}}</td>
-              <td>{{prop.typeName}}</td>
+              <td><doc-link :full-type-name="prop.typeName" :doc-link-type="1"/></td>
             </tr>
           </template>
           <template v-if="entity.functionIds.length > 0">
@@ -78,8 +78,8 @@
               :key="index"
               v-bind:class="{added: func.changeType == 0, deleted: func.changeType == 2, updated: func.changeType == 1}"
             >
-              <td>{{func.name}}</td>
-              <td>{{func.typeName}}</td>
+              <td><doc-link :full-type-name="func.name" :doc-link-type="0" :entity-full-name="entity.name" /></td>
+              <td><doc-link v-if="func.typeName" :full-type-name="func.typeName" :doc-link-type="1"/></td>
             </tr>
           </template>
         </table>
@@ -94,12 +94,16 @@ import { Route } from 'vue-router'
 
 import { Logger } from '../../services/logger'
 import { Api } from '../../services/api'
+import DocLink from './../explorer/docs-area/DocLink.vue'
 
 interface Data {
   monthData: any
 }
 
 export default Vue.extend({
+  components: {
+    'doc-link': DocLink
+  },
   data(): Data {
     return {
       monthData: null
