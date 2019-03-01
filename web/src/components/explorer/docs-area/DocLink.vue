@@ -4,23 +4,20 @@
     :class="{fullWidth: fullWidth}"
   >
     <template v-if="isRouterLink">
-      <template v-if="isCollection">
+      <template v-if="isCollection && docLinkType === 1">
         <router-link
-          v-if="docLinkType === 1"
           class="link"
           :class="{underlined: underlined, fullWidth: fullWidth}"
           :to="'/entity/' + fullTypeName"
         >Collection</router-link>
         <router-link
-          v-if="docLinkType === 1"
           class="link"
           :class="{underlined: underlined, fullWidth: fullWidth}"
           :to="'/entity/' + getFullNameFromCollection(fullTypeName)"
         >({{getFullNameFromCollection(fullTypeName)}})</router-link>
       </template>
-      <template v-if="!isCollection">
+      <template v-if="!isCollection && docLinkType === 1">
         <router-link
-          v-if="docLinkType === 1"
           class="link"
           :class="{underlined: underlined, fullWidth: fullWidth}"
           :to="'/entity/' + fullTypeName"
