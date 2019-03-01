@@ -30,6 +30,7 @@
           :doc-link-type="1"
           :underlined="false"
           :full-width="true"
+          :split-collection="false"
         />
       </li>
     </ul>
@@ -66,7 +67,7 @@ export default Vue.extend({
     }
   },
   updated() {
-    if (this.typeName && !this.scrolled) {
+    if (this.typeName) {
       let element = this.$refs.typesList.querySelector('.active')
       element.scrollIntoView({
         behavior: 'auto',

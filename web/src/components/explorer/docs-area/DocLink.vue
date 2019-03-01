@@ -4,7 +4,7 @@
     :class="{fullWidth: fullWidth}"
   >
     <template v-if="isRouterLink">
-      <template v-if="isCollection && docLinkType === 1">
+      <template v-if="isCollection && docLinkType === 1 && splitCollection">
         <router-link
           class="link"
           :class="{underlined: underlined, fullWidth: fullWidth}"
@@ -15,6 +15,13 @@
           :class="{underlined: underlined, fullWidth: fullWidth}"
           :to="'/entity/' + getFullNameFromCollection(fullTypeName)"
         >({{getFullNameFromCollection(fullTypeName)}})</router-link>
+      </template>
+      <template v-if="isCollection && docLinkType === 1 && !splitCollection">
+        <router-link
+          class="link"
+          :class="{underlined: underlined, fullWidth: fullWidth}"
+          :to="'/entity/' + fullTypeName"
+        >{{(fullTypeName)}}</router-link>
       </template>
       <template v-if="!isCollection && docLinkType === 1">
         <router-link
@@ -45,7 +52,7 @@ export default Vue.extend({
   mixins: [docsMixin],
   computed: {
     isRouterLink(): boolean {
-      return this.fullTypeName.indexOf('Edm.') !== 0
+      return this.fullTypeName.indexOf('Edm.') !== 0 && this.fullTypeName.indexOf('Collection(Edm.') !== 0
     },
     isCollection(): boolean {
       return this.fullTypeName.indexOf('Collection(') === 0
@@ -67,6 +74,10 @@ export default Vue.extend({
     fullWidth: {
       type: Boolean,
       default: false
+    },
+    splitCollection: {
+      type: Boolean,
+      default: true
     }
   }
 })
