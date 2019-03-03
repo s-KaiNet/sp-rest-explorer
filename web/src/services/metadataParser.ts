@@ -55,7 +55,7 @@ export class MetadataParser {
       return a.fullName.localeCompare(b.fullName)
     })
 
-    return [...entities, ...collections]
+    return [...ObjectHelper.clone(entities), ...ObjectHelper.clone(collections)]
   }
 
   public buildUriTemplate(path: string): string {
