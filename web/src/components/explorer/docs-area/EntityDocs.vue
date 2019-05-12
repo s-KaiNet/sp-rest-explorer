@@ -4,6 +4,9 @@
     <h2>Full name:
       <doc-link :full-type-name="entity.fullName" :doc-link-type="1"/>
     </h2>
+    <div v-if="!!entity.baseTypeName">
+        <h3> Base Type: <doc-link :full-type-name="entity.baseTypeName" :doc-link-type="1"/> </h3>
+    </div>
     <props-table title="Properties" :properties="entity.properties"></props-table>
     <props-table title="Navigation properties" :properties="entity.navigationProperties"></props-table>
     <funcs-table title="Methods" :entity="entity"></funcs-table>
