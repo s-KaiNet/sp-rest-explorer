@@ -5,7 +5,7 @@
       class="item"
       effect="light"
       content="Filters out the root level of the tree. Minimum 3 letters required."
-      placement="bottom"
+      placement="right"
     >
       <el-input
         size="small"
