@@ -20,6 +20,10 @@ async function execute(context: any): Promise<any> {
   context.log.info('Generating diff files')
 
   let diffJson = await getDiff()
+  
+  if (diffJson === null) {
+    diffJson = {}
+  }
 
   await saveDiff(diffJson)
 

@@ -4,10 +4,10 @@
     "module": "commonjs",
     "sourceMap": true,
     "moduleResolution": "node",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true
+    "skipDefaultLibCheck": true
   },
   "include": [
     "GenerateMetadata",
