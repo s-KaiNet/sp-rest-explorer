@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { decompressFromUTF16 } from 'lz-string'
 import { Metadata, FunctionImport } from '../../../az-funcs/src/interfaces'
 import { ObjectHelper } from './objectHelper'
 import { MonthDiffData } from '../models/MonthDiffData'
@@ -69,7 +68,7 @@ export class Api {
 
   public static fetchMetaData(): Promise<Metadata> {
     return axios.get(jsonUrl).then(result => {
-      let apiMetadata: Metadata = JSON.parse(decompressFromUTF16(result.data))
+      let apiMetadata: Metadata = result.data
       this.apiMetadata = apiMetadata
       return apiMetadata
     })
