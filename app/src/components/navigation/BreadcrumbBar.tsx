@@ -13,7 +13,7 @@ export function BreadcrumbBar({ segments, onNavigate }: BreadcrumbBarProps) {
     >
       {segments.map((segment, index) => {
         const isLast = index === segments.length - 1
-        const suffix = segment.kind === 'function' ? '(...)' : ''
+        const suffix = segment.hasParams ? '(...)' : ''
 
         return (
           <span key={segment.path} className="flex items-center">

@@ -9,6 +9,8 @@ export interface BreadcrumbSegment {
   label: string
   path: string
   kind: 'root' | 'function' | 'navProperty'
+  /** True when function has user-facing parameters (beyond implicit `this` binding) */
+  hasParams?: boolean
 }
 
 export interface ApiNavigationState {
@@ -17,6 +19,11 @@ export interface ApiNavigationState {
   currentEntity: EntityType | null
   currentFunction: FunctionImport | null
   isRoot: boolean
+}
+
+/** Returns true if function has user-facing parameters (not just `this` binding) */
+function hasUserParams(fn: FunctionImport): boolean {
+  return fn.parameters.some((p) => p.name !== 'this')
 }
 
 // ── Hook ──
@@ -82,6 +89,7 @@ export function useApiNavigation(): ApiNavigationState {
       label: parts[0],
       path: '/_api/' + parts[0],
       kind: 'function',
+      hasParams: rootFn ? hasUserParams(rootFn) : false,
     })
 
     if (rootFn) {
@@ -123,6 +131,7 @@ export function useApiNavigation(): ApiNavigationState {
       }
 
       segmentKind = child.kind === 'navProperty' ? 'navProperty' : 'function'
+      let segmentHasParams = false
 
       if (child.kind === 'navProperty') {
         currentEntity = entityByFullName.get(child.ref as string) ?? null
@@ -130,6 +139,7 @@ export function useApiNavigation(): ApiNavigationState {
       } else {
         const fn = functionById.get(child.ref as number)
         currentFunction = fn ?? null
+        segmentHasParams = fn ? hasUserParams(fn) : false
         if (fn?.isComposable && fn.returnType) {
           currentEntity = entityByFullName.get(fn.returnType) ?? null
         } else {
@@ -141,6 +151,7 @@ export function useApiNavigation(): ApiNavigationState {
         label: parts[i],
         path: '/_api/' + parts.slice(0, i + 1).join('/'),
         kind: segmentKind,
+        ...(segmentKind === 'function' ? { hasParams: segmentHasParams } : {}),
       })
     }
 
