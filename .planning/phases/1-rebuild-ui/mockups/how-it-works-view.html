@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SP REST Explorer – How It Works Mockup</title>
+<style>
+  /* ====== RESET & BASE ====== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: #f8f9fa;
+    color: #1a1a2e;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ====== HEADER ====== */
+  .header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 0 24px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header .logo { font-weight: 700; font-size: 15px; white-space: nowrap; color: #fff; }
+  .header nav { display: flex; gap: 8px; }
+  .header nav a {
+    color: #94a3b8; text-decoration: none; font-size: 13px; font-weight: 500;
+    padding: 6px 12px; border-radius: 6px; transition: all 0.15s;
+  }
+  .header nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .header nav a.active { color: #fff; background: rgba(255,255,255,0.12); }
+  .header .search-trigger {
+    margin-left: auto; display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px; padding: 6px 14px; color: #64748b; font-size: 13px;
+    cursor: pointer; min-width: 220px;
+  }
+  .header .search-trigger kbd {
+    margin-left: auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px; padding: 1px 6px; font-size: 11px; font-family: inherit; color: #64748b;
+  }
+
+  /* ====== PAGE ====== */
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .page-header {
+    margin-bottom: 40px;
+  }
+  .page-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+  .page-header .subtitle {
+    font-size: 15px;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  /* ====== CONTENT SECTIONS ====== */
+  .content-section {
+    margin-bottom: 36px;
+  }
+  .content-section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .content-section p {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .content-section p:last-child { margin-bottom: 0; }
+  .content-section a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+  .content-section a:hover { text-decoration: underline; }
+  code {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 13px;
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #0f172a;
+  }
+
+  /* ====== ARCHITECTURE DIAGRAM ====== */
+  .architecture-diagram {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 32px;
+    margin: 20px 0;
+  }
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: nowrap;
+  }
+  .arch-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    min-width: 120px;
+  }
+  .arch-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .arch-icon.sp { background: linear-gradient(135deg, #038387, #0078d4); }
+  .arch-icon.fn { background: linear-gradient(135deg, #f59e0b, #f97316); }
+  .arch-icon.blob { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+  .arch-icon.app { background: linear-gradient(135deg, #16a34a, #22c55e); }
+  .arch-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a2e;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .arch-sublabel {
+    font-size: 11px;
+    color: #94a3b8;
+    text-align: center;
+  }
+  .arch-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    min-width: 80px;
+  }
+  .arch-arrow-line {
+    height: 2px;
+    width: 100%;
+    background: #cbd5e1;
+    position: relative;
+  }
+  .arch-arrow-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid #cbd5e1;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+  .arch-arrow-text {
+    font-size: 10px;
+    color: #94a3b8;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* ====== CALLOUT BOX ====== */
+  .callout {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 16px 0;
+  }
+  .callout p {
+    font-size: 13px;
+    color: #78350f;
+    margin-bottom: 0;
+  }
+  .callout strong {
+    color: #92400e;
+  }
+
+  /* ====== FEEDBACK SECTION ====== */
+  .feedback-links {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .feedback-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #1a1a2e;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .feedback-link:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    box-shadow: 0 1px 3px rgba(37, 99, 235, 0.1);
+    text-decoration: none;
+  }
+  .feedback-link svg { width: 18px; height: 18px; }
+
+  /* ====== STATS ROW ====== */
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .stat-card {
+    flex: 1;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================== -->
+<!-- STATE 6: How It Works                                                  -->
+<!-- ====================================================================== -->
+
+<div class="header">
+  <span class="logo">SP REST Explorer</span>
+  <nav>
+    <a href="#">Explore API</a>
+    <a href="#">Explore Types</a>
+    <a href="#">API Changelog</a>
+    <a href="#" class="active">How it works</a>
+  </nav>
+  <div class="search-trigger">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    Search APIs...
+    <kbd>Ctrl K</kbd>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1>How it works</h1>
+    <p class="subtitle">Understanding the data behind the SharePoint REST API Metadata Explorer</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">2,449</div>
+      <div class="stat-label">Entity Types</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">11,967</div>
+      <div class="stat-label">Properties</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">3,528</div>
+      <div class="stat-label">Functions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">793</div>
+      <div class="stat-label">Root Endpoints</div>
+    </div>
+  </div>
+
+  <!-- Overview -->
+  <div class="content-section">
+    <h2>What is this?</h2>
+    <p>
+      SharePoint exposes a REST API whose structure is described in a special metadata file. You can fetch it from any SharePoint site by making a <code>GET</code> request to <code>https://your-site/_api/$metadata</code>.
+    </p>
+    <p>
+      This metadata describes all endpoints, methods, types, parameters, associations, annotations, and properties available in the SharePoint REST API. However, the raw XML is large (~1.5 MB) and difficult to navigate. This explorer parses that metadata into a searchable, browsable interface.
+    </p>
+  </div>
+
+  <!-- Important -->
+  <div class="content-section">
+    <h2>What you should know</h2>
+    <div class="callout">
+      <p>
+        <strong>Note:</strong> <code>$metadata</code> describes the <em>structure</em> of the REST API — it does not provide examples, HTTP methods, or usage guidance. For detailed documentation, refer to the <a href="https://docs.microsoft.com/en-us/sharepoint/dev/sp-add-ins/get-to-know-the-sharepoint-rest-service">official SharePoint REST service docs</a>.
+      </p>
+    </div>
+    <p>
+      This explorer uses metadata from a SharePoint Online tenant with <strong>Targeted release</strong> (formerly First Release). This means you always see the latest available snapshot of the API. Some endpoints shown here may be in preview and not yet available in your tenant.
+    </p>
+    <p>
+      Where available, this explorer links directly to official Microsoft documentation for specific entities and endpoints.
+    </p>
+  </div>
+
+  <!-- Architecture -->
+  <div class="content-section">
+    <h2>Architecture</h2>
+    <p>
+      The metadata is extracted and processed automatically through a pipeline:
+    </p>
+
+    <div class="architecture-diagram">
+      <div class="arch-flow">
+        <div class="arch-node">
+          <div class="arch-icon sp">SP</div>
+          <div class="arch-label">SharePoint Online</div>
+          <div class="arch-sublabel">Targeted release</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-text">_api/$metadata</div>
+          <div class="arch-arrow-line"></div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-icon fn">fn</div>
+          <div class="arch-label">Azure Function</div>
+          <div class="arch-sublabel">Daily timer trigger</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-text">JSON + diff</div>
+          <div class="arch-arrow-line"></div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-icon blob">B</div>
+          <div class="arch-label">Azure Blob Storage</div>
+          <div class="arch-sublabel">Public CDN</div>
+        </div>
+        <div class="arch-arrow">
+          <div class="arch-arrow-text">fetch on load</div>
+          <div class="arch-arrow-line"></div>
+        </div>
+        <div class="arch-node">
+          <div class="arch-icon app">E</div>
+          <div class="arch-label">Explorer App</div>
+          <div class="arch-sublabel">This website</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size: 13px; color: #64748b; margin-top: 16px;">
+      <strong style="color: #475569;">1.</strong> An Azure Function runs daily, fetching the latest <code>$metadata</code> from SharePoint Online.<br>
+      <strong style="color: #475569;">2.</strong> The function parses the XML metadata into a structured JSON object and generates a monthly diff.<br>
+      <strong style="color: #475569;">3.</strong> Both the full metadata JSON and monthly diff files are stored in Azure Blob Storage.<br>
+      <strong style="color: #475569;">4.</strong> This explorer app fetches the JSON on page load and renders it as a browsable interface.
+    </p>
+  </div>
+
+  <!-- Changelog -->
+  <div class="content-section">
+    <h2>Monthly change tracking</h2>
+    <p>
+      In addition to the full metadata snapshot, the Azure Function compares each month's metadata against the previous month and generates a structured diff. This powers the <a href="#/api-diff">API Changelog</a> page, which shows entities and endpoints that were added, updated, or removed each month over the last 6 months.
+    </p>
+  </div>
+
+  <!-- Feedback -->
+  <div class="content-section">
+    <h2>Feedback & contributions</h2>
+    <p>
+      Found a bug, have a suggestion, or want to contribute? This project is open source.
+    </p>
+    <div class="feedback-links">
+      <a href="https://github.com/AnomalyFi/sp-rest-explorer/issues" class="feedback-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Report an issue
+      </a>
+      <a href="https://github.com/AnomalyFi/sp-rest-explorer" class="feedback-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

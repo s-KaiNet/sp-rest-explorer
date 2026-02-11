@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SP REST Explorer – API Changelog Mockup</title>
+<style>
+  /* ====== RESET & BASE ====== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: #f8f9fa;
+    color: #1a1a2e;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ====== HEADER ====== */
+  .header {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 0 24px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header .logo {
+    font-weight: 700;
+    font-size: 15px;
+    white-space: nowrap;
+    color: #fff;
+  }
+  .header nav { display: flex; gap: 8px; }
+  .header nav a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .header nav a:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .header nav a.active {
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+  }
+  .header .search-trigger {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 6px 14px;
+    color: #64748b;
+    font-size: 13px;
+    cursor: pointer;
+    min-width: 220px;
+  }
+  .header .search-trigger kbd {
+    margin-left: auto;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 11px;
+    font-family: inherit;
+    color: #64748b;
+  }
+
+  /* ====== PAGE CONTAINER ====== */
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* ====== PAGE HEADER ====== */
+  .page-header {
+    margin-bottom: 28px;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+  .page-header .subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 0;
+  }
+
+  /* ====== MONTH TABS ====== */
+  .month-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0;
+    overflow-x: auto;
+  }
+  .month-tab {
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    white-space: nowrap;
+    transition: all 0.15s;
+    cursor: pointer;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+  .month-tab:hover {
+    color: #1a1a2e;
+  }
+  .month-tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+    font-weight: 600;
+  }
+
+  /* ====== SUMMARY BAR ====== */
+  .summary-bar {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 20px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  .summary-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+  }
+  .summary-stat .count {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .summary-stat.added .count { color: #16a34a; }
+  .summary-stat.updated .count { color: #ca8a04; }
+  .summary-stat.deleted .count { color: #dc2626; }
+  .summary-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .summary-dot.added { background: #16a34a; }
+  .summary-dot.updated { background: #ca8a04; }
+  .summary-dot.deleted { background: #dc2626; }
+
+  .summary-separator {
+    width: 1px;
+    height: 28px;
+    background: #e2e8f0;
+  }
+
+  .summary-total {
+    margin-left: auto;
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 400;
+  }
+
+  /* ====== FILTER CHIPS ====== */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .filter-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 4px;
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .filter-chip.added {
+    background: rgba(22, 163, 74, 0.08);
+    border-color: rgba(22, 163, 74, 0.25);
+    color: #16a34a;
+  }
+  .filter-chip.added:hover { background: rgba(22, 163, 74, 0.15); }
+  .filter-chip.updated {
+    background: rgba(202, 138, 4, 0.08);
+    border-color: rgba(202, 138, 4, 0.25);
+    color: #ca8a04;
+  }
+  .filter-chip.updated:hover { background: rgba(202, 138, 4, 0.15); }
+  .filter-chip.deleted {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.25);
+    color: #dc2626;
+  }
+  .filter-chip.deleted:hover { background: rgba(220, 38, 38, 0.15); }
+  .filter-chip .chip-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+  .filter-chip.added .chip-dot { background: #16a34a; }
+  .filter-chip.updated .chip-dot { background: #ca8a04; }
+  .filter-chip.deleted .chip-dot { background: #dc2626; }
+  .filter-chip.inactive {
+    opacity: 0.35;
+    background: transparent;
+  }
+
+  /* ====== SECTIONS ====== */
+  .section {
+    margin-bottom: 32px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .section-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a2e;
+  }
+  .section-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #64748b;
+  }
+
+  /* ====== ROOT FUNCTIONS TABLE ====== */
+  .root-fn-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .root-fn-table th {
+    background: #f8fafc;
+    text-align: left;
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .root-fn-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: top;
+  }
+  .root-fn-table tr:last-child td { border-bottom: none; }
+  .root-fn-table .fn-name {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .root-fn-table .fn-return {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 12px;
+    color: #64748b;
+  }
+  .root-fn-table .fn-return a {
+    color: #16a34a;
+    text-decoration: none;
+  }
+  .root-fn-table .fn-return a:hover { text-decoration: underline; }
+
+  /* Change type indicators on table rows */
+  .root-fn-table tr.change-added td:first-child { 
+    border-left: 3px solid #16a34a;
+  }
+  .root-fn-table tr.change-deleted td:first-child { 
+    border-left: 3px solid #dc2626;
+  }
+  .root-fn-table tr.change-updated td:first-child { 
+    border-left: 3px solid #ca8a04;
+  }
+  .change-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 1px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .change-tag.added { background: rgba(22,163,74,0.1); color: #16a34a; }
+  .change-tag.deleted { background: rgba(220,38,38,0.1); color: #dc2626; }
+  .change-tag.updated { background: rgba(202,138,4,0.1); color: #ca8a04; }
+
+  /* ====== ENTITY CARDS ====== */
+  .entity-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+  }
+  .entity-card:hover {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .entity-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .entity-card-header:hover {
+    background: #fafbfc;
+  }
+  .entity-chevron {
+    width: 16px;
+    height: 16px;
+    color: #94a3b8;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .entity-card.expanded .entity-chevron {
+    transform: rotate(90deg);
+  }
+  .entity-change-bar {
+    width: 4px;
+    height: 20px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .entity-change-bar.added { background: #16a34a; }
+  .entity-change-bar.updated { background: #ca8a04; }
+  .entity-change-bar.deleted { background: #dc2626; }
+  .entity-name {
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    color: #1a1a2e;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .entity-name a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .entity-name a:hover { color: #2563eb; text-decoration: underline; }
+  .entity-change-counts {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .entity-micro-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 8px;
+  }
+  .entity-micro-badge.added { background: rgba(22,163,74,0.1); color: #16a34a; }
+  .entity-micro-badge.deleted { background: rgba(220,38,38,0.1); color: #dc2626; }
+  .entity-micro-badge.updated { background: rgba(202,138,4,0.1); color: #ca8a04; }
+
+  /* Entity card body */
+  .entity-card-body {
+    border-top: 1px solid #f1f5f9;
+    padding: 0;
+    display: none;
+  }
+  .entity-card.expanded .entity-card-body {
+    display: block;
+  }
+
+  /* Sub-section inside entity */
+  .entity-subsection {
+    padding: 0;
+  }
+  .entity-subsection + .entity-subsection {
+    border-top: 1px solid #f1f5f9;
+  }
+  .entity-subsection-header {
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    background: #f8fafc;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .entity-sub-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .entity-sub-table td {
+    padding: 8px 16px;
+    border-bottom: 1px solid #f8fafc;
+    vertical-align: top;
+  }
+  .entity-sub-table tr:last-child td { border-bottom: none; }
+  .entity-sub-table .prop-name {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a2e;
+    width: 45%;
+  }
+  .entity-sub-table .prop-type {
+    font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', Consolas, monospace;
+    font-size: 12px;
+    color: #64748b;
+  }
+  .entity-sub-table .prop-type a {
+    color: #16a34a;
+    text-decoration: none;
+  }
+  .entity-sub-table .prop-type a:hover { text-decoration: underline; }
+
+  /* Row-level change indicators */
+  .entity-sub-table tr.row-added td:first-child {
+    border-left: 3px solid #16a34a;
+  }
+  .entity-sub-table tr.row-deleted td:first-child {
+    border-left: 3px solid #dc2626;
+  }
+  .entity-sub-table tr.row-updated td:first-child {
+    border-left: 3px solid #ca8a04;
+  }
+  .entity-sub-table tr.row-deleted .prop-name,
+  .entity-sub-table tr.row-deleted .prop-type {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  /* ====== EMPTY STATE ====== */
+  .empty-state {
+    text-align: center;
+    padding: 60px 24px;
+    color: #94a3b8;
+  }
+  .empty-state .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+  .empty-state h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 8px;
+  }
+  .empty-state p {
+    font-size: 14px;
+    color: #94a3b8;
+  }
+
+  /* ====== STATE TABS ====== */
+  .state-tabs {
+    display: flex;
+    gap: 4px;
+    margin: 32px 0 16px;
+    padding: 4px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    width: fit-content;
+  }
+  .state-tab {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: all 0.15s;
+  }
+  .state-tab.active {
+    background: #fff;
+    color: #1a1a2e;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+
+  /* ====== MOCKUP DIVIDER ====== */
+  .mockup-divider {
+    margin: 48px 0;
+    padding: 20px;
+    background: #fef3c7;
+    border: 1px dashed #f59e0b;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .mockup-divider h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 4px;
+  }
+  .mockup-divider p {
+    font-size: 13px;
+    color: #a16207;
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================================================================== -->
+<!-- STATE 5a: API Changelog — Active month with changes (Feb 2026)         -->
+<!-- ====================================================================== -->
+
+<div class="header">
+  <span class="logo">SP REST Explorer</span>
+  <nav>
+    <a href="#">Explore API</a>
+    <a href="#">Explore Types</a>
+    <a href="#" class="active">API Changelog</a>
+    <a href="#">How it works</a>
+  </nav>
+  <div class="search-trigger">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    Search APIs...
+    <kbd>Ctrl K</kbd>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1>API Changelog</h1>
+    <p class="subtitle">What's new and what's changed in SharePoint REST API — updated monthly</p>
+  </div>
+
+  <!-- Month tabs -->
+  <div class="month-tabs">
+    <button class="month-tab active">February 2026</button>
+    <button class="month-tab">January 2026</button>
+    <button class="month-tab">December 2025</button>
+    <button class="month-tab">November 2025</button>
+    <button class="month-tab">October 2025</button>
+    <button class="month-tab">September 2025</button>
+  </div>
+
+  <!-- Summary bar -->
+  <div class="summary-bar">
+    <div class="summary-stat added">
+      <span class="summary-dot added"></span>
+      <span class="count">9</span>
+      <span>Added</span>
+    </div>
+    <div class="summary-stat updated">
+      <span class="summary-dot updated"></span>
+      <span class="count">13</span>
+      <span>Updated</span>
+    </div>
+    <div class="summary-stat deleted">
+      <span class="summary-dot deleted"></span>
+      <span class="count">8</span>
+      <span>Removed</span>
+    </div>
+    <div class="summary-separator"></div>
+    <span class="summary-total">26 entities · 2 root functions</span>
+  </div>
+
+  <!-- Filter chips -->
+  <div class="filter-row">
+    <span class="filter-label">Show:</span>
+    <button class="filter-chip added">
+      <span class="chip-dot"></span> Added
+    </button>
+    <button class="filter-chip updated">
+      <span class="chip-dot"></span> Updated
+    </button>
+    <button class="filter-chip deleted">
+      <span class="chip-dot"></span> Removed
+    </button>
+  </div>
+
+  <!-- ====== ROOT FUNCTIONS ====== -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Root Functions</h2>
+      <span class="section-badge">2 changes</span>
+    </div>
+    <table class="root-fn-table">
+      <thead>
+        <tr>
+          <th style="width: 55%">Function</th>
+          <th style="width: 30%">Return Type</th>
+          <th style="width: 15%">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="change-added">
+          <td class="fn-name">SP.Automations.CreateFlow</td>
+          <td class="fn-return">Edm.Stream</td>
+          <td><span class="change-tag added">Added</span></td>
+        </tr>
+        <tr class="change-deleted">
+          <td class="fn-name">SP.Automations.SaveNewFlow</td>
+          <td class="fn-return">Edm.Stream</td>
+          <td><span class="change-tag deleted">Removed</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ====== ENTITIES ====== -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Entities</h2>
+      <span class="section-badge">24 entities changed</span>
+    </div>
+
+    <!-- Entity: New entity (fully added) — EXPANDED -->
+    <div class="entity-card expanded">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar added"></div>
+        <span class="entity-name"><a href="#/entity/SP.Directory.ConditionalAccessPolicy">SP.Directory.ConditionalAccessPolicy</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+7 props</span>
+        </div>
+        <span class="change-tag added">New</span>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">conditions</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">displayName</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">grantControls</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">id</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">sessionControls</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">state</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">templateId</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity: Updated entity with mixed changes — EXPANDED -->
+    <div class="entity-card expanded">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.Sharing.SharingSettingsAbilities">SP.Sharing.SharingSettingsAbilities</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+2</span>
+          <span class="entity-micro-badge deleted">-4</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">canManageBlockMembersCanShare</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">canManageBlockSharingPushdown</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">canGetBlockSharingPushDown</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">canGetItemMembersCanShare</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">canManageBlockSharingPushDown</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">canManageItemMembersCanShare</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity: Updated with functions — EXPANDED -->
+    <div class="entity-card expanded">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.Directory.DirectorySession">SP.Directory.DirectorySession</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+2 fn</span>
+          <span class="entity-micro-badge deleted">-1 fn</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Functions</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">ConditionalAccessPolicy</td>
+              <td class="prop-type"><a href="#/entity/SP.Directory.ConditionalAccessPolicy">SP.Directory.ConditionalAccessPolicy</a></td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">CreateConditionalAccessPolicy</td>
+              <td class="prop-type"><a href="#/entity/SP.Directory.ConditionalAccessPolicy">SP.Directory.ConditionalAccessPolicy</a></td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">GetGraphUser</td>
+              <td class="prop-type"><a href="#/entity/SP.Directory.User">SP.Directory.User</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity: Updated with properties + functions — EXPANDED -->
+    <div class="entity-card expanded">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.Tenant">Microsoft.Online.SharePoint.TenantAdministration.Tenant</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+3 fn</span>
+          <span class="entity-micro-badge deleted">-7 fn</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Functions</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">GetTenantApplyFileVersionPolicyJobProgress</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">NewTenantApplyFileVersionPolicyJob</td>
+              <td class="prop-type"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.SpoOperation">...SpoOperation</a></td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">RemoveTenantApplyFileVersionPolicyJob</td>
+              <td class="prop-type"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.SpoOperation">...SpoOperation</a></td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">DisableCollaborationInsightsDataCollection</td>
+              <td class="prop-type" style="font-style: italic; color: #94a3b8">void</td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">DownloadSharingInsights</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">EnableCollaborationInsightsDataCollection</td>
+              <td class="prop-type" style="font-style: italic; color: #94a3b8">void</td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">GetCollaborationInsightsData</td>
+              <td class="prop-type"><a href="#/entity/Microsoft.SharePoint.Administration.TenantAdmin.CollaborationInsightsData">...CollaborationInsightsData</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity: Simple property addition — COLLAPSED -->
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.DocumentGenerationInfo">SP.DocumentGenerationInfo</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+1 prop</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">AllowEncryptedTemplate</td>
+              <td class="prop-type">Edm.Boolean</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity: Simple property addition — COLLAPSED -->
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.PublishModernTemplatePayload">SP.PublishModernTemplatePayload</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+1 prop</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">ProcessConditionalFields</td>
+              <td class="prop-type">Edm.Boolean</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity: Deleted entity — COLLAPSED -->
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar deleted"></div>
+        <span class="entity-name" style="text-decoration: line-through; opacity: 0.6"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.OneDriveSiteSharingInsights">Microsoft.Online.SharePoint.TenantAdministration.OneDriveSiteSharingInsights</a></span>
+        <span class="change-tag deleted">Removed</span>
+      </div>
+      <div class="entity-card-body"></div>
+    </div>
+
+    <!-- Entity: Deleted entity — COLLAPSED -->
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar deleted"></div>
+        <span class="entity-name" style="text-decoration: line-through; opacity: 0.6"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.SharePointSiteSharingInsights">Microsoft.Online.SharePoint.TenantAdministration.SharePointSiteSharingInsights</a></span>
+        <span class="change-tag deleted">Removed</span>
+      </div>
+      <div class="entity-card-body"></div>
+    </div>
+
+    <!-- Entity: Deleted entity — COLLAPSED -->
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar deleted"></div>
+        <span class="entity-name" style="text-decoration: line-through; opacity: 0.6"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.TopFilesSharingInsights">Microsoft.Online.SharePoint.TenantAdministration.TopFilesSharingInsights</a></span>
+        <span class="change-tag deleted">Removed</span>
+      </div>
+      <div class="entity-card-body"></div>
+    </div>
+
+    <!-- More collapsed cards to show the pattern -->
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.Sharing.ItemSharingSettings">SP.Sharing.ItemSharingSettings</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+2 props</span>
+          <span class="entity-micro-badge deleted">-1 prop</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">blockMembersCanShare</td>
+              <td class="prop-type">Edm.Boolean</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">blockSharingPushdown</td>
+              <td class="prop-type">Edm.Boolean</td>
+            </tr>
+            <tr class="row-deleted">
+              <td class="prop-name">blockSharingPushDown</td>
+              <td class="prop-type">Edm.Boolean</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.ColumnSet">SP.ColumnSet</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+1 prop</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">selectAction</td>
+              <td class="prop-type"><a href="#/entity/SP.AdaptiveCardAction">SP.AdaptiveCardAction</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="entity-card">
+      <div class="entity-card-header" onclick="this.parentElement.classList.toggle('expanded')">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar added"></div>
+        <span class="entity-name"><a href="#/entity/Microsoft.SharePoint.ContentSolution.Models.Responses.ContentControlStdContent">...ContentControlStdContent</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+3 props</span>
+        </div>
+        <span class="change-tag added">New</span>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">ContentControlId</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">StdContent</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">Tag</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /section -->
+</div><!-- /page -->
+
+
+<!-- ====================================================================== -->
+<!-- MOCKUP STATE DIVIDER                                                   -->
+<!-- ====================================================================== -->
+<div class="mockup-divider" style="max-width: 960px; margin: 48px auto;">
+  <h3>State 5b: Empty Month</h3>
+  <p>When a month has no API changes recorded yet (e.g. current month on day 1)</p>
+</div>
+
+
+<!-- ====================================================================== -->
+<!-- STATE 5b: API Changelog — Empty month (no changes)                     -->
+<!-- ====================================================================== -->
+
+<div class="header">
+  <span class="logo">SP REST Explorer</span>
+  <nav>
+    <a href="#">Explore API</a>
+    <a href="#">Explore Types</a>
+    <a href="#" class="active">API Changelog</a>
+    <a href="#">How it works</a>
+  </nav>
+  <div class="search-trigger">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    Search APIs...
+    <kbd>Ctrl K</kbd>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1>API Changelog</h1>
+    <p class="subtitle">What's new and what's changed in SharePoint REST API — updated monthly</p>
+  </div>
+
+  <!-- Month tabs - different month active -->
+  <div class="month-tabs">
+    <button class="month-tab">February 2026</button>
+    <button class="month-tab">January 2026</button>
+    <button class="month-tab active">December 2025</button>
+    <button class="month-tab">November 2025</button>
+    <button class="month-tab">October 2025</button>
+    <button class="month-tab">September 2025</button>
+  </div>
+
+  <!-- Summary bar showing zeroes -->
+  <div class="summary-bar">
+    <div class="summary-stat added">
+      <span class="summary-dot added"></span>
+      <span class="count">0</span>
+      <span>Added</span>
+    </div>
+    <div class="summary-stat updated">
+      <span class="summary-dot updated"></span>
+      <span class="count">0</span>
+      <span>Updated</span>
+    </div>
+    <div class="summary-stat deleted">
+      <span class="summary-dot deleted"></span>
+      <span class="count">0</span>
+      <span>Removed</span>
+    </div>
+    <div class="summary-separator"></div>
+    <span class="summary-total">0 changes</span>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state">
+    <div class="icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/><path d="M9 14l2 2 4-4"/></svg>
+    </div>
+    <h3>No changes recorded</h3>
+    <p>No API changes were detected for December 2025. The diff is generated by comparing monthly metadata snapshots.</p>
+  </div>
+</div>
+
+
+<!-- ====================================================================== -->
+<!-- MOCKUP STATE DIVIDER                                                   -->
+<!-- ====================================================================== -->
+<div class="mockup-divider" style="max-width: 960px; margin: 48px auto;">
+  <h3>State 5c: Filtered View (showing only "Added")</h3>
+  <p>User has clicked "Added" filter chip — only new entities and additions shown</p>
+</div>
+
+
+<!-- ====================================================================== -->
+<!-- STATE 5c: API Changelog — Filtered to "Added" only                     -->
+<!-- ====================================================================== -->
+
+<div class="header">
+  <span class="logo">SP REST Explorer</span>
+  <nav>
+    <a href="#">Explore API</a>
+    <a href="#">Explore Types</a>
+    <a href="#" class="active">API Changelog</a>
+    <a href="#">How it works</a>
+  </nav>
+  <div class="search-trigger">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    Search APIs...
+    <kbd>Ctrl K</kbd>
+  </div>
+</div>
+
+<div class="page">
+  <div class="page-header">
+    <h1>API Changelog</h1>
+    <p class="subtitle">What's new and what's changed in SharePoint REST API — updated monthly</p>
+  </div>
+
+  <div class="month-tabs">
+    <button class="month-tab active">February 2026</button>
+    <button class="month-tab">January 2026</button>
+    <button class="month-tab">December 2025</button>
+    <button class="month-tab">November 2025</button>
+    <button class="month-tab">October 2025</button>
+    <button class="month-tab">September 2025</button>
+  </div>
+
+  <div class="summary-bar">
+    <div class="summary-stat added">
+      <span class="summary-dot added"></span>
+      <span class="count">9</span>
+      <span>Added</span>
+    </div>
+    <div class="summary-stat updated">
+      <span class="summary-dot updated"></span>
+      <span class="count">13</span>
+      <span>Updated</span>
+    </div>
+    <div class="summary-stat deleted">
+      <span class="summary-dot deleted"></span>
+      <span class="count">8</span>
+      <span>Removed</span>
+    </div>
+    <div class="summary-separator"></div>
+    <span class="summary-total">Showing added only</span>
+  </div>
+
+  <!-- Filter chips - only "Added" active -->
+  <div class="filter-row">
+    <span class="filter-label">Show:</span>
+    <button class="filter-chip added">
+      <span class="chip-dot"></span> Added
+    </button>
+    <button class="filter-chip updated inactive">
+      <span class="chip-dot"></span> Updated
+    </button>
+    <button class="filter-chip deleted inactive">
+      <span class="chip-dot"></span> Removed
+    </button>
+  </div>
+
+  <!-- Only root functions that are "added" -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Root Functions</h2>
+      <span class="section-badge">1 added</span>
+    </div>
+    <table class="root-fn-table">
+      <thead>
+        <tr>
+          <th style="width: 55%">Function</th>
+          <th style="width: 30%">Return Type</th>
+          <th style="width: 15%">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="change-added">
+          <td class="fn-name">SP.Automations.CreateFlow</td>
+          <td class="fn-return">Edm.Stream</td>
+          <td><span class="change-tag added">Added</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Only entities with additions -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Entities</h2>
+      <span class="section-badge">9 with additions</span>
+    </div>
+
+    <!-- New entity -->
+    <div class="entity-card expanded">
+      <div class="entity-card-header">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar added"></div>
+        <span class="entity-name"><a href="#/entity/SP.Directory.ConditionalAccessPolicy">SP.Directory.ConditionalAccessPolicy</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+7 props</span>
+        </div>
+        <span class="change-tag added">New</span>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">conditions</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">displayName</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">grantControls</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">id</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">sessionControls</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">state</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">templateId</td>
+              <td class="prop-type">Edm.String</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Updated entity — only showing the added rows, deleted rows hidden -->
+    <div class="entity-card expanded">
+      <div class="entity-card-header">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar updated"></div>
+        <span class="entity-name"><a href="#/entity/SP.Sharing.SharingSettingsAbilities">SP.Sharing.SharingSettingsAbilities</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+2</span>
+        </div>
+      </div>
+      <div class="entity-card-body">
+        <div class="entity-subsection">
+          <div class="entity-subsection-header">Properties (added only)</div>
+          <table class="entity-sub-table">
+            <tr class="row-added">
+              <td class="prop-name">canManageBlockMembersCanShare</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+            <tr class="row-added">
+              <td class="prop-name">canManageBlockSharingPushdown</td>
+              <td class="prop-type"><a href="#/entity/SP.Sharing.SharingAbilityStatus">SP.Sharing.SharingAbilityStatus</a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- New entity -->
+    <div class="entity-card">
+      <div class="entity-card-header">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar added"></div>
+        <span class="entity-name"><a href="#/entity/Microsoft.SharePoint.ContentSolution.Models.Responses.ContentControlStdContent">...ContentControlStdContent</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+3 props</span>
+        </div>
+        <span class="change-tag added">New</span>
+      </div>
+      <div class="entity-card-body"></div>
+    </div>
+
+    <!-- More collapsed entries showing the filtered pattern -->
+    <div class="entity-card">
+      <div class="entity-card-header">
+        <svg class="entity-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5V3z"/></svg>
+        <div class="entity-change-bar added"></div>
+        <span class="entity-name"><a href="#/entity/Microsoft.Online.SharePoint.TenantAdministration.SPDataGovernanceInsightCreateParameters">...SPDataGovernanceInsightCreateParameters</a></span>
+        <div class="entity-change-counts">
+          <span class="entity-micro-badge added">+12 props</span>
+        </div>
+        <span class="change-tag added">New</span>
+      </div>
+      <div class="entity-card-body"></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

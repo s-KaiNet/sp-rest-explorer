@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SP REST Explorer — Home Screen Mockup v3</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --border-light: #f0f0f0;
+    --text: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --fn-color: #2563eb;
+    --entity-color: #059669;
+    --nav-color: #7c3aed;
+    --green-light: #dcfce7;
+    --green-text: #166534;
+    --purple-light: #f3e8ff;
+    --blue-light: #dbeafe;
+    --gray-light: #f3f4f6;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5; min-height: 100vh;
+  }
+
+  /* ── Header ───────────────────────────────────── */
+  .header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 24px; height: 56px; display: flex; align-items: center;
+    justify-content: space-between; position: sticky; top: 0; z-index: 100;
+  }
+  .header-left { display: flex; align-items: center; gap: 24px; }
+  .logo {
+    display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px;
+    color: var(--text); text-decoration: none; letter-spacing: -0.01em;
+  }
+  .logo-icon {
+    width: 28px; height: 28px; background: var(--accent); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 14px;
+  }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a {
+    text-decoration: none; color: var(--text-secondary); font-size: 13.5px;
+    font-weight: 500; padding: 6px 12px; border-radius: 6px; transition: all 0.15s;
+  }
+  .nav-links a:hover { background: var(--gray-light); color: var(--text); }
+  .nav-links a.active { color: var(--text); background: var(--gray-light); }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .search-trigger {
+    display: flex; align-items: center; gap: 8px; padding: 6px 12px;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); color: var(--text-muted); font-size: 13px;
+    cursor: pointer; transition: all 0.15s; min-width: 220px;
+  }
+  .search-trigger:hover { border-color: #d1d5db; background: var(--gray-light); }
+  .search-trigger kbd {
+    margin-left: auto; font-size: 11px; font-family: inherit;
+    background: var(--gray-light); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1px 5px; color: var(--text-muted);
+  }
+  .icon-btn {
+    width: 34px; height: 34px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); cursor: pointer; display: flex; align-items: center;
+    justify-content: center; color: var(--text-secondary); transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--gray-light); color: var(--text); }
+
+  /* ── Main Content (no sidebar on home) ────────── */
+  .main { max-width: 1080px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* ── Hero ──────────────────────────────────────── */
+  .hero { text-align: center; margin-bottom: 48px; }
+  .hero h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 8px; }
+  .hero p { color: var(--text-secondary); font-size: 15px; margin-bottom: 24px; }
+  .hero-search { max-width: 520px; margin: 0 auto; position: relative; }
+  .hero-search input {
+    width: 100%; padding: 12px 16px 12px 42px; border: 1px solid var(--border);
+    border-radius: 10px; font-size: 15px; background: var(--surface);
+    box-shadow: var(--shadow-md); transition: all 0.2s; outline: none;
+  }
+  .hero-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1), var(--shadow-md); }
+  .hero-search input::placeholder { color: var(--text-muted); }
+  .hero-search .search-icon-lg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+  .hero-search kbd {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 11px; font-family: inherit; background: var(--gray-light);
+    border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--text-muted);
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 24px; margin-top: 16px;
+    font-size: 12.5px; color: var(--text-muted);
+  }
+  .hero-stats span { display: flex; align-items: center; gap: 4px; }
+  .hero-stats .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  .hero-stats .dot-fn { background: var(--fn-color); }
+  .hero-stats .dot-ent { background: var(--entity-color); }
+  .hero-stats .dot-nav { background: var(--nav-color); }
+
+  /* ── Section ──────────────────────────────────── */
+  .section { margin-bottom: 40px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .section-title {
+    font-size: 13px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--text-secondary); display: flex;
+    align-items: center; gap: 6px;
+  }
+  .section-action { font-size: 12.5px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .section-action:hover { text-decoration: underline; }
+
+  /* ── Recent grid ──────────────────────────────── */
+  .recent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+  .recent-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    cursor: pointer; transition: all 0.15s; text-decoration: none; color: inherit;
+  }
+  .recent-item:hover { border-color: #d1d5db; box-shadow: var(--shadow-sm); }
+  .recent-icon {
+    width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .recent-icon.fn { background: var(--blue-light); color: var(--fn-color); }
+  .recent-icon.entity { background: var(--green-light); color: var(--entity-color); }
+  .recent-info { min-width: 0; flex: 1; }
+  .recent-name { font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .recent-path {
+    font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; font-family: 'SF Mono','Cascadia Code','Consolas',monospace;
+  }
+  .recent-time { font-size: 11px; color: var(--text-muted); flex-shrink: 0; }
+
+  /* ── Popular Endpoints (grouped) ──────────────── */
+  .popular-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .popular-group {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 16px; transition: all 0.15s;
+  }
+  .popular-group:hover { box-shadow: var(--shadow-md); border-color: #d1d5db; }
+  .popular-group-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  }
+  .popular-group-icon {
+    width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 14px; flex-shrink: 0;
+  }
+  .popular-group-icon.core { background: var(--blue-light); }
+  .popular-group-icon.content { background: var(--green-light); }
+  .popular-group-icon.social { background: var(--purple-light); }
+  .popular-group-icon.search { background: #fff7ed; }
+  .popular-group-icon.admin { background: #fef3c7; }
+  .popular-group-icon.ml { background: var(--gray-light); }
+  .popular-group-name { font-size: 13.5px; font-weight: 600; }
+  .popular-group-items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .popular-chip {
+    display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+    border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.15s;
+    text-decoration: none; color: var(--text); border: 1px solid var(--border-light);
+    background: var(--bg);
+  }
+  .popular-chip:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-light); }
+  .popular-chip .fn-marker {
+    font-size: 11px; font-weight: 700; color: var(--fn-color); font-style: italic; opacity: 0.6;
+  }
+
+  .all-endpoints-link {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 16px; font-size: 13px; color: var(--text-secondary);
+    text-decoration: none; padding: 10px; border: 1px dashed var(--border);
+    border-radius: var(--radius); transition: all 0.15s;
+  }
+  .all-endpoints-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .all-endpoints-link .count {
+    font-size: 11px; background: var(--gray-light); padding: 1px 7px; border-radius: 10px;
+  }
+
+  /* ── Footer hint ──────────────────────────────── */
+  .footer-hint {
+    text-align: center; margin-top: 48px; padding: 20px; color: var(--text-muted);
+    font-size: 12.5px; display: flex; align-items: center; justify-content: center; gap: 16px;
+  }
+  .footer-hint kbd {
+    font-size: 11px; font-family: inherit; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; color: var(--text-muted);
+  }
+
+  /* ── Page divider ─────────────────────────────── */
+  .page-divider {
+    text-align: center; padding: 40px 24px; color: var(--text-muted); font-size: 13px;
+    background: linear-gradient(to bottom, var(--bg) 0%, #f0f4ff 50%, var(--bg) 100%);
+  }
+  .page-divider .arrow-down { display: block; font-size: 28px; margin-bottom: 8px; color: var(--accent); animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+  /* ── State label ──────────────────────────────── */
+  .state-label {
+    position: sticky; top: 68px; float: right; margin-right: 16px;
+    background: var(--accent); color: white; font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px; letter-spacing: 0.03em; z-index: 200; box-shadow: var(--shadow-md);
+  }
+  .state-label.green { background: #059669; }
+  .state-label.orange { background: #d97706; }
+
+  /* ── After-selection layout ───────────────────── */
+  .page-block { min-height: 100vh; background: var(--bg); }
+
+  /* Full-width breadcrumb bar ABOVE sidebar+content */
+  .breadcrumb-bar {
+    display: flex; align-items: center; gap: 6px; padding: 10px 24px;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+    font-size: 13px; font-family: 'SF Mono','Cascadia Code','Consolas',monospace;
+    flex-shrink: 0;
+  }
+  .breadcrumb-bar .bc-segment {
+    color: var(--accent); cursor: pointer; text-decoration: none;
+    padding: 2px 4px; border-radius: 4px; transition: background 0.1s;
+  }
+  .bc-segment:hover { background: var(--accent-light); }
+  .bc-separator { color: var(--text-muted); font-size: 11px; }
+  .bc-current { font-weight: 600; color: var(--text); }
+  .bc-copy-btn {
+    margin-left: auto; display: flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 12px; color: var(--text-secondary); background: var(--surface);
+    cursor: pointer; transition: all 0.15s; font-family: inherit;
+  }
+  .bc-copy-btn:hover { background: var(--gray-light); color: var(--text); }
+  .bc-hint {
+    font-size: 10.5px; color: var(--text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-style: italic; margin-left: 4px;
+  }
+
+  /* Layout container: breadcrumb on top, then sidebar+content below */
+  .app-layout {
+    display: flex; flex-direction: column; height: calc(100vh - 56px);
+  }
+  .app-shell {
+    display: flex; flex: 1; min-height: 0; /* important for overflow */
+  }
+
+  /* ── Sidebar ──────────────────────────────────── */
+  .sidebar {
+    width: 280px; min-width: 200px; max-width: 500px;
+    border-right: 1px solid var(--border); background: var(--surface);
+    display: flex; flex-direction: column; flex-shrink: 0; position: relative;
+  }
+  .sidebar-list { flex: 1; overflow-y: auto; padding: 6px 8px; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 8px; padding: 6px 10px;
+    border-radius: 6px; font-size: 13px; cursor: pointer; transition: all 0.1s;
+    color: var(--text); text-decoration: none;
+  }
+  .sidebar-item:hover { background: var(--gray-light); }
+  .sidebar-item.active { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+  .sidebar-item .item-name {
+    flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sidebar-item .type-tag {
+    font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px;
+    margin-left: auto; flex-shrink: 0;
+  }
+  .type-tag.fn { background: var(--blue-light); color: var(--fn-color); }
+  .type-tag.nav { background: var(--purple-light); color: var(--nav-color); }
+  .sidebar-resize {
+    position: absolute; right: -3px; top: 0; bottom: 0; width: 6px;
+    cursor: col-resize; z-index: 10;
+  }
+  .sidebar-resize:hover { background: var(--accent); opacity: 0.3; }
+
+  /* Sidebar filter (for _api root view) */
+  .sidebar-filter { padding: 8px 8px 4px; border-bottom: 1px solid var(--border); position: relative; }
+  .sidebar-filter input {
+    width: 100%; padding: 6px 10px 6px 30px; border: 1px solid var(--border);
+    border-radius: 6px; font-size: 12.5px; outline: none; background: var(--bg); transition: border-color 0.15s;
+  }
+  .sidebar-filter input:focus { border-color: var(--accent); }
+  .sidebar-filter input::placeholder { color: var(--text-muted); }
+  .sidebar-filter .filter-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+  .sidebar-filter-count { font-size: 11px; color: var(--text-muted); padding: 4px 10px 2px; text-align: center; }
+
+  /* ── Content panel ────────────────────────────── */
+  .content-panel { flex: 1; overflow-y: auto; }
+
+  /* ── Doc banner ───────────────────────────────── */
+  .doc-banner {
+    margin: 16px 24px 0; padding: 10px 14px; background: var(--green-light);
+    border-radius: var(--radius); font-size: 13px; color: var(--green-text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .doc-banner a { color: var(--green-text); font-weight: 600; text-decoration: underline; }
+
+  /* ── Detail content ───────────────────────────── */
+  .detail-content { padding: 24px; }
+  .detail-entity-name { font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+  .detail-entity-full {
+    font-size: 13.5px; color: var(--text-secondary); margin-bottom: 20px;
+    font-family: 'SF Mono','Cascadia Code','Consolas',monospace;
+  }
+  .detail-section { margin-bottom: 24px; }
+  .detail-section-header {
+    display: flex; align-items: center; gap: 8px; padding: 8px 0;
+    border-bottom: 1px solid var(--border); margin-bottom: 10px; cursor: pointer; user-select: none;
+  }
+  .detail-section-header h3 { font-size: 14px; font-weight: 600; }
+  .detail-section-count { font-size: 12px; color: var(--text-muted); background: var(--gray-light); padding: 1px 7px; border-radius: 10px; }
+  .detail-section-chevron { margin-left: auto; color: var(--text-muted); font-size: 11px; }
+  .method-row {
+    display: flex; align-items: baseline; gap: 8px; padding: 6px 0;
+    border-bottom: 1px solid var(--border-light); font-size: 13.5px;
+  }
+  .method-name { font-weight: 600; color: var(--fn-color); font-family: 'SF Mono','Cascadia Code','Consolas',monospace; }
+  .method-params { color: var(--text-secondary); font-family: 'SF Mono','Cascadia Code','Consolas',monospace; font-size: 12.5px; }
+  .method-arrow { color: var(--text-muted); font-family: 'SF Mono','Cascadia Code','Consolas',monospace; }
+  .method-return { color: var(--entity-color); font-family: 'SF Mono','Cascadia Code','Consolas',monospace; font-weight: 500; cursor: pointer; font-size: 12.5px; }
+  .method-return:hover { text-decoration: underline; }
+
+  /* ── _api root welcome ────────────────────────── */
+  .root-welcome { padding: 32px 24px; max-width: 640px; }
+  .root-welcome h2 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .root-welcome p { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
+  .root-welcome-hint {
+    display: flex; align-items: center; gap: 8px; padding: 12px 14px;
+    background: var(--accent-light); border-radius: var(--radius); font-size: 13px; color: var(--accent);
+  }
+
+  /* ── Cmd+K Overlay ────────────────────────────── */
+  .cmdk-preview {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4); display: none; align-items: flex-start;
+    justify-content: center; padding-top: 120px; z-index: 500;
+  }
+  .cmdk-preview.visible { display: flex; }
+  .cmdk-dialog {
+    width: 560px; background: var(--surface); border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); overflow: hidden;
+  }
+  .cmdk-input-row {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cmdk-input-row .search-icon { color: var(--text-muted); flex-shrink: 0; }
+  .cmdk-input-row input { flex: 1; border: none; outline: none; font-size: 15px; background: transparent; color: var(--text); }
+  .cmdk-input-row input::placeholder { color: var(--text-muted); }
+  .cmdk-results { max-height: 360px; overflow-y: auto; padding: 8px; }
+  .cmdk-group-label {
+    font-size: 11.5px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 8px 8px 4px;
+  }
+  .cmdk-result {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+    border-radius: 6px; cursor: pointer; transition: background 0.1s;
+  }
+  .cmdk-result:hover, .cmdk-result.selected { background: var(--accent-light); }
+  .cmdk-result-icon {
+    width: 24px; height: 24px; border-radius: 4px; display: flex; align-items: center;
+    justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .cmdk-result-icon.fn { background: var(--blue-light); color: var(--fn-color); }
+  .cmdk-result-icon.ent { background: var(--green-light); color: var(--entity-color); }
+  .cmdk-result-text { flex: 1; min-width: 0; }
+  .cmdk-result-name { font-size: 13.5px; font-weight: 500; }
+  .cmdk-result-name mark { background: #fef08a; color: inherit; border-radius: 2px; padding: 0 1px; }
+  .cmdk-result-path {
+    font-size: 11.5px; color: var(--text-muted); font-family: 'SF Mono','Cascadia Code','Consolas',monospace;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cmdk-footer {
+    display: flex; align-items: center; gap: 16px; padding: 10px 16px;
+    border-top: 1px solid var(--border); font-size: 11.5px; color: var(--text-muted);
+  }
+  .cmdk-footer span { display: flex; align-items: center; gap: 4px; }
+  .cmdk-footer kbd {
+    font-size: 10px; font-family: inherit; background: var(--gray-light);
+    border: 1px solid var(--border); border-radius: 3px; padding: 1px 4px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STATE 1: HOME SCREEN                           -->
+<!-- ═══════════════════════════════════════════════ -->
+
+<div class="state-label">STATE 1 &mdash; Home</div>
+
+<header class="header">
+  <div class="header-left">
+    <a href="#" class="logo"><span class="logo-icon">SP</span> REST Explorer</a>
+    <nav class="nav-links">
+      <a href="#" class="active">Explore API</a>
+      <a href="#">Explore Types</a>
+      <a href="#">API Changelog</a>
+      <a href="#">How it works</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger" onclick="toggleCmdk()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search APIs...
+      <kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn" title="GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>SharePoint REST API Explorer</h1>
+    <p>Browse, search, and understand every endpoint in the SharePoint REST API.</p>
+    <div class="hero-search">
+      <svg class="search-icon-lg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search functions, entities, properties..." onfocus="toggleCmdk()" readonly>
+      <kbd>Ctrl K</kbd>
+    </div>
+    <div class="hero-stats">
+      <span><span class="dot dot-fn"></span> 3,528 functions</span>
+      <span><span class="dot dot-ent"></span> 2,449 entities</span>
+      <span><span class="dot dot-nav"></span> 515 nav properties</span>
+    </div>
+  </div>
+
+  <!-- Recently Visited -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Recently Visited
+      </span>
+      <a href="#" class="section-action">Clear</a>
+    </div>
+    <div class="recent-grid">
+      <a href="#" class="recent-item">
+        <div class="recent-icon fn">&fnof;</div>
+        <div class="recent-info">
+          <div class="recent-name">GetByTitle</div>
+          <div class="recent-path">_api/web/Lists/GetByTitle</div>
+        </div>
+        <span class="recent-time">2h ago</span>
+      </a>
+      <a href="#" class="recent-item">
+        <div class="recent-icon fn">&fnof;</div>
+        <div class="recent-info">
+          <div class="recent-name">CurrentUser</div>
+          <div class="recent-path">_api/web/CurrentUser</div>
+        </div>
+        <span class="recent-time">5h ago</span>
+      </a>
+      <a href="#" class="recent-item">
+        <div class="recent-icon entity">T</div>
+        <div class="recent-info">
+          <div class="recent-name">SP.ListItem</div>
+          <div class="recent-path">Entity Type</div>
+        </div>
+        <span class="recent-time">1d ago</span>
+      </a>
+      <a href="#" class="recent-item">
+        <div class="recent-icon fn">&fnof;</div>
+        <div class="recent-info">
+          <div class="recent-name">GetById</div>
+          <div class="recent-path">_api/web/Lists/.../Items/GetById</div>
+        </div>
+        <span class="recent-time">1d ago</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Popular Endpoints — Grouped -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Popular Endpoints
+      </span>
+    </div>
+    <div class="popular-groups">
+
+      <!-- Core -->
+      <div class="popular-group">
+        <div class="popular-group-header">
+          <div class="popular-group-icon core">&#x1F310;</div>
+          <span class="popular-group-name">Core</span>
+        </div>
+        <div class="popular-group-items">
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> web</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> site</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> lists</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> me</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> contextinfo</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> hubsites</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> features</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> navigation</a>
+        </div>
+      </div>
+
+      <!-- Content & Pages -->
+      <div class="popular-group">
+        <div class="popular-group-header">
+          <div class="popular-group-icon content">&#x1F4C4;</div>
+          <span class="popular-group-name">Content &amp; Pages</span>
+        </div>
+        <div class="popular-group-items">
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> sitepages</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> publishing</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> sitedesigns</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> contenttypes</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> fields</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> thememanager</a>
+        </div>
+      </div>
+
+      <!-- People & Social -->
+      <div class="popular-group">
+        <div class="popular-group-header">
+          <div class="popular-group-icon social">&#x1F465;</div>
+          <span class="popular-group-name">People &amp; Social</span>
+        </div>
+        <div class="popular-group-items">
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> social.feed</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> social.following</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> people</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> userprofiles</a>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="popular-group">
+        <div class="popular-group-header">
+          <div class="popular-group-icon search">&#x1F50D;</div>
+          <span class="popular-group-name">Search</span>
+        </div>
+        <div class="popular-group-items">
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> search/query</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> search/postquery</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> search/suggest</a>
+        </div>
+      </div>
+
+      <!-- Administration -->
+      <div class="popular-group">
+        <div class="popular-group-header">
+          <div class="popular-group-icon admin">&#x2699;&#xFE0F;</div>
+          <span class="popular-group-name">Administration</span>
+        </div>
+        <div class="popular-group-items">
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> SiteManager</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> GroupService</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> AppCatalog</a>
+        </div>
+      </div>
+
+      <!-- Machine Learning -->
+      <div class="popular-group">
+        <div class="popular-group-header">
+          <div class="popular-group-icon ml">&#x1F916;</div>
+          <span class="popular-group-name">Machine Learning</span>
+        </div>
+        <div class="popular-group-items">
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> machinelearning</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> models</a>
+          <a href="#" class="popular-chip"><span class="fn-marker">&fnof;</span> publications</a>
+        </div>
+      </div>
+
+    </div>
+    <a href="#" class="all-endpoints-link">
+      Browse all root endpoints <span class="count">793</span>
+      <span style="font-size:11px;">&rarr;</span>
+    </a>
+  </div>
+
+  <div class="footer-hint">
+    <span><kbd>Ctrl</kbd> + <kbd>K</kbd> to deep-search across all API levels</span>
+    <span>|</span>
+    <span>Click any endpoint to start exploring</span>
+  </div>
+
+</main>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TRANSITION                                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page-divider">
+  <span class="arrow-down">&darr;</span>
+  <strong>After clicking "web" &rarr; "Lists" &mdash; breadcrumb spans full width above sidebar + content</strong>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STATE 2: BROWSING (breadcrumb + sidebar + detail) -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page-block">
+
+<div class="state-label green">STATE 2 &mdash; Browsing _api/web/Lists</div>
+
+<header class="header">
+  <div class="header-left">
+    <a href="#" class="logo"><span class="logo-icon">SP</span> REST Explorer</a>
+    <nav class="nav-links">
+      <a href="#" class="active">Explore API</a>
+      <a href="#">Explore Types</a>
+      <a href="#">API Changelog</a>
+      <a href="#">How it works</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search APIs...
+      <kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn" title="GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Layout: breadcrumb on top, then sidebar + content below -->
+<div class="app-layout">
+
+  <!-- Full-width breadcrumb -->
+  <div class="breadcrumb-bar">
+    <a class="bc-segment" href="#">_api</a>
+    <span class="bc-separator">/</span>
+    <a class="bc-segment" href="#">web</a>
+    <span class="bc-separator">/</span>
+    <span class="bc-current">Lists</span>
+    <button class="bc-copy-btn">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+      Copy path
+    </button>
+  </div>
+
+  <!-- Sidebar + Content -->
+  <div class="app-shell">
+
+    <!-- Sidebar — no header, items only -->
+    <aside class="sidebar">
+      <div class="sidebar-resize"></div>
+      <div class="sidebar-list">
+        <a href="#" class="sidebar-item" title="AllProperties">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">AllProperties</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="AssociatedMemberGroup">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">AssociatedMemberGroup</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="AssociatedOwnerGroup">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">AssociatedOwnerGroup</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="AvailableContentTypes">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">AvailableContentTypes</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="ContentTypes">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">ContentTypes</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="CurrentUser">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">CurrentUser</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Features">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">Features</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item active" title="Lists">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">Lists</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Navigation">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">Navigation</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="RecycleBin">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">RecycleBin</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SiteGroups">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">SiteGroups</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SiteUsers">
+          <span style="color:var(--nav-color); font-weight:700; font-size:12px;">&#x25C6;</span>
+          <span class="item-name">SiteUsers</span>
+          <span class="type-tag nav">NAV</span>
+        </a>
+        <div style="height:8px; border-bottom: 1px solid var(--border-light); margin: 4px 0;"></div>
+        <a href="#" class="sidebar-item" title="ApplyTheme">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">ApplyTheme</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="DoesUserHavePermissions">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">DoesUserHavePermissions</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="EnsureUser">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">EnsureUser</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="GetFileById">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">GetFileById</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="GetFolderByServerRelativeUrl">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">GetFolderByServerRelativeUrl</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="GetList">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">GetList</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Content Panel -->
+    <div class="content-panel">
+      <div class="doc-banner">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Official docs: <a href="#">Working with lists and list items with REST</a>
+      </div>
+
+      <div class="detail-content">
+        <div class="detail-entity-name">Entity: Collection(SP.List)</div>
+        <div class="detail-entity-full">Full name: Collection(<a href="#" style="color:var(--entity-color)">SP.List</a>)</div>
+
+        <div class="detail-section">
+          <div class="detail-section-header">
+            <h3>Methods</h3>
+            <span class="detail-section-count">8</span>
+            <span class="detail-section-chevron">&#x25B2;</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">Add</span>
+            <span class="method-params">(parameters: SP.ListCreationInformation)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.List</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">GetById</span>
+            <span class="method-params">(id: Guid)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.List</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">GetByTitle</span>
+            <span class="method-params">(title: String)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.List</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">EnsureSitePagesLibrary</span>
+            <span class="method-params">()</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.List</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">EnsureSiteAssetsLibrary</span>
+            <span class="method-params">()</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.List</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TRANSITION                                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page-divider">
+  <span class="arrow-down">&darr;</span>
+  <strong>After clicking "_api" in breadcrumb &mdash; sidebar shows ALL 793 roots with filter</strong>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STATE 3: _api ROOT VIEW (all endpoints)        -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page-block">
+
+<div class="state-label orange">STATE 3 &mdash; All 793 root endpoints</div>
+
+<header class="header">
+  <div class="header-left">
+    <a href="#" class="logo"><span class="logo-icon">SP</span> REST Explorer</a>
+    <nav class="nav-links">
+      <a href="#" class="active">Explore API</a>
+      <a href="#">Explore Types</a>
+      <a href="#">API Changelog</a>
+      <a href="#">How it works</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search APIs...
+      <kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn" title="GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="app-layout">
+
+  <!-- Full-width breadcrumb -->
+  <div class="breadcrumb-bar">
+    <span class="bc-current">_api</span>
+  </div>
+
+  <div class="app-shell">
+
+    <!-- Sidebar — all roots with filter -->
+    <aside class="sidebar" style="width: 360px;">
+      <div class="sidebar-resize"></div>
+      <div class="sidebar-filter">
+        <svg class="filter-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Filter root endpoints..." value="SiteScript">
+      </div>
+      <div class="sidebar-filter-count">Showing 22 of 793 endpoints</div>
+      <div class="sidebar-list">
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.AddSiteDesignTaskToCurrentWeb">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.AddSiteDesignTaskToCurrentWeb</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.ApplyImplicitSiteDesign">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.ApplyImplicitSiteDesign</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item active" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.CreateSiteScriptPackage">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.CreateSiteScriptPackage</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.ExecuteAdminTemplateScript">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.ExecuteAdminTemplateScript</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.ExecuteTemplateScriptWithParameters">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.ExecuteTemplateScriptWithP...</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GetDefaultSiteDesignForWebTemplate">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.GetDefaultSiteDesignForWeb...</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GetSiteScriptPackageFile">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.GetSiteScriptPackageFile</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.SetBuiltInDesignPackageVisibility">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.SetBuiltInDesignPackageVis...</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.SetSiteScriptStageOutcome">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.SetSiteScriptStageOutcome</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+        <a href="#" class="sidebar-item" title="Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.ValidatePendingWebTemplateExtension">
+          <span style="color:var(--fn-color); font-weight:700; font-size:12px; font-style:italic;">&fnof;</span>
+          <span class="item-name">...SiteScriptUtility.ValidatePendingWebTemplat...</span>
+          <span class="type-tag fn">FN</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Content Panel -->
+    <div class="content-panel">
+      <div class="root-welcome">
+        <h2>All Root Endpoints</h2>
+        <p>
+          The SharePoint REST API exposes <strong>793 root endpoints</strong> under <code>_api/</code>.
+          Use the filter in the sidebar to narrow down by name, or use
+          <kbd style="font-size:12px; background:var(--gray-light); border:1px solid var(--border); border-radius:4px; padding:1px 5px;">Ctrl K</kbd>
+          to deep-search across all API levels.
+        </p>
+        <p>
+          Long endpoint names are truncated in the sidebar. <strong>Hover to see the full name</strong>, or drag the sidebar edge to widen it.
+        </p>
+        <div class="root-welcome-hint">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 15l-2 5L9 9l11 4-5 2z"/><path d="m2 2 7.586 7.586"/></svg>
+          Click any endpoint in the sidebar to explore its entity, methods, and navigation properties.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TRANSITION                                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page-divider">
+  <span class="arrow-down">&darr;</span>
+  <strong>Explore Types view &mdash; clicked "SP.List" link from content area (or nav tab)</strong>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- STATE 4: EXPLORE TYPES                         -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="page-block">
+
+<div class="state-label" style="background:#7c3aed;">STATE 4 &mdash; Explore Types / SP.List</div>
+
+<header class="header">
+  <div class="header-left">
+    <a href="#" class="logo"><span class="logo-icon">SP</span> REST Explorer</a>
+    <nav class="nav-links">
+      <a href="#">Explore API</a>
+      <a href="#" class="active">Explore Types</a>
+      <a href="#">API Changelog</a>
+      <a href="#">How it works</a>
+    </nav>
+  </div>
+  <div class="header-right">
+    <button class="search-trigger">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      Search APIs...
+      <kbd>Ctrl K</kbd>
+    </button>
+    <button class="icon-btn" title="GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="app-layout">
+
+  <!-- No breadcrumb bar for types view — it's a different navigation model -->
+
+  <div class="app-shell">
+
+    <!-- Types sidebar — virtualized list of all 2,449 entities with filter -->
+    <aside class="sidebar" style="width: 300px;">
+      <div class="sidebar-resize"></div>
+      <div class="sidebar-filter">
+        <svg class="filter-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Filter 2,449 types..." value="SP.List">
+      </div>
+      <div class="sidebar-filter-count">Showing 28 of 2,449 types</div>
+      <div class="sidebar-list">
+        <a href="#" class="sidebar-item active" title="SP.List">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.List</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListBloomFilter">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListBloomFilter</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListCollectionPosition">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListCollectionPosition</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListCreationInformation">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListCreationInformation</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListDataSource">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListDataSource</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListDataValidationExceptionValue">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListDataValidationExceptionValue</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListDataValidationFailure">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListDataValidationFailure</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListForm">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListForm</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListHomeItem2">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListHomeItem2</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListHomeItemCollection">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListHomeItemCollection</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListItem">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListItem</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListItemCollectionPosition">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListItemCollectionPosition</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListItemComplianceInfo">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListItemComplianceInfo</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListItemCreationInformation">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListItemCreationInformation</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListItemVersion">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListItemVersion</span>
+        </a>
+        <a href="#" class="sidebar-item" title="SP.ListTemplate">
+          <span style="color:var(--entity-color); font-weight:700; font-size:11px;">T</span>
+          <span class="item-name">SP.ListTemplate</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Type Detail Panel -->
+    <div class="content-panel">
+      <div class="detail-content">
+
+        <!-- Type header -->
+        <div style="display:flex; align-items:baseline; gap:12px; margin-bottom:4px;">
+          <div class="detail-entity-name">SP.List</div>
+          <span style="font-size:12px; background:var(--green-light); color:var(--entity-color); padding:2px 8px; border-radius:4px; font-weight:600;">Entity Type</span>
+        </div>
+        <div class="detail-entity-full">Full name: <code style="background:var(--gray-light); padding:2px 6px; border-radius:4px;">SP.List</code></div>
+
+        <!-- Base type -->
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:24px; padding:10px 14px; background:var(--gray-light); border-radius:var(--radius); font-size:13.5px;">
+          <span style="color:var(--text-secondary);">Base Type:</span>
+          <a href="#" style="color:var(--entity-color); font-weight:600; text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace;">SP.SecurableObject</a>
+          <span style="color:var(--text-muted); font-size:12px;">&rarr;</span>
+          <a href="#" style="color:var(--entity-color); text-decoration:none; font-size:12px; font-family:'SF Mono','Cascadia Code','Consolas',monospace;">SP.ClientObject</a>
+        </div>
+
+        <!-- Properties section -->
+        <div class="detail-section">
+          <div class="detail-section-header">
+            <h3>Properties</h3>
+            <span class="detail-section-count">64</span>
+            <span class="detail-section-chevron">&#x25B2;</span>
+          </div>
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; padding:6px 0; border-bottom:1px solid var(--border); width:45%;">Property</th>
+                <th style="text-align:left; font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; padding:6px 0; border-bottom:1px solid var(--border);">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">AllowContentTypes</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Boolean</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">AllowDeletion</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Boolean</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">BaseTemplate</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Int32</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">BaseType</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Int32</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">Color</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">String</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">Created</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">DateTime</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">CurrentChangeToken</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px; font-weight:500;">SP.ChangeToken</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">Description</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">String</td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500;">EnableVersioning</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light); color:var(--text-secondary); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Boolean</td></tr>
+              <tr><td style="padding:6px 0; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--text-muted);">... 55 more properties</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Navigation Properties section -->
+        <div class="detail-section">
+          <div class="detail-section-header">
+            <h3>Navigation Properties</h3>
+            <span class="detail-section-count">18</span>
+            <span class="detail-section-chevron">&#x25B2;</span>
+          </div>
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr>
+                <th style="text-align:left; font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; padding:6px 0; border-bottom:1px solid var(--border); width:45%;">Name</th>
+                <th style="text-align:left; font-size:11px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em; padding:6px 0; border-bottom:1px solid var(--border);">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">ContentTypes</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Collection(SP.ContentType)</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">DefaultView</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">SP.View</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">EventReceivers</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Collection(SP.EventReceiverDefinition)</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">Fields</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Collection(SP.Field)</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">Items</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Collection(SP.ListItem)</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">RootFolder</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">SP.Folder</a></td></tr>
+              <tr><td style="padding:6px 0; border-bottom:1px solid var(--border-light); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--nav-color);">Views</td><td style="padding:6px 0; border-bottom:1px solid var(--border-light);"><a href="#" style="color:var(--entity-color); text-decoration:none; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Collection(SP.View)</a></td></tr>
+              <tr><td style="padding:6px 0; font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-weight:500; color:var(--text-muted);">... 11 more</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Methods section -->
+        <div class="detail-section">
+          <div class="detail-section-header">
+            <h3>Methods</h3>
+            <span class="detail-section-count">42</span>
+            <span class="detail-section-chevron">&#x25B2;</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">AddItem</span>
+            <span class="method-params">(parameters: SP.ListItemCreationInformation)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.ListItem</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">BreakRoleInheritance</span>
+            <span class="method-params">(copyRoleAssignments: Boolean, clearSubscopes: Boolean)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span style="color:var(--text-muted); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">void</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">DeleteObject</span>
+            <span class="method-params">()</span>
+            <span class="method-arrow">&rarr;</span>
+            <span style="color:var(--text-muted); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">void</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">GetChanges</span>
+            <span class="method-params">(query: SP.ChangeQuery)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">Collection(SP.Change)</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">GetItemById</span>
+            <span class="method-params">(id: Int32)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">SP.ListItem</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">GetItems</span>
+            <span class="method-params">(query: SP.CamlQuery)</span>
+            <span class="method-arrow">&rarr;</span>
+            <span class="method-return">Collection(SP.ListItem)</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">Recycle</span>
+            <span class="method-params">()</span>
+            <span class="method-arrow">&rarr;</span>
+            <span style="color:var(--text-muted); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">Guid</span>
+          </div>
+          <div class="method-row">
+            <span class="method-name">Update</span>
+            <span class="method-params">()</span>
+            <span class="method-arrow">&rarr;</span>
+            <span style="color:var(--text-muted); font-family:'SF Mono','Cascadia Code','Consolas',monospace; font-size:12.5px;">void</span>
+          </div>
+          <div style="padding:6px 0; color:var(--text-muted); font-size:13px; font-style:italic;">... 34 more methods</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CMD+K OVERLAY                                  -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="cmdk-preview" id="cmdk-overlay" onclick="if(event.target===this)toggleCmdk()">
+  <div class="cmdk-dialog">
+    <div class="cmdk-input-row">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" placeholder="Search SharePoint REST APIs..." value="GetById" readonly>
+    </div>
+    <div class="cmdk-results">
+      <div class="cmdk-group-label">Functions (12)</div>
+      <div class="cmdk-result selected">
+        <div class="cmdk-result-icon fn">&fnof;</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name"><mark>GetById</mark></div>
+          <div class="cmdk-result-path">web &rsaquo; Lists &rsaquo; GetByTitle &rsaquo; Items</div>
+        </div>
+      </div>
+      <div class="cmdk-result">
+        <div class="cmdk-result-icon fn">&fnof;</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name"><mark>GetById</mark></div>
+          <div class="cmdk-result-path">web &rsaquo; SiteGroups</div>
+        </div>
+      </div>
+      <div class="cmdk-result">
+        <div class="cmdk-result-icon fn">&fnof;</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name"><mark>GetById</mark></div>
+          <div class="cmdk-result-path">web &rsaquo; ... &rsaquo; File &rsaquo; Versions</div>
+        </div>
+      </div>
+      <div class="cmdk-result">
+        <div class="cmdk-result-icon fn">&fnof;</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name"><mark>GetById</mark></div>
+          <div class="cmdk-result-path">lists</div>
+        </div>
+      </div>
+      <div class="cmdk-result">
+        <div class="cmdk-result-icon fn">&fnof;</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name"><mark>GetById</mark></div>
+          <div class="cmdk-result-path">web &rsaquo; ... &rsaquo; Author &rsaquo; Alerts</div>
+        </div>
+      </div>
+      <div style="height:6px"></div>
+      <div class="cmdk-group-label">Entities (2)</div>
+      <div class="cmdk-result">
+        <div class="cmdk-result-icon ent">T</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name">SP.List</div>
+          <div class="cmdk-result-path">Entity Type &mdash; has <mark>GetById</mark> method</div>
+        </div>
+      </div>
+      <div class="cmdk-result">
+        <div class="cmdk-result-icon ent">T</div>
+        <div class="cmdk-result-text">
+          <div class="cmdk-result-name">SP.Group</div>
+          <div class="cmdk-result-path">Entity Type &mdash; has <mark>GetById</mark> method</div>
+        </div>
+      </div>
+    </div>
+    <div class="cmdk-footer">
+      <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> Navigate</span>
+      <span><kbd>&#x21B5;</kbd> Open</span>
+      <span><kbd>Esc</kbd> Close</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleCmdk() {
+  const overlay = document.getElementById('cmdk-overlay');
+  overlay.classList.toggle('visible');
+}
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); toggleCmdk(); }
+  if (e.key === 'Escape') { document.getElementById('cmdk-overlay').classList.remove('visible'); }
+});
+</script>
+
+</body>
+</html>
