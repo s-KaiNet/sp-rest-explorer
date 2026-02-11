@@ -88,13 +88,13 @@ Plans:
 2. User can click a sidebar child (e.g., "Lists"), see the breadcrumb update to `_api / web / Lists`, sidebar update to show Lists' children, and URL update to `/#/_api/web/Lists`
 3. User can click any breadcrumb segment to jump back to that level, with sidebar updating to show that node's children
 4. ~~User can click the copy button and paste a valid `_api/web/Lists` path from clipboard~~ (NAV-03 deferred)
-5. User can drag the sidebar resize handle to change its width between 200px and 500px
+5. User can drag the sidebar resize handle to change its width between 200px and 600px
 
 **Plans:** 2 plans
 
 Plans:
 - [x] 03-01-PLAN.md — Navigation hook, breadcrumb bar, and sidebar components
-- [ ] 03-02-PLAN.md — Resizable layout, directional animations, and ExplorePage wiring
+- [x] 03-02-PLAN.md — Resizable layout, directional animations, and ExplorePage wiring
 
 ---
 
@@ -156,11 +156,11 @@ Plans:
 |-------|------|:------------:|--------|
 | 1 | Project Scaffolding | 6 | ✓ Complete (2026-02-11) |
 | 2 | Data Layer & UI Foundation | 7 | ✓ Complete (2026-02-11) |
-| 3 | Navigation System | 7 | In Progress (1/2 plans) |
-| 4 | Explore API Views | 5 | Pending |
+| 3 | Navigation System | 7 | ✓ Complete (2026-02-11) |
+| 4 | Explore API Views | 5 | Up Next |
 | 5 | Entity & Function Detail | 14 | Pending |
 | **Total** | | **39** | |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 3 Plan 1 complete)*
+*Last updated: 2026-02-11 (Phase 3 complete)*
