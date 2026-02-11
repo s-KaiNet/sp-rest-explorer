@@ -15,33 +15,34 @@
 
 ## Current Position
 
-**Phase:** 01-project-scaffolding
-**Plan:** Plan 1 of 2 complete — next: 01-02-PLAN.md
-**Status:** Executing Phase 1
+**Phase:** 01-project-scaffolding (complete)
+**Plan:** Plan 2 of 2 complete — phase done
+**Status:** Phase 1 complete, ready for Phase 2
 
 ```
-Phase 1 [==        ] Project Scaffolding          (6 reqs) ← current
-Phase 2 [ ] Data Layer & UI Foundation   (7 reqs)
-Phase 3 [ ] Navigation System            (7 reqs)
-Phase 4 [ ] Explore API Views            (5 reqs)
-Phase 5 [ ] Entity & Function Detail     (14 reqs)
+Phase 1 [==========] Project Scaffolding          (6 reqs) ✓ complete
+Phase 2 [          ] Data Layer & UI Foundation   (7 reqs) ← next
+Phase 3 [          ] Navigation System            (7 reqs)
+Phase 4 [          ] Explore API Views            (5 reqs)
+Phase 5 [          ] Entity & Function Detail     (14 reqs)
 ```
 
-**Progress:** 0/39 requirements complete (0%)
+**Progress:** 6/39 requirements complete (15%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 0/5 |
-| Requirements completed | 0/39 |
-| Plans executed | 1 |
+| Phases completed | 1/5 |
+| Requirements completed | 6/39 |
+| Plans executed | 2 |
 | Blockers encountered | 0 |
 | Research phases used | 0 |
 
 | Phase | Plan | Duration | Tasks | Files |
 |-------|------|----------|-------|-------|
 | 01 | 01 | 6 min | 2 | 13 |
+| 01 | 02 | 10 min | 3 | 17 |
 
 ## Accumulated Context
 
@@ -56,6 +57,9 @@ Phase 5 [ ] Entity & Function Detail     (14 reqs)
 | v1 = Explore API only | No search (Cmd+K), types view, or changelog. Ship core browsing first | Requirements |
 | @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin — better integration, no config file needed | 01-01 |
 | Root tsconfig.json needs paths for shadcn | shadcn CLI reads root tsconfig for alias resolution, not just tsconfig.app.json | 01-01 |
+| Grid header layout (1fr auto 1fr) | Keeps search centered regardless of left/right content width | 01-02 |
+| Anti-flash inline script in index.html | Reads localStorage before React hydrates to prevent wrong-theme flash | 01-02 |
+| Scoped dark mode transition (body/header/main) | Avoids animating unrelated hover states while providing smooth theme switching | 01-02 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -72,9 +76,9 @@ Phase 5 [ ] Entity & Function Detail     (14 reqs)
 
 ## Session Continuity
 
-**Last session:** Execute 01-01-PLAN.md (2026-02-11)
-**What happened:** Scaffolded Vite 7 + React 19 + TypeScript 5.9 project in app/ with Tailwind CSS 4 and shadcn/ui. Build outputs to docs/ for GitHub Pages.
-**Next step:** Execute 01-02-PLAN.md (React Router, Header, dark mode, placeholder pages)
+**Last session:** Execute 01-02-PLAN.md (2026-02-11)
+**What happened:** Built complete app shell: React Router 7 HashRouter with all routes, styled Header with nav/search/dark mode/GitHub, ThemeProvider with system preference + localStorage, placeholder pages, 404. Visual verification approved.
+**Next step:** Plan/execute Phase 2 (Data Layer & UI Foundation — metadata fetching, Zustand, MiniSearch, lookup maps)
 
 ---
 *State initialized: 2026-02-11*
