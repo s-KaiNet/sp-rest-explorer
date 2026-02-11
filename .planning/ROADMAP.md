@@ -154,6 +154,13 @@ Plans:
 4. User navigates to a function (e.g., GetById) and sees function name, parameters with types (one per line), return type, and COMPOSABLE badge when applicable
 5. Visual styling is consistent: function names in blue monospace, nav property names in purple, entity type links in green, parameter types properly formatted
 
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — TypeLink component, EntityDetail with collapsible sections, tables, filters, base type chain, used-by bar
+- [ ] 05-02-PLAN.md — Enhanced function detail with type links + Explore Types welcome screen
+- [ ] 05-03-PLAN.md — Wire EntityDetail into ExplorePage and TypesPage + visual verification
+
 ---
 
 ## Progress
