@@ -2,12 +2,13 @@
 
 ## Project Reference
 
-**Core Value:** Developers can browse and understand every SharePoint REST API endpoint through a fast, modern interface with contextual navigation.
+See: .planning/PROJECT.md (updated 2026-02-12)
 
-**Current Focus:** Rebuild from Vue 2 + Webpack 3 to React 19 + Vite + Tailwind 4 + shadcn/ui. v1 delivers the Explore API view with navigation, detail panels, and home screen.
+**Core value:** Developers can browse and understand every SharePoint REST API endpoint through a fast, modern interface with contextual navigation.
+**Current focus:** v1.0 MVP shipped. Planning next milestone.
 
 **Key Constraints:**
-- Tech stack locked: React 19, Vite, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
+- Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
 - GitHub Pages hosting (hash routing required)
 - Azure Blob Storage data format is fixed
 - Desktop only for v1
@@ -15,61 +16,56 @@
 
 ## Current Position
 
-**Phase:** Not started
-**Plan:** None active
-**Status:** Roadmap created, awaiting Phase 1 planning
+**Milestone:** v1.0 MVP — SHIPPED 2026-02-12
+**Status:** Milestone complete, archived
 
 ```
-Phase 1 [ ] Project Scaffolding          (6 reqs)
-Phase 2 [ ] Data Layer & UI Foundation   (7 reqs)
-Phase 3 [ ] Navigation System            (7 reqs)
-Phase 4 [ ] Explore API Views            (5 reqs)
-Phase 5 [ ] Entity & Function Detail     (14 reqs)
+Phase 1 [==========] Project Scaffolding          (6 reqs) v1.0
+Phase 2 [==========] Data Layer & UI Foundation   (7 reqs) v1.0
+Phase 3 [==========] Navigation System            (7 reqs) v1.0
+Phase 4 [==========] Explore API Views            (5 reqs) v1.0
+Phase 5 [==========] Entity & Function Detail     (14 reqs) v1.0
 ```
 
-**Progress:** 0/39 requirements complete (0%)
+**Progress:** 38/39 v1 requirements validated (NAV-03 deferred)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 0/5 |
-| Requirements completed | 0/39 |
-| Plans executed | 0 |
-| Blockers encountered | 0 |
-| Research phases used | 0 |
+| Phases completed | 5/5 |
+| Requirements validated | 38/39 |
+| Plans executed | 11 |
+| Tasks completed | 25 |
+| Files created | 64 |
+| LOC | ~8,700 |
+| Timeline | 3 days (2026-02-09 → 2026-02-12) |
+| Commits | 73 |
 
 ## Accumulated Context
 
 ### Key Decisions
-| Decision | Rationale | Phase |
-|----------|-----------|-------|
-| MiniSearch over FlexSearch | Native TS, returns docs (not IDs), 19ms init, simpler API. Speed difference irrelevant at 6K items | Research |
-| Sidebar as contextual nav, not tree | Single node has 5-30 children. No virtualization needed. Breadcrumb shows full path | Research |
-| Metadata outside Zustand reactive state | 4MB frozen singleton + useSyncExternalStore. Prevents deep-clone perf trap | Research |
-| New `app/` directory | Clean separation from old `web/` code during development | Research |
-| Desktop only for v1 | Data density makes mobile impractical. Deferred | Research |
-| v1 = Explore API only | No search (Cmd+K), types view, or changelog. Ship core browsing first | Requirements |
+See PROJECT.md Key Decisions table for full list with outcomes.
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
 - Zustand v5 selector instability — use scalar selectors or `useShallow`
-- Tailwind CSS v4 silent default changes — use shadcn/ui CSS variables from day one
-- MiniSearch tokenizer strips dots/parens — custom tokenizer needed (but search is v2)
-- react-arborist contextual sidebar is non-standard pattern — may need simpler custom list
 
-### Todos
-- (None yet — populated during phase planning)
+### Technical Debt
+- UsedByBar scans all entities on every render (no precomputed index)
+- Recently visited kind mapping relies on depth heuristic
+- Search placeholder shown but Cmd+K not functional
+- NAV-03 copy button not implemented
 
 ### Blockers
 - (None)
 
 ## Session Continuity
 
-**Last session:** Roadmap creation (2026-02-11)
-**What happened:** Derived 5 phases from 39 v1 requirements. Phases follow natural delivery boundaries: scaffolding → data → navigation → views → detail panels.
-**Next step:** `/gsd-plan-phase 1` to plan Project Scaffolding
+**Last session:** Complete v1.0 milestone (2026-02-12)
+**What happened:** Archived v1.0 milestone — created milestones/v1.0-ROADMAP.md and milestones/v1.0-REQUIREMENTS.md, reorganized ROADMAP.md, evolved PROJECT.md, created MILESTONES.md, tagged v1.0.
+**Next step:** Start next milestone with `/gsd-new-milestone`
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-11*
+*Last updated: 2026-02-12 (v1.0 milestone archived)*

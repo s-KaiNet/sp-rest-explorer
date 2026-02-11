@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SP REST API Explorer</title>
+    <script>
+      (function() {
+        var stored = localStorage.getItem('sp-explorer-theme');
+        if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <style>
+      .sp-spinner {
+        width: 32px;
+        height: 32px;
+        border: 3px solid oklch(0.922 0 0);
+        border-top-color: oklch(0.556 0 0);
+        border-radius: 50%;
+        animation: sp-spin 0.7s linear infinite;
+      }
+      .dark .sp-spinner {
+        border-color: oklch(0.269 0 0);
+        border-top-color: oklch(0.708 0 0);
+      }
+      @keyframes sp-spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh"><div class="sp-spinner"></div></div></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

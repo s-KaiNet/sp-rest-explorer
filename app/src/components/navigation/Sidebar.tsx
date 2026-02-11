@@ -1,0 +1,58 @@
+import type { ChildEntry } from '@/lib/metadata'
+import { SidebarItem } from './SidebarItem'
+
+interface SidebarProps {
+  entries: ChildEntry[]
+  onNavigate: (child: ChildEntry) => void
+  showTypeTags?: boolean
+  variant?: 'default' | 'root'
+}
+
+export function Sidebar({
+  entries,
+  onNavigate,
+  showTypeTags = true,
+  variant = 'default',
+}: SidebarProps) {
+  // Empty state
+  if (entries.length === 0) {
+    return (
+      <div className="flex items-center justify-center p-4">
+        <span className="text-sm text-muted-foreground">
+          No matching elements
+        </span>
+      </div>
+    )
+  }
+
+  // Split entries into groups
+  const navProperties = entries.filter((c) => c.kind === 'navProperty')
+  const functions = entries.filter((c) => c.kind === 'function')
+  const hasBothGroups = navProperties.length > 0 && functions.length > 0
+
+  return (
+    <div className="p-2">
+      {navProperties.map((child) => (
+        <SidebarItem
+          key={`nav-${child.name}`}
+          entry={child}
+          onClick={() => onNavigate(child)}
+          showTypeTags={showTypeTags}
+          variant={variant}
+        />
+      ))}
+
+      {hasBothGroups && <hr className="my-1 border-border" />}
+
+      {functions.map((child) => (
+        <SidebarItem
+          key={`fn-${child.name}-${child.ref}`}
+          entry={child}
+          onClick={() => onNavigate(child)}
+          showTypeTags={showTypeTags}
+          variant={variant}
+        />
+      ))}
+    </div>
+  )
+}

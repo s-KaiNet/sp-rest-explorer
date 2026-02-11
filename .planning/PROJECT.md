@@ -2,83 +2,97 @@
 
 ## What This Is
 
-A complete rebuild of the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to React 19 + Vite 6. The app lets SharePoint developers browse, search, and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It's a static SPA hosted on GitHub Pages.
+A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features contextual sidebar navigation, breadcrumb-driven browsing, entity/function detail panels with collapsible sections and type cross-linking, and a curated home screen. Static SPA hosted on GitHub Pages.
+
+## Current State
+
+**Shipped:** v1.0 MVP (2026-02-12)
+**Codebase:** ~8,700 LOC TypeScript across 64 files in `app/`
+**Tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, React Router 7
+
+v1.0 delivers the complete Explore API view: home screen with stats and browse-all, resizable sidebar navigation with breadcrumbs and directional animations, entity detail with Properties/NavProperties/Methods tables and TypeLink cross-references, and function detail with typed parameters and COMPOSABLE badges. Dark mode, loading skeletons, and IndexedDB caching are all in place.
 
 ## Core Value
 
 Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
 
-The current site only searches root-level items (793 of 3,528 functions). The rebuild's deep search across all levels is the single most important improvement.
+The current site only searches root-level items (793 of 3,528 functions). The rebuild's deep search across all levels is the single most important improvement. (Note: Cmd+K deep search is built in the data layer but the UI is deferred to v2.)
 
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- **v1.0 (38 requirements):**
+- INFRA-01 through INFRA-09 — v1.0 (project scaffolding, data layer, build pipeline)
+- NAV-01, NAV-02, NAV-04 through NAV-07 — v1.0 (breadcrumbs, sidebar, resize)
+- EXPL-01 through EXPL-05 — v1.0 (home screen, browse-all, filtering)
+- ENTD-01 through ENTD-11 — v1.0 (entity detail panels, tables, filters, type links)
+- FUNC-01 through FUNC-03 — v1.0 (function detail, typed params, COMPOSABLE)
+- UIFN-01 through UIFN-04 — v1.0 (loading, header, color system, monospace)
 
 ### Active
 
-- [ ] Rebuild from Vue 2 / Webpack 3 / Element UI to React 19 / Vite 6 / Tailwind 4 / shadcn/ui
-- [ ] Deep search via Cmd+K command palette (MiniSearch) across all ~6,000+ items at all tree levels
-- [ ] Contextual sidebar navigation showing children of the currently selected node
-- [ ] Breadcrumb-driven navigation with clickable path segments and copy-path button
-- [ ] Explore API view: home screen with popular endpoints + browsing with sidebar + detail panels
-- [ ] Explore Types view: virtualized list of 2,449 entity types with full detail (properties, nav props, methods, base type chain, "used by" cross-references)
-- [ ] API Changelog view: monthly diffs with summary stats, filter chips (added/updated/removed), collapsible entity cards
-- [ ] How It Works: static page with CSS-based architecture diagram, stats, and callouts
-- [ ] Dark mode with localStorage preference toggle
-- [ ] GitHub Actions CI/CD deployment (replacing manual `docs/` build)
-- [ ] All existing URL patterns preserved (hash routing: `/#/_api/...`, `/#/entity/...`, `/#/api-diff/...`)
-- [ ] Filter preferences persist in localStorage
-- [ ] No deep-cloning of metadata — immutable store with `useMemo` derived views
+- [ ] NAV-03: Copy `_api/...` path to clipboard via breadcrumb button (deferred from v1.0)
+- [ ] SRCH-01 through SRCH-05: Cmd+K command palette for global deep search
+- [ ] TYPE-01 through TYPE-06: Explore Types full view (virtualized list, detail, base type chain, used-by, jump links)
+- [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
+- [ ] ADDL-01: Recently visited section on home screen (partially done — hook exists, cards on home exist)
+- [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
+- [ ] ADDL-03: How It Works static page with architecture diagram
 
 ### Out of Scope
 
-- Mobile-optimized UX — desktop only for v1, mobile later
-- Analytics (Google Analytics / Application Insights) — add after core functionality works
-- Namespace filter dialog — replaced entirely by Cmd+K deep search
-- Azure Functions changes — metadata JSON format stays unchanged
-- Data pipeline changes — the Azure Blob Storage source and structure remain as-is
+- "Try It" / API Playground — static SPA, no backend, no SharePoint auth
+- Code sample generation — metadata has no HTTP methods or request bodies
+- AI-powered search / chat — MiniSearch is better for structured metadata search
+- User accounts / personalization — no backend, localStorage sufficient
+- Mobile-optimized UX — desktop only, data density makes mobile impractical
+- Full-tree visualization / graph — 2,449 entities = unreadable hairball
+- Inline editing of metadata — read-only viewer
+- Multiple API versions — SharePoint has one metadata at any time
+- PnPjs code snippet generation — high value but requires mapping logic, consider post-launch
 
 ## Context
 
-**Current architecture:** Vue 2.5.2 app with Webpack 3, TypeScript 2.7, Element UI 2.2.2, Vuex. Metadata fetched from Azure Blob Storage on load. Filtering deep-clones the entire 4MB JSON via `JSON.parse(JSON.stringify())` and only processes root-level functions. Tree is Element UI `el-tree` with brute-force destroy/recreate on filter changes. No virtualization. No CI/CD.
+Shipped v1.0 with ~8,700 LOC TypeScript across 64 files.
+Tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, idb-keyval, React Router 7.
+Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, MiniSearch index with ~6K items, IndexedDB cache with cache-then-revalidate boot.
+Old `web/` directory preserved as reference during development.
 
-**Data source:** `https://sprestapiexplorer.blob.core.windows.net/` — metadata JSON and monthly diff JSONs produced by Azure Functions in `az-funcs/` directory.
+**Known technical debt:**
+- UsedByBar scans all entities on every render (no precomputed index)
+- Recently visited kind mapping relies on depth heuristic (depth 2 = root)
+- Search placeholder shown but Cmd+K not functional yet
+- NAV-03 copy button not implemented
 
-**Data scale:**
-- ~2,449 entities (SP.Web, SP.List, etc.)
-- ~3,528 functions (793 root, 2,735 non-root/bindable)
-- ~515 navigation properties across 162 entities
-- ~11,967 total properties
-- Tree depth up to 9 levels with recursive entity references (SP.User -> Groups -> Users -> ...)
+## Key Decisions
 
-**Existing research:** Detailed technical research with UI/UX design specs and static HTML mockups in `.planning/phases/1-rebuild-ui/1-RESEARCH.md` and `.planning/phases/1-rebuild-ui/mockups/`.
-
-**New app location:** `app/` directory (keeping `web/` as reference during development).
+| Decision | Rationale | Outcome |
+|----------|-----------|---------|
+| MiniSearch over FlexSearch | Native TS, returns full docs, faster init (19ms), simpler API | Good — working well, ~6K items indexed |
+| Sidebar as contextual nav, not tree | Single node has 5-30 children, no virtualization needed | Good — clean UX, breadcrumbs provide path context |
+| Remove namespace filter dialog | Cmd+K deep search makes filtering obsolete | Pending — Cmd+K not yet built |
+| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | Pending — not yet implemented |
+| New `app/` directory | Keep old `web/` as reference during development | Good — clean separation |
+| Desktop only for v1 | Focus on core UX, mobile responsive deferred | Good — desktop data density works well |
+| Skip analytics for v1 | Ship core functionality first | Good — no overhead during development |
+| Dark mode in v1 | Trivial with shadcn/ui + Tailwind dark: variants | Good — immediate polish, user verified |
+| GitHub Actions deployment | Replaces manual `npm run docs` + commit | Pending — not yet implemented |
+| Metadata outside Zustand | Frozen 4MB singleton + useSyncExternalStore | Good — no deep-clone perf issues |
+| @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin | Good — faster builds, no config file |
+| OKLCH color space for type tokens | Perceptually uniform, dark mode adjusts lightness only | Good — consistent across themes |
+| Composable function routing | Composable -> entity children, non-composable -> terminal | Good — correct API semantics |
+| TypeLink for all entity references | Consistent cross-linking component | Good — reused across all pages |
+| Contained scroll layout | h-screen + overflow-hidden + independent scrolling | Good — no full-page scroll issues |
 
 ## Constraints
 
-- **Tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, react-arborist, MiniSearch 7, cmdk, React Router 7 (hash mode), @tanstack/react-table — all locked per research
+- **Tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch 7, React Router 7 (hash mode) — all locked per research
 - **Hosting**: GitHub Pages — requires hash routing (`createHashRouter`), static output to `docs/`
 - **Data format**: Azure Blob Storage JSON format is fixed — cannot change the metadata or diff schema
 - **URL compatibility**: Hash routes must match current patterns for any bookmarked URLs
 - **Bundle size**: < 500KB gzipped (current is ~300KB+)
 - **Delivery**: Incremental — each phase should produce a deployable state
 
-## Key Decisions
-
-| Decision | Rationale | Outcome |
-|----------|-----------|---------|
-| MiniSearch over FlexSearch | Native TS, returns full docs (not just IDs), faster init (19ms vs 120ms), simpler API. At 6K items both are ~1ms search — speed difference irrelevant | — Pending |
-| Sidebar as contextual nav, not tree | Single node has 5-30 children vs 793 root items. No virtualization needed. Breadcrumb shows full path | — Pending |
-| Remove namespace filter dialog | Cmd+K deep search makes filtering obsolete. Users find what they need directly | — Pending |
-| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu. Groups results by type with path breadcrumbs for disambiguation | — Pending |
-| New `app/` directory | Keep old `web/` as reference during development. Clean separation | — Pending |
-| Desktop only for v1 | Focus on core UX. Mobile responsive layout deferred to future milestone | — Pending |
-| Skip analytics for v1 | Ship core functionality first. GA/App Insights added after launch | — Pending |
-| Dark mode in v1 | Trivial with shadcn/ui + Tailwind dark: variants. Adds immediate polish | — Pending |
-| GitHub Actions deployment | Replaces manual `npm run docs` + commit. Automatic on push to main | — Pending |
-
 ---
-*Last updated: 2026-02-11 after initialization*
+*Last updated: 2026-02-12 after v1.0 milestone*
