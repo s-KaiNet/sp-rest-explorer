@@ -20,6 +20,15 @@ interface TypeLinkProps {
  * - Collection(Edm.*) → gray monospace text (not clickable)
  */
 export function TypeLink({ typeName, className }: TypeLinkProps) {
+  // Guard against undefined/empty typeName from metadata gaps
+  if (!typeName) {
+    return (
+      <span className={`font-mono text-muted-foreground italic ${className ?? ''}`}>
+        unknown
+      </span>
+    )
+  }
+
   const collectionMatch = typeName.match(COLLECTION_RE)
 
   // Collection type
