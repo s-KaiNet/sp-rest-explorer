@@ -53,7 +53,7 @@ export function Header() {
         <div className="flex items-center justify-end gap-1">
           <DarkModeToggle />
           <a
-            href="https://github.com/nicknisi/sp-rest-explorer"
+            href="https://github.com/s-KaiNet/sp-rest-explorer"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
