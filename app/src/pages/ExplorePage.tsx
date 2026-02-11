@@ -43,11 +43,11 @@ export function ExplorePage() {
 
   // Determine what to show in content area:
   // - isRoot: welcome message
-  // - currentEntity but no children and currentFunction non-composable: function view
-  // - currentEntity: entity view (composable function resolved to entity)
-  // - currentFunction only (no entity): function view (non-composable terminal)
+  // - currentFunction: always show function details (parameters, return type, composable badge)
+  //   Whether composable or not, functions display their signature in the content area.
+  //   The sidebar still shows entity children if the function is composable.
+  // - currentEntity (no function): entity view (navigated via nav property)
   // - neither: not found
-  const showFunctionView = !isRoot && !currentEntity && currentFunction
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
@@ -77,16 +77,7 @@ export function ExplorePage() {
                     Select an endpoint from the sidebar to explore
                   </p>
                 </div>
-              ) : currentEntity ? (
-                <div>
-                  <h1 className="text-xl font-semibold">
-                    {currentEntity.name}
-                  </h1>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {currentEntity.fullName}
-                  </p>
-                </div>
-              ) : showFunctionView ? (
+              ) : currentFunction ? (
                 <div>
                   <div className="flex items-center gap-2">
                     <h1 className="font-mono text-xl font-semibold text-type-fn">
@@ -118,6 +109,15 @@ export function ExplorePage() {
                       <span className="font-mono text-type-entity">{currentFunction.returnType}</span>
                     </p>
                   )}
+                </div>
+              ) : currentEntity ? (
+                <div>
+                  <h1 className="text-xl font-semibold">
+                    {currentEntity.name}
+                  </h1>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {currentEntity.fullName}
+                  </p>
                 </div>
               ) : (
                 <div className="py-12 text-center text-muted-foreground">
