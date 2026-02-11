@@ -57,10 +57,11 @@ export function ResizablePanel({ children, className }: ResizablePanelProps) {
 
   return (
     <div
-      className={`relative flex h-full shrink-0 flex-col overflow-hidden border-r border-border ${className ?? ''}`}
+      className={`relative shrink-0 border-r border-border ${className ?? ''}`}
       style={{ width }}
     >
-      <div className="flex flex-1 flex-col overflow-y-auto">
+      {/* Scrollable content area — fills the panel, clips slide animations */}
+      <div className="absolute inset-0 overflow-x-hidden overflow-y-auto">
         {children}
       </div>
 

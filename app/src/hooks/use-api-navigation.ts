@@ -87,15 +87,23 @@ export function useApiNavigation(): ApiNavigationState {
 
     if (rootFn) {
       currentFunction = rootFn
-      if (rootFn.returnType) {
+      // Only resolve entity if function is composable (returns navigable entity)
+      if (rootFn.isComposable && rootFn.returnType) {
         currentEntity = entityByFullName.get(rootFn.returnType) ?? null
       }
     }
 
     // Walk remaining parts
-    for (let i = 1; i < parts.length && currentEntity; i++) {
-      const children = entityChildren.get(currentEntity.fullName)
-      const child = children?.find((c) => c.name === parts[i])
+    for (let i = 1; i < parts.length; i++) {
+      if (!currentEntity) {
+        // Can't walk further — previous function was non-composable
+        currentFunction = null
+        currentEntity = null
+        break
+      }
+
+      const entityChildList = entityChildren.get(currentEntity.fullName)
+      const child = entityChildList?.find((c) => c.name === parts[i])
 
       if (!child) {
         // Path doesn't resolve — return what we have so far
@@ -109,18 +117,20 @@ export function useApiNavigation(): ApiNavigationState {
         currentEntity = entityByFullName.get(child.ref as string) ?? null
         currentFunction = null
       } else {
-        // ref is the function ID — get function, then look up returnType entity
+        // ref is the function ID — get function
         const fn = functionById.get(child.ref as number)
         currentFunction = fn ?? null
-        if (fn?.returnType) {
+        if (fn?.isComposable && fn.returnType) {
+          // Composable: resolve to entity, show its children
           currentEntity = entityByFullName.get(fn.returnType) ?? null
         } else {
+          // Non-composable: terminal endpoint, no entity/children
           currentEntity = null
         }
       }
     }
 
-    // Get children of the resolved entity
+    // Get children of the resolved entity (only if we have one — non-composable functions have none)
     const children: ChildEntry[] = currentEntity
       ? (entityChildren.get(currentEntity.fullName) ?? [])
       : []

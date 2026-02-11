@@ -41,17 +41,29 @@ export function ExplorePage() {
     navigate(`${currentPath}/${child.name}`)
   }
 
+  // Determine what to show in content area:
+  // - isRoot: welcome message
+  // - currentEntity but no children and currentFunction non-composable: function view
+  // - currentEntity: entity view (composable function resolved to entity)
+  // - currentFunction only (no entity): function view (non-composable terminal)
+  // - neither: not found
+  const showFunctionView = !isRoot && !currentEntity && currentFunction
+
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col overflow-hidden">
       {/* Breadcrumb bar — full width, spanning above both sidebar and content */}
       <BreadcrumbBar segments={segments} onNavigate={handleBreadcrumbNavigate} />
 
-      {/* Sidebar + Content horizontal layout */}
+      {/* Sidebar + Content horizontal layout — fills remaining height */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Resizable sidebar */}
         <ResizablePanel>
           <SidebarTransition pathKey={pathKey} direction={direction}>
-            <Sidebar entries={children} onNavigate={handleSidebarNavigate} />
+            <Sidebar
+              entries={children}
+              onNavigate={handleSidebarNavigate}
+              showTypeTags={!isRoot}
+            />
           </SidebarTransition>
         </ResizablePanel>
 
@@ -74,10 +86,10 @@ export function ExplorePage() {
                     {currentEntity.fullName}
                   </p>
                 </div>
-              ) : currentFunction ? (
+              ) : showFunctionView ? (
                 <div>
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl font-semibold font-mono text-type-fn">
+                    <h1 className="font-mono text-xl font-semibold text-type-fn">
                       {currentFunction.name}
                     </h1>
                     {currentFunction.isComposable && (
@@ -88,10 +100,10 @@ export function ExplorePage() {
                   </div>
                   {currentFunction.parameters.length > 0 && (
                     <div className="mt-3">
-                      <h2 className="text-sm font-medium text-muted-foreground mb-1">Parameters</h2>
+                      <h2 className="mb-1 text-sm font-medium text-muted-foreground">Parameters</h2>
                       <div className="space-y-0.5">
                         {currentFunction.parameters.map((p) => (
-                          <div key={p.name} className="text-sm font-mono">
+                          <div key={p.name} className="font-mono text-sm">
                             <span>{p.name}</span>
                             <span className="text-muted-foreground">: </span>
                             <span className="text-type-entity">{p.typeName}</span>
