@@ -71,6 +71,7 @@ export function ExplorePage() {
               entries={children}
               onNavigate={handleSidebarNavigate}
               showTypeTags={!isRoot}
+              variant={isRoot ? 'root' : 'default'}
             />
           </SidebarTransition>
         </ResizablePanel>

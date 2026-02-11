@@ -7,12 +7,14 @@ interface SidebarProps {
   entries: ChildEntry[]
   onNavigate: (child: ChildEntry) => void
   showTypeTags?: boolean
+  variant?: 'default' | 'root'
 }
 
 export function Sidebar({
   entries,
   onNavigate,
   showTypeTags = true,
+  variant = 'default',
 }: SidebarProps) {
   const [filterText, setFilterText] = useState('')
   const entriesRef = useRef(entries)
@@ -105,6 +107,7 @@ export function Sidebar({
                 entry={child}
                 onClick={() => onNavigate(child)}
                 showTypeTags={showTypeTags}
+                variant={variant}
               />
             ))}
 
@@ -116,6 +119,7 @@ export function Sidebar({
                 entry={child}
                 onClick={() => onNavigate(child)}
                 showTypeTags={showTypeTags}
+                variant={variant}
               />
             ))}
           </>
