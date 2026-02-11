@@ -103,3 +103,14 @@ body {
   color: var(--foreground);
   font-family: system-ui, -apple-system, sans-serif;
 }
+
+/*
+ * Smooth dark mode transition (~200ms).
+ * Scoped to layout-level properties to avoid animating hover states
+ * and other incidental transitions unintentionally.
+ */
+body,
+header,
+main {
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
