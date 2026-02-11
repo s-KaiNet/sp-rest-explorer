@@ -1,0 +1,5 @@
+export { ExplorePage } from './ExplorePage'
+export { TypesPage } from './TypesPage'
+export { ChangelogPage } from './ChangelogPage'
+export { HowItWorksPage } from './HowItWorksPage'
+export { NotFoundPage } from './NotFoundPage'
