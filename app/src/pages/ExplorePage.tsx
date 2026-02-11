@@ -39,7 +39,10 @@ export function ExplorePage() {
   useEffect(() => {
     if (isRoot || segments.length < 2) return
     const last = segments[segments.length - 1]
-    addVisit({ name: last.label, path: last.path, kind: last.kind })
+    // Direct children of /_api (depth 2: [_api, item]) are "root" endpoints
+    // Deeper items keep their actual kind (function/navProperty)
+    const kind = segments.length === 2 ? 'root' : last.kind
+    addVisit({ name: last.label, path: last.path, kind })
   }, [segments, isRoot, addVisit])
 
   // Track previous depth for animation direction
