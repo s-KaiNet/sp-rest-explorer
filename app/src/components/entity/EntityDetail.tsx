@@ -22,6 +22,7 @@ interface EntityDetailProps {
 export function EntityDetail({ entity }: EntityDetailProps) {
   const maps = useLookupMaps()
   const [propsFilter, setPropsFilter] = useState('')
+  const [navPropsFilter, setNavPropsFilter] = useState('')
   const [methodsFilter, setMethodsFilter] = useState('')
 
   // Resolve functionIds to FunctionImport[]
@@ -38,6 +39,13 @@ export function EntityDetail({ entity }: EntityDetailProps) {
     const lower = propsFilter.toLowerCase()
     return entity.properties.filter((p) => p.name.toLowerCase().includes(lower))
   }, [entity.properties, propsFilter])
+
+  // Filter navigation properties by name
+  const filteredNavProperties = useMemo(() => {
+    if (!navPropsFilter) return entity.navigationProperties
+    const lower = navPropsFilter.toLowerCase()
+    return entity.navigationProperties.filter((np) => np.name.toLowerCase().includes(lower))
+  }, [entity.navigationProperties, navPropsFilter])
 
   // Filter methods by name
   const filteredFunctions = useMemo(() => {
@@ -100,8 +108,17 @@ export function EntityDetail({ entity }: EntityDetailProps) {
         title="Navigation Properties"
         count={entity.navigationProperties.length}
         emptyMessage="No navigation properties"
+        filterSlot={
+          entity.navigationProperties.length > 0 ? (
+            <SectionFilter
+              value={navPropsFilter}
+              onChange={setNavPropsFilter}
+              placeholder="Filter nav properties..."
+            />
+          ) : undefined
+        }
       >
-        <NavPropertiesTable navigationProperties={entity.navigationProperties} />
+        <NavPropertiesTable navigationProperties={filteredNavProperties} />
       </CollapsibleSection>
 
       {/* Methods section */}

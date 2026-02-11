@@ -59,7 +59,7 @@ export function MethodsTable({ functions }: MethodsTableProps) {
                 )}
               </td>
               <td className="border-b border-border/50 py-2 align-top whitespace-nowrap text-xs">
-                {fn.returnType === 'void' || fn.returnType === 'Edm.Void' ? (
+                {!fn.returnType || fn.returnType === 'void' || fn.returnType === 'Edm.Void' ? (
                   <span className="italic text-muted-foreground">void</span>
                 ) : (
                   <TypeLink typeName={fn.returnType} />

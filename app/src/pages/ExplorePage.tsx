@@ -133,17 +133,10 @@ export function ExplorePage() {
                 </div>
               ) : currentFunction ? (
                 <div className="p-6">
-                  {/* Function name + COMPOSABLE badge */}
-                  <div className="flex items-center gap-2">
-                    <h1 className="font-mono text-xl font-semibold text-type-fn">
-                      {currentFunction.name}
-                    </h1>
-                    {currentFunction.isComposable && (
-                      <span className="rounded bg-type-fn/10 px-2 py-0.5 text-xs font-medium text-type-fn">
-                        COMPOSABLE
-                      </span>
-                    )}
-                  </div>
+                  {/* Function name */}
+                  <h1 className="font-mono text-xl font-semibold text-type-fn">
+                    {currentFunction.name}
+                  </h1>
 
                   {/* Parameters — one per line, this filtered out */}
                   <div className="mt-3">
