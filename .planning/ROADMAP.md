@@ -93,7 +93,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 03-01-PLAN.md — Navigation hook, breadcrumb bar, and sidebar components
+- [x] 03-01-PLAN.md — Navigation hook, breadcrumb bar, and sidebar components
 - [ ] 03-02-PLAN.md — Resizable layout, directional animations, and ExplorePage wiring
 
 ---
@@ -156,11 +156,11 @@ Plans:
 |-------|------|:------------:|--------|
 | 1 | Project Scaffolding | 6 | ✓ Complete (2026-02-11) |
 | 2 | Data Layer & UI Foundation | 7 | ✓ Complete (2026-02-11) |
-| 3 | Navigation System | 7 | Up Next |
+| 3 | Navigation System | 7 | In Progress (1/2 plans) |
 | 4 | Explore API Views | 5 | Pending |
 | 5 | Entity & Function Detail | 14 | Pending |
 | **Total** | | **39** | |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 2 complete)*
+*Last updated: 2026-02-11 (Phase 3 Plan 1 complete)*
