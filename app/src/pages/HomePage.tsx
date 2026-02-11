@@ -52,7 +52,7 @@ function RecentlyVisitedCard({
     >
       {/* Type icon */}
       <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${colorClass}`}
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded text-[10px] font-bold ${colorClass}`}
       >
         {icon}
       </div>
