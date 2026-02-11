@@ -16,26 +16,26 @@
 ## Current Position
 
 **Phase:** 03-navigation-system
-**Plan:** Plan 1 of 2 complete
-**Status:** Executing Phase 3
+**Plan:** Plan 2 of 2 complete — phase complete
+**Status:** Phase 3 complete, ready for verification
 
 ```
 Phase 1 [==========] Project Scaffolding          (6 reqs) ✓
 Phase 2 [==========] Data Layer & UI Foundation   (7 reqs) ✓
-Phase 3 [=====     ] Navigation System            (7 reqs) ← current
-Phase 4 [          ] Explore API Views            (5 reqs)
+Phase 3 [==========] Navigation System            (7 reqs) ✓
+Phase 4 [          ] Explore API Views            (5 reqs) ← next
 Phase 5 [          ] Entity & Function Detail     (14 reqs)
 ```
 
-**Progress:** 13/39 requirements complete (33%)
+**Progress:** 20/39 requirements complete (51%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 2/5 |
-| Requirements completed | 13/39 |
-| Plans executed | 5 |
+| Phases completed | 3/5 |
+| Requirements completed | 20/39 |
+| Plans executed | 6 |
 | Blockers encountered | 0 |
 | Research phases used | 1 |
 
@@ -45,6 +45,7 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 | 02 | 01 | 3 min | 2 | 11 |
 | 02 | 02 | ~5 min | 3 | 12 |
 | 03 | 01 | 2 min | 2 | 6 |
+| 03 | 02 | ~25 min | 3 | 8 |
 
 ## Accumulated Context
 
@@ -69,13 +70,20 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 | Header always visible during loading/error | Skeleton only replaces content area below fixed header | 02-02 |
 | ChildEntry.ref union type (number/string) | Functions ref by numeric ID, nav properties by string fullName — matches lookup map key types | 03-01 |
 | Root detection: undefined === empty splat | Index route has no splat param; treat undefined and "" identically for seamless / → /_api routing | 03-01 |
+| isComposable controls entity resolution | Composable functions resolve to return-type entity with children; non-composable are terminal endpoints | 03-02 |
+| Function-first content display | Content area prioritizes function details over entity display; entity view only for nav property navigation | 03-02 |
+| Breadcrumb (...) for user-facing params only | Functions with params beyond `this` binding show (...) suffix; empty or this-only = no brackets | 03-02 |
+| Root items plain text (no FN/NAV tags) | Functions at /_api root show no type tags — cleaner list when all items are functions | 03-02 |
+| Max sidebar width 600px | User preferred wider max over planned 500px | 03-02 |
+| Blue clickable breadcrumb segments | text-type-fn color for clickable segments distinguishes from bold non-clickable last segment | 03-02 |
+| Breadcrumb in flex flow, not sticky | sticky top-14 broke inside overflow-hidden parent; normal flex flow works correctly | 03-02 |
+| Contained sidebar scroll | absolute inset-0 + overflow-x-hidden overflow-y-auto inside ResizablePanel prevents page-level scrollbar | 03-02 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
 - Zustand v5 selector instability — use scalar selectors or `useShallow`
 - Tailwind CSS v4 silent default changes — use shadcn/ui CSS variables from day one
 - MiniSearch tokenizer strips dots/parens — custom tokenizer needed (but search is v2)
-- react-arborist contextual sidebar is non-standard pattern — may need simpler custom list
 
 ### Todos
 - (None yet — populated during phase planning)
@@ -85,10 +93,10 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 
 ## Session Continuity
 
-**Last session:** Execute 03-01-PLAN.md (2026-02-11)
-**What happened:** Created useApiNavigation hook (URL splat → breadcrumb segments + entity children via lookup maps) and navigation components (BreadcrumbBar with clickable segments and / separators, Sidebar with type-grouped children, SidebarItem with FN/NAV OKLCH badges). All independently testable, ready for layout integration.
-**Next step:** Execute 03-02-PLAN.md (wire navigation into Explore page layout with resize and animations)
+**Last session:** Execute Phase 3 (2026-02-11)
+**What happened:** Built complete navigation system: useApiNavigation hook resolving URL paths to breadcrumb segments + entity children, BreadcrumbBar with blue clickable segments and (...) function parameter indicators, resizable sidebar (200-600px with localStorage persistence), directional slide animations, and function detail views with composable/non-composable routing. Human-verified through 4 rounds of refinement.
+**Next step:** Verify Phase 3 goal achievement, then plan Phase 4 (Explore API Views)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-11 (03-01 complete)*
+*Last updated: 2026-02-11 (Phase 3 complete)*
