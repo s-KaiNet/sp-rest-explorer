@@ -16,26 +16,26 @@
 ## Current Position
 
 **Phase:** 05-entity-function-detail
-**Plan:** Plan 2 of 3 complete
-**Status:** Executing Phase 5
+**Plan:** Plan 3 of 3 complete — phase complete
+**Status:** Phase 5 complete, ready for verification
 
 ```
 Phase 1 [==========] Project Scaffolding          (6 reqs) ✓
 Phase 2 [==========] Data Layer & UI Foundation   (7 reqs) ✓
 Phase 3 [==========] Navigation System            (7 reqs) ✓
 Phase 4 [==========] Explore API Views            (5 reqs) ✓
-Phase 5 [======    ] Entity & Function Detail     (14 reqs) ← current
+Phase 5 [==========] Entity & Function Detail     (14 reqs) ✓
 ```
 
-**Progress:** 25/39 requirements complete (64%)
+**Progress:** 39/39 requirements complete (100%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 4/5 |
-| Requirements completed | 25/39 |
-| Plans executed | 10 |
+| Phases completed | 5/5 |
+| Requirements completed | 39/39 |
+| Plans executed | 11 |
 | Blockers encountered | 0 |
 | Research phases used | 1 |
 
@@ -50,6 +50,7 @@ Phase 5 [======    ] Entity & Function Detail     (14 reqs) ← current
 | 04 | 02 | ~20 min | 2 | 9 |
 | 05 | 01 | 4 min | 2 | 11 |
 | 05 | 02 | 3 min | 2 | 2 |
+| 05 | 03 | ~25 min | 2 | 6 |
 
 ## Accumulated Context
 
@@ -98,6 +99,11 @@ Phase 5 [======    ] Entity & Function Detail     (14 reqs) ← current
 | React Router Link for entity type navigation | to="/entity/{typeName}" — hash router handles prefix, no /#/ needed | 05-01 |
 | TypeLink reuse across pages | Existing TypeLink imported into ExplorePage instead of inlining — avoids duplication | 05-02 |
 | Metadata stats via useMemo | Object.keys(entities) iteration for entity/property/method counts in welcome screen | 05-02 |
+| COMPOSABLE badge only on return type | Removed from function name header — only shows in Methods table next to return type | 05-03 |
+| Nav Properties inline filter | All three entity sections (Properties, Nav Properties, Methods) now have inline filters | 05-03 |
+| h-screen contained scroll layout | Root div uses h-screen + overflow-hidden; min-h-0 on flex children; content area scrolls independently | 05-03 |
+| void for empty/undefined return types | MethodsTable checks !fn.returnType before passing to TypeLink — shows italic "void" | 05-03 |
+| TypeLink undefined guard | Renders italic "unknown" for undefined typeName from metadata gaps — prevents crash | 05-03 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -113,10 +119,10 @@ Phase 5 [======    ] Entity & Function Detail     (14 reqs) ← current
 
 ## Session Continuity
 
-**Last session:** Execute Phase 5 Plan 2 (2026-02-11)
-**What happened:** Enhanced function detail in ExplorePage with TypeLink params (clickable entity types, void/none handling, this filtering). Built Explore Types welcome landing screen with real metadata stats (entity/property/method counts). 2 files modified, 2 task commits, 1 minor deviation (used existing TypeLink instead of inlining).
-**Next step:** Execute 05-03-PLAN.md (EntityDetail wiring into ExplorePage and TypesPage)
+**Last session:** Execute Phase 5 (2026-02-12)
+**What happened:** Executed all 3 plans across 2 waves. Plan 01: EntityDetail component suite (TypeLink, collapsible sections, tables, base type chain, used-by bar — 11 files). Plan 02: Enhanced function detail with TypeLink, Explore Types welcome screen with stats. Plan 03: Wired EntityDetail into ExplorePage and TypesPage, human verification checkpoint with 4 fixes (COMPOSABLE badge, nav props filter, void returns, contained scroll).
+**Next step:** Verify Phase 5 goal achievement
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 5 Plan 2 complete)*
+*Last updated: 2026-02-12 (Phase 5 complete)*
