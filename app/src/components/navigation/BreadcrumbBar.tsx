@@ -27,7 +27,7 @@ export function BreadcrumbBar({ segments, onNavigate }: BreadcrumbBarProps) {
               <button
                 type="button"
                 onClick={() => onNavigate(segment.path)}
-                className="cursor-pointer text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline"
+                className="cursor-pointer text-sm text-primary/70 transition-colors hover:text-primary hover:underline"
               >
                 {segment.label}
               </button>

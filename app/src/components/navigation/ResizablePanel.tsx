@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 const STORAGE_KEY = 'sidebar-width'
 const DEFAULT_WIDTH = 280
 const MIN_WIDTH = 200
-const MAX_WIDTH = 500
+const MAX_WIDTH = 600
 
 interface ResizablePanelProps {
   children: React.ReactNode
@@ -57,10 +57,12 @@ export function ResizablePanel({ children, className }: ResizablePanelProps) {
 
   return (
     <div
-      className={`relative flex h-full shrink-0 flex-col border-r border-border ${className ?? ''}`}
+      className={`relative flex h-full shrink-0 flex-col overflow-hidden border-r border-border ${className ?? ''}`}
       style={{ width }}
     >
-      {children}
+      <div className="flex flex-1 flex-col overflow-y-auto">
+        {children}
+      </div>
 
       {/* Resize handle */}
       <div

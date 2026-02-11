@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useParams } from 'react-router'
 import { useLookupMaps, useMetadataSnapshot } from '@/lib/metadata'
-import type { ChildEntry, EntityType } from '@/lib/metadata'
+import type { ChildEntry, EntityType, FunctionImport } from '@/lib/metadata'
 
 // ── Types ──
 
@@ -14,6 +14,7 @@ export interface ApiNavigationState {
   segments: BreadcrumbSegment[]
   children: ChildEntry[]
   currentEntity: EntityType | null
+  currentFunction: FunctionImport | null
   isRoot: boolean
 }
 
@@ -34,6 +35,7 @@ export function useApiNavigation(): ApiNavigationState {
         segments: [rootSegment],
         children: [],
         currentEntity: null,
+        currentFunction: null,
         isRoot: true,
       }
     }
@@ -57,6 +59,7 @@ export function useApiNavigation(): ApiNavigationState {
         segments: [rootSegment],
         children: rootChildren,
         currentEntity: null,
+        currentFunction: null,
         isRoot: true,
       }
     }
@@ -73,16 +76,20 @@ export function useApiNavigation(): ApiNavigationState {
       })
     }
 
-    // Walk path to resolve current entity
+    // Walk path to resolve current entity and function
     let currentEntity: EntityType | null = null
+    let currentFunction: FunctionImport | null = null
 
     // First part is always a root function name
     const rootFn = Object.values(metadata.functions).find(
       (fn) => fn.isRoot && fn.name === parts[0],
     )
 
-    if (rootFn?.returnType) {
-      currentEntity = entityByFullName.get(rootFn.returnType) ?? null
+    if (rootFn) {
+      currentFunction = rootFn
+      if (rootFn.returnType) {
+        currentEntity = entityByFullName.get(rootFn.returnType) ?? null
+      }
     }
 
     // Walk remaining parts
@@ -93,15 +100,18 @@ export function useApiNavigation(): ApiNavigationState {
       if (!child) {
         // Path doesn't resolve — return what we have so far
         currentEntity = null
+        currentFunction = null
         break
       }
 
       if (child.kind === 'navProperty') {
         // ref is the typeName/fullName of the target entity
         currentEntity = entityByFullName.get(child.ref as string) ?? null
+        currentFunction = null
       } else {
         // ref is the function ID — get function, then look up returnType entity
         const fn = functionById.get(child.ref as number)
+        currentFunction = fn ?? null
         if (fn?.returnType) {
           currentEntity = entityByFullName.get(fn.returnType) ?? null
         } else {
@@ -119,6 +129,7 @@ export function useApiNavigation(): ApiNavigationState {
       segments,
       children,
       currentEntity,
+      currentFunction,
       isRoot: false,
     }
   }, [splat, maps, metadata])

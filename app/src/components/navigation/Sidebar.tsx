@@ -20,7 +20,7 @@ export function Sidebar({ entries, onNavigate }: SidebarProps) {
   const hasBothGroups = navProperties.length > 0 && functions.length > 0
 
   return (
-    <div className="overflow-y-auto p-2">
+    <div className="min-h-full p-2">
       {navProperties.map((child) => (
         <SidebarItem
           key={`nav-${child.name}`}

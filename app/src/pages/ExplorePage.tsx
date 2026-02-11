@@ -12,7 +12,7 @@ import {
 
 export function ExplorePage() {
   const navigate = useNavigate()
-  const { segments, children, currentEntity, isRoot } = useApiNavigation()
+  const { segments, children, currentEntity, currentFunction, isRoot } = useApiNavigation()
 
   // Track previous depth for animation direction
   const prevDepthRef = useRef(segments.length)
@@ -73,6 +73,39 @@ export function ExplorePage() {
                   <p className="mt-1 text-sm text-muted-foreground">
                     {currentEntity.fullName}
                   </p>
+                </div>
+              ) : currentFunction ? (
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-xl font-semibold font-mono text-type-fn">
+                      {currentFunction.name}
+                    </h1>
+                    {currentFunction.isComposable && (
+                      <span className="rounded bg-type-fn/10 px-2 py-0.5 text-xs font-medium text-type-fn">
+                        COMPOSABLE
+                      </span>
+                    )}
+                  </div>
+                  {currentFunction.parameters.length > 0 && (
+                    <div className="mt-3">
+                      <h2 className="text-sm font-medium text-muted-foreground mb-1">Parameters</h2>
+                      <div className="space-y-0.5">
+                        {currentFunction.parameters.map((p) => (
+                          <div key={p.name} className="text-sm font-mono">
+                            <span>{p.name}</span>
+                            <span className="text-muted-foreground">: </span>
+                            <span className="text-type-entity">{p.typeName}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {currentFunction.returnType && (
+                    <p className="mt-2 text-sm">
+                      <span className="text-muted-foreground">Returns: </span>
+                      <span className="font-mono text-type-entity">{currentFunction.returnType}</span>
+                    </p>
+                  )}
                 </div>
               ) : (
                 <div className="py-12 text-center text-muted-foreground">

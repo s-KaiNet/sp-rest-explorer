@@ -25,7 +25,7 @@ export function SidebarTransition({
         : ''
 
   return (
-    <div key={pathKey} className={`flex-1 overflow-y-auto ${animationClass}`}>
+    <div key={pathKey} className={`flex min-h-full flex-1 flex-col ${animationClass}`}>
       {children}
     </div>
   )
