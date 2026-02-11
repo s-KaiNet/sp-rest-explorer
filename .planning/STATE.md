@@ -15,16 +15,16 @@
 
 ## Current Position
 
-**Phase:** 04-explore-api-views
-**Plan:** Plan 2 of 2 complete — phase complete
-**Status:** Phase 4 complete, ready for verification
+**Phase:** 05-entity-function-detail
+**Plan:** Plan 1 of 3 complete
+**Status:** Executing Phase 5
 
 ```
 Phase 1 [==========] Project Scaffolding          (6 reqs) ✓
 Phase 2 [==========] Data Layer & UI Foundation   (7 reqs) ✓
 Phase 3 [==========] Navigation System            (7 reqs) ✓
 Phase 4 [==========] Explore API Views            (5 reqs) ✓
-Phase 5 [          ] Entity & Function Detail     (14 reqs) ← next
+Phase 5 [===       ] Entity & Function Detail     (14 reqs) ← current
 ```
 
 **Progress:** 25/39 requirements complete (64%)
@@ -35,7 +35,7 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs) ← next
 |--------|-------|
 | Phases completed | 4/5 |
 | Requirements completed | 25/39 |
-| Plans executed | 8 |
+| Plans executed | 9 |
 | Blockers encountered | 0 |
 | Research phases used | 1 |
 
@@ -48,6 +48,7 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs) ← next
 | 03 | 02 | ~25 min | 3 | 8 |
 | 04 | 01 | 3 min | 3 | 5 |
 | 04 | 02 | ~20 min | 2 | 9 |
+| 05 | 01 | 4 min | 2 | 11 |
 
 ## Accumulated Context
 
@@ -90,6 +91,10 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs) ← next
 | Recently visited icon types | root=<> green, function=ƒ blue, navProperty=NAV purple, entity type (future)=T green | 04-02 |
 | ResizablePanel flex column layout | Changed from single scrollable div to flex column for filter/content separation | 04-02 |
 | Content area bg-muted/30 | Subtle background distinction between sidebar (white) and content area | 04-02 |
+| TypeLink pattern for all entity type references | Consistent component handles plain entities, Collection split-links, Edm.* primitives | 05-01 |
+| CollapsibleSection filterSlot pattern | ReactNode prop for inline filter injection — keeps filter logic in parent | 05-01 |
+| UsedByBar on-demand scan per render | Scan all entities' nav properties each render — simple, no precomputed index needed | 05-01 |
+| React Router Link for entity type navigation | to="/entity/{typeName}" — hash router handles prefix, no /#/ needed | 05-01 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -105,10 +110,10 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs) ← next
 
 ## Session Continuity
 
-**Last session:** Execute Phase 4 (2026-02-11)
-**What happened:** Built complete Explore API Views: Plan 1 added sidebar filter at all levels, useRecentlyVisited hook, root endpoint green <> icons. Plan 2 created home screen with hero (title, description, disabled search, real stats), browse-all button, recently visited grid, routing split (/ → HomePage, /_api/* → ExplorePage), and /_api welcome message. Extensive human verification (4 rounds, 17 refinements) refined filter architecture (lifted to ExplorePage, outside animation), icon types, nav highlighting, and visual polish.
-**Next step:** Verify Phase 4 goal achievement, then plan Phase 5 (Entity & Function Detail)
+**Last session:** Execute Phase 5 Plan 1 (2026-02-11)
+**What happened:** Built all entity detail components: TypeLink (Collection split-links, Edm.* primitives), CollapsibleSection, SectionFilter, SectionJumpLinks, BaseTypeChain, UsedByBar, PropertiesTable, NavPropertiesTable, MethodsTable, and EntityDetail orchestrator. 11 new files, 2 task commits, zero deviations.
+**Next step:** Execute 05-02-PLAN.md (function detail enhancements)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 4 complete)*
+*Last updated: 2026-02-11 (Phase 5 Plan 1 complete)*
