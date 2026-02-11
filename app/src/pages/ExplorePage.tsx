@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useNavigate } from 'react-router'
-import { useApiNavigation } from '@/hooks'
+import { useApiNavigation, useRecentlyVisited } from '@/hooks'
 import type { ChildEntry } from '@/lib/metadata'
 import {
   BreadcrumbBar,
@@ -13,6 +13,14 @@ import {
 export function ExplorePage() {
   const navigate = useNavigate()
   const { segments, children, currentEntity, currentFunction, isRoot } = useApiNavigation()
+  const { addVisit } = useRecentlyVisited()
+
+  // Record visits for non-root endpoints
+  useEffect(() => {
+    if (isRoot || segments.length < 2) return
+    const last = segments[segments.length - 1]
+    addVisit({ name: last.label, path: last.path, kind: last.kind })
+  }, [segments, isRoot, addVisit])
 
   // Track previous depth for animation direction
   const prevDepthRef = useRef(segments.length)
