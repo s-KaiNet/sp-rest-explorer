@@ -121,7 +121,7 @@ Plans:
 
 Plans:
 - [x] 04-01-PLAN.md — Foundation: recently visited hook, sidebar filter at all levels, root endpoint green icon treatment
-- [ ] 04-02-PLAN.md — Home screen with hero, browse-all button, recently visited grid, search UI placeholders, welcome message
+- [x] 04-02-PLAN.md — Home screen with hero, browse-all button, recently visited grid, search UI placeholders, welcome message
 
 ---
 
@@ -163,10 +163,10 @@ Plans:
 | 1 | Project Scaffolding | 6 | ✓ Complete (2026-02-11) |
 | 2 | Data Layer & UI Foundation | 7 | ✓ Complete (2026-02-11) |
 | 3 | Navigation System | 7 | ✓ Complete (2026-02-11) |
-| 4 | Explore API Views | 5 | In Progress |
+| 4 | Explore API Views | 5 | ✓ Complete (2026-02-11) |
 | 5 | Entity & Function Detail | 14 | Pending |
 | **Total** | | **39** | |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 3 complete)*
+*Last updated: 2026-02-11 (Phase 4 complete)*
