@@ -157,9 +157,9 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — TypeLink component, EntityDetail with collapsible sections, tables, filters, base type chain, used-by bar
-- [ ] 05-02-PLAN.md — Enhanced function detail with type links + Explore Types welcome screen
-- [ ] 05-03-PLAN.md — Wire EntityDetail into ExplorePage and TypesPage + visual verification
+- [x] 05-01-PLAN.md — TypeLink component, EntityDetail with collapsible sections, tables, filters, base type chain, used-by bar
+- [x] 05-02-PLAN.md — Enhanced function detail with type links + Explore Types welcome screen
+- [x] 05-03-PLAN.md — Wire EntityDetail into ExplorePage and TypesPage + visual verification
 
 ---
 
@@ -171,9 +171,9 @@ Plans:
 | 2 | Data Layer & UI Foundation | 7 | ✓ Complete (2026-02-11) |
 | 3 | Navigation System | 7 | ✓ Complete (2026-02-11) |
 | 4 | Explore API Views | 5 | ✓ Complete (2026-02-11) |
-| 5 | Entity & Function Detail | 14 | Pending |
+| 5 | Entity & Function Detail | 14 | ✓ Complete (2026-02-12) |
 | **Total** | | **39** | |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 4 complete)*
+*Last updated: 2026-02-12 (Phase 5 complete — all phases done)*
