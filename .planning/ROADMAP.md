@@ -31,6 +31,12 @@ Rebuild the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 3. Dark mode preference persists across browser sessions via localStorage
 4. Running `npm run build` produces output in `docs/` directory deployable to GitHub Pages
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Vite + React 19 + TS5 with Tailwind CSS 4 + shadcn/ui and build-to-docs config
+- [ ] 01-02-PLAN.md — React Router HashRouter, Header with nav/dark mode/GitHub link, placeholder pages, 404
+
 ---
 
 ## Phase 2: Data Layer & UI Foundation
