@@ -2,12 +2,12 @@ import type { ChildEntry } from '@/lib/metadata'
 import { SidebarItem } from './SidebarItem'
 
 interface SidebarProps {
-  children: ChildEntry[]
+  entries: ChildEntry[]
   onNavigate: (child: ChildEntry) => void
 }
 
-export function Sidebar({ children, onNavigate }: SidebarProps) {
-  if (children.length === 0) {
+export function Sidebar({ entries, onNavigate }: SidebarProps) {
+  if (entries.length === 0) {
     return (
       <div className="flex flex-1 items-center justify-center overflow-y-auto p-2">
         <span className="text-sm text-muted-foreground">No child endpoints</span>
@@ -15,8 +15,8 @@ export function Sidebar({ children, onNavigate }: SidebarProps) {
     )
   }
 
-  const navProperties = children.filter((c) => c.kind === 'navProperty')
-  const functions = children.filter((c) => c.kind === 'function')
+  const navProperties = entries.filter((c) => c.kind === 'navProperty')
+  const functions = entries.filter((c) => c.kind === 'function')
   const hasBothGroups = navProperties.length > 0 && functions.length > 0
 
   return (

@@ -17,7 +17,7 @@ function App() {
       <Header />
       <main className="flex flex-1 flex-col pt-14">
         {status === 'ready' ? (
-          <div className="flex flex-1 flex-col animate-in fade-in duration-200">
+          <div className="flex flex-1 flex-col">
             <Outlet />
           </div>
         ) : status === 'error' ? (
