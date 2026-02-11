@@ -13,6 +13,7 @@ export function BreadcrumbBar({ segments, onNavigate }: BreadcrumbBarProps) {
     >
       {segments.map((segment, index) => {
         const isLast = index === segments.length - 1
+        const suffix = segment.kind === 'function' ? '(...)' : ''
 
         return (
           <span key={segment.path} className="flex items-center">
@@ -21,7 +22,7 @@ export function BreadcrumbBar({ segments, onNavigate }: BreadcrumbBarProps) {
             )}
             {isLast ? (
               <span className="font-semibold text-foreground">
-                {segment.label}
+                {segment.label}{suffix}
               </span>
             ) : (
               <button
@@ -29,7 +30,7 @@ export function BreadcrumbBar({ segments, onNavigate }: BreadcrumbBarProps) {
                 onClick={() => onNavigate(segment.path)}
                 className="cursor-pointer text-type-fn transition-colors hover:text-type-fn/80 hover:underline"
               >
-                {segment.label}
+                {segment.label}{suffix}
               </button>
             )}
           </span>

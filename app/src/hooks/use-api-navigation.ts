@@ -8,6 +8,7 @@ import type { ChildEntry, EntityType, FunctionImport } from '@/lib/metadata'
 export interface BreadcrumbSegment {
   label: string
   path: string
+  kind: 'root' | 'function' | 'navProperty'
 }
 
 export interface ApiNavigationState {
@@ -27,7 +28,7 @@ export function useApiNavigation(): ApiNavigationState {
   const metadata = useMetadataSnapshot()
 
   return useMemo((): ApiNavigationState => {
-    const rootSegment: BreadcrumbSegment = { label: '_api', path: '/_api' }
+    const rootSegment: BreadcrumbSegment = { label: '_api', path: '/_api', kind: 'root' }
 
     // No maps or metadata yet — return empty root state
     if (!maps || !metadata) {
@@ -67,16 +68,8 @@ export function useApiNavigation(): ApiNavigationState {
     // Deep path: split and walk
     const parts = splat.split('/').filter(Boolean)
 
-    // Build breadcrumb segments
+    // Build breadcrumb segments and resolve entities simultaneously
     const segments: BreadcrumbSegment[] = [rootSegment]
-    for (let i = 0; i < parts.length; i++) {
-      segments.push({
-        label: parts[i],
-        path: '/_api/' + parts.slice(0, i + 1).join('/'),
-      })
-    }
-
-    // Walk path to resolve current entity and function
     let currentEntity: EntityType | null = null
     let currentFunction: FunctionImport | null = null
 
@@ -85,18 +78,31 @@ export function useApiNavigation(): ApiNavigationState {
       (fn) => fn.isRoot && fn.name === parts[0],
     )
 
+    segments.push({
+      label: parts[0],
+      path: '/_api/' + parts[0],
+      kind: 'function',
+    })
+
     if (rootFn) {
       currentFunction = rootFn
-      // Only resolve entity if function is composable (returns navigable entity)
       if (rootFn.isComposable && rootFn.returnType) {
         currentEntity = entityByFullName.get(rootFn.returnType) ?? null
       }
     }
 
-    // Walk remaining parts
+    // Walk remaining parts — resolve and record kind for each segment
     for (let i = 1; i < parts.length; i++) {
+      let segmentKind: 'function' | 'navProperty' = 'function'
+
       if (!currentEntity) {
         // Can't walk further — previous function was non-composable
+        // Still add the segment (unresolved) but stop resolving
+        segments.push({
+          label: parts[i],
+          path: '/_api/' + parts.slice(0, i + 1).join('/'),
+          kind: 'function',
+        })
         currentFunction = null
         currentEntity = null
         break
@@ -106,28 +112,36 @@ export function useApiNavigation(): ApiNavigationState {
       const child = entityChildList?.find((c) => c.name === parts[i])
 
       if (!child) {
-        // Path doesn't resolve — return what we have so far
+        segments.push({
+          label: parts[i],
+          path: '/_api/' + parts.slice(0, i + 1).join('/'),
+          kind: 'function',
+        })
         currentEntity = null
         currentFunction = null
         break
       }
 
+      segmentKind = child.kind === 'navProperty' ? 'navProperty' : 'function'
+
       if (child.kind === 'navProperty') {
-        // ref is the typeName/fullName of the target entity
         currentEntity = entityByFullName.get(child.ref as string) ?? null
         currentFunction = null
       } else {
-        // ref is the function ID — get function
         const fn = functionById.get(child.ref as number)
         currentFunction = fn ?? null
         if (fn?.isComposable && fn.returnType) {
-          // Composable: resolve to entity, show its children
           currentEntity = entityByFullName.get(fn.returnType) ?? null
         } else {
-          // Non-composable: terminal endpoint, no entity/children
           currentEntity = null
         }
       }
+
+      segments.push({
+        label: parts[i],
+        path: '/_api/' + parts.slice(0, i + 1).join('/'),
+        kind: segmentKind,
+      })
     }
 
     // Get children of the resolved entity (only if we have one — non-composable functions have none)
