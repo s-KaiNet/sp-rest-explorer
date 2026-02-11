@@ -16,7 +16,7 @@
 ## Current Position
 
 **Phase:** 05-entity-function-detail
-**Plan:** Plan 1 of 3 complete
+**Plan:** Plan 2 of 3 complete
 **Status:** Executing Phase 5
 
 ```
@@ -24,7 +24,7 @@ Phase 1 [==========] Project Scaffolding          (6 reqs) ✓
 Phase 2 [==========] Data Layer & UI Foundation   (7 reqs) ✓
 Phase 3 [==========] Navigation System            (7 reqs) ✓
 Phase 4 [==========] Explore API Views            (5 reqs) ✓
-Phase 5 [===       ] Entity & Function Detail     (14 reqs) ← current
+Phase 5 [======    ] Entity & Function Detail     (14 reqs) ← current
 ```
 
 **Progress:** 25/39 requirements complete (64%)
@@ -35,7 +35,7 @@ Phase 5 [===       ] Entity & Function Detail     (14 reqs) ← current
 |--------|-------|
 | Phases completed | 4/5 |
 | Requirements completed | 25/39 |
-| Plans executed | 9 |
+| Plans executed | 10 |
 | Blockers encountered | 0 |
 | Research phases used | 1 |
 
@@ -49,6 +49,7 @@ Phase 5 [===       ] Entity & Function Detail     (14 reqs) ← current
 | 04 | 01 | 3 min | 3 | 5 |
 | 04 | 02 | ~20 min | 2 | 9 |
 | 05 | 01 | 4 min | 2 | 11 |
+| 05 | 02 | 3 min | 2 | 2 |
 
 ## Accumulated Context
 
@@ -95,6 +96,8 @@ Phase 5 [===       ] Entity & Function Detail     (14 reqs) ← current
 | CollapsibleSection filterSlot pattern | ReactNode prop for inline filter injection — keeps filter logic in parent | 05-01 |
 | UsedByBar on-demand scan per render | Scan all entities' nav properties each render — simple, no precomputed index needed | 05-01 |
 | React Router Link for entity type navigation | to="/entity/{typeName}" — hash router handles prefix, no /#/ needed | 05-01 |
+| TypeLink reuse across pages | Existing TypeLink imported into ExplorePage instead of inlining — avoids duplication | 05-02 |
+| Metadata stats via useMemo | Object.keys(entities) iteration for entity/property/method counts in welcome screen | 05-02 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -110,10 +113,10 @@ Phase 5 [===       ] Entity & Function Detail     (14 reqs) ← current
 
 ## Session Continuity
 
-**Last session:** Execute Phase 5 Plan 1 (2026-02-11)
-**What happened:** Built all entity detail components: TypeLink (Collection split-links, Edm.* primitives), CollapsibleSection, SectionFilter, SectionJumpLinks, BaseTypeChain, UsedByBar, PropertiesTable, NavPropertiesTable, MethodsTable, and EntityDetail orchestrator. 11 new files, 2 task commits, zero deviations.
-**Next step:** Execute 05-02-PLAN.md (function detail enhancements)
+**Last session:** Execute Phase 5 Plan 2 (2026-02-11)
+**What happened:** Enhanced function detail in ExplorePage with TypeLink params (clickable entity types, void/none handling, this filtering). Built Explore Types welcome landing screen with real metadata stats (entity/property/method counts). 2 files modified, 2 task commits, 1 minor deviation (used existing TypeLink instead of inlining).
+**Next step:** Execute 05-03-PLAN.md (EntityDetail wiring into ExplorePage and TypesPage)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 5 Plan 1 complete)*
+*Last updated: 2026-02-11 (Phase 5 Plan 2 complete)*
