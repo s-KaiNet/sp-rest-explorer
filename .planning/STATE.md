@@ -16,26 +16,26 @@
 ## Current Position
 
 **Phase:** 04-explore-api-views
-**Plan:** Plan 1 of 2 complete
-**Status:** Executing Phase 4
+**Plan:** Plan 2 of 2 complete — phase complete
+**Status:** Phase 4 complete, ready for verification
 
 ```
 Phase 1 [==========] Project Scaffolding          (6 reqs) ✓
 Phase 2 [==========] Data Layer & UI Foundation   (7 reqs) ✓
 Phase 3 [==========] Navigation System            (7 reqs) ✓
-Phase 4 [=====     ] Explore API Views            (5 reqs) ← current
-Phase 5 [          ] Entity & Function Detail     (14 reqs)
+Phase 4 [==========] Explore API Views            (5 reqs) ✓
+Phase 5 [          ] Entity & Function Detail     (14 reqs) ← next
 ```
 
-**Progress:** 20/39 requirements complete (51%)
+**Progress:** 25/39 requirements complete (64%)
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 3/5 |
-| Requirements completed | 20/39 |
-| Plans executed | 7 |
+| Phases completed | 4/5 |
+| Requirements completed | 25/39 |
+| Plans executed | 8 |
 | Blockers encountered | 0 |
 | Research phases used | 1 |
 
@@ -47,6 +47,7 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 | 03 | 01 | 2 min | 2 | 6 |
 | 03 | 02 | ~25 min | 3 | 8 |
 | 04 | 01 | 3 min | 3 | 5 |
+| 04 | 02 | ~20 min | 2 | 9 |
 
 ## Accumulated Context
 
@@ -82,6 +83,13 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 | useRef for filter clear on navigation | Comparing entries reference via useRef detects navigation changes without stale closures | 04-01 |
 | SidebarItem variant prop pattern | 'root' shows green `<>` on left, 'default' shows FN/NAV on right — replaces "no tags at root" decision | 04-01 |
 | Filter always visible (even empty entries) | Disabled filter input + "0 elements" for consistent sidebar layout across all navigation states | 04-01 |
+| Filter state lifted to ExplorePage | SidebarFilter component sits outside SidebarTransition — no slide animation on filter, stable UX | 04-02 |
+| Explore API nav → /_api, not / | Clicking "Explore API" navigates to the API browser, not home. Not highlighted on home page | 04-02 |
+| SP REST Explorer title is clickable Link | Header app name navigates to home (/) | 04-02 |
+| Root endpoints kind mapping for recently visited | Depth-2 paths (/_api/X) recorded as kind 'root' for correct <> icon in recently visited | 04-02 |
+| Recently visited icon types | root=<> green, function=ƒ blue, navProperty=NAV purple, entity type (future)=T green | 04-02 |
+| ResizablePanel flex column layout | Changed from single scrollable div to flex column for filter/content separation | 04-02 |
+| Content area bg-muted/30 | Subtle background distinction between sidebar (white) and content area | 04-02 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -97,10 +105,10 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 
 ## Session Continuity
 
-**Last session:** Execute Phase 4 Plan 1 (2026-02-11)
-**What happened:** Built Phase 4 foundation: useRecentlyVisited hook (localStorage, max 12 items, dedup by path), sidebar filter input at all navigation levels (real-time filtering, element count, auto-clear on navigation), and root endpoint green `<>` icon badges via SidebarItem variant prop.
-**Next step:** Execute 04-02-PLAN.md (home screen with hero, browse-all button, recently visited grid)
+**Last session:** Execute Phase 4 (2026-02-11)
+**What happened:** Built complete Explore API Views: Plan 1 added sidebar filter at all levels, useRecentlyVisited hook, root endpoint green <> icons. Plan 2 created home screen with hero (title, description, disabled search, real stats), browse-all button, recently visited grid, routing split (/ → HomePage, /_api/* → ExplorePage), and /_api welcome message. Extensive human verification (4 rounds, 17 refinements) refined filter architecture (lifted to ExplorePage, outside animation), icon types, nav highlighting, and visual polish.
+**Next step:** Verify Phase 4 goal achievement, then plan Phase 5 (Entity & Function Detail)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-11 (Phase 4 Plan 1 complete)*
+*Last updated: 2026-02-11 (Phase 4 complete)*
