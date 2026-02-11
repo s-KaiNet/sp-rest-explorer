@@ -10,7 +10,7 @@ import {
   SidebarTransition,
   ContentTransition,
 } from '@/components/navigation'
-import { TypeLink } from '@/components/entity'
+import { TypeLink, EntityDetail } from '@/components/entity'
 
 export function ExplorePage() {
   const navigate = useNavigate()
@@ -114,24 +114,25 @@ export function ExplorePage() {
         {/* Right: Content area with independent scroll */}
         <div className="flex-1 overflow-y-auto bg-muted/30">
           <ContentTransition pathKey={pathKey}>
-            <div className="p-6">
               {isRoot ? (
-                <div className="max-w-[640px] py-8">
-                  <h2 className="mb-1.5 text-lg font-bold">All Root Endpoints</h2>
-                  <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-                    The SharePoint REST API exposes{' '}
-                    <strong className="text-foreground">{children.length} root endpoints</strong>{' '}
-                    under <code className="rounded bg-muted px-1 py-0.5 text-xs">_api/</code>.
-                    Use the filter in the sidebar to narrow down by name.
-                    Long endpoint names are truncated — <strong className="text-foreground">hover to see the full name</strong>, or drag the sidebar edge to widen it.
-                  </p>
-                  <div className="flex items-center gap-2 rounded-lg bg-type-fn/5 px-3.5 py-3 text-[13px] text-type-fn">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0"><path d="M15 15l-2 5L9 9l11 4-5 2z"/><path d="m2 2 7.586 7.586"/></svg>
-                    Click any endpoint in the sidebar to explore its entity, methods, and navigation properties.
+                <div className="p-6">
+                  <div className="max-w-[640px] py-8">
+                    <h2 className="mb-1.5 text-lg font-bold">All Root Endpoints</h2>
+                    <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                      The SharePoint REST API exposes{' '}
+                      <strong className="text-foreground">{children.length} root endpoints</strong>{' '}
+                      under <code className="rounded bg-muted px-1 py-0.5 text-xs">_api/</code>.
+                      Use the filter in the sidebar to narrow down by name.
+                      Long endpoint names are truncated — <strong className="text-foreground">hover to see the full name</strong>, or drag the sidebar edge to widen it.
+                    </p>
+                    <div className="flex items-center gap-2 rounded-lg bg-type-fn/5 px-3.5 py-3 text-[13px] text-type-fn">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0"><path d="M15 15l-2 5L9 9l11 4-5 2z"/><path d="m2 2 7.586 7.586"/></svg>
+                      Click any endpoint in the sidebar to explore its entity, methods, and navigation properties.
+                    </div>
                   </div>
                 </div>
               ) : currentFunction ? (
-                <div>
+                <div className="p-6">
                   {/* Function name + COMPOSABLE badge */}
                   <div className="flex items-center gap-2">
                     <h1 className="font-mono text-xl font-semibold text-type-fn">
@@ -184,20 +185,12 @@ export function ExplorePage() {
                   </div>
                 </div>
               ) : currentEntity ? (
-                <div>
-                  <h1 className="text-xl font-semibold">
-                    {currentEntity.name}
-                  </h1>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {currentEntity.fullName}
-                  </p>
-                </div>
+                <EntityDetail entity={currentEntity} />
               ) : (
-                <div className="py-12 text-center text-muted-foreground">
+                <div className="p-6 py-12 text-center text-muted-foreground">
                   <p>Endpoint not found</p>
                 </div>
               )}
-            </div>
           </ContentTransition>
         </div>
       </div>

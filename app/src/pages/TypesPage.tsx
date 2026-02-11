@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
 import { useParams } from 'react-router'
-import { useMetadataSnapshot } from '@/lib/metadata'
+import { useMetadataSnapshot, useLookupMaps } from '@/lib/metadata'
+import { EntityDetail } from '@/components/entity'
 
 export function TypesPage() {
   const { typeName } = useParams()
   const metadata = useMetadataSnapshot()
+  const maps = useLookupMaps()
 
   // Compute stats from real metadata
   const stats = useMemo(() => {
@@ -21,11 +23,41 @@ export function TypesPage() {
     return { entities: entityCount, properties: propertyCount, methods: methodCount }
   }, [metadata])
 
-  // If a type is selected, show placeholder (Plan 03 adds EntityDetail)
+  // If a type is selected, resolve and render EntityDetail
   if (typeName) {
+    const decodedName = decodeURIComponent(typeName)
+    const entity = maps?.entityByFullName.get(decodedName) ?? null
+
+    if (!entity) {
+      // Loading state (maps not ready) or entity not found
+      if (!maps) {
+        return (
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <p className="text-sm text-muted-foreground">Loading...</p>
+          </div>
+        )
+      }
+
+      // Entity not found
+      return (
+        <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10 text-2xl text-destructive">
+            ?
+          </div>
+          <h2 className="mb-2 text-lg font-semibold">Entity not found</h2>
+          <p className="max-w-[360px] text-sm text-muted-foreground">
+            No entity type matching{' '}
+            <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono">{decodedName}</code>{' '}
+            was found in the metadata.
+          </p>
+        </div>
+      )
+    }
+
+    // Entity found — render full detail in scrollable area
     return (
-      <div className="flex flex-1 flex-col items-center justify-center">
-        <p className="text-sm text-muted-foreground">Loading...</p>
+      <div className="flex-1 overflow-y-auto">
+        <EntityDetail entity={entity} />
       </div>
     )
   }
