@@ -10,6 +10,7 @@ import {
   SidebarTransition,
   ContentTransition,
 } from '@/components/navigation'
+import { TypeLink } from '@/components/entity'
 
 export function ExplorePage() {
   const navigate = useNavigate()
@@ -131,6 +132,7 @@ export function ExplorePage() {
                 </div>
               ) : currentFunction ? (
                 <div>
+                  {/* Function name + COMPOSABLE badge */}
                   <div className="flex items-center gap-2">
                     <h1 className="font-mono text-xl font-semibold text-type-fn">
                       {currentFunction.name}
@@ -141,26 +143,45 @@ export function ExplorePage() {
                       </span>
                     )}
                   </div>
-                  {currentFunction.parameters.length > 0 && (
-                    <div className="mt-3">
-                      <h2 className="mb-1 text-sm font-medium text-muted-foreground">Parameters</h2>
-                      <div className="space-y-0.5">
-                        {currentFunction.parameters.map((p) => (
-                          <div key={p.name} className="font-mono text-sm">
-                            <span>{p.name}</span>
-                            <span className="text-muted-foreground">: </span>
-                            <span className="text-type-entity">{p.typeName}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  {currentFunction.returnType && (
-                    <p className="mt-2 text-sm">
-                      <span className="text-muted-foreground">Returns: </span>
-                      <span className="font-mono text-type-entity">{currentFunction.returnType}</span>
-                    </p>
-                  )}
+
+                  {/* Parameters — one per line, this filtered out */}
+                  <div className="mt-3">
+                    <h2 className="mb-1 text-sm font-medium text-muted-foreground">Parameters</h2>
+                    {(() => {
+                      const userParams = currentFunction.parameters.filter((p) => p.name !== 'this')
+                      if (userParams.length === 0) {
+                        return <p className="text-sm italic text-muted-foreground">none</p>
+                      }
+                      return (
+                        <div className="space-y-0.5">
+                          {userParams.map((p) => (
+                            <div key={p.name} className="font-mono text-sm">
+                              <span className="font-medium">{p.name}</span>
+                              <span className="text-muted-foreground">: </span>
+                              <TypeLink typeName={p.typeName} />
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    })()}
+                  </div>
+
+                  {/* Return type */}
+                  <div className="mt-2 text-sm">
+                    <span className="text-muted-foreground">Returns: </span>
+                    {!currentFunction.returnType || currentFunction.returnType === 'void' ? (
+                      <span className="font-mono italic text-muted-foreground">void</span>
+                    ) : (
+                      <>
+                        <TypeLink typeName={currentFunction.returnType} />
+                        {currentFunction.isComposable && (
+                          <span className="ml-1.5 inline-block rounded bg-type-fn/10 px-1.5 py-0.5 align-middle text-[10px] font-semibold text-type-fn">
+                            COMPOSABLE
+                          </span>
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
               ) : currentEntity ? (
                 <div>
