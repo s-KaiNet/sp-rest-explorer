@@ -87,6 +87,8 @@ Each task was committed atomically:
 2. **Task 2: Header with navigation, search, dark mode, GitHub link** - `554cd67` (feat)
 3. **Task 3: Visual verification checkpoint** - no commit (human-verify checkpoint, approved)
 
+**Post-task fix:** `1b347f9` (fix: correct GitHub repo URL)
+
 ## Files Created/Modified
 - `app/src/components/theme/ThemeProvider.tsx` - React context provider with system preference detection, localStorage persistence, useTheme hook
 - `app/src/components/theme/DarkModeToggle.tsx` - Sun/moon toggle button using lucide-react icons
@@ -123,10 +125,18 @@ Each task was committed atomically:
 - **Verification:** `npx tsc -b` passes with no errors
 - **Committed in:** `554cd67` (Task 2 commit)
 
+**2. [Rule 1 - Bug] Corrected GitHub repo URL**
+- **Found during:** Post-commit review
+- **Issue:** Plan specified `nicknisi/sp-rest-explorer` but the actual repo remote is `s-KaiNet/sp-rest-explorer`
+- **Fix:** Updated href in Header.tsx to correct repo URL
+- **Files modified:** `app/src/components/layout/Header.tsx`
+- **Verification:** URL matches `git remote -v` output
+- **Committed in:** `1b347f9`
+
 ---
 
-**Total deviations:** 1 auto-fixed (1 bug)
-**Impact on plan:** Minor type annotation fix. No scope creep.
+**Total deviations:** 2 auto-fixed (2 bugs)
+**Impact on plan:** Minor type fix + wrong URL correction. No scope creep.
 
 ## Issues Encountered
 None — both tasks completed successfully after the TypeScript type fix.
