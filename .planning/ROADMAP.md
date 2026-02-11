@@ -34,7 +34,7 @@ Rebuild the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 **Plans:** 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Vite + React 19 + TS5 with Tailwind CSS 4 + shadcn/ui and build-to-docs config
+- [x] 01-01-PLAN.md — Scaffold Vite + React 19 + TS5 with Tailwind CSS 4 + shadcn/ui and build-to-docs config
 - [ ] 01-02-PLAN.md — React Router HashRouter, Header with nav/dark mode/GitHub link, placeholder pages, 404
 
 ---
@@ -142,7 +142,7 @@ Plans:
 
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
-| 1 | Project Scaffolding | 6 | Pending |
+| 1 | Project Scaffolding | 6 | In Progress |
 | 2 | Data Layer & UI Foundation | 7 | Pending |
 | 3 | Navigation System | 7 | Pending |
 | 4 | Explore API Views | 5 | Pending |

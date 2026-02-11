@@ -15,12 +15,12 @@
 
 ## Current Position
 
-**Phase:** Not started
-**Plan:** None active
-**Status:** Roadmap created, awaiting Phase 1 planning
+**Phase:** 01-project-scaffolding
+**Plan:** Plan 1 of 2 complete — next: 01-02-PLAN.md
+**Status:** Executing Phase 1
 
 ```
-Phase 1 [ ] Project Scaffolding          (6 reqs)
+Phase 1 [==        ] Project Scaffolding          (6 reqs) ← current
 Phase 2 [ ] Data Layer & UI Foundation   (7 reqs)
 Phase 3 [ ] Navigation System            (7 reqs)
 Phase 4 [ ] Explore API Views            (5 reqs)
@@ -35,9 +35,13 @@ Phase 5 [ ] Entity & Function Detail     (14 reqs)
 |--------|-------|
 | Phases completed | 0/5 |
 | Requirements completed | 0/39 |
-| Plans executed | 0 |
+| Plans executed | 1 |
 | Blockers encountered | 0 |
 | Research phases used | 0 |
+
+| Phase | Plan | Duration | Tasks | Files |
+|-------|------|----------|-------|-------|
+| 01 | 01 | 6 min | 2 | 13 |
 
 ## Accumulated Context
 
@@ -50,6 +54,8 @@ Phase 5 [ ] Entity & Function Detail     (14 reqs)
 | New `app/` directory | Clean separation from old `web/` code during development | Research |
 | Desktop only for v1 | Data density makes mobile impractical. Deferred | Research |
 | v1 = Explore API only | No search (Cmd+K), types view, or changelog. Ship core browsing first | Requirements |
+| @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin — better integration, no config file needed | 01-01 |
+| Root tsconfig.json needs paths for shadcn | shadcn CLI reads root tsconfig for alias resolution, not just tsconfig.app.json | 01-01 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -66,9 +72,9 @@ Phase 5 [ ] Entity & Function Detail     (14 reqs)
 
 ## Session Continuity
 
-**Last session:** Roadmap creation (2026-02-11)
-**What happened:** Derived 5 phases from 39 v1 requirements. Phases follow natural delivery boundaries: scaffolding → data → navigation → views → detail panels.
-**Next step:** `/gsd-plan-phase 1` to plan Project Scaffolding
+**Last session:** Execute 01-01-PLAN.md (2026-02-11)
+**What happened:** Scaffolded Vite 7 + React 19 + TypeScript 5.9 project in app/ with Tailwind CSS 4 and shadcn/ui. Build outputs to docs/ for GitHub Pages.
+**Next step:** Execute 01-02-PLAN.md (React Router, Header, dark mode, placeholder pages)
 
 ---
 *State initialized: 2026-02-11*
