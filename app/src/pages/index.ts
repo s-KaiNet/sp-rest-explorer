@@ -1,4 +1,5 @@
 export { ExplorePage } from './ExplorePage'
+export { HomePage } from './HomePage'
 export { TypesPage } from './TypesPage'
 export { ChangelogPage } from './ChangelogPage'
 export { HowItWorksPage } from './HowItWorksPage'

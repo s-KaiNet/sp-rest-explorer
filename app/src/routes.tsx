@@ -2,6 +2,7 @@ import { createHashRouter } from 'react-router'
 import App from '@/App'
 import {
   ExplorePage,
+  HomePage,
   TypesPage,
   ChangelogPage,
   HowItWorksPage,
@@ -13,8 +14,8 @@ export const router = createHashRouter([
     path: '/',
     element: <App />,
     children: [
-      // Home / Explore API
-      { index: true, element: <ExplorePage /> },
+      // Home screen
+      { index: true, element: <HomePage /> },
       // API browse with catch-all for deep linking
       { path: '_api/*', element: <ExplorePage /> },
       // Entity types
