@@ -77,7 +77,7 @@ export function ExplorePage() {
         </ResizablePanel>
 
         {/* Right: Content area with independent scroll */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto bg-muted/30">
           <ContentTransition pathKey={pathKey}>
             <div className="p-6">
               {isRoot ? (

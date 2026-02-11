@@ -1,9 +1,9 @@
-import { NavLink, useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 import { Search, Github } from 'lucide-react'
 import { DarkModeToggle } from '@/components/theme'
 
 const navLinks: { to: string; label: string }[] = [
-  { to: '/', label: 'Explore API' },
+  { to: '/_api', label: 'Explore API' },
   { to: '/entity', label: 'Explore Types' },
   { to: '/api-diff', label: 'API Changelog' },
   { to: '/how-it-works', label: 'How it works' },
@@ -24,19 +24,19 @@ export function Header() {
       <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4 px-4">
         {/* Left: App name + Nav links */}
         <div className="flex items-center gap-1">
-          <span className="mr-3 text-sm font-semibold text-foreground whitespace-nowrap">
+          <Link to="/" className="mr-3 text-sm font-semibold text-foreground whitespace-nowrap hover:text-foreground/80 transition-colors">
             SP REST Explorer
-          </span>
+          </Link>
           <nav className="flex items-center gap-0.5">
             {navLinks.map((link) => {
               // Special case: "Explore API" covers both / and /_api/*
-              if (link.to === '/') {
+              if (link.label === 'Explore API') {
                 return (
                   <NavLink
                     key={link.to}
                     to={link.to}
                     end
-                    className={isExploreApiActive ? activeClass : inactiveClass}
+                    className={() => isExploreApiActive ? activeClass : inactiveClass}
                   >
                     {link.label}
                   </NavLink>

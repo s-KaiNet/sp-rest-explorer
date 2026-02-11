@@ -29,22 +29,31 @@ function RecentlyVisitedCard({
   item: RecentlyVisitedItem
   onClick: () => void
 }) {
-  const isFn = item.kind === 'function' || item.kind === 'root'
+  // Determine icon and colors based on kind
+  let icon: string
+  let colorClass: string
+  if (item.kind === 'root') {
+    icon = '<>'
+    colorClass = 'bg-type-entity/10 text-type-entity'
+  } else if (item.kind === 'function') {
+    icon = 'ƒ'
+    colorClass = 'bg-type-fn/10 text-type-fn'
+  } else {
+    // navProperty
+    icon = 'T'
+    colorClass = 'bg-type-entity/10 text-type-entity'
+  }
 
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-3 rounded-lg border border-border bg-background px-3.5 py-3 text-left transition-all hover:border-border/80 hover:shadow-sm"
+      className="flex items-center gap-3 rounded-lg border border-border bg-background px-3.5 py-3 text-left transition-all hover:border-border/60 hover:bg-accent/50 hover:shadow-sm cursor-pointer"
     >
       {/* Type icon */}
       <div
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${
-          isFn
-            ? 'bg-type-fn/10 text-type-fn'
-            : 'bg-type-entity/10 text-type-entity'
-        }`}
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-sm font-bold ${colorClass}`}
       >
-        {isFn ? 'ƒ' : 'T'}
+        {icon}
       </div>
 
       {/* Name + path */}
@@ -133,7 +142,7 @@ export function HomePage() {
             {navPropertyCount !== null
               ? navPropertyCount.toLocaleString()
               : '...'}{' '}
-            nav properties
+            unique properties
           </span>
         </div>
       </div>
@@ -141,7 +150,7 @@ export function HomePage() {
       {/* ── Browse All Root Endpoints Button ── */}
       <button
         onClick={() => navigate('/_api')}
-        className="mb-8 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-2.5 text-[13px] text-muted-foreground transition-all hover:border-type-fn hover:bg-type-fn/5 hover:text-type-fn"
+        className="mb-8 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-2.5 text-[13px] text-muted-foreground transition-all hover:border-type-fn hover:bg-type-fn/5 hover:text-type-fn cursor-pointer"
       >
         Browse all root endpoints
         {rootCount !== null && (
