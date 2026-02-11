@@ -35,7 +35,7 @@ Rebuild the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 
 Plans:
 - [x] 01-01-PLAN.md — Scaffold Vite + React 19 + TS5 with Tailwind CSS 4 + shadcn/ui and build-to-docs config
-- [ ] 01-02-PLAN.md — React Router HashRouter, Header with nav/dark mode/GitHub link, placeholder pages, 404
+- [x] 01-02-PLAN.md — React Router HashRouter, Header with nav/dark mode/GitHub link, placeholder pages, 404
 
 ---
 
@@ -64,7 +64,7 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Data layer: TypeScript types, metadata singleton, Zustand store, lookup Maps, MiniSearch index, IndexedDB cache, boot orchestrator
-- [ ] 02-02-PLAN.md — UI foundation: color tokens, monospace font, CodeText component, skeleton screens, error state, CSS spinner, boot integration in App.tsx
+- [x] 02-02-PLAN.md — UI foundation: color tokens, monospace font, CodeText component, skeleton screens, error state, CSS spinner, boot integration in App.tsx
 
 ---
 
@@ -148,13 +148,13 @@ Plans:
 
 | Phase | Name | Requirements | Status |
 |-------|------|:------------:|--------|
-| 1 | Project Scaffolding | 6 | In Progress |
-| 2 | Data Layer & UI Foundation | 7 | Pending |
-| 3 | Navigation System | 7 | Pending |
+| 1 | Project Scaffolding | 6 | ✓ Complete (2026-02-11) |
+| 2 | Data Layer & UI Foundation | 7 | ✓ Complete (2026-02-11) |
+| 3 | Navigation System | 7 | Up Next |
 | 4 | Explore API Views | 5 | Pending |
 | 5 | Entity & Function Detail | 14 | Pending |
 | **Total** | | **39** | |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-11*
+*Last updated: 2026-02-11 (Phase 2 complete)*
