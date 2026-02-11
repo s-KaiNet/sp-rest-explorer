@@ -59,7 +59,7 @@ The current site only searches root-level items (793 of 3,528 functions). The re
 
 ## Constraints
 
-- **Tech stack**: React 19, Vite 6, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, react-arborist, MiniSearch 7, cmdk, React Router 7 (hash mode), @tanstack/react-table — all locked per research
+- **Tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, react-arborist, MiniSearch 7, cmdk, React Router 7 (hash mode), @tanstack/react-table — all locked per research
 - **Hosting**: GitHub Pages — requires hash routing (`createHashRouter`), static output to `docs/`
 - **Data format**: Azure Blob Storage JSON format is fixed — cannot change the metadata or diff schema
 - **URL compatibility**: Hash routes must match current patterns for any bookmarked URLs

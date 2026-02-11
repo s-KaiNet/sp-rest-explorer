@@ -124,51 +124,51 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase ? | Pending |
-| INFRA-02 | Phase ? | Pending |
-| INFRA-03 | Phase ? | Pending |
-| INFRA-04 | Phase ? | Pending |
-| INFRA-05 | Phase ? | Pending |
-| INFRA-06 | Phase ? | Pending |
-| INFRA-07 | Phase ? | Pending |
-| INFRA-08 | Phase ? | Pending |
-| INFRA-09 | Phase ? | Pending |
-| NAV-01 | Phase ? | Pending |
-| NAV-02 | Phase ? | Pending |
-| NAV-03 | Phase ? | Pending |
-| NAV-04 | Phase ? | Pending |
-| NAV-05 | Phase ? | Pending |
-| NAV-06 | Phase ? | Pending |
-| NAV-07 | Phase ? | Pending |
-| EXPL-01 | Phase ? | Pending |
-| EXPL-02 | Phase ? | Pending |
-| EXPL-03 | Phase ? | Pending |
-| EXPL-04 | Phase ? | Pending |
-| EXPL-05 | Phase ? | Pending |
-| ENTD-01 | Phase ? | Pending |
-| ENTD-02 | Phase ? | Pending |
-| ENTD-03 | Phase ? | Pending |
-| ENTD-04 | Phase ? | Pending |
-| ENTD-05 | Phase ? | Pending |
-| ENTD-06 | Phase ? | Pending |
-| ENTD-07 | Phase ? | Pending |
-| ENTD-08 | Phase ? | Pending |
-| ENTD-09 | Phase ? | Pending |
-| ENTD-10 | Phase ? | Pending |
-| ENTD-11 | Phase ? | Pending |
-| FUNC-01 | Phase ? | Pending |
-| FUNC-02 | Phase ? | Pending |
-| FUNC-03 | Phase ? | Pending |
-| UIFN-01 | Phase ? | Pending |
-| UIFN-02 | Phase ? | Pending |
-| UIFN-03 | Phase ? | Pending |
-| UIFN-04 | Phase ? | Pending |
+| INFRA-01 | Phase 1 — Project Scaffolding | Pending |
+| INFRA-02 | Phase 1 — Project Scaffolding | Pending |
+| INFRA-03 | Phase 2 — Data Layer & UI Foundation | Pending |
+| INFRA-04 | Phase 2 — Data Layer & UI Foundation | Pending |
+| INFRA-05 | Phase 2 — Data Layer & UI Foundation | Pending |
+| INFRA-06 | Phase 1 — Project Scaffolding | Pending |
+| INFRA-07 | Phase 1 — Project Scaffolding | Pending |
+| INFRA-08 | Phase 1 — Project Scaffolding | Pending |
+| INFRA-09 | Phase 2 — Data Layer & UI Foundation | Pending |
+| NAV-01 | Phase 3 — Navigation System | Pending |
+| NAV-02 | Phase 3 — Navigation System | Pending |
+| NAV-03 | Phase 3 — Navigation System | Pending |
+| NAV-04 | Phase 3 — Navigation System | Pending |
+| NAV-05 | Phase 3 — Navigation System | Pending |
+| NAV-06 | Phase 3 — Navigation System | Pending |
+| NAV-07 | Phase 3 — Navigation System | Pending |
+| EXPL-01 | Phase 4 — Explore API Views | Pending |
+| EXPL-02 | Phase 4 — Explore API Views | Pending |
+| EXPL-03 | Phase 4 — Explore API Views | Pending |
+| EXPL-04 | Phase 4 — Explore API Views | Pending |
+| EXPL-05 | Phase 4 — Explore API Views | Pending |
+| ENTD-01 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-02 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-03 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-04 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-05 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-06 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-07 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-08 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-09 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-10 | Phase 5 — Entity & Function Detail | Pending |
+| ENTD-11 | Phase 5 — Entity & Function Detail | Pending |
+| FUNC-01 | Phase 5 — Entity & Function Detail | Pending |
+| FUNC-02 | Phase 5 — Entity & Function Detail | Pending |
+| FUNC-03 | Phase 5 — Entity & Function Detail | Pending |
+| UIFN-01 | Phase 2 — Data Layer & UI Foundation | Pending |
+| UIFN-02 | Phase 1 — Project Scaffolding | Pending |
+| UIFN-03 | Phase 2 — Data Layer & UI Foundation | Pending |
+| UIFN-04 | Phase 2 — Data Layer & UI Foundation | Pending |
 
 **Coverage:**
 - v1 requirements: 39 total
-- Mapped to phases: 0
-- Unmapped: 39
+- Mapped to phases: 39
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-11*
-*Last updated: 2026-02-11 after initial definition*
+*Last updated: 2026-02-11 after roadmap creation*
