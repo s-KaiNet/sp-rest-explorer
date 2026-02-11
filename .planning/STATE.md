@@ -15,13 +15,13 @@
 
 ## Current Position
 
-**Phase:** 01-project-scaffolding (complete)
-**Plan:** Plan 2 of 2 complete — phase done
-**Status:** Phase 1 complete, ready for Phase 2
+**Phase:** 02-data-layer-ui-foundation
+**Plan:** Plan 1 of 2 complete — next: 02-02-PLAN.md
+**Status:** Executing Phase 2
 
 ```
-Phase 1 [==========] Project Scaffolding          (6 reqs) ✓ complete
-Phase 2 [          ] Data Layer & UI Foundation   (7 reqs) ← next
+Phase 1 [==========] Project Scaffolding          (6 reqs) ✓
+Phase 2 [=====     ] Data Layer & UI Foundation   (7 reqs) ← current
 Phase 3 [          ] Navigation System            (7 reqs)
 Phase 4 [          ] Explore API Views            (5 reqs)
 Phase 5 [          ] Entity & Function Detail     (14 reqs)
@@ -35,14 +35,14 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 |--------|-------|
 | Phases completed | 1/5 |
 | Requirements completed | 6/39 |
-| Plans executed | 2 |
+| Plans executed | 3 |
 | Blockers encountered | 0 |
-| Research phases used | 0 |
+| Research phases used | 1 |
 
 | Phase | Plan | Duration | Tasks | Files |
 |-------|------|----------|-------|-------|
 | 01 | 01 | 6 min | 2 | 13 |
-| 01 | 02 | 10 min | 3 | 17 |
+| 02 | 01 | 3 min | 2 | 11 |
 
 ## Accumulated Context
 
@@ -57,9 +57,11 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 | v1 = Explore API only | No search (Cmd+K), types view, or changelog. Ship core browsing first | Requirements |
 | @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin — better integration, no config file needed | 01-01 |
 | Root tsconfig.json needs paths for shadcn | shadcn CLI reads root tsconfig for alias resolution, not just tsconfig.app.json | 01-01 |
-| Grid header layout (1fr auto 1fr) | Keeps search centered regardless of left/right content width | 01-02 |
-| Anti-flash inline script in index.html | Reads localStorage before React hydrates to prevent wrong-theme flash | 01-02 |
-| Scoped dark mode transition (body/header/main) | Avoids animating unrelated hover states while providing smooth theme switching | 01-02 |
+| Frozen singleton + useSyncExternalStore for metadata | 4MB metadata outside Zustand reactive state — Object.freeze() prevents mutation | 02-01 |
+| Zustand status-only store | AppStatus + error string only — no metadata reference in reactive state | 02-01 |
+| Map over Object for lookup maps | Sparse function IDs (1-3576 with gaps) — Map provides true O(1) without prototype chain | 02-01 |
+| Background revalidation updates cache only | Prevents mid-session UI disruption from re-rendering when fresh data arrives | 02-01 |
+| Custom MiniSearch tokenizer | Splits on dots/underscores so "SP.Web" → ["SP", "Web"] for better search relevance | 02-01 |
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -76,9 +78,9 @@ Phase 5 [          ] Entity & Function Detail     (14 reqs)
 
 ## Session Continuity
 
-**Last session:** Execute 01-02-PLAN.md (2026-02-11)
-**What happened:** Built complete app shell: React Router 7 HashRouter with all routes, styled Header with nav/search/dark mode/GitHub, ThemeProvider with system preference + localStorage, placeholder pages, 404. Visual verification approved.
-**Next step:** Plan/execute Phase 2 (Data Layer & UI Foundation — metadata fetching, Zustand, MiniSearch, lookup maps)
+**Last session:** Execute 02-01-PLAN.md (2026-02-11)
+**What happened:** Built complete data layer: TypeScript types, frozen metadata singleton with useSyncExternalStore, Zustand status-only store, O(1) lookup Maps, MiniSearch index for ~6K items, IndexedDB cache with cache-then-revalidate boot orchestrator.
+**Next step:** Execute 02-02-PLAN.md (UI foundation: color tokens, CodeText component, skeleton screens, error state, CSS spinner, boot integration)
 
 ---
 *State initialized: 2026-02-11*

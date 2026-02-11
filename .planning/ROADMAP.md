@@ -63,7 +63,7 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 02-01-PLAN.md — Data layer: TypeScript types, metadata singleton, Zustand store, lookup Maps, MiniSearch index, IndexedDB cache, boot orchestrator
+- [x] 02-01-PLAN.md — Data layer: TypeScript types, metadata singleton, Zustand store, lookup Maps, MiniSearch index, IndexedDB cache, boot orchestrator
 - [ ] 02-02-PLAN.md — UI foundation: color tokens, monospace font, CodeText component, skeleton screens, error state, CSS spinner, boot integration in App.tsx
 
 ---
