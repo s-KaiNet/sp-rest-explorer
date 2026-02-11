@@ -117,6 +117,12 @@ Plans:
 3. User clicks "Browse all root endpoints" and sees all 793 root functions in a sidebar list with a filter input
 4. User types "list" in the filter input and sees a filtered list with count (e.g., "Showing 22 of 793 endpoints"), with long names prefix-truncated and full name visible on hover
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Foundation: recently visited hook, sidebar filter at all levels, root endpoint green icon treatment
+- [ ] 04-02-PLAN.md — Home screen with hero, browse-all button, recently visited grid, search UI placeholders, welcome message
+
 ---
 
 ## Phase 5: Entity & Function Detail
