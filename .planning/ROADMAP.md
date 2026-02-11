@@ -84,11 +84,17 @@ Plans:
 - NAV-07: Sidebar is resizable by dragging a handle (280px default, 200px min, 500px max)
 
 **Success Criteria:**
-1. User can navigate to `/#/_api/web` and see a breadcrumb showing `_api > web` with each segment clickable, plus a sidebar listing web's children (Lists, SiteGroups, CurrentUser, etc.) with FN/NAV type tags
-2. User can click a sidebar child (e.g., "Lists"), see the breadcrumb update to `_api > web > Lists`, sidebar update to show Lists' children, and URL update to `/#/_api/web/Lists`
+1. User can navigate to `/#/_api/web` and see a breadcrumb showing `_api / web` with each segment clickable, plus a sidebar listing web's children (Lists, SiteGroups, CurrentUser, etc.) with FN/NAV type tags
+2. User can click a sidebar child (e.g., "Lists"), see the breadcrumb update to `_api / web / Lists`, sidebar update to show Lists' children, and URL update to `/#/_api/web/Lists`
 3. User can click any breadcrumb segment to jump back to that level, with sidebar updating to show that node's children
-4. User can click the copy button and paste a valid `_api/web/Lists` path from clipboard
+4. ~~User can click the copy button and paste a valid `_api/web/Lists` path from clipboard~~ (NAV-03 deferred)
 5. User can drag the sidebar resize handle to change its width between 200px and 500px
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Navigation hook, breadcrumb bar, and sidebar components
+- [ ] 03-02-PLAN.md — Resizable layout, directional animations, and ExplorePage wiring
 
 ---
 
