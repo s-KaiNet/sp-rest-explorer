@@ -16,8 +16,8 @@ export function Header() {
   const { pathname } = useLocation()
   const isHome = pathname === '/'
 
-  // "Explore API" should be active on both / (home) and /_api/* (browsing)
-  const isExploreApiActive = pathname === '/' || pathname.startsWith('/_api')
+  // "Explore API" active only when browsing the API (/_api/*), NOT on home (/)
+  const isExploreApiActive = pathname.startsWith('/_api')
 
   return (
     <header className="fixed top-0 z-50 flex h-14 w-full items-center border-b border-border bg-background">

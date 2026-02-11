@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useApiNavigation, useRecentlyVisited } from '@/hooks'
 import type { ChildEntry } from '@/lib/metadata'
 import {
   BreadcrumbBar,
   Sidebar,
+  SidebarFilter,
   ResizablePanel,
   SidebarTransition,
   ContentTransition,
@@ -14,6 +15,25 @@ export function ExplorePage() {
   const navigate = useNavigate()
   const { segments, children, currentEntity, currentFunction, isRoot } = useApiNavigation()
   const { addVisit } = useRecentlyVisited()
+
+  // Sidebar filter state — lifted here so filter sits outside slide animation
+  const [filterText, setFilterText] = useState('')
+  const prevChildrenRef = useRef(children)
+
+  // Clear filter when navigation changes (entries change)
+  useEffect(() => {
+    if (children !== prevChildrenRef.current) {
+      setFilterText('')
+      prevChildrenRef.current = children
+    }
+  }, [children])
+
+  // Filter entries
+  const filteredChildren = useMemo(() => {
+    if (!filterText) return children
+    const lower = filterText.toLowerCase()
+    return children.filter((e) => e.name.toLowerCase().includes(lower))
+  }, [children, filterText])
 
   // Record visits for non-root endpoints
   useEffect(() => {
@@ -66,14 +86,25 @@ export function ExplorePage() {
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Resizable sidebar */}
         <ResizablePanel>
-          <SidebarTransition pathKey={pathKey} direction={direction}>
-            <Sidebar
-              entries={children}
-              onNavigate={handleSidebarNavigate}
-              showTypeTags={!isRoot}
-              variant={isRoot ? 'root' : 'default'}
-            />
-          </SidebarTransition>
+          {/* Filter stays fixed above slide animation */}
+          <SidebarFilter
+            filterText={filterText}
+            onFilterChange={setFilterText}
+            totalCount={children.length}
+            filteredCount={filteredChildren.length}
+            disabled={children.length === 0}
+          />
+          {/* Sidebar content slides on navigation */}
+          <div className="flex-1 overflow-y-auto">
+            <SidebarTransition pathKey={pathKey} direction={direction}>
+              <Sidebar
+                entries={filteredChildren}
+                onNavigate={handleSidebarNavigate}
+                showTypeTags={!isRoot}
+                variant={isRoot ? 'root' : 'default'}
+              />
+            </SidebarTransition>
+          </div>
         </ResizablePanel>
 
         {/* Right: Content area with independent scroll */}

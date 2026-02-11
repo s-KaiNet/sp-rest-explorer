@@ -1,5 +1,6 @@
 export { BreadcrumbBar } from './BreadcrumbBar'
 export { Sidebar } from './Sidebar'
+export { SidebarFilter } from './SidebarFilter'
 export { SidebarItem } from './SidebarItem'
 export { ResizablePanel } from './ResizablePanel'
 export { SidebarTransition, ContentTransition } from './NavigationTransition'

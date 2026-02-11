@@ -30,6 +30,7 @@ function RecentlyVisitedCard({
   onClick: () => void
 }) {
   // Determine icon and colors based on kind
+  // root = <> green, function = ƒ blue, navProperty = NAV purple, entity (future) = T green
   let icon: string
   let colorClass: string
   if (item.kind === 'root') {
@@ -40,8 +41,8 @@ function RecentlyVisitedCard({
     colorClass = 'bg-type-fn/10 text-type-fn'
   } else {
     // navProperty
-    icon = 'T'
-    colorClass = 'bg-type-entity/10 text-type-entity'
+    icon = 'NAV'
+    colorClass = 'bg-type-nav/10 text-type-nav'
   }
 
   return (
