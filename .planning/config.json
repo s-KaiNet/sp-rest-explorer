@@ -6,7 +6,7 @@
   "model_profile": "quality",
   "branching_strategy": "phase",
   "workflow": {
-    "research": true,
+    "research": false,
     "plan_check": true,
     "verifier": true
   }
