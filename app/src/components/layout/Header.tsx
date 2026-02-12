@@ -12,7 +12,11 @@ const navLinks: { to: string; label: string }[] = [
 const activeClass = 'rounded-md bg-accent px-3 py-1.5 text-sm font-semibold text-accent-foreground'
 const inactiveClass = 'rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-accent/50 hover:text-foreground transition-colors'
 
-export function Header() {
+interface HeaderProps {
+  onSearchClick?: () => void
+}
+
+export function Header({ onSearchClick }: HeaderProps) {
   const { pathname } = useLocation()
   const isHome = pathname === '/'
 
@@ -57,18 +61,22 @@ export function Header() {
           </nav>
         </div>
 
-        {/* Center: Search placeholder (hidden on home — hero has search there) */}
+        {/* Center: Search trigger (hidden on home — hero has search there) */}
         <div className="flex items-center">
           {!isHome && (
-            <div className="relative">
+            <button
+              type="button"
+              onClick={() => onSearchClick?.()}
+              className="relative flex h-8 w-64 items-center rounded-md border border-input bg-muted/50 pl-9 pr-3 text-sm text-muted-foreground transition-colors cursor-pointer hover:border-ring hover:bg-muted/80"
+            >
               <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/50" />
-              <input
-                type="text"
-                disabled
-                placeholder="Search APIs... (Cmd+K)"
-                className="h-8 w-64 rounded-md border border-input bg-muted/50 pl-9 pr-3 text-sm text-muted-foreground placeholder:text-muted-foreground/50 opacity-60 cursor-not-allowed"
-              />
-            </div>
+              <span className="flex-1 text-left text-muted-foreground/50">Search APIs...</span>
+              <kbd className="ml-2 shrink-0 rounded bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
+                {typeof navigator !== 'undefined' && (/Mac|iPod|iPhone|iPad/.test(navigator.platform || '') || /Mac/.test(navigator.userAgent || ''))
+                  ? '\u2318K'
+                  : 'Ctrl+K'}
+              </kbd>
+            </button>
           )}
         </div>
 

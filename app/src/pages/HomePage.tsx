@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router'
+import { useNavigate, useOutletContext } from 'react-router'
 import { Search, Clock, ArrowRight } from 'lucide-react'
 import { useMetadataSnapshot } from '@/lib/metadata'
 import { useRecentlyVisited } from '@/hooks'
@@ -82,6 +82,7 @@ function RecentlyVisitedCard({
 
 export function HomePage() {
   const navigate = useNavigate()
+  const { onSearchClick } = useOutletContext<{ onSearchClick?: () => void }>()
   const metadata = useMetadataSnapshot()
   const { items, clearAll } = useRecentlyVisited()
 
@@ -112,19 +113,22 @@ export function HomePage() {
           API.
         </p>
 
-        {/* Disabled search bar */}
-        <div className="relative mx-auto max-w-[520px]">
+        {/* Search trigger — opens command palette */}
+        <button
+          type="button"
+          onClick={() => onSearchClick?.()}
+          className="relative mx-auto flex h-11 w-full max-w-[520px] items-center rounded-[10px] border border-input bg-background pl-10 pr-24 text-[15px] shadow-md transition-colors cursor-pointer hover:border-ring hover:shadow-lg"
+        >
           <Search className="absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-muted-foreground/50" />
-          <input
-            type="text"
-            disabled
-            placeholder="Search functions, entities, properties..."
-            className="h-11 w-full rounded-[10px] border border-input bg-background pl-10 pr-24 text-[15px] shadow-md opacity-60 cursor-not-allowed placeholder:text-muted-foreground/50"
-          />
-          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-            Coming soon
+          <span className="flex-1 text-left text-muted-foreground/50">
+            Search functions, entities, properties...
           </span>
-        </div>
+          <kbd className="absolute right-3.5 top-1/2 -translate-y-1/2 rounded bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+            {typeof navigator !== 'undefined' && (/Mac|iPod|iPhone|iPad/.test(navigator.platform || '') || /Mac/.test(navigator.userAgent || ''))
+              ? '\u2318K'
+              : 'Ctrl+K'}
+          </kbd>
+        </button>
 
         {/* Stats row */}
         <div className="mt-4 flex items-center justify-center gap-6 text-[12.5px] text-muted-foreground">
