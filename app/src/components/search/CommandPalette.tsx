@@ -17,10 +17,16 @@ import type { Metadata, LookupMaps } from '@/lib/metadata'
 
 // ── Types ──
 
+export interface SearchSelection {
+  path: string
+  name: string
+  kind: 'entity' | 'function' | 'navProperty'
+}
+
 interface CommandPaletteProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  onSelect: (path: string) => void
+  onSelect: (selection: SearchSelection) => void
 }
 
 interface GroupedResults {
@@ -323,9 +329,9 @@ export function CommandPalette({
       const metadata = getMetadata()
       if (!metadata) return
 
-      // Find the result from search index to resolve path
-      const searchIndex = getSearchIndex()
-      if (!searchIndex) return
+      // Find the result from search results to get name + kind
+      const allResults = searchResults ?? []
+      const result = allResults.find((r) => (r.id as string) === resultId)
 
       const path = resolveSearchResultPath(
         { id: resultId } as SearchResult,
@@ -334,11 +340,13 @@ export function CommandPalette({
       )
 
       if (path) {
-        onSelect(path)
+        const name = result ? (result.name as string) : path.split('/').pop() ?? path
+        const kind = result ? (result.kind as SearchSelection['kind']) : 'function'
+        onSelect({ path, name, kind })
         onOpenChange(false)
       }
     },
-    [entityPathMap, onSelect, onOpenChange],
+    [entityPathMap, onSelect, onOpenChange, searchResults],
   )
 
   const isRootFn = (result: SearchResult) =>
