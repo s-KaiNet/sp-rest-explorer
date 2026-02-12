@@ -27,8 +27,8 @@
 **Requirements:** SRCH-01, SRCH-02, SRCH-03, SRCH-04
 
 **Plans:** 2 plans
-- [ ] 06-01-PLAN.md — Install shadcn primitives and build CommandPalette component
-- [ ] 06-02-PLAN.md — Wire triggers (Cmd+K, header, hero) and integrate with app
+- [x] 06-01-PLAN.md — Install shadcn primitives and build CommandPalette component
+- [x] 06-02-PLAN.md — Wire triggers (Cmd+K, header, hero) and integrate with app
 
 **Success Criteria:**
 1. User presses Cmd+K (Mac) or Ctrl+K (Windows) from any page and a command palette opens immediately
@@ -80,10 +80,10 @@
 | 3. Navigation System | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 4. Explore API Views | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 5. Entity & Function Detail | v1.0 | 3/3 | Complete | 2026-02-12 |
-| 6. Global Search | v1.1 | 0/2 | Planned | — |
+| 6. Global Search | v1.1 | 2/2 | Complete | 2026-02-12 |
 | 7. Explore Types | v1.1 | 0/? | Not started | — |
 | 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-12 (v1.1 phases 6-8 added)*
+*Last updated: 2026-02-12 (Phase 6 complete)*
