@@ -71,24 +71,24 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRCH-01 | — | Pending |
-| SRCH-02 | — | Pending |
-| SRCH-03 | — | Pending |
-| SRCH-04 | — | Pending |
-| TYPE-01 | — | Pending |
-| TYPE-02 | — | Pending |
-| TYPE-03 | — | Pending |
-| TYPE-04 | — | Pending |
-| TYPE-05 | — | Pending |
-| TYPE-06 | — | Pending |
-| NAV-03 | — | Pending |
-| INFO-01 | — | Pending |
-| INFO-02 | — | Pending |
+| SRCH-01 | Phase 6: Global Search | Pending |
+| SRCH-02 | Phase 6: Global Search | Pending |
+| SRCH-03 | Phase 6: Global Search | Pending |
+| SRCH-04 | Phase 6: Global Search | Pending |
+| TYPE-01 | Phase 7: Explore Types | Pending |
+| TYPE-02 | Phase 7: Explore Types | Pending |
+| TYPE-03 | Phase 7: Explore Types | Pending |
+| TYPE-04 | Phase 7: Explore Types | Pending |
+| TYPE-05 | Phase 7: Explore Types | Pending |
+| TYPE-06 | Phase 7: Explore Types | Pending |
+| NAV-03 | Phase 8: QoL Polish | Pending |
+| INFO-01 | Phase 8: QoL Polish | Pending |
+| INFO-02 | Phase 8: QoL Polish | Pending |
 
 **Coverage:**
 - v1.1 requirements: 13 total
-- Mapped to phases: 0
-- Unmapped: 13 (pending roadmap creation)
+- Mapped to phases: 13 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-12*

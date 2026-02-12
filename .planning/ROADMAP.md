@@ -3,6 +3,7 @@
 ## Milestones
 
 - **v1.0 MVP** — Phases 1-5, 39 requirements (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
+- **v1.1 Search, Types & Polish** — Phases 6-8, 13 requirements
 
 ## Phases
 
@@ -17,6 +18,55 @@
 
 </details>
 
+### Phase 6: Global Search
+
+**Goal:** Users can find any entity, function, or property across all 6K+ indexed items in seconds and jump directly to it.
+
+**Dependencies:** None (MiniSearch index with ~6K items already exists in data layer)
+
+**Requirements:** SRCH-01, SRCH-02, SRCH-03, SRCH-04
+
+**Success Criteria:**
+1. User presses Cmd+K (Mac) or Ctrl+K (Windows) from any page and a command palette opens immediately
+2. User types a query and sees matching results appear in real-time as they type, with no perceptible delay
+3. User sees results organized into groups by kind (entities, functions, properties) so they can scan to the right category
+4. User selects a result (click or keyboard) and the app navigates to that item's detail view with correct context (sidebar, breadcrumbs)
+5. User presses Escape or clicks outside to dismiss the palette and return to their previous view unchanged
+
+---
+
+### Phase 7: Explore Types
+
+**Goal:** Users can browse, inspect, and cross-reference every complex type and enum type in the SharePoint REST API metadata.
+
+**Dependencies:** Phase 6 not required, but TypeLink component from v1.0 will be extended
+
+**Requirements:** TYPE-01, TYPE-02, TYPE-03, TYPE-04, TYPE-05, TYPE-06
+
+**Success Criteria:**
+1. User clicks "Explore Types" in the main header navigation and sees a sidebar listing all complex and enum types, with a filter input to narrow the list
+2. User clicks a complex type and sees its properties table; user clicks an enum type and sees its members list
+3. User viewing a type can see its base type inheritance chain (ancestors) and any derived types
+4. User viewing a type can see a "Used by" section showing which entities and functions reference this type
+5. User clicks any type reference in the Explore API views (entity detail, function detail) and navigates to that type's detail in Explore Types
+
+---
+
+### Phase 8: Quality-of-Life Polish
+
+**Goal:** Small but meaningful UX improvements and content additions that round out the v1.1 milestone.
+
+**Dependencies:** None (breadcrumb bar and header exist from v1.0)
+
+**Requirements:** NAV-03, INFO-01, INFO-02
+
+**Success Criteria:**
+1. User clicks a copy button in the breadcrumb bar and the `_api/...` path for the current item is copied to clipboard, with visual confirmation
+2. User can navigate to a "How It Works" page from the home screen or header
+3. User reading the How It Works page understands where the metadata comes from and how the app processes it
+
+---
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -26,7 +76,10 @@
 | 3. Navigation System | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 4. Explore API Views | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 5. Entity & Function Detail | v1.0 | 3/3 | Complete | 2026-02-12 |
+| 6. Global Search | v1.1 | 0/? | Not started | — |
+| 7. Explore Types | v1.1 | 0/? | Not started | — |
+| 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-12 (v1.0 milestone archived)*
+*Last updated: 2026-02-12 (v1.1 phases 6-8 added)*
