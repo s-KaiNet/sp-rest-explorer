@@ -1,16 +1,11 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "mcp": {
-        "perplexity": {
-            "command": [
-                "npx",
-                "-y",
-                "@perplexity-ai/mcp-server"
-            ],
-            "type": "local",
-            "enabled": true,
-            "environment": {
-                "PERPLEXITY_API_KEY": "{env:PERPLEXITY_API_KEY}"
+        "parallel-search": {
+            "url": "https://search-mcp.parallel.ai/mcp",
+            "type": "remote",
+            "headers": {
+                "Authorization": "Bearer {env:PARALLEL_API_KEY}"
             }
         },
         "context7": {

@@ -129,7 +129,7 @@ function resolveSearchResultPath(
 // ── Query highlighting ──
 
 function HighlightedName({ name, query }: { name: string; query: string }) {
-  if (!query || query.length < 2) {
+  if (!query || query.length < 3) {
     return <span>{name}</span>
   }
 
@@ -205,15 +205,7 @@ function ResultBreadcrumb({
   result: SearchResult
   isRootFn: boolean
 }) {
-  const kind = result.kind as string
   const parentEntity = result.parentEntity as string | undefined
-
-  const kindLabel =
-    kind === 'function'
-      ? 'Functions'
-      : kind === 'navProperty'
-        ? 'Nav Properties'
-        : ''
 
   if (isRootFn) {
     return (
@@ -226,11 +218,9 @@ function ResultBreadcrumb({
   }
 
   if (parentEntity) {
-    // Extract short name from fullName (e.g. "SP.List" → "SP.List")
-    const parentShortName = parentEntity
     return (
       <span className="text-xs text-muted-foreground">
-        {parentShortName} &rsaquo; {kindLabel}
+        {parentEntity}
       </span>
     )
   }
@@ -277,13 +267,20 @@ export function CommandPalette({
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Build entity path map once from metadata + lookup maps
+  // Build entity path map lazily — compute once when metadata is available
+  const entityPathMapRef = useRef<Map<string, string> | null>(null)
   const entityPathMap = useMemo(() => {
+    // Return cached map if already built
+    if (entityPathMapRef.current) return entityPathMapRef.current
     const metadata = getMetadata()
     const lookupMaps = getLookupMaps()
     if (!metadata || !lookupMaps) return new Map<string, string>()
-    return buildEntityPathMap(metadata, lookupMaps)
-  }, [])
+    const map = buildEntityPathMap(metadata, lookupMaps)
+    entityPathMapRef.current = map
+    return map
+    // Re-evaluate when palette opens (metadata may have loaded since last attempt)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
 
   // Debounce the query
   useEffect(() => {
@@ -311,7 +308,7 @@ export function CommandPalette({
 
   // Search execution
   const searchResults = useMemo(() => {
-    if (debouncedQuery.length < 2) return null
+    if (debouncedQuery.length < 3) return null
     const searchIndex = getSearchIndex()
     if (!searchIndex) return null
     return searchIndex.search(debouncedQuery, { limit: 21 })
@@ -365,7 +362,7 @@ export function CommandPalette({
       title="Search API"
       description="Search across entities, functions, and navigation properties"
       showCloseButton={false}
-      className="top-[20%] translate-y-0"
+      className="top-[10%] translate-y-0 sm:max-w-2xl"
       shouldFilter={false}
       loop
     >
@@ -373,6 +370,11 @@ export function CommandPalette({
         placeholder="Type to search entities, functions, properties..."
         value={query}
         onValueChange={setQuery}
+        suffix={
+          <kbd className="shrink-0 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+            ESC
+          </kbd>
+        }
       />
       <CommandList>
         {/* Empty / below minimum states */}
@@ -381,12 +383,12 @@ export function CommandPalette({
             Type to search across all API entities, functions, and properties
           </div>
         )}
-        {query.length === 1 && (
+        {query.length >= 1 && query.length < 3 && (
           <div className="py-6 text-center text-sm text-muted-foreground">
-            Type 2+ characters to search
+            Type {3 - query.length} more character{3 - query.length > 1 ? 's' : ''} to search
           </div>
         )}
-        {query.length >= 2 && !hasResults && debouncedQuery.length >= 2 && (
+        {query.length >= 3 && !hasResults && debouncedQuery.length >= 3 && (
           <CommandEmpty>No results for &ldquo;{debouncedQuery}&rdquo;</CommandEmpty>
         )}
 
@@ -398,7 +400,7 @@ export function CommandPalette({
                 key={result.id as string}
                 value={result.id as string}
                 onSelect={handleSelect}
-                className="flex items-center gap-3 py-2"
+                className="flex items-center gap-2.5 py-1"
               >
                 <KindIcon kind="entity" />
                 <div className="min-w-0 flex-1">
@@ -422,7 +424,7 @@ export function CommandPalette({
                 key={result.id as string}
                 value={result.id as string}
                 onSelect={handleSelect}
-                className="flex items-center gap-3 py-2"
+                className="flex items-center gap-2.5 py-1"
               >
                 <KindIcon kind="function" />
                 <div className="min-w-0 flex-1">
@@ -454,7 +456,7 @@ export function CommandPalette({
                 key={result.id as string}
                 value={result.id as string}
                 onSelect={handleSelect}
-                className="flex items-center gap-3 py-2"
+                className="flex items-center gap-2.5 py-1"
               >
                 <KindIcon kind="navProperty" />
                 <div className="min-w-0 flex-1">

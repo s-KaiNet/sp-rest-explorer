@@ -2,6 +2,8 @@
 
 ## Windows Shell Safety Rules
 
+### Rule 1
+
 **CRITICAL: Never use `findstr` or `find` commands on Windows.**
 
 These commands are dangerous because malformed quoting or escaping can cause them to search from the root of the C: drive, consuming system resources and producing incorrect results. For example, this command is problematic:
@@ -27,3 +29,7 @@ Instead of `findstr` / `find`, use one of these approaches:
    ```
 
 4. **Never pipe Windows `find` or `findstr`** — these have unreliable quoting semantics on Windows and fail silently or dangerously when special characters are involved.
+
+### Rule 2
+
+**CRITICAL: Never use 2>nul in shell commands, always use 2>/dev/null instead**

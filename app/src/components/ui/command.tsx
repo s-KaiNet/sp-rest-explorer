@@ -53,7 +53,7 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("overflow-hidden p-0", className)}
+        className={cn("h-[66vh] overflow-hidden p-0", className)}
         showCloseButton={showCloseButton}
       >
         <Command shouldFilter={shouldFilter} loop={loop} className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
@@ -66,8 +66,11 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  suffix,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  suffix?: React.ReactNode
+}) {
   return (
     <div
       data-slot="command-input-wrapper"
@@ -82,6 +85,7 @@ function CommandInput({
         )}
         {...props}
       />
+      {suffix}
     </div>
   )
 }
@@ -94,7 +98,7 @@ function CommandList({
     <CommandPrimitive.List
       data-slot="command-list"
       className={cn(
-        "max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto",
+        "scroll-py-1 overflow-x-hidden overflow-y-auto flex-1",
         className
       )}
       {...props}
