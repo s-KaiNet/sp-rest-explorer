@@ -12,6 +12,16 @@ A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + W
 
 v1.0 delivers the complete Explore API view: home screen with stats and browse-all, resizable sidebar navigation with breadcrumbs and directional animations, entity detail with Properties/NavProperties/Methods tables and TypeLink cross-references, and function detail with typed parameters and COMPOSABLE badges. Dark mode, loading skeletons, and IndexedDB caching are all in place.
 
+## Current Milestone: v1.1 Search, Types & Polish
+
+**Goal:** Add global deep search, a full Explore Types browsing surface, and quality-of-life polish to make the v1.0 foundation feel complete.
+
+**Target features:**
+- Cmd+K command palette (shadcn CommandDialog) for global deep search across all 6K+ indexed items
+- Explore Types view — sidebar with flat filterable list of complex + enum types, detail panel with properties, base type chain, and used-by
+- Copy `_api/...` path to clipboard via breadcrumb button (NAV-03 from v1.0)
+- How It Works overview page — one-pager explaining where metadata comes from and how the app works
+
 ## Core Value
 
 Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
@@ -30,15 +40,17 @@ The current site only searches root-level items (793 of 3,528 functions). The re
 - FUNC-01 through FUNC-03 — v1.0 (function detail, typed params, COMPOSABLE)
 - UIFN-01 through UIFN-04 — v1.0 (loading, header, color system, monospace)
 
-### Active
+### Active (v1.1)
 
-- [ ] NAV-03: Copy `_api/...` path to clipboard via breadcrumb button (deferred from v1.0)
+- [ ] NAV-03: Copy `_api/...` path to clipboard via breadcrumb button
 - [ ] SRCH-01 through SRCH-05: Cmd+K command palette for global deep search
-- [ ] TYPE-01 through TYPE-06: Explore Types full view (virtualized list, detail, base type chain, used-by, jump links)
+- [ ] TYPE-01 through TYPE-06: Explore Types full view (flat filterable list, detail, base type chain, used-by)
+- [ ] ADDL-03: How It Works overview page
+
+### Backlog (future milestones)
+
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
-- [ ] ADDL-01: Recently visited section on home screen (partially done — hook exists, cards on home exist)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
-- [ ] ADDL-03: How It Works static page with architecture diagram
 
 ### Out of Scope
 
@@ -95,4 +107,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-12 after v1.0 milestone*
+*Last updated: 2026-02-12 after v1.1 milestone start*
