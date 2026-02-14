@@ -98,7 +98,7 @@ Plans:
 **Plans:** 3 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — How It Works page content + GitHub star count in header
+- [x] 08-01-PLAN.md — How It Works page content + GitHub star count in header
 - [ ] 08-02-PLAN.md — Copy-to-clipboard in breadcrumb bar + favicons
 - [ ] 08-03-PLAN.md — Dark mode color scheme rethink (GitHub Dark) + dark scrollbars
 
@@ -122,8 +122,8 @@ Plans:
 | 7. Explore Types | v1.1 | 3/3 | Complete | 2026-02-14 |
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints index | v1.1 | 2/2 | Complete | 2026-02-14 |
-| 8. Quality-of-Life Polish | v1.1 | 0/3 | Not started | — |
+| 8. Quality-of-Life Polish | v1.1 | 1/3 | In progress | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 7 complete — 3/3 plans incl. gap closure)*
+*Last updated: 2026-02-14 (Phase 8 — 1/3 plans complete)*
