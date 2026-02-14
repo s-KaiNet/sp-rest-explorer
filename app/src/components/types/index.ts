@@ -1,0 +1,1 @@
+export { ComplexTypeDetail } from './ComplexTypeDetail'
