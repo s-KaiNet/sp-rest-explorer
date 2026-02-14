@@ -18,9 +18,9 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Milestone:** v1.1 Search, Types & Polish
 **Phase:** 07.2 — Add Path to API Endpoints Index (complete)
-**Plan:** 1/1 complete
-**Status:** Phase 07.2 complete. Dual MiniSearch indexes with path-based search and automatic mode detection.
-**Last activity:** 2026-02-14 — Plan 07.2-01 executed (phase complete)
+**Plan:** 2/2 complete
+**Status:** Phase 07.2 complete. Path search uses substring filtering (not MiniSearch) with contiguous match for slash queries and AND-substring for space queries.
+**Last activity:** 2026-02-14 — Plan 07.2-02 executed (gap closure complete)
 
 ```
 v1.1 Progress: ██████████░░░░░░░░░░ 50% (1/3 phases + 07.1 + 07.2 complete)
@@ -32,8 +32,8 @@ v1.1 Progress: ██████████░░░░░░░░░░ 50% 
 |--------|-------|
 | Phases completed | 3/3 (v1.1) — Phase 6 + 07.1 + 07.2 |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
-| Plans executed | 6 (v1.1) |
-| Tasks completed | 11 + 9 fixes (v1.1) |
+| Plans executed | 7 (v1.1) |
+| Tasks completed | 13 + 9 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
@@ -42,6 +42,7 @@ v1.1 Progress: ██████████░░░░░░░░░░ 50% 
 | 07.1-01 | 3min | 2 | 6 |
 | 07.1-02 | ~15min | 3 | 4 |
 | 07.2-01 | 3min | 2 | 4 |
+| 07.2-02 | 3min | 2 | 3 |
 
 ## Accumulated Context
 
@@ -74,10 +75,12 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - SearchSelection with pre-computed path — no runtime path resolution needed
 
 **Phase 07.2 decisions:**
-- Path index tokenizes on / (not dot/underscore like name index) — matches REST path mental model
-- AND combinator for path queries — multi-term queries require ALL tokens to match
 - Path mode triggered by / or space in query; bare _api/ excluded (too broad)
 - Path index is endpoints-only — skip kind filter in path mode, entities always empty
+- ~~Path index tokenizes on / (MiniSearch)~~ → replaced with substring filtering (07.2-02)
+- Slash queries: contiguous substring match on path (literal "web/lists" match)
+- Space queries: AND-substring matching (every term must appear as substring in path)
+- Results limited to 50 to prevent UI flooding on 62K doc set
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -98,10 +101,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 07.2 Plan 01 (2026-02-14)
-**What happened:** Completed 07.2-01-PLAN.md. Built dual MiniSearch indexes (name + path) with automatic mode detection. Path index tokenizes on /, AND combinator. CommandPalette routes queries, hides Entities in path mode, highlights matched path segments.
+**Last session:** Execute Phase 07.2 Plan 02 — gap closure (2026-02-14)
+**What happened:** Completed 07.2-02-PLAN.md. Replaced MiniSearch path index with substring filtering. Slash queries now match literal contiguous substrings. Space queries perform AND-substring matching. HighlightedPath rewritten with mode-aware highlighting.
 **Next step:** Phase 07.2 complete. Next: Phase 7 (Explore Types) or Phase 8 (Quality-of-Life Polish).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07.2 complete — 1/1 plans)*
+*Last updated: 2026-02-14 (Phase 07.2 complete — 2/2 plans)*
