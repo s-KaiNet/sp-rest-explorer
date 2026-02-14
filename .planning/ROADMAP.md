@@ -50,8 +50,8 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 07-01-PLAN.md — Data layer (type indexes) + ComplexTypeDetail component
-- [ ] 07-02-PLAN.md — TypesPage sidebar with namespace grouping + TypeLink cross-navigation
+- [x] 07-01-PLAN.md — Data layer (type indexes) + ComplexTypeDetail component
+- [x] 07-02-PLAN.md — TypesPage sidebar with namespace grouping + TypeLink cross-navigation
 
 **Success Criteria:**
 1. User clicks "Explore Types" in the main header navigation and sees a sidebar listing all complex types grouped by namespace, with a filter input to narrow the list
@@ -111,11 +111,11 @@ Plans:
 | 4. Explore API Views | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 5. Entity & Function Detail | v1.0 | 3/3 | Complete | 2026-02-12 |
 | 6. Global Search | v1.1 | 2/2 | Complete | 2026-02-12 |
-| 7. Explore Types | v1.1 | 0/2 | Planned | — |
+| 7. Explore Types | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints index | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 7 planned — 2 plans in 2 waves)*
+*Last updated: 2026-02-14 (Phase 7 complete — 2/2 plans)*
