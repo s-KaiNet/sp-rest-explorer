@@ -47,8 +47,7 @@ function App() {
       // Map search kind to recently-visited kind
       const kindMap: Record<SearchSelection['kind'], 'function' | 'navProperty' | 'root'> = {
         entity: 'root',
-        function: 'function',
-        navProperty: 'navProperty',
+        endpoint: 'function',
       }
       addVisit({
         name: selection.name,

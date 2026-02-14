@@ -48,8 +48,21 @@ export interface SearchDocument {
   id: string
   name: string
   fullName: string
-  kind: 'entity' | 'function' | 'navProperty'
-  parentEntity?: string
+  kind: 'entity' | 'endpoint'
+  // Endpoint-specific fields (undefined for entities)
+  path?: string           // Full _api/... path for display and navigation
+  endpointKind?: 'function' | 'navProperty'
+  parentEntity?: string   // Entity fullName the leaf belongs to
+  isRoot?: boolean        // Whether this is a root function
+}
+
+export interface EndpointEntry {
+  id: string              // Full _api/... path (unique per entry, used as MiniSearch id)
+  name: string            // Leaf name (searchable)
+  path: string            // Full _api/... path (displayed, not searched)
+  kind: 'function' | 'navProperty'
+  parentEntity: string    // Entity fullName the leaf belongs to
+  isRoot: boolean         // Whether this is a root function
 }
 
 export interface ChildEntry {
@@ -63,6 +76,15 @@ export interface LookupMaps {
   entityByFullName: Map<string, EntityType>
   functionById: Map<number, FunctionImport>
   entityChildren: Map<string, ChildEntry[]>
+}
+
+export interface PathSearchDocument {
+  id: string              // Same as EndpointEntry id (full _api/... path)
+  path: string            // Full _api/... path — this IS the searchable field
+  name: string            // Leaf name (stored for display, not searched)
+  endpointKind: 'function' | 'navProperty'
+  parentEntity: string
+  isRoot: boolean
 }
 
 // ── App status ──

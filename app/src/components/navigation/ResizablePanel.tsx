@@ -8,11 +8,14 @@ const MAX_WIDTH = 600
 interface ResizablePanelProps {
   children: React.ReactNode
   className?: string
+  storageKey?: string
 }
 
-export function ResizablePanel({ children, className }: ResizablePanelProps) {
+export function ResizablePanel({ children, className, storageKey }: ResizablePanelProps) {
+  const effectiveKey = storageKey ?? STORAGE_KEY
+
   const [width, setWidth] = useState(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
+    const stored = localStorage.getItem(effectiveKey)
     if (stored) {
       const parsed = Number(stored)
       if (!Number.isNaN(parsed) && parsed >= MIN_WIDTH && parsed <= MAX_WIDTH) {
@@ -52,12 +55,12 @@ export function ResizablePanel({ children, className }: ResizablePanelProps) {
     if (!isDragging) return
     setIsDragging(false)
     e.currentTarget.releasePointerCapture(e.pointerId)
-    localStorage.setItem(STORAGE_KEY, width.toString())
+    localStorage.setItem(effectiveKey, width.toString())
   }
 
   return (
     <div
-      className={`relative shrink-0 border-r border-border ${className ?? ''}`}
+      className={`relative shrink-0 border-r border-border bg-sidebar ${className ?? ''}`}
       style={{ width }}
     >
       {/* Content area — fills the panel, clips slide animations */}

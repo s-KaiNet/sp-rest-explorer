@@ -1,9 +1,15 @@
 import { Link } from 'react-router'
+import { getTypeIndexes } from '@/lib/metadata'
 
 const COLLECTION_RE = /^Collection\((.+)\)$/
 
 function isPrimitive(typeName: string): boolean {
   return typeName.startsWith('Edm.')
+}
+
+function typeLabel(name: string): string {
+  const indexes = getTypeIndexes()
+  return indexes?.complexTypeNames.has(name) ? 'type' : 'entity'
 }
 
 interface TypeLinkProps {
@@ -44,13 +50,13 @@ export function TypeLink({ typeName, className }: TypeLinkProps) {
       )
     }
 
-    // Collection(Entity) — split link
+    // Collection(Entity/ComplexType) — split link
     return (
       <span className={`font-mono ${className ?? ''}`}>
         <Link
           to={`/entity/${encodeURIComponent(typeName)}`}
           className="text-muted-foreground hover:underline"
-          title={`View ${typeName} entity`}
+          title={`View ${typeName} ${typeLabel(typeName)}`}
         >
           Collection
         </Link>
@@ -58,7 +64,7 @@ export function TypeLink({ typeName, className }: TypeLinkProps) {
         <Link
           to={`/entity/${encodeURIComponent(innerType)}`}
           className="font-medium text-type-entity hover:underline"
-          title={`View ${innerType} entity`}
+          title={`View ${innerType} ${typeLabel(innerType)}`}
         >
           {innerType}
         </Link>
@@ -76,12 +82,12 @@ export function TypeLink({ typeName, className }: TypeLinkProps) {
     )
   }
 
-  // Entity type — clickable green link
+  // Entity or complex type — clickable green link
   return (
     <Link
       to={`/entity/${encodeURIComponent(typeName)}`}
       className={`font-mono font-medium text-type-entity hover:underline ${className ?? ''}`}
-      title={`View ${typeName} entity`}
+      title={`View ${typeName} ${typeLabel(typeName)}`}
     >
       {typeName}
     </Link>

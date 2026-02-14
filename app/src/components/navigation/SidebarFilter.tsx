@@ -6,6 +6,7 @@ interface SidebarFilterProps {
   totalCount: number
   filteredCount: number
   disabled?: boolean
+  label?: string
 }
 
 export function SidebarFilter({
@@ -14,6 +15,7 @@ export function SidebarFilter({
   totalCount,
   filteredCount,
   disabled = false,
+  label = 'elements',
 }: SidebarFilterProps) {
   const isFiltering = filterText.length > 0
 
@@ -42,8 +44,8 @@ export function SidebarFilter({
       </div>
       <p className="py-1 text-center text-[10px] text-muted-foreground">
         {isFiltering
-          ? `Showing ${filteredCount} of ${totalCount} elements`
-          : `${totalCount} elements`}
+          ? `Showing ${filteredCount} of ${totalCount} ${label}`
+          : `${totalCount} ${label}`}
       </p>
     </div>
   )

@@ -2,10 +2,10 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-12)
+See: .planning/PROJECT.md (updated 2026-02-15)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 6 complete, ready for Phase 7.
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -16,70 +16,51 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 
 ## Current Position
 
-**Milestone:** v1.1 Search, Types & Polish
-**Phase:** 6 — Global Search (complete, verified)
-**Plan:** 2/2 complete
-**Status:** Phase 6 complete. Search result navigation UX deferred to separate phase.
-**Last activity:** 2026-02-12 — Phase 6 verified and approved
+**Milestone:** v1.1 Search, Types & Polish — SHIPPED
+**Status:** Milestone archived. Planning next milestone.
+**Last activity:** 2026-02-15 — v1.1 milestone archived
 
 ```
-v1.1 Progress: ██████░░░░░░░░░░░░░░ 33% (1/3 phases)
+v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
+v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 ```
 
 ## Performance Metrics
 
-| Metric | Value |
-|--------|-------|
-| Phases completed | 1/3 (v1.1) |
-| Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03 (partial), SRCH-04 |
-| Plans executed | 2 (v1.1) |
-| Tasks completed | 4 + 7 fixes (v1.1) |
-
-| Phase-Plan | Duration | Tasks | Files |
-|------------|----------|-------|-------|
-| 06-01 | 5min | 2 | 7 |
-| 06-02 | 8min | 2+checkpoint | 5 |
+| Metric | v1.0 | v1.1 |
+|--------|------|------|
+| Phases completed | 5 | 5 |
+| Plans executed | 11 | 13 |
+| Tasks completed | 25 | 28 |
+| Requirements validated | 38 | 13 |
+| Timeline | 2 days | 3 days |
 
 ## Accumulated Context
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
 
-**v1.1 roadmap decisions:**
-- 3 phases for 13 requirements (standard depth, natural clustering)
-- Search first (Phase 6) — highest user value, data layer already complete
-- Types second (Phase 7) — largest feature surface, extends browsing capability
-- Polish last (Phase 8) — independent small items, completes milestone
-
-**Phase 6 decisions:**
-- shouldFilter=false on cmdk — MiniSearch handles all filtering, not cmdk's built-in
-- BFS from root functions through nav properties to build entity→path map for O(1) lookups
-- 120ms debounce on search input for responsive feel without excessive re-renders
-- Min 3 chars to trigger search (raised from 2 per user feedback)
-- Modal height 66vh for maximum results visibility
-- Removed kind labels from breadcrumbs — icons suffice
-- ESC badge on input for discoverability
-- Search result navigation clarity deferred to dedicated phase
+### Roadmap Evolution
+- Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
+- Phase 07.2 inserted after Phase 07.1: Add path to API Endpoints index (URGENT)
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
 - Zustand v5 selector instability — use scalar selectors or `useShallow`
 
 ### Technical Debt
-- UsedByBar scans all entities on every render (no precomputed index) — **addressed by TYPE-04**
-- ~~Search placeholder shown but Cmd+K not functional~~ — **resolved by Phase 6**
-- NAV-03 copy button not implemented — **addressed by NAV-03**
-- **Search result navigation UX** — path resolution works but result-to-route mapping is confusing for non-root items. Needs dedicated phase.
+- TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
+- Recently visited kind mapping relies on depth heuristic (depth 2 = root)
 
 ### Blockers
 - (None)
 
 ## Session Continuity
 
-**Last session:** Execute Phase 6 (2026-02-12)
-**What happened:** Completed Phase 6 (Global Search). Plan 06-01 built CommandPalette with shadcn/ui + MiniSearch. Plan 06-02 wired into app shell with Cmd+K, header/hero triggers, navigation. Human checkpoint: 7 fixes applied. Verification: approved. Search result navigation UX deferred to separate phase.
-**Next step:** Plan Phase 7 (Explore Types) with `/gsd-plan-phase 7`, or create a dedicated search navigation fix phase.
+**Last session:** v1.1 milestone completion (2026-02-15)
+**What happened:** Archived v1.1 milestone — created ROADMAP and REQUIREMENTS archives, updated MILESTONES.md, evolved PROJECT.md, collapsed ROADMAP.md.
+**Next step:** `/gsd-new-milestone` — start next milestone (questioning -> research -> requirements -> roadmap)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-12 (Phase 6 complete and verified)*
+*Last updated: 2026-02-15 (v1.1 milestone archived)*

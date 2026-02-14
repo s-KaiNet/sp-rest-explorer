@@ -8,19 +8,15 @@ import {
   CommandGroup,
   CommandItem,
 } from '@/components/ui/command'
-import {
-  getSearchIndex,
-  getMetadata,
-  getLookupMaps,
-} from '@/lib/metadata'
-import type { Metadata, LookupMaps } from '@/lib/metadata'
+import { getSearchIndex, searchPathDocuments, detectSearchMode } from '@/lib/metadata'
+import type { SearchMode } from '@/lib/metadata'
 
 // ── Types ──
 
 export interface SearchSelection {
-  path: string
-  name: string
-  kind: 'entity' | 'function' | 'navProperty'
+  path: string       // Navigation path (already resolved)
+  name: string       // Display name
+  kind: 'entity' | 'endpoint'
 }
 
 interface CommandPaletteProps {
@@ -29,102 +25,9 @@ interface CommandPaletteProps {
   onSelect: (selection: SearchSelection) => void
 }
 
-interface GroupedResults {
-  entities: SearchResult[]
-  functions: SearchResult[]
-  navProperties: SearchResult[]
-}
+// ── Constants ──
 
-// ── Path map builder (BFS from root functions) ──
-
-function buildEntityPathMap(
-  metadata: Metadata,
-  lookupMaps: LookupMaps,
-): Map<string, string> {
-  const pathMap = new Map<string, string>()
-  const { entityByFullName } = lookupMaps
-
-  const queue: Array<{ entityFullName: string; path: string }> = []
-
-  // Seed: root functions → their return type entities
-  for (const fn of Object.values(metadata.functions)) {
-    if (fn.isRoot && fn.isComposable && fn.returnType) {
-      if (!pathMap.has(fn.returnType)) {
-        const path = `/_api/${fn.name}`
-        pathMap.set(fn.returnType, path)
-        queue.push({ entityFullName: fn.returnType, path })
-      }
-    }
-  }
-
-  // BFS through nav properties
-  while (queue.length > 0) {
-    const { entityFullName, path } = queue.shift()!
-    const entity = entityByFullName.get(entityFullName)
-    if (!entity) continue
-
-    for (const nav of entity.navigationProperties) {
-      const navPath = `${path}/${nav.name}`
-      if (!pathMap.has(nav.typeName)) {
-        pathMap.set(nav.typeName, navPath)
-        queue.push({ entityFullName: nav.typeName, path: navPath })
-      }
-    }
-  }
-
-  return pathMap
-}
-
-// ── Path resolution ──
-
-function resolveSearchResultPath(
-  result: SearchResult,
-  entityPathMap: Map<string, string>,
-  metadata: Metadata,
-): string | null {
-  const id = result.id as string
-
-  // Root function: fn:root:{fnId}
-  if (id.startsWith('fn:root:')) {
-    const fnId = Number(id.slice('fn:root:'.length))
-    const fn = metadata.functions[fnId]
-    return fn ? `/_api/${fn.name}` : null
-  }
-
-  // Bound function: fn:{parentEntity}/{fnId}
-  if (id.startsWith('fn:')) {
-    const rest = id.slice('fn:'.length)
-    const slashIdx = rest.lastIndexOf('/')
-    if (slashIdx === -1) return null
-    const parentFullName = rest.slice(0, slashIdx)
-    const fnId = Number(rest.slice(slashIdx + 1))
-    const fn = metadata.functions[fnId]
-    if (!fn) return null
-    const parentPath = entityPathMap.get(parentFullName)
-    if (!parentPath) return null
-    return `${parentPath}/${fn.name}`
-  }
-
-  // Nav property: nav:{parentEntity}/{navName}
-  if (id.startsWith('nav:')) {
-    const rest = id.slice('nav:'.length)
-    const slashIdx = rest.lastIndexOf('/')
-    if (slashIdx === -1) return null
-    const parentFullName = rest.slice(0, slashIdx)
-    const navName = rest.slice(slashIdx + 1)
-    const parentPath = entityPathMap.get(parentFullName)
-    if (!parentPath) return null
-    return `${parentPath}/${navName}`
-  }
-
-  // Entity: entity:{fullName}
-  if (id.startsWith('entity:')) {
-    const fullName = id.slice('entity:'.length)
-    return entityPathMap.get(fullName) ?? null
-  }
-
-  return null
-}
+const INITIAL_SHOW = 5
 
 // ── Query highlighting ──
 
@@ -169,91 +72,141 @@ function HighlightedName({ name, query }: { name: string; query: string }) {
   )
 }
 
-// ── Kind icon components ──
+// ── Path segment highlighting ──
 
-function KindIcon({ kind }: { kind: string }) {
-  switch (kind) {
-    case 'entity':
-      return (
-        <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-entity/10 font-mono text-xs font-medium text-type-entity">
-          {'<>'}
-        </span>
-      )
-    case 'function':
-      return (
-        <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-fn/10 font-mono text-xs font-medium text-type-fn">
-          {'\u0192'}
-        </span>
-      )
-    case 'navProperty':
-      return (
-        <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-nav/10 text-[10px] font-semibold text-type-nav">
-          NAV
-        </span>
-      )
-    default:
-      return null
-  }
-}
+function HighlightedPath({ path, query }: { path: string; query: string }) {
+  if (!query || query.length < 3) return <span>{path}</span>
 
-// ── Breadcrumb for disambiguation ──
+  if (query.includes('/')) {
+    // SLASH MODE — highlight the contiguous substring match
+    const normalizedQuery = query.replace(/^_api\//i, '').toLowerCase()
+    const pathWithoutPrefix = path.replace(/^_api\//i, '')
+    const lowerPathWithoutPrefix = pathWithoutPrefix.toLowerCase()
+    const matchIdx = lowerPathWithoutPrefix.indexOf(normalizedQuery)
 
-function ResultBreadcrumb({
-  result,
-  isRootFn,
-}: {
-  result: SearchResult
-  isRootFn: boolean
-}) {
-  const parentEntity = result.parentEntity as string | undefined
+    if (matchIdx === -1) return <span>{path}</span>
 
-  if (isRootFn) {
+    // Calculate offset in full path (account for _api/ prefix if present)
+    const prefixLen = path.length - pathWithoutPrefix.length
+    const absStart = prefixLen + matchIdx
+    const absEnd = absStart + normalizedQuery.length
+
     return (
-      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <span className="rounded bg-type-entity/10 px-1.5 py-0.5 text-[10px] font-semibold text-type-entity">
-          Root
-        </span>
+      <span>
+        {path.slice(0, absStart)}
+        <strong className="font-bold text-foreground">{path.slice(absStart, absEnd)}</strong>
+        {path.slice(absEnd)}
       </span>
     )
   }
 
-  if (parentEntity) {
-    return (
-      <span className="text-xs text-muted-foreground">
-        {parentEntity}
-      </span>
-    )
-  }
+  // SPACE MODE — highlight each matching term independently
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
+  const lowerPath = path.toLowerCase()
 
-  return null
-}
-
-// ── Group results by kind ──
-
-const MAX_PER_GROUP = 7
-
-function groupResults(results: SearchResult[]): GroupedResults {
-  const grouped: GroupedResults = {
-    entities: [],
-    functions: [],
-    navProperties: [],
-  }
-
-  for (const result of results) {
-    const kind = result.kind as string
-    if (kind === 'entity' && grouped.entities.length < MAX_PER_GROUP) {
-      grouped.entities.push(result)
-    } else if (kind === 'function' && grouped.functions.length < MAX_PER_GROUP) {
-      grouped.functions.push(result)
-    } else if (
-      kind === 'navProperty' &&
-      grouped.navProperties.length < MAX_PER_GROUP
-    ) {
-      grouped.navProperties.push(result)
+  // Build a highlight map (which char positions to bold)
+  const highlights = new Array(path.length).fill(false) as boolean[]
+  for (const term of terms) {
+    let startPos = 0
+    while (startPos < lowerPath.length) {
+      const idx = lowerPath.indexOf(term, startPos)
+      if (idx === -1) break
+      for (let i = idx; i < idx + term.length; i++) highlights[i] = true
+      startPos = idx + 1
     }
   }
 
-  return grouped
+  // Render with highlight spans
+  const parts: Array<{ text: string; highlight: boolean }> = []
+  let i = 0
+  while (i < path.length) {
+    const isHl = highlights[i]
+    let j = i
+    while (j < path.length && highlights[j] === isHl) j++
+    parts.push({ text: path.slice(i, j), highlight: isHl })
+    i = j
+  }
+
+  return (
+    <span>
+      {parts.map((part, idx) =>
+        part.highlight ? (
+          <strong key={idx} className="font-bold text-foreground">{part.text}</strong>
+        ) : (
+          <span key={idx}>{part.text}</span>
+        ),
+      )}
+    </span>
+  )
+}
+
+// ── Collapsible search group ──
+
+function SearchGroup({
+  heading,
+  results,
+  expanded,
+  setExpanded,
+  collapsed,
+  setCollapsed,
+  renderItem,
+}: {
+  heading: string
+  results: SearchResult[]
+  expanded: boolean
+  setExpanded: (v: boolean) => void
+  collapsed: boolean
+  setCollapsed: (v: boolean) => void
+  renderItem: (result: SearchResult) => React.ReactNode
+}) {
+  if (results.length === 0) return null
+
+  // Collapsed: show one-line summary
+  if (collapsed) {
+    return (
+      <div
+        className="cursor-pointer px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground"
+        onClick={() => setCollapsed(false)}
+      >
+        {heading} ({results.length}) &#9654;
+      </div>
+    )
+  }
+
+  const visible = expanded ? results : results.slice(0, INITIAL_SHOW)
+  const remaining = results.length - INITIAL_SHOW
+
+  return (
+    <CommandGroup
+      heading={
+        <span className="flex items-center gap-1.5">
+          <span>{heading}</span>
+          <span className="text-muted-foreground">({results.length})</span>
+          <button
+            type="button"
+            className="ml-1 text-muted-foreground hover:text-foreground"
+            onClick={(e) => {
+              e.stopPropagation()
+              setCollapsed(true)
+            }}
+          >
+            &#9660;
+          </button>
+        </span>
+      }
+    >
+      {visible.map(renderItem)}
+      {remaining > 0 && !expanded && (
+        <CommandItem
+          value={`__show_more_${heading}__`}
+          onSelect={() => setExpanded(true)}
+          className="justify-center text-xs text-muted-foreground"
+        >
+          Show {remaining} more&hellip;
+        </CommandItem>
+      )}
+    </CommandGroup>
+  )
 }
 
 // ── Main component ──
@@ -267,20 +220,19 @@ export function CommandPalette({
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Build entity path map lazily — compute once when metadata is available
-  const entityPathMapRef = useRef<Map<string, string> | null>(null)
-  const entityPathMap = useMemo(() => {
-    // Return cached map if already built
-    if (entityPathMapRef.current) return entityPathMapRef.current
-    const metadata = getMetadata()
-    const lookupMaps = getLookupMaps()
-    if (!metadata || !lookupMaps) return new Map<string, string>()
-    const map = buildEntityPathMap(metadata, lookupMaps)
-    entityPathMapRef.current = map
-    return map
-    // Re-evaluate when palette opens (metadata may have loaded since last attempt)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open])
+  // Per-group UI state
+  const [entitiesExpanded, setEntitiesExpanded] = useState(false)
+  const [entitiesCollapsed, setEntitiesCollapsed] = useState(false)
+  const [endpointsExpanded, setEndpointsExpanded] = useState(false)
+  const [endpointsCollapsed, setEndpointsCollapsed] = useState(false)
+
+  // Reset group state when query changes
+  useEffect(() => {
+    setEntitiesExpanded(false)
+    setEntitiesCollapsed(false)
+    setEndpointsExpanded(false)
+    setEndpointsCollapsed(false)
+  }, [debouncedQuery])
 
   // Debounce the query
   useEffect(() => {
@@ -306,68 +258,161 @@ export function CommandPalette({
     }
   }, [open])
 
-  // Search execution
-  const searchResults = useMemo(() => {
-    if (debouncedQuery.length < 3) return null
-    const searchIndex = getSearchIndex()
-    if (!searchIndex) return null
-    return searchIndex.search(debouncedQuery, { limit: 21 })
-  }, [debouncedQuery])
-
-  // Group results
-  const grouped = useMemo(() => {
-    if (!searchResults) return null
-    return groupResults(searchResults)
-  }, [searchResults])
-
-  // Handle result selection
-  const handleSelect = useCallback(
-    (resultId: string) => {
-      const metadata = getMetadata()
-      if (!metadata) return
-
-      // Find the result from search results to get name + kind
-      const allResults = searchResults ?? []
-      const result = allResults.find((r) => (r.id as string) === resultId)
-
-      const path = resolveSearchResultPath(
-        { id: resultId } as SearchResult,
-        entityPathMap,
-        metadata,
-      )
-
-      if (path) {
-        const name = result ? (result.name as string) : path.split('/').pop() ?? path
-        const kind = result ? (result.kind as SearchSelection['kind']) : 'function'
-        onSelect({ path, name, kind })
-        onOpenChange(false)
-      }
-    },
-    [entityPathMap, onSelect, onOpenChange, searchResults],
+  // Detect search mode from query content
+  const searchMode = useMemo<SearchMode>(
+    () => (debouncedQuery.length >= 3 ? detectSearchMode(debouncedQuery) : 'name'),
+    [debouncedQuery],
   )
 
-  const isRootFn = (result: SearchResult) =>
-    (result.id as string).startsWith('fn:root:')
+  // Search execution — route to correct index based on mode
+  const searchResults = useMemo(() => {
+    if (debouncedQuery.length < 3) return null
+
+    if (searchMode === 'path') {
+      const pathResults = searchPathDocuments(debouncedQuery)
+      // Adapt PathSearchDocument[] to same shape as SearchResult[] for uniform rendering
+      return pathResults.map((doc) => ({
+        id: doc.id,
+        path: doc.path,
+        name: doc.name,
+        endpointKind: doc.endpointKind,
+        parentEntity: doc.parentEntity,
+        isRoot: doc.isRoot,
+        score: 1, // uniform — results are filtered, not ranked
+        terms: [] as string[],
+        queryTerms: [] as string[],
+        match: {} as Record<string, string[]>,
+      }))
+    }
+
+    const nameIndex = getSearchIndex()
+    if (!nameIndex) return null
+    return nameIndex.search(debouncedQuery)
+  }, [debouncedQuery, searchMode])
+
+  // Split into entity and endpoint groups
+  // In path mode, path index only contains endpoints — no need to filter by kind
+  const entities = useMemo(
+    () => (searchMode === 'path' ? [] : (searchResults ?? []).filter((r) => r.kind === 'entity')),
+    [searchResults, searchMode],
+  )
+  const endpoints = useMemo(
+    () =>
+      searchMode === 'path'
+        ? (searchResults ?? [])
+        : (searchResults ?? []).filter((r) => r.kind === 'endpoint'),
+    [searchResults, searchMode],
+  )
+
+  // Handle entity selection
+  const handleEntitySelect = useCallback(
+    (result: SearchResult) => {
+      onSelect({
+        path: `/entity/${encodeURIComponent(result.fullName as string)}`,
+        name: result.name as string,
+        kind: 'entity',
+      })
+      onOpenChange(false)
+    },
+    [onSelect, onOpenChange],
+  )
+
+  // Handle endpoint selection
+  const handleEndpointSelect = useCallback(
+    (result: SearchResult) => {
+      onSelect({
+        path: `/${result.path as string}`,  // path is "_api/..." so prefix with /
+        name: result.name as string,
+        kind: 'endpoint',
+      })
+      onOpenChange(false)
+    },
+    [onSelect, onOpenChange],
+  )
 
   const hasResults =
-    grouped &&
-    (grouped.entities.length > 0 ||
-      grouped.functions.length > 0 ||
-      grouped.navProperties.length > 0)
+    searchMode === 'path'
+      ? endpoints.length > 0
+      : entities.length > 0 || endpoints.length > 0
+
+  // Render entity result item
+  const renderEntityItem = useCallback(
+    (result: SearchResult) => (
+      <CommandItem
+        key={result.id as string}
+        value={result.id as string}
+        onSelect={() => handleEntitySelect(result)}
+        className="flex items-center gap-2.5 py-1"
+      >
+        <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-entity/10 font-mono text-xs font-medium text-type-entity">
+          {'<>'}
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-sm">
+            <HighlightedName name={result.name as string} query={debouncedQuery} />
+          </div>
+          <span className="text-xs text-muted-foreground">
+            {result.fullName as string}
+          </span>
+        </div>
+      </CommandItem>
+    ),
+    [debouncedQuery, handleEntitySelect],
+  )
+
+  // Render endpoint result item
+  const renderEndpointItem = useCallback(
+    (result: SearchResult) => (
+      <CommandItem
+        key={result.id as string}
+        value={result.id as string}
+        onSelect={() => handleEndpointSelect(result)}
+        className="flex items-center gap-2.5 py-1"
+      >
+        {(result.endpointKind as string) === 'function' ? (
+          <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-fn/10 font-mono text-xs font-medium text-type-fn">
+            {'\u0192'}
+          </span>
+        ) : (
+          <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-nav/10 text-[10px] font-semibold text-type-nav">
+            NAV
+          </span>
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-sm">
+            <HighlightedName name={result.name as string} query={debouncedQuery} />
+          </div>
+          <span className="text-xs text-muted-foreground break-all">
+            {searchMode === 'path' ? (
+              <HighlightedPath path={result.path as string} query={debouncedQuery} />
+            ) : (
+              result.path as string
+            )}
+          </span>
+        </div>
+        {(result.isRoot as boolean) && (
+          <span className="shrink-0 rounded bg-type-entity/10 px-1.5 py-0.5 text-[10px] font-semibold text-type-entity">
+            Root
+          </span>
+        )}
+      </CommandItem>
+    ),
+    [debouncedQuery, handleEndpointSelect, searchMode],
+  )
 
   return (
     <CommandDialog
       open={open}
       onOpenChange={onOpenChange}
       title="Search API"
-      description="Search across entities, functions, and navigation properties"
+      description="Search across entities and API endpoints"
       showCloseButton={false}
       className="top-[10%] translate-y-0 sm:max-w-2xl"
       shouldFilter={false}
       loop
     >
       <CommandInput
-        placeholder="Type to search entities, functions, properties..."
+        placeholder="Search entities and API endpoints... (use / for path search)"
         value={query}
         onValueChange={setQuery}
         suffix={
@@ -380,7 +425,7 @@ export function CommandPalette({
         {/* Empty / below minimum states */}
         {query.length === 0 && (
           <div className="py-6 text-center text-sm text-muted-foreground">
-            Type to search across all API entities, functions, and properties
+            Type to search — use / or spaces for path search
           </div>
         )}
         {query.length >= 1 && query.length < 3 && (
@@ -392,86 +437,29 @@ export function CommandPalette({
           <CommandEmpty>No results for &ldquo;{debouncedQuery}&rdquo;</CommandEmpty>
         )}
 
-        {/* Grouped results */}
-        {grouped && grouped.entities.length > 0 && (
-          <CommandGroup heading="Entities">
-            {grouped.entities.map((result) => (
-              <CommandItem
-                key={result.id as string}
-                value={result.id as string}
-                onSelect={handleSelect}
-                className="flex items-center gap-2.5 py-1"
-              >
-                <KindIcon kind="entity" />
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm">
-                    <HighlightedName
-                      name={result.name as string}
-                      query={debouncedQuery}
-                    />
-                  </div>
-                  <ResultBreadcrumb result={result} isRootFn={false} />
-                </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+        {/* Entities group — hidden in path mode (entities have no paths) */}
+        {searchMode === 'name' && (
+          <SearchGroup
+            heading="Entities"
+            results={entities}
+            expanded={entitiesExpanded}
+            setExpanded={setEntitiesExpanded}
+            collapsed={entitiesCollapsed}
+            setCollapsed={setEntitiesCollapsed}
+            renderItem={renderEntityItem}
+          />
         )}
 
-        {grouped && grouped.functions.length > 0 && (
-          <CommandGroup heading="Functions">
-            {grouped.functions.map((result) => (
-              <CommandItem
-                key={result.id as string}
-                value={result.id as string}
-                onSelect={handleSelect}
-                className="flex items-center gap-2.5 py-1"
-              >
-                <KindIcon kind="function" />
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm">
-                    <HighlightedName
-                      name={result.name as string}
-                      query={debouncedQuery}
-                    />
-                  </div>
-                  <ResultBreadcrumb
-                    result={result}
-                    isRootFn={isRootFn(result)}
-                  />
-                </div>
-                {isRootFn(result) && (
-                  <span className="shrink-0 rounded bg-type-entity/10 px-1.5 py-0.5 text-[10px] font-semibold text-type-entity">
-                    Root
-                  </span>
-                )}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        )}
-
-        {grouped && grouped.navProperties.length > 0 && (
-          <CommandGroup heading="Nav Properties">
-            {grouped.navProperties.map((result) => (
-              <CommandItem
-                key={result.id as string}
-                value={result.id as string}
-                onSelect={handleSelect}
-                className="flex items-center gap-2.5 py-1"
-              >
-                <KindIcon kind="navProperty" />
-                <div className="min-w-0 flex-1">
-                  <div className="truncate text-sm">
-                    <HighlightedName
-                      name={result.name as string}
-                      query={debouncedQuery}
-                    />
-                  </div>
-                  <ResultBreadcrumb result={result} isRootFn={false} />
-                </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        )}
+        {/* API Endpoints group — second */}
+        <SearchGroup
+          heading="API Endpoints"
+          results={endpoints}
+          expanded={endpointsExpanded}
+          setExpanded={setEndpointsExpanded}
+          collapsed={endpointsCollapsed}
+          setCollapsed={setEndpointsCollapsed}
+          renderItem={renderEndpointItem}
+        />
       </CommandList>
 
       {/* Footer hint bar */}

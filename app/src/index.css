@@ -39,37 +39,52 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* GitHub Dark inspired — blue-gray tones, calibrated to match #0d1117/#161b22 */
+  /* Background: ~#0d1117 — page surface */
+  --background: oklch(0.16 0.01 260);
+  /* Foreground: #c9d1d9 — soft off-white */
+  --foreground: oklch(0.85 0.01 250);
+  /* Card: same as background */
+  --card: oklch(0.16 0.01 260);
+  --card-foreground: oklch(0.85 0.01 250);
+  /* Popover: elevated surface */
+  --popover: oklch(0.22 0.01 260);
+  --popover-foreground: oklch(0.85 0.01 250);
+  /* Primary: soft white on dark */
+  --primary: oklch(0.85 0.01 250);
+  --primary-foreground: oklch(0.16 0.01 260);
+  /* Secondary: ~#161b22 */
+  --secondary: oklch(0.22 0.01 260);
+  --secondary-foreground: oklch(0.85 0.01 250);
+  /* Muted: ~#161b22 bg, #8b949e text */
+  --muted: oklch(0.22 0.01 260);
+  --muted-foreground: oklch(0.62 0.01 250);
+  /* Accent: ~#161b22 */
+  --accent: oklch(0.22 0.01 260);
+  --accent-foreground: oklch(0.85 0.01 250);
+  /* Destructive: unchanged */
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --sidebar-background: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.985 0 0);
-  --sidebar-primary-foreground: oklch(0.205 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
-  --type-fn: oklch(0.75 0.18 255);
-  --type-entity: oklch(0.72 0.16 155);
-  --type-nav: oklch(0.75 0.18 300);
-  --code-bg: oklch(0.25 0 0);
+  /* Border: ~#30363d — subtle but visible */
+  --border: oklch(0.30 0.01 260);
+  --input: oklch(0.30 0.01 260);
+  /* Ring: slightly brighter border */
+  --ring: oklch(0.45 0.01 250);
+  /* Sidebar/chrome: elevated — header, breadcrumb, sidebar (~#21242a) */
+  --sidebar-background: oklch(0.26 0.01 260);
+  --sidebar-foreground: oklch(0.85 0.01 250);
+  --sidebar-primary: oklch(0.85 0.01 250);
+  --sidebar-primary-foreground: oklch(0.26 0.01 260);
+  --sidebar-accent: oklch(0.28 0.01 260);
+  --sidebar-accent-foreground: oklch(0.85 0.01 250);
+  --sidebar-border: oklch(0.30 0.01 260);
+  --sidebar-ring: oklch(0.45 0.01 250);
+  /* Type colors — vibrant but tuned for new backgrounds */
+  --type-fn: oklch(0.72 0.16 255);
+  --type-entity: oklch(0.68 0.14 155);
+  --type-nav: oklch(0.72 0.16 300);
+  /* Code blocks */
+  --code-bg: oklch(0.20 0.01 260);
 }
 
 @theme inline {
@@ -126,4 +141,32 @@ body,
 header,
 main {
   transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+
+/* Dark mode scrollbars — global, applies to all scrollable areas */
+.dark {
+  scrollbar-color: oklch(0.35 0.01 260) transparent;
+  scrollbar-width: thin;
+}
+
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: oklch(0.35 0.01 260);
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.42 0.01 260);
+}
+
+.dark ::-webkit-scrollbar-corner {
+  background: transparent;
 }

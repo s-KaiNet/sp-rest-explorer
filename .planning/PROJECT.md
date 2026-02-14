@@ -2,53 +2,43 @@
 
 ## What This Is
 
-A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features contextual sidebar navigation, breadcrumb-driven browsing, entity/function detail panels with collapsible sections and type cross-linking, and a curated home screen. Static SPA hosted on GitHub Pages.
+A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface with namespace-grouped sidebar, and a curated home screen with How It Works overview. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
 
 ## Current State
 
-**Shipped:** v1.0 MVP (2026-02-12)
-**Codebase:** ~8,700 LOC TypeScript across 64 files in `app/`
+**Shipped:** v1.1 Search, Types & Polish (2026-02-15)
+**Codebase:** ~5,000 LOC TypeScript/CSS across 65 files in `app/`
 **Tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, React Router 7
 
-v1.0 delivers the complete Explore API view: home screen with stats and browse-all, resizable sidebar navigation with breadcrumbs and directional animations, entity detail with Properties/NavProperties/Methods tables and TypeLink cross-references, and function detail with typed parameters and COMPOSABLE badges. Dark mode, loading skeletons, and IndexedDB caching are all in place.
-
-## Current Milestone: v1.1 Search, Types & Polish
-
-**Goal:** Add global deep search, a full Explore Types browsing surface, and quality-of-life polish to make the v1.0 foundation feel complete.
-
-**Target features:**
-- Cmd+K command palette (shadcn CommandDialog) for global deep search across all 6K+ indexed items
-- Explore Types view — sidebar with flat filterable list of complex + enum types, detail panel with properties, base type chain, and used-by
-- Copy `_api/...` path to clipboard via breadcrumb button (NAV-03 from v1.0)
-- How It Works overview page — one-pager explaining where metadata comes from and how the app works
+v1.1 adds Cmd+K command palette with dual search modes (name + path), Explore Types with namespace-grouped sidebar and type detail views (properties, base types, derived types, used-by), How It Works page, copy-to-clipboard breadcrumb button, GitHub star count badge, GitHub Dark dark mode, and app-branded favicons.
 
 ## Core Value
 
 Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
 
-The current site only searches root-level items (793 of 3,528 functions). The rebuild's deep search across all levels is the single most important improvement. (Note: Cmd+K deep search is built in the data layer but the UI is deferred to v2.)
+Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoints) with name and path search modes. This is the single most important improvement over the old site which only searched root-level items (793 of 3,528 functions).
 
 ## Requirements
 
 ### Validated
 
 - **v1.0 (38 requirements):**
-- INFRA-01 through INFRA-09 — v1.0 (project scaffolding, data layer, build pipeline)
-- NAV-01, NAV-02, NAV-04 through NAV-07 — v1.0 (breadcrumbs, sidebar, resize)
-- EXPL-01 through EXPL-05 — v1.0 (home screen, browse-all, filtering)
-- ENTD-01 through ENTD-11 — v1.0 (entity detail panels, tables, filters, type links)
-- FUNC-01 through FUNC-03 — v1.0 (function detail, typed params, COMPOSABLE)
-- UIFN-01 through UIFN-04 — v1.0 (loading, header, color system, monospace)
+  - INFRA-01 through INFRA-09 — v1.0 (project scaffolding, data layer, build pipeline)
+  - NAV-01, NAV-02, NAV-04 through NAV-07 — v1.0 (breadcrumbs, sidebar, resize)
+  - EXPL-01 through EXPL-05 — v1.0 (home screen, browse-all, filtering)
+  - ENTD-01 through ENTD-11 — v1.0 (entity detail panels, tables, filters, type links)
+  - FUNC-01 through FUNC-03 — v1.0 (function detail, typed params, COMPOSABLE)
+  - UIFN-01 through UIFN-04 — v1.0 (loading, header, color system, monospace)
 
-### Active (v1.1)
-
-- [ ] NAV-03: Copy `_api/...` path to clipboard via breadcrumb button
-- [ ] SRCH-01 through SRCH-05: Cmd+K command palette for global deep search
-- [ ] TYPE-01 through TYPE-06: Explore Types full view (flat filterable list, detail, base type chain, used-by)
-- [ ] ADDL-03: How It Works overview page
+- **v1.1 (13 requirements):**
+  - SRCH-01 through SRCH-04 — v1.1 (Cmd+K command palette, real-time search, grouped results, navigation)
+  - TYPE-01 through TYPE-06 — v1.1 (Explore Types: sidebar, detail, inheritance, used-by, cross-nav, header nav)
+  - NAV-03 — v1.1 (copy _api/ path to clipboard)
+  - INFO-01, INFO-02 — v1.1 (How It Works page, navigation to it)
 
 ### Backlog (future milestones)
 
+- [ ] SRCH-05: Command palette shows recently visited items when opened with no query
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
 
@@ -63,39 +53,41 @@ The current site only searches root-level items (793 of 3,528 functions). The re
 - Inline editing of metadata — read-only viewer
 - Multiple API versions — SharePoint has one metadata at any time
 - PnPjs code snippet generation — high value but requires mapping logic, consider post-launch
+- Full search page / route — CommandDialog sufficient for quick-jump
 
 ## Context
 
-Shipped v1.0 with ~8,700 LOC TypeScript across 64 files.
+Shipped v1.1 with ~5,000 LOC TypeScript/CSS across 65 files. Total ~2,460 lines added over v1.0.
 Tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, idb-keyval, React Router 7.
-Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, MiniSearch index with ~6K items, IndexedDB cache with cache-then-revalidate boot.
+Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot.
 Old `web/` directory preserved as reference during development.
 
 **Known technical debt:**
-- UsedByBar scans all entities on every render (no precomputed index)
+- TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
 - Recently visited kind mapping relies on depth heuristic (depth 2 = root)
-- Search placeholder shown but Cmd+K not functional yet
-- NAV-03 copy button not implemented
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| MiniSearch over FlexSearch | Native TS, returns full docs, faster init (19ms), simpler API | Good — working well, ~6K items indexed |
-| Sidebar as contextual nav, not tree | Single node has 5-30 children, no virtualization needed | Good — clean UX, breadcrumbs provide path context |
-| Remove namespace filter dialog | Cmd+K deep search makes filtering obsolete | Pending — Cmd+K not yet built |
-| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | Pending — not yet implemented |
-| New `app/` directory | Keep old `web/` as reference during development | Good — clean separation |
-| Desktop only for v1 | Focus on core UX, mobile responsive deferred | Good — desktop data density works well |
-| Skip analytics for v1 | Ship core functionality first | Good — no overhead during development |
-| Dark mode in v1 | Trivial with shadcn/ui + Tailwind dark: variants | Good — immediate polish, user verified |
-| GitHub Actions deployment | Replaces manual `npm run docs` + commit | Pending — not yet implemented |
-| Metadata outside Zustand | Frozen 4MB singleton + useSyncExternalStore | Good — no deep-clone perf issues |
-| @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin | Good — faster builds, no config file |
-| OKLCH color space for type tokens | Perceptually uniform, dark mode adjusts lightness only | Good — consistent across themes |
-| Composable function routing | Composable -> entity children, non-composable -> terminal | Good — correct API semantics |
-| TypeLink for all entity references | Consistent cross-linking component | Good — reused across all pages |
-| Contained scroll layout | h-screen + overflow-hidden + independent scrolling | Good — no full-page scroll issues |
+| MiniSearch over FlexSearch | Native TS, returns full docs, faster init (19ms), simpler API | Good |
+| Sidebar as contextual nav, not tree | Single node has 5-30 children, no virtualization needed | Good |
+| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | Good — Cmd+K working well |
+| New `app/` directory | Keep old `web/` as reference during development | Good |
+| Desktop only for v1 | Focus on core UX, mobile responsive deferred | Good |
+| Dark mode from v1 | Trivial with shadcn/ui + Tailwind dark: variants | Good — GitHub Dark palette |
+| Metadata outside Zustand | Frozen 4MB singleton + useSyncExternalStore | Good |
+| @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin | Good |
+| OKLCH color space for type tokens | Perceptually uniform, dark mode adjusts lightness only | Good |
+| Composable function routing | Composable -> entity children, non-composable -> terminal | Good |
+| TypeLink for all entity references | Consistent cross-linking component | Good |
+| Contained scroll layout | h-screen + overflow-hidden + independent scrolling | Good |
+| BFS tree-walk for endpoint indexing | Comprehensive coverage of ~62K reachable paths, ~3,330 unique | Good |
+| Substring matching for path search | MiniSearch tokenization didn't work for path segments | Good |
+| Type classification heuristic | Complex = no nav props AND no function IDs AND not Collection | Good |
+| Precomputed used-by index | O(1) lookup replacing O(n*m) scans | Good |
+| GitHub Dark palette for dark mode | Blue OKLCH undertones, elevated chrome surfaces | Good |
+| Hardcoded How It Works stats | Simpler than computing from live metadata | Good |
 
 ## Constraints
 
@@ -107,4 +99,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-12 after v1.1 milestone start*
+*Last updated: 2026-02-15 after v1.1 milestone*
