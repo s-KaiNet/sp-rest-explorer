@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 08 complete (3/3 plans).
+**Current focus:** v1.1 Search, Types & Polish — Phase 08 complete (4/4 plans, incl. UAT gap closure).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -18,9 +18,9 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Milestone:** v1.1 Search, Types & Polish
 **Phase:** 08 — Quality-of-Life Polish (complete)
-**Plan:** 3/3 complete
-**Status:** Phase 08 complete. All v1.1 phases done.
-**Last activity:** 2026-02-14 — Plan 08-03 executed
+**Plan:** 4/4 complete (incl. 08-04 UAT gap closure)
+**Status:** Phase 08 complete. All v1.1 phases done. UAT gaps closed.
+**Last activity:** 2026-02-14 — Plan 08-04 executed (UAT gap closure)
 
 ```
 v1.1 Progress: ████████████████████ 100% (5/5 phases complete: 06 + 07.1 + 07.2 + 07 + 08)
@@ -32,8 +32,8 @@ v1.1 Progress: ████████████████████ 100%
 |--------|-------|
 | Phases completed | 5/5 (v1.1) — Phase 6 + 07.1 + 07.2 + 07 + 08 |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
-| Plans executed | 13 (v1.1) |
-| Tasks completed | 26 + 11 fixes (v1.1) |
+| Plans executed | 14 (v1.1) |
+| Tasks completed | 28 + 11 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
@@ -49,6 +49,7 @@ v1.1 Progress: ████████████████████ 100%
 | 08-01 | 2min | 2 | 3 |
 | 08-02 | 2min | 2 | 4 |
 | 08-03 | 1min | 2 | 1 |
+| 08-04 | 2min | 2 | 5 |
 
 ## Accumulated Context
 
@@ -114,6 +115,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - GitHub Dark palette as dark mode reference (#0d1117 bg, #c9d1d9 fg, #30363d borders)
 - Blue undertone (hue ~260) in all dark mode grays for signature GitHub Dark feel
 - Dual scrollbar API: scrollbar-color (Firefox) + ::-webkit-scrollbar (WebKit) for cross-browser coverage
+- bg-sidebar for elevated dark mode chrome surfaces (header, breadcrumb, sidebar) at oklch 0.18 vs page 0.14
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -135,10 +137,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 08 Plan 03 — dark mode rework + scrollbar styling (2026-02-14)
-**What happened:** Completed 08-03-PLAN.md. Reworked dark mode to GitHub Dark-inspired palette with blue-gray undertones. Added global dark scrollbar styling. Phase 08 complete.
-**Next step:** v1.1 milestone complete — all phases done. Run verification or complete milestone.
+**Last session:** Execute Phase 08 Plan 04 — UAT gap closure (2026-02-14)
+**What happened:** Completed 08-04-PLAN.md. Fixed 3 UAT gaps: diagram overflow (removed min-width), header logo (favicon.svg), dark mode chrome elevation (bg-sidebar at oklch 0.18).
+**Next step:** v1.1 milestone complete — all phases + UAT gaps done. Run verification or complete milestone.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 08 complete — v1.1 milestone done)*
+*Last updated: 2026-02-14 (Phase 08 complete — UAT gaps closed, v1.1 milestone done)*
