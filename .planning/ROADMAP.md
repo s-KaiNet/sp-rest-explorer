@@ -78,7 +78,7 @@ Plans:
 
 Plans:
 - [x] 07.2-01-PLAN.md — Dual MiniSearch indexes (name + path) with mode-aware CommandPalette
-- [ ] 07.2-02-PLAN.md — Fix path search: substring matching instead of MiniSearch tokenization (gap closure)
+- [x] 07.2-02-PLAN.md — Fix path search: substring matching instead of MiniSearch tokenization (gap closure)
 
 ### Phase 8: Quality-of-Life Polish
 
@@ -107,9 +107,9 @@ Plans:
 | 6. Global Search | v1.1 | 2/2 | Complete | 2026-02-12 |
 | 7. Explore Types | v1.1 | 0/? | Not started | — |
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
-| 07.2. Add path to API Endpoints index | v1.1 | 1/1 | Complete | 2026-02-14 |
+| 07.2. Add path to API Endpoints index | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07.2 complete)*
+*Last updated: 2026-02-14 (Phase 07.2 gap closure complete — 2/2 plans)*
