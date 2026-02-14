@@ -46,11 +46,17 @@ result: pass
 expected: When viewing a type's detail, the sidebar should highlight the active type and scroll it into view. Navigating to a different type (e.g. via a base type link) should update the sidebar highlight.
 result: pass
 
+### 9. Sidebar text overflow (added post-testing)
+expected: Long type names and namespace headers in the Types sidebar should truncate with ellipsis, not cause horizontal scrolling. Should match Explore API sidebar behavior.
+result: issue
+reported: "There shouldn't be any horizontal scrolling in the types sidebar, it should be the same as for the sidebar at Explore API page - text-overflow property"
+severity: cosmetic
+
 ## Summary
 
-total: 8
+total: 9
 passed: 7
-issues: 1
+issues: 2
 pending: 0
 skipped: 0
 
@@ -97,4 +103,20 @@ skipped: 0
   missing:
     - "Add useTypeIndexes import and derivedTypes lookup to EntityDetail.tsx"
     - "Add derived types rendering section (same pattern as ComplexTypeDetail.tsx lines 70-81)"
+  debug_session: ""
+
+- truth: "Types sidebar should truncate long names with ellipsis, no horizontal scrolling — matching Explore API sidebar"
+  status: failed
+  reason: "User reported: There shouldn't be any horizontal scrolling in the types sidebar, it should be the same as for the sidebar at Explore API page - text-overflow property"
+  severity: cosmetic
+  test: 9
+  root_cause: "TypesSidebar.tsx line 108 namespace header span lacks min-w-0 truncate classes. TypesPage.tsx line 78 sidebar scroll container uses overflow-y-auto but doesn't set overflow-x-hidden, allowing horizontal scroll when content overflows."
+  artifacts:
+    - path: "app/src/components/types/TypesSidebar.tsx"
+      issue: "Namespace group header span missing min-w-0 truncate classes"
+    - path: "app/src/pages/TypesPage.tsx"
+      issue: "Sidebar scroll container missing overflow-x-hidden"
+  missing:
+    - "Add min-w-0 truncate to namespace header span in TypesSidebar.tsx"
+    - "Add overflow-x-hidden to sidebar scroll container in TypesPage.tsx"
   debug_session: ""
