@@ -71,10 +71,10 @@
   /* Ring: slightly brighter border */
   --ring: oklch(0.45 0.01 250);
   /* Sidebar: slightly darker than main content */
-  --sidebar-background: oklch(0.12 0.005 260);
+  --sidebar-background: oklch(0.18 0.005 260);
   --sidebar-foreground: oklch(0.85 0.01 250);
   --sidebar-primary: oklch(0.85 0.01 250);
-  --sidebar-primary-foreground: oklch(0.12 0.005 260);
+  --sidebar-primary-foreground: oklch(0.18 0.005 260);
   --sidebar-accent: oklch(0.20 0.005 260);
   --sidebar-accent-foreground: oklch(0.85 0.01 250);
   --sidebar-border: oklch(0.30 0.005 260);

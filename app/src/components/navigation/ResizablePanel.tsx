@@ -60,7 +60,7 @@ export function ResizablePanel({ children, className, storageKey }: ResizablePan
 
   return (
     <div
-      className={`relative shrink-0 border-r border-border ${className ?? ''}`}
+      className={`relative shrink-0 border-r border-border bg-sidebar ${className ?? ''}`}
       style={{ width }}
     >
       {/* Content area — fills the panel, clips slide animations */}

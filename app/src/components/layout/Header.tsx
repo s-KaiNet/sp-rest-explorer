@@ -33,7 +33,7 @@ export function Header({ onSearchClick }: HeaderProps) {
   }, [])
 
   return (
-    <header className="fixed top-0 z-50 flex h-14 w-full items-center border-b border-border bg-background">
+    <header className="fixed top-0 z-50 flex h-14 w-full items-center border-b border-border bg-sidebar">
       <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4 px-4">
         {/* Left: App name + Nav links */}
         <div className="flex items-center gap-1">
