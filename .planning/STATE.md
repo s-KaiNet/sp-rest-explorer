@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 08 in progress (1/3 plans complete).
+**Current focus:** v1.1 Search, Types & Polish — Phase 08 in progress (2/3 plans complete).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -18,12 +18,12 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Milestone:** v1.1 Search, Types & Polish
 **Phase:** 08 — Quality-of-Life Polish (in progress)
-**Plan:** 1/3 complete
-**Status:** Plan 08-01 complete (How It Works page + GitHub star count). Ready for 08-02 (copy-to-clipboard + favicons).
-**Last activity:** 2026-02-14 — Plan 08-01 executed
+**Plan:** 2/3 complete
+**Status:** Plan 08-02 complete (copy-to-clipboard + favicons). Ready for 08-03.
+**Last activity:** 2026-02-14 — Plan 08-02 executed
 
 ```
-v1.1 Progress: ███████████████░░░░░ 75% (2/3 phases + 07.1 + 07.2 complete, 08: 1/3 plans)
+v1.1 Progress: ████████████████░░░░ 80% (2/3 phases + 07.1 + 07.2 complete, 08: 2/3 plans)
 ```
 
 ## Performance Metrics
@@ -32,8 +32,8 @@ v1.1 Progress: ███████████████░░░░░ 75% 
 |--------|-------|
 | Phases completed | 4/5 (v1.1) — Phase 6 + 07.1 + 07.2 + 07 |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
-| Plans executed | 11 (v1.1) |
-| Tasks completed | 22 + 11 fixes (v1.1) |
+| Plans executed | 12 (v1.1) |
+| Tasks completed | 24 + 11 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
@@ -47,6 +47,7 @@ v1.1 Progress: ███████████████░░░░░ 75% 
 | 07-02 | 4min | 3 | 8 |
 | 07-03 | 2min | 2 | 4 |
 | 08-01 | 2min | 2 | 3 |
+| 08-02 | 2min | 2 | 4 |
 
 ## Accumulated Context
 
@@ -107,6 +108,8 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - 30-day localStorage cache for GitHub star count (key: sp-explorer-gh-stars)
 - Star count integrated within GitHub link as filled star icon + formatted count
 - 720px max-width centered layout for content pages
+- Copy button uses group-hover pattern (opacity-0 → opacity-100 on nav hover)
+- SVG favicon uses simplified brackets+tree icon (not raster conversion from PNG)
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -119,7 +122,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Technical Debt
 - ~~UsedByBar scans all entities on every render (no precomputed index)~~ — **resolved by 07-01/07-02** (usedByIndex precomputed at boot; UsedByBar rewritten to use O(1) lookup)
 - ~~Search placeholder shown but Cmd+K not functional~~ — **resolved by Phase 6**
-- NAV-03 copy button not implemented — **addressed by NAV-03**
+- ~~NAV-03 copy button not implemented~~ — **resolved by 08-02** (copy-to-clipboard in breadcrumb bar)
 - ~~Search result navigation UX~~ — **resolved by Phase 07.1** (pre-computed paths, 2-group display)
 - ~~CommandPalette.tsx line 274: unused variable `i` causes `tsc -b` build error~~ — **resolved** (fixed prior to Phase 8)
 
@@ -128,10 +131,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 08 Plan 01 — How It Works page + GitHub star count (2026-02-14)
-**What happened:** Completed 08-01-PLAN.md. Built full How It Works page (7 sections: stats, what is this, callout, architecture diagram, change tracking, feedback). Added GitHub star count to header with 30-day localStorage caching.
-**Next step:** Execute 08-02-PLAN.md (copy-to-clipboard in breadcrumb bar + favicons).
+**Last session:** Execute Phase 08 Plan 02 — copy-to-clipboard + favicons (2026-02-14)
+**What happened:** Completed 08-02-PLAN.md. Added copy-to-clipboard button to breadcrumb bar (NAV-03) with icon-swap feedback. Created app-branded SVG/ICO favicons replacing Vite default.
+**Next step:** Execute 08-03-PLAN.md (final plan in Phase 8).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 08 — 1/3 plans complete)*
+*Last updated: 2026-02-14 (Phase 08 — 2/3 plans complete)*
