@@ -95,12 +95,13 @@ Plans:
 
 **Requirements:** NAV-03, INFO-01, INFO-02
 
-**Plans:** 3 plans
+**Plans:** 4 plans
 
 Plans:
 - [x] 08-01-PLAN.md — How It Works page content + GitHub star count in header
 - [x] 08-02-PLAN.md — Copy-to-clipboard in breadcrumb bar + favicons
 - [x] 08-03-PLAN.md — Dark mode color scheme rethink (GitHub Dark) + dark scrollbars
+- [ ] 08-04-PLAN.md — UAT gap closure: diagram overflow, header logo, dark mode elevation
 
 **Success Criteria:**
 1. User clicks a copy button in the breadcrumb bar and the `_api/...` path for the current item is copied to clipboard, with visual confirmation
