@@ -311,7 +311,7 @@ export function CommandPalette({
     if (debouncedQuery.length < 3) return null
     const searchIndex = getSearchIndex()
     if (!searchIndex) return null
-    return searchIndex.search(debouncedQuery, { limit: 21 })
+    return searchIndex.search(debouncedQuery).slice(0, 21)
   }, [debouncedQuery])
 
   // Group results

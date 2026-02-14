@@ -2,6 +2,7 @@
 export type {
   AppStatus,
   ChildEntry,
+  EndpointEntry,
   EntityType,
   FunctionImport,
   LookupMaps,

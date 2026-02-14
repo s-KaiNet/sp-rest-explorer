@@ -1,5 +1,6 @@
 import MiniSearch from 'minisearch'
-import type { Metadata, SearchDocument } from './types'
+import { buildApiEndpointIndex } from './api-tree-walk'
+import type { LookupMaps, Metadata, SearchDocument } from './types'
 
 // ── Module-level singleton ──
 
@@ -7,10 +8,13 @@ let searchIndex: MiniSearch<SearchDocument> | null = null
 
 // ── Build logic ──
 
-export function buildSearchIndex(metadata: Metadata): MiniSearch<SearchDocument> {
+export function buildSearchIndex(
+  metadata: Metadata,
+  lookupMaps: LookupMaps,
+): MiniSearch<SearchDocument> {
   const index = new MiniSearch<SearchDocument>({
     fields: ['name', 'fullName'],
-    storeFields: ['name', 'fullName', 'kind', 'parentEntity'],
+    storeFields: ['name', 'fullName', 'kind', 'path', 'parentEntity', 'isRoot', 'endpointKind'],
     searchOptions: {
       boost: { name: 2 },
       fuzzy: 0.2,
@@ -21,7 +25,7 @@ export function buildSearchIndex(metadata: Metadata): MiniSearch<SearchDocument>
 
   const docs: SearchDocument[] = []
 
-  // 1. All entities
+  // 1. Entity documents — searchable by both short name and full OData name
   for (const entity of Object.values(metadata.entities)) {
     docs.push({
       id: `entity:${entity.fullName}`,
@@ -29,48 +33,38 @@ export function buildSearchIndex(metadata: Metadata): MiniSearch<SearchDocument>
       fullName: entity.fullName,
       kind: 'entity',
     })
-
-    // 3. Nav properties for each entity
-    for (const nav of entity.navigationProperties) {
-      docs.push({
-        id: `nav:${entity.fullName}/${nav.name}`,
-        name: nav.name,
-        fullName: `${entity.name}.${nav.name}`,
-        kind: 'navProperty',
-        parentEntity: entity.fullName,
-      })
-    }
-
-    // 4. Bound functions for each entity
-    for (const fnId of entity.functionIds) {
-      const fn = metadata.functions[fnId]
-      if (fn) {
-        docs.push({
-          id: `fn:${entity.fullName}/${fn.id}`,
-          name: fn.name,
-          fullName: `${entity.name}.${fn.name}`,
-          kind: 'function',
-          parentEntity: entity.fullName,
-        })
-      }
-    }
   }
 
-  // 2. Root functions (isRoot === true)
-  for (const fn of Object.values(metadata.functions)) {
-    if (fn.isRoot) {
-      docs.push({
-        id: `fn:root:${fn.id}`,
-        name: fn.name,
-        fullName: fn.name,
-        kind: 'function',
-      })
-    }
+  const entityCount = docs.length
+
+  // 2. Endpoint documents — searchable by leaf name only (path stored but NOT searched)
+  const endpoints = buildApiEndpointIndex(metadata, lookupMaps)
+  for (const entry of endpoints) {
+    docs.push({
+      id: `endpoint:${entry.id}`,
+      name: entry.name,
+      fullName: '',  // Empty — path NOT searchable per design
+      kind: 'endpoint',
+      path: entry.path,
+      endpointKind: entry.kind,
+      parentEntity: entry.parentEntity,
+      isRoot: entry.isRoot,
+    })
   }
+
+  const endpointCount = endpoints.length
 
   index.addAll(docs)
 
-  console.log('[SP Explorer] Search index:', docs.length, 'items indexed')
+  console.log(
+    '[SP Explorer] Search index:',
+    docs.length,
+    'items indexed (',
+    entityCount,
+    'entities,',
+    endpointCount,
+    'endpoints)',
+  )
 
   return index
 }
@@ -78,8 +72,8 @@ export function buildSearchIndex(metadata: Metadata): MiniSearch<SearchDocument>
 // ── Public API ──
 
 /** Build and store search index from metadata. */
-export function initSearchIndex(metadata: Metadata): void {
-  searchIndex = buildSearchIndex(metadata)
+export function initSearchIndex(metadata: Metadata, lookupMaps: LookupMaps): void {
+  searchIndex = buildSearchIndex(metadata, lookupMaps)
 }
 
 /** Get current search index (for non-React code). */

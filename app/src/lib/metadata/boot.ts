@@ -1,7 +1,7 @@
 import { METADATA_URL } from '@/lib/constants'
 import { useAppStore } from '@/stores/app-store'
 import { getCachedMetadata, setCachedMetadata } from './metadata-cache'
-import { initLookupMaps } from './lookup-maps'
+import { getLookupMaps, initLookupMaps } from './lookup-maps'
 import { setMetadata } from './metadata-store'
 import { initSearchIndex } from './search-index'
 import type { Metadata } from './types'
@@ -68,7 +68,7 @@ export async function retryBoot(): Promise<void> {
 function hydrate(data: Metadata): void {
   setMetadata(data)
   initLookupMaps(data)
-  initSearchIndex(data)
+  initSearchIndex(data, getLookupMaps()!)
 }
 
 async function fetchFresh(): Promise<Metadata> {
