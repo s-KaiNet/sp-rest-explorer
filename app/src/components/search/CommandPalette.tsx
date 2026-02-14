@@ -271,7 +271,7 @@ export function CommandPalette({
     if (searchMode === 'path') {
       const pathResults = searchPathDocuments(debouncedQuery)
       // Adapt PathSearchDocument[] to same shape as SearchResult[] for uniform rendering
-      return pathResults.map((doc, i) => ({
+      return pathResults.map((doc) => ({
         id: doc.id,
         path: doc.path,
         name: doc.name,
