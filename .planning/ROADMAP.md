@@ -99,8 +99,8 @@ Plans:
 
 Plans:
 - [x] 08-01-PLAN.md — How It Works page content + GitHub star count in header
-- [ ] 08-02-PLAN.md — Copy-to-clipboard in breadcrumb bar + favicons
-- [ ] 08-03-PLAN.md — Dark mode color scheme rethink (GitHub Dark) + dark scrollbars
+- [x] 08-02-PLAN.md — Copy-to-clipboard in breadcrumb bar + favicons
+- [x] 08-03-PLAN.md — Dark mode color scheme rethink (GitHub Dark) + dark scrollbars
 
 **Success Criteria:**
 1. User clicks a copy button in the breadcrumb bar and the `_api/...` path for the current item is copied to clipboard, with visual confirmation
@@ -122,8 +122,8 @@ Plans:
 | 7. Explore Types | v1.1 | 3/3 | Complete | 2026-02-14 |
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints index | v1.1 | 2/2 | Complete | 2026-02-14 |
-| 8. Quality-of-Life Polish | v1.1 | 1/3 | In progress | — |
+| 8. Quality-of-Life Polish | v1.1 | 3/3 | Complete | 2026-02-14 |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 8 — 1/3 plans complete)*
+*Last updated: 2026-02-14 (Phase 8 complete — v1.1 milestone done)*

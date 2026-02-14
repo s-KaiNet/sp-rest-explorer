@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 08 in progress (2/3 plans complete).
+**Current focus:** v1.1 Search, Types & Polish — Phase 08 complete (3/3 plans).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,23 +17,23 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 ## Current Position
 
 **Milestone:** v1.1 Search, Types & Polish
-**Phase:** 08 — Quality-of-Life Polish (in progress)
-**Plan:** 2/3 complete
-**Status:** Plan 08-02 complete (copy-to-clipboard + favicons). Ready for 08-03.
-**Last activity:** 2026-02-14 — Plan 08-02 executed
+**Phase:** 08 — Quality-of-Life Polish (complete)
+**Plan:** 3/3 complete
+**Status:** Phase 08 complete. All v1.1 phases done.
+**Last activity:** 2026-02-14 — Plan 08-03 executed
 
 ```
-v1.1 Progress: ████████████████░░░░ 80% (2/3 phases + 07.1 + 07.2 complete, 08: 2/3 plans)
+v1.1 Progress: ████████████████████ 100% (5/5 phases complete: 06 + 07.1 + 07.2 + 07 + 08)
 ```
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 4/5 (v1.1) — Phase 6 + 07.1 + 07.2 + 07 |
+| Phases completed | 5/5 (v1.1) — Phase 6 + 07.1 + 07.2 + 07 + 08 |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
-| Plans executed | 12 (v1.1) |
-| Tasks completed | 24 + 11 fixes (v1.1) |
+| Plans executed | 13 (v1.1) |
+| Tasks completed | 26 + 11 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
@@ -48,6 +48,7 @@ v1.1 Progress: ████████████████░░░░ 80% 
 | 07-03 | 2min | 2 | 4 |
 | 08-01 | 2min | 2 | 3 |
 | 08-02 | 2min | 2 | 4 |
+| 08-03 | 1min | 2 | 1 |
 
 ## Accumulated Context
 
@@ -110,6 +111,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - 720px max-width centered layout for content pages
 - Copy button uses group-hover pattern (opacity-0 → opacity-100 on nav hover)
 - SVG favicon uses simplified brackets+tree icon (not raster conversion from PNG)
+- GitHub Dark palette as dark mode reference (#0d1117 bg, #c9d1d9 fg, #30363d borders)
+- Blue undertone (hue ~260) in all dark mode grays for signature GitHub Dark feel
+- Dual scrollbar API: scrollbar-color (Firefox) + ::-webkit-scrollbar (WebKit) for cross-browser coverage
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -131,10 +135,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 08 Plan 02 — copy-to-clipboard + favicons (2026-02-14)
-**What happened:** Completed 08-02-PLAN.md. Added copy-to-clipboard button to breadcrumb bar (NAV-03) with icon-swap feedback. Created app-branded SVG/ICO favicons replacing Vite default.
-**Next step:** Execute 08-03-PLAN.md (final plan in Phase 8).
+**Last session:** Execute Phase 08 Plan 03 — dark mode rework + scrollbar styling (2026-02-14)
+**What happened:** Completed 08-03-PLAN.md. Reworked dark mode to GitHub Dark-inspired palette with blue-gray undertones. Added global dark scrollbar styling. Phase 08 complete.
+**Next step:** v1.1 milestone complete — all phases done. Run verification or complete milestone.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 08 — 2/3 plans complete)*
+*Last updated: 2026-02-14 (Phase 08 complete — v1.1 milestone done)*
