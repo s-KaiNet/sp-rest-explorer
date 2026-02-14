@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 07.1 in progress (fixing search experience).
+**Current focus:** v1.1 Search, Types & Polish — Phase 07.1 complete. Next: Phase 7 (Explore Types) or Phase 8 (Polish).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,29 +17,30 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 ## Current Position
 
 **Milestone:** v1.1 Search, Types & Polish
-**Phase:** 07.1 — Fix Search Experience (in progress)
-**Plan:** 1/2 complete
-**Status:** Plan 01 (BFS tree-walk + search index rewrite) complete. Plan 02 (CommandPalette rewrite) next.
-**Last activity:** 2026-02-14 — Plan 07.1-01 executed
+**Phase:** 07.1 — Fix Search Experience (complete)
+**Plan:** 2/2 complete
+**Status:** Phase 07.1 complete. Both plans executed — search index rewrite + CommandPalette 2-group UI.
+**Last activity:** 2026-02-14 — Plan 07.1-02 executed (phase complete)
 
 ```
-v1.1 Progress: ██████░░░░░░░░░░░░░░ 33% (1/3 phases + 07.1 in progress)
+v1.1 Progress: ████████░░░░░░░░░░░░ 40% (1/3 phases + 07.1 complete)
 ```
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 1/3 (v1.1) |
-| Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03 (partial), SRCH-04 |
-| Plans executed | 3 (v1.1) |
-| Tasks completed | 6 + 7 fixes (v1.1) |
+| Phases completed | 2/3 (v1.1) — Phase 6 + 07.1 |
+| Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
+| Plans executed | 5 (v1.1) |
+| Tasks completed | 9 + 8 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
 | 06-01 | 5min | 2 | 7 |
 | 06-02 | 8min | 2+checkpoint | 5 |
 | 07.1-01 | 3min | 2 | 6 |
+| 07.1-02 | ~15min | 3 | 4 |
 
 ## Accumulated Context
 
@@ -64,10 +65,12 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 **Phase 07.1 decisions:**
 - BFS tree-walk from root functions through nav properties and bound functions for endpoint indexing
-- Entity-level visited Set for cycle detection (no depth limit needed)
+- Per-path ancestor tracking with depth limit (4) — replaced entity-level visited Set for comprehensive coverage (~62K endpoints)
 - Endpoint fullName set to '' so MiniSearch indexes leaf name only — path stored but not searchable
-- Dedup by identity string with shortest-path preference
 - getLookupMaps()! after initLookupMaps() for boot wiring (minimal change)
+- 2-group display (Entities first, API Endpoints second) replacing old 3-group layout
+- 5 results initial per group with "Show more" progressive disclosure
+- SearchSelection with pre-computed path — no runtime path resolution needed
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -80,17 +83,17 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - UsedByBar scans all entities on every render (no precomputed index) — **addressed by TYPE-04**
 - ~~Search placeholder shown but Cmd+K not functional~~ — **resolved by Phase 6**
 - NAV-03 copy button not implemented — **addressed by NAV-03**
-- **Search result navigation UX** — path resolution works but result-to-route mapping is confusing for non-root items. Needs dedicated phase.
+- ~~Search result navigation UX~~ — **resolved by Phase 07.1** (pre-computed paths, 2-group display)
 
 ### Blockers
 - (None)
 
 ## Session Continuity
 
-**Last session:** Execute Phase 07.1 Plan 01 (2026-02-14)
-**What happened:** Completed 07.1-01-PLAN.md. Created BFS tree-walk module (api-tree-walk.ts), rewrote search-index.ts with two-kind documents (entity + endpoint), updated boot.ts to pass LookupMaps. Fixed pre-existing MiniSearch limit type error (Rule 3).
-**Next step:** Execute 07.1-02-PLAN.md (CommandPalette rewrite to use new endpoint-based search results).
+**Last session:** Execute Phase 07.1 Plan 02 (2026-02-14)
+**What happened:** Completed 07.1-02-PLAN.md. Rewrote CommandPalette to 2-group display (Entities, API Endpoints) with collapsible groups and "Show more" expansion. Updated App.tsx selection handling. Post-checkpoint: expanded tree-walk from ~3.3K to ~62K endpoints using per-path ancestor tracking. Human-verified end-to-end search flow.
+**Next step:** Phase 07.1 complete. Next: Phase 7 (Explore Types) or Phase 8 (Quality-of-Life Polish).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07.1 Plan 01 complete)*
+*Last updated: 2026-02-14 (Phase 07.1 complete — 2/2 plans)*
