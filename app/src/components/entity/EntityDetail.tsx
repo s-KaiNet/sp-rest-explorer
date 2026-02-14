@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react'
 import type { EntityType, FunctionImport } from '@/lib/metadata'
-import { useLookupMaps } from '@/lib/metadata'
+import { useLookupMaps, useTypeIndexes } from '@/lib/metadata'
 import { BaseTypeChain } from './BaseTypeChain'
+import { TypeLink } from './TypeLink'
 import { UsedByBar } from './UsedByBar'
 import { SectionJumpLinks } from './SectionJumpLinks'
 import { CollapsibleSection } from './CollapsibleSection'
@@ -21,6 +22,7 @@ interface EntityDetailProps {
  */
 export function EntityDetail({ entity }: EntityDetailProps) {
   const maps = useLookupMaps()
+  const typeIndexes = useTypeIndexes()
   const [propsFilter, setPropsFilter] = useState('')
   const [navPropsFilter, setNavPropsFilter] = useState('')
   const [methodsFilter, setMethodsFilter] = useState('')
@@ -54,6 +56,12 @@ export function EntityDetail({ entity }: EntityDetailProps) {
     return functions.filter((fn) => fn.name.toLowerCase().includes(lower))
   }, [functions, methodsFilter])
 
+  // Derived types for this entity
+  const derivedTypes = useMemo(() => {
+    if (!typeIndexes) return []
+    return typeIndexes.derivedTypes.get(entity.fullName) ?? []
+  }, [typeIndexes, entity.fullName])
+
   return (
     <div className="p-6">
       {/* Header: Entity name + badge */}
@@ -75,6 +83,20 @@ export function EntityDetail({ entity }: EntityDetailProps) {
 
       {/* Used by bar */}
       <UsedByBar entityFullName={entity.fullName} />
+
+      {/* Derived types — types that inherit from this entity type */}
+      {derivedTypes.length > 0 && (
+        <div className="mb-6 rounded-lg bg-muted px-4 py-3 text-sm">
+          <div className="mb-1.5 font-semibold text-muted-foreground">
+            Derived types:
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {derivedTypes.map((dt) => (
+              <TypeLink key={dt.fullName} typeName={dt.fullName} />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Section jump links */}
       <SectionJumpLinks
