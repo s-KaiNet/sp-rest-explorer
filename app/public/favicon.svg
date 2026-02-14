@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .bg { fill: #2563eb; }
+    .fg { fill: #ffffff; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #3b82f6; }
+    }
+  </style>
+  <!-- Rounded background -->
+  <rect class="bg" width="32" height="32" rx="6"/>
+  <!-- Left bracket < -->
+  <polyline class="fg" points="11,8 5,16 11,24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right bracket > -->
+  <polyline class="fg" points="21,8 27,16 21,24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Center tree: top node -->
+  <rect class="fg" x="14" y="10" width="4" height="4" rx="0.5"/>
+  <!-- Center tree: vertical line -->
+  <line x1="16" y1="14" x2="16" y2="18" stroke="#fff" stroke-width="1.5"/>
+  <!-- Center tree: horizontal line -->
+  <line x1="13" y1="18" x2="19" y2="18" stroke="#fff" stroke-width="1.5"/>
+  <!-- Center tree: bottom left node -->
+  <rect class="fg" x="11.5" y="19" width="3" height="3" rx="0.5"/>
+  <!-- Center tree: bottom right node -->
+  <rect class="fg" x="17.5" y="19" width="3" height="3" rx="0.5"/>
+</svg>
