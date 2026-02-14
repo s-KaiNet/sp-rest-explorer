@@ -57,7 +57,7 @@ export interface SearchDocument {
 }
 
 export interface EndpointEntry {
-  id: string              // "endpoint:{parentEntity}|{leafName}|{kind}" for dedup
+  id: string              // Full _api/... path (unique per entry, used as MiniSearch id)
   name: string            // Leaf name (searchable)
   path: string            // Full _api/... path (displayed, not searched)
   kind: 'function' | 'navProperty'
