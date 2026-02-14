@@ -147,7 +147,7 @@ export function HowItWorksPage() {
               {archNodes.map((node, i) => (
                 <div key={node.label} className="contents">
                   {/* Node */}
-                  <div className="flex flex-col items-center gap-2 px-4 min-w-[120px]">
+                  <div className="flex flex-col items-center gap-2 px-2">
                     <div
                       className={`flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br ${node.gradient} text-2xl font-bold text-white`}
                     >
@@ -163,7 +163,7 @@ export function HowItWorksPage() {
 
                   {/* Arrow (between nodes) */}
                   {i < archArrows.length && (
-                    <div className="flex flex-col items-center gap-1 px-2 min-w-[80px]">
+                    <div className="flex flex-col items-center gap-1 px-2">
                       <span className="text-[10px] font-medium text-muted-foreground whitespace-nowrap">
                         {archArrows[i]}
                       </span>

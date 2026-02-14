@@ -37,7 +37,8 @@ export function Header({ onSearchClick }: HeaderProps) {
       <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-4 px-4">
         {/* Left: App name + Nav links */}
         <div className="flex items-center gap-1">
-          <Link to="/" className="mr-3 text-sm font-semibold text-foreground whitespace-nowrap hover:text-foreground/80 transition-colors">
+          <Link to="/" className="mr-3 flex items-center gap-2 text-sm font-semibold text-foreground whitespace-nowrap hover:text-foreground/80 transition-colors">
+            <img src="/favicon.svg" alt="" className="h-5 w-5" />
             SP REST Explorer
           </Link>
           <nav className="flex items-center gap-0.5">
