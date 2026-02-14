@@ -55,7 +55,7 @@ export function TypesSidebar({
 
     for (const group of namespaceGroups) {
       const matchingTypes = group.types.filter((type) =>
-        type.name.toLowerCase().includes(lower),
+        type.name.toLowerCase().includes(lower) || type.fullName.toLowerCase().includes(lower),
       )
       if (matchingTypes.length > 0) {
         result.push({ namespace: group.namespace, types: matchingTypes })
@@ -105,7 +105,7 @@ export function TypesSidebar({
               className="flex w-full cursor-pointer items-center gap-1.5 rounded-md px-2 py-1.5 text-left transition-colors hover:bg-accent/50"
             >
               <Chevron className="size-3.5 shrink-0 text-muted-foreground" />
-              <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <span className="min-w-0 truncate text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {group.namespace || 'Other'}
               </span>
             </button>

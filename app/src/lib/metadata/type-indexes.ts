@@ -130,19 +130,21 @@ export function buildTypeIndexes(metadata: Metadata, _maps: LookupMaps): TypeInd
     )
   }
 
-  // 4. Build namespace groups (complex types only)
+  // 4. Build namespace groups (ALL types: entity + complex, excluding Collection wrappers)
   const nsMap = new Map<string, EntityType[]>()
 
-  for (const type of complexTypes) {
-    const lastDot = type.fullName.lastIndexOf('.')
-    const namespace = lastDot > 0 ? type.fullName.substring(0, lastDot) : ''
+  for (const entity of allEntities) {
+    if (entity.fullName.startsWith('Collection(')) continue
+
+    const lastDot = entity.fullName.lastIndexOf('.')
+    const namespace = lastDot > 0 ? entity.fullName.substring(0, lastDot) : ''
 
     let arr = nsMap.get(namespace)
     if (!arr) {
       arr = []
       nsMap.set(namespace, arr)
     }
-    arr.push(type)
+    arr.push(entity)
   }
 
   const namespaceGroups: NamespaceGroup[] = []

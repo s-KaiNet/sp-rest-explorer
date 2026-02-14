@@ -15,8 +15,15 @@ export function TypesPage() {
 
   const decodedName = typeName ? decodeURIComponent(typeName) : null
 
-  // Count total and filtered complex types for the filter display
-  const totalCount = typeIndexes?.complexTypes.length ?? 0
+  // Count total types across all namespace groups (entity + complex)
+  const totalCount = useMemo(() => {
+    if (!typeIndexes) return 0
+    let count = 0
+    for (const group of typeIndexes.namespaceGroups) {
+      count += group.types.length
+    }
+    return count
+  }, [typeIndexes])
 
   const filteredCount = useMemo(() => {
     if (!typeIndexes || !filterText) return totalCount
@@ -24,7 +31,7 @@ export function TypesPage() {
     let count = 0
     for (const group of typeIndexes.namespaceGroups) {
       for (const type of group.types) {
-        if (type.name.toLowerCase().includes(lower)) {
+        if (type.name.toLowerCase().includes(lower) || type.fullName.toLowerCase().includes(lower)) {
           count++
         }
       }
@@ -32,15 +39,17 @@ export function TypesPage() {
     return count
   }, [typeIndexes, filterText, totalCount])
 
-  // Compute stats for complex types only (welcome screen)
+  // Compute stats for welcome screen (all types in namespaceGroups)
   const stats = useMemo(() => {
     if (!typeIndexes) return { types: 0, properties: 0 }
     let propertyCount = 0
-    for (const type of typeIndexes.complexTypes) {
-      propertyCount += type.properties.length
+    for (const group of typeIndexes.namespaceGroups) {
+      for (const type of group.types) {
+        propertyCount += type.properties.length
+      }
     }
-    return { types: typeIndexes.complexTypes.length, properties: propertyCount }
-  }, [typeIndexes])
+    return { types: totalCount, properties: propertyCount }
+  }, [typeIndexes, totalCount])
 
   // Scroll-to-active: when typeName changes, scroll the active sidebar item into view
   useEffect(() => {
@@ -75,7 +84,7 @@ export function TypesPage() {
           filteredCount={filteredCount}
           label="types"
         />
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
           {typeIndexes && (
             <TypesSidebar
               namespaceGroups={typeIndexes.namespaceGroups}
@@ -114,7 +123,7 @@ export function TypesPage() {
                   {stats.types.toLocaleString()}
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Complex Types
+                  Types
                 </span>
               </div>
               <div className="flex flex-col items-center">
