@@ -8,7 +8,8 @@ import {
   CommandGroup,
   CommandItem,
 } from '@/components/ui/command'
-import { getSearchIndex } from '@/lib/metadata'
+import { getSearchIndex, getPathSearchIndex, detectSearchMode } from '@/lib/metadata'
+import type { SearchMode } from '@/lib/metadata'
 
 // ── Types ──
 
@@ -67,6 +68,43 @@ function HighlightedName({ name, query }: { name: string; query: string }) {
           <span key={i}>{part.text}</span>
         ),
       )}
+    </span>
+  )
+}
+
+// ── Path segment highlighting ──
+
+function HighlightedPath({ path, query }: { path: string; query: string }) {
+  if (!query || query.length < 3) return <span>{path}</span>
+
+  // Tokenize query the same way MiniSearch does: split on / and space
+  const queryTokens = query
+    .split(/[/ ]+/)
+    .filter(Boolean)
+    .map((t) => t.toLowerCase())
+
+  // Split path into segments on /
+  const segments = path.split('/')
+
+  return (
+    <span>
+      {segments.map((segment, i) => {
+        const isMatch = queryTokens.some(
+          (token) =>
+            segment.toLowerCase().startsWith(token) ||
+            segment.toLowerCase().includes(token),
+        )
+        return (
+          <span key={i}>
+            {i > 0 && '/'}
+            {isMatch ? (
+              <strong className="font-bold text-foreground">{segment}</strong>
+            ) : (
+              <span>{segment}</span>
+            )}
+          </span>
+        )
+      })}
     </span>
   )
 }
@@ -189,22 +227,39 @@ export function CommandPalette({
     }
   }, [open])
 
-  // Search execution — return ALL results (no hard cap)
+  // Detect search mode from query content
+  const searchMode = useMemo<SearchMode>(
+    () => (debouncedQuery.length >= 3 ? detectSearchMode(debouncedQuery) : 'name'),
+    [debouncedQuery],
+  )
+
+  // Search execution — route to correct index based on mode
   const searchResults = useMemo(() => {
     if (debouncedQuery.length < 3) return null
-    const searchIndex = getSearchIndex()
-    if (!searchIndex) return null
-    return searchIndex.search(debouncedQuery)
-  }, [debouncedQuery])
+
+    if (searchMode === 'path') {
+      const pathIndex = getPathSearchIndex()
+      if (!pathIndex) return null
+      return pathIndex.search(debouncedQuery)
+    }
+
+    const nameIndex = getSearchIndex()
+    if (!nameIndex) return null
+    return nameIndex.search(debouncedQuery)
+  }, [debouncedQuery, searchMode])
 
   // Split into entity and endpoint groups
+  // In path mode, path index only contains endpoints — no need to filter by kind
   const entities = useMemo(
-    () => (searchResults ?? []).filter((r) => r.kind === 'entity'),
-    [searchResults],
+    () => (searchMode === 'path' ? [] : (searchResults ?? []).filter((r) => r.kind === 'entity')),
+    [searchResults, searchMode],
   )
   const endpoints = useMemo(
-    () => (searchResults ?? []).filter((r) => r.kind === 'endpoint'),
-    [searchResults],
+    () =>
+      searchMode === 'path'
+        ? (searchResults ?? [])
+        : (searchResults ?? []).filter((r) => r.kind === 'endpoint'),
+    [searchResults, searchMode],
   )
 
   // Handle entity selection
@@ -233,7 +288,10 @@ export function CommandPalette({
     [onSelect, onOpenChange],
   )
 
-  const hasResults = entities.length > 0 || endpoints.length > 0
+  const hasResults =
+    searchMode === 'path'
+      ? endpoints.length > 0
+      : entities.length > 0 || endpoints.length > 0
 
   // Render entity result item
   const renderEntityItem = useCallback(
@@ -283,7 +341,11 @@ export function CommandPalette({
             <HighlightedName name={result.name as string} query={debouncedQuery} />
           </div>
           <span className="text-xs text-muted-foreground break-all">
-            {result.path as string}
+            {searchMode === 'path' ? (
+              <HighlightedPath path={result.path as string} query={debouncedQuery} />
+            ) : (
+              result.path as string
+            )}
           </span>
         </div>
         {(result.isRoot as boolean) && (
@@ -293,7 +355,7 @@ export function CommandPalette({
         )}
       </CommandItem>
     ),
-    [debouncedQuery, handleEndpointSelect],
+    [debouncedQuery, handleEndpointSelect, searchMode],
   )
 
   return (
@@ -308,7 +370,7 @@ export function CommandPalette({
       loop
     >
       <CommandInput
-        placeholder="Search entities and API endpoints..."
+        placeholder="Search entities and API endpoints... (use / for path search)"
         value={query}
         onValueChange={setQuery}
         suffix={
@@ -321,7 +383,7 @@ export function CommandPalette({
         {/* Empty / below minimum states */}
         {query.length === 0 && (
           <div className="py-6 text-center text-sm text-muted-foreground">
-            Type to search across all entities and API endpoints
+            Type to search — use / or spaces for path search
           </div>
         )}
         {query.length >= 1 && query.length < 3 && (
@@ -333,16 +395,18 @@ export function CommandPalette({
           <CommandEmpty>No results for &ldquo;{debouncedQuery}&rdquo;</CommandEmpty>
         )}
 
-        {/* Entities group — first */}
-        <SearchGroup
-          heading="Entities"
-          results={entities}
-          expanded={entitiesExpanded}
-          setExpanded={setEntitiesExpanded}
-          collapsed={entitiesCollapsed}
-          setCollapsed={setEntitiesCollapsed}
-          renderItem={renderEntityItem}
-        />
+        {/* Entities group — hidden in path mode (entities have no paths) */}
+        {searchMode === 'name' && (
+          <SearchGroup
+            heading="Entities"
+            results={entities}
+            expanded={entitiesExpanded}
+            setExpanded={setEntitiesExpanded}
+            collapsed={entitiesCollapsed}
+            setCollapsed={setEntitiesCollapsed}
+            renderItem={renderEntityItem}
+          />
+        )}
 
         {/* API Endpoints group — second */}
         <SearchGroup
