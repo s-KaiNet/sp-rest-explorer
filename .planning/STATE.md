@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 6 complete, ready for Phase 7.
+**Current focus:** v1.1 Search, Types & Polish — Phase 07.1 in progress (fixing search experience).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,13 +17,13 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 ## Current Position
 
 **Milestone:** v1.1 Search, Types & Polish
-**Phase:** 6 — Global Search (complete, verified)
-**Plan:** 2/2 complete
-**Status:** Phase 6 complete. Search result navigation UX deferred to separate phase.
-**Last activity:** 2026-02-12 — Phase 6 verified and approved
+**Phase:** 07.1 — Fix Search Experience (in progress)
+**Plan:** 1/2 complete
+**Status:** Plan 01 (BFS tree-walk + search index rewrite) complete. Plan 02 (CommandPalette rewrite) next.
+**Last activity:** 2026-02-14 — Plan 07.1-01 executed
 
 ```
-v1.1 Progress: ██████░░░░░░░░░░░░░░ 33% (1/3 phases)
+v1.1 Progress: ██████░░░░░░░░░░░░░░ 33% (1/3 phases + 07.1 in progress)
 ```
 
 ## Performance Metrics
@@ -32,13 +32,14 @@ v1.1 Progress: ██████░░░░░░░░░░░░░░ 33% 
 |--------|-------|
 | Phases completed | 1/3 (v1.1) |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03 (partial), SRCH-04 |
-| Plans executed | 2 (v1.1) |
-| Tasks completed | 4 + 7 fixes (v1.1) |
+| Plans executed | 3 (v1.1) |
+| Tasks completed | 6 + 7 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
 | 06-01 | 5min | 2 | 7 |
 | 06-02 | 8min | 2+checkpoint | 5 |
+| 07.1-01 | 3min | 2 | 6 |
 
 ## Accumulated Context
 
@@ -61,6 +62,16 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - ESC badge on input for discoverability
 - Search result navigation clarity deferred to dedicated phase
 
+**Phase 07.1 decisions:**
+- BFS tree-walk from root functions through nav properties and bound functions for endpoint indexing
+- Entity-level visited Set for cycle detection (no depth limit needed)
+- Endpoint fullName set to '' so MiniSearch indexes leaf name only — path stored but not searchable
+- Dedup by identity string with shortest-path preference
+- getLookupMaps()! after initLookupMaps() for boot wiring (minimal change)
+
+### Roadmap Evolution
+- Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
+
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
 - Zustand v5 selector instability — use scalar selectors or `useShallow`
@@ -76,10 +87,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 6 (2026-02-12)
-**What happened:** Completed Phase 6 (Global Search). Plan 06-01 built CommandPalette with shadcn/ui + MiniSearch. Plan 06-02 wired into app shell with Cmd+K, header/hero triggers, navigation. Human checkpoint: 7 fixes applied. Verification: approved. Search result navigation UX deferred to separate phase.
-**Next step:** Plan Phase 7 (Explore Types) with `/gsd-plan-phase 7`, or create a dedicated search navigation fix phase.
+**Last session:** Execute Phase 07.1 Plan 01 (2026-02-14)
+**What happened:** Completed 07.1-01-PLAN.md. Created BFS tree-walk module (api-tree-walk.ts), rewrote search-index.ts with two-kind documents (entity + endpoint), updated boot.ts to pass LookupMaps. Fixed pre-existing MiniSearch limit type error (Rule 3).
+**Next step:** Execute 07.1-02-PLAN.md (CommandPalette rewrite to use new endpoint-based search results).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-12 (Phase 6 complete and verified)*
+*Last updated: 2026-02-14 (Phase 07.1 Plan 01 complete)*

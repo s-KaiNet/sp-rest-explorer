@@ -65,7 +65,7 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 07.1-01-PLAN.md — BFS tree-walk and search index rewrite (entity + endpoint documents with pre-computed paths)
+- [x] 07.1-01-PLAN.md — BFS tree-walk and search index rewrite (entity + endpoint documents with pre-computed paths)
 - [ ] 07.1-02-PLAN.md — CommandPalette 2-group UI rewrite with collapsible groups, Show more, and fixed navigation
 
 ### Phase 8: Quality-of-Life Polish
@@ -94,9 +94,9 @@ Plans:
 | 5. Entity & Function Detail | v1.0 | 3/3 | Complete | 2026-02-12 |
 | 6. Global Search | v1.1 | 2/2 | Complete | 2026-02-12 |
 | 7. Explore Types | v1.1 | 0/? | Not started | — |
-| 07.1. Fix search experience | v1.1 | 0/2 | Planned | — |
+| 07.1. Fix search experience | v1.1 | 1/2 | In progress | — |
 | 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07.1 planned — 2 plans in 2 waves)*
+*Last updated: 2026-02-14 (Phase 07.1 Plan 01 complete — 1/2 plans)*
