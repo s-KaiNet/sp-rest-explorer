@@ -4,6 +4,7 @@ import { getCachedMetadata, setCachedMetadata } from './metadata-cache'
 import { getLookupMaps, initLookupMaps } from './lookup-maps'
 import { setMetadata } from './metadata-store'
 import { initSearchIndex } from './search-index'
+import { initTypeIndexes } from './type-indexes'
 import type { Metadata } from './types'
 
 /** Hydrate the data layer: cache → fetch → freeze → build maps → build index → ready. */
@@ -69,6 +70,7 @@ function hydrate(data: Metadata): void {
   setMetadata(data)
   initLookupMaps(data)
   initSearchIndex(data, getLookupMaps()!)
+  initTypeIndexes(data, getLookupMaps()!)
 }
 
 async function fetchFresh(): Promise<Metadata> {
