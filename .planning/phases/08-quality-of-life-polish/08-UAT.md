@@ -1,9 +1,9 @@
 ---
-status: diagnosed
+status: complete
 phase: 08-quality-of-life-polish
-source: [08-01-SUMMARY.md, 08-02-SUMMARY.md, 08-03-SUMMARY.md]
-started: 2026-02-14T23:00:00Z
-updated: 2026-02-15T00:00:00Z
+source: [08-01-SUMMARY.md, 08-02-SUMMARY.md, 08-03-SUMMARY.md, 08-04-SUMMARY.md]
+started: 2026-02-15T12:00:00Z
+updated: 2026-02-15T12:30:00Z
 ---
 
 ## Current Test
@@ -12,89 +12,55 @@ updated: 2026-02-15T00:00:00Z
 
 ## Tests
 
-### 1. How It Works Page
-expected: Navigate to "How It Works" from home screen or header. You should see a centered content page with stats, architecture diagram (4-node pipeline), callout box, and feedback links.
-result: issue
-reported: "the diagram on the left and right sides are slightly wider than the content area (Targeted release label is cut in the left)"
-severity: minor
+### 1. How It Works Page Content
+expected: Navigate to "How It Works" from home screen or header. You should see a centered content page with stats, architecture diagram (4-node pipeline), callout box, and feedback links. The diagram should fit entirely within the content area without clipping.
+result: pass
 
 ### 2. GitHub Star Count in Header
-expected: In the header, the GitHub link should show a filled star icon with a number (the repo's star count). This count is fetched from GitHub's API and cached locally for 30 days.
+expected: In the header, the GitHub link should show a filled star icon with a number (the repo's star count). The count is fetched from GitHub API and cached locally for 30 days.
 result: pass
 
 ### 3. Copy-to-Clipboard in Breadcrumb Bar
-expected: Navigate to any entity or function detail page. Hover over the breadcrumb/navigation bar and a copy button should appear. Click it — the full `_api/...` path for the current item should be copied to your clipboard, with a visual confirmation (icon swap).
+expected: Navigate to any entity or function detail page. Hover over the breadcrumb bar — a copy button should appear. Click it and the full `_api/...` path is copied to clipboard with a visual confirmation (icon swap).
 result: pass
 
-### 4. App-Branded Favicon
-expected: Check the browser tab — the favicon should be a custom app-branded icon (brackets + tree design), not the default Vite logo. In dark mode, the favicon colors should adapt.
-result: issue
-reported: "the site logo should also be added to the header nav bar - before the SP REST EXPLORER label"
-severity: minor
+### 4. App-Branded Favicon and Header Logo
+expected: The browser tab should show a custom app-branded icon (brackets + tree design). In the header nav bar, the same logo should appear before the "SP REST Explorer" text.
+result: pass
 
-### 5. Dark Mode Color Scheme
-expected: Toggle dark mode. The background should be a deep blue-gray (not pure black), text should be muted light gray (not pure white), and borders should have a subtle blue undertone. The overall feel should be similar to GitHub's dark theme.
-result: issue
-reported: "The top area (header, breadcrumb), the side navigation area are still have a little bit too dark background."
-severity: minor
+### 5. Dark Mode Color Scheme with Chrome Elevation
+expected: Toggle dark mode. Background should be deep blue-gray (not pure black), text muted light gray. Header, breadcrumb bar, and sidebar should appear slightly elevated/lighter than the main page background — matching GitHub Dark's visual hierarchy.
+result: issue-fixed
+reported: "the top bar, header, sidebars are still too dark"
+severity: major
+fix: "Recalibrated all dark mode oklch values — page bg 0.14→0.16, sidebar bg 0.18→0.26, chroma 0.005→0.01 for stronger blue undertone. Now ~25 RGB channels of elevation difference."
+result-after-fix: pass
 
 ### 6. Dark Mode Scrollbars
-expected: In dark mode, scroll any page with overflow content. The scrollbar thumb should be a dark gray matching the border tone, not the default bright OS scrollbar. This should work in both Chrome/Edge and Firefox.
+expected: In dark mode, scroll any page with overflow content. The scrollbar thumb should be a dark gray matching the border tone, not the default bright OS scrollbar. Works in both Chrome/Edge and Firefox.
 result: pass
 
 ## Summary
 
 total: 6
-passed: 3
-issues: 3
+passed: 6
+issues: 0 (1 found, fixed in-session)
 pending: 0
 skipped: 0
 
 ## Gaps
 
-- truth: "Architecture diagram fits within the centered content area without clipping"
-  status: failed
-  reason: "User reported: the diagram on the left and right sides are slightly wider than the content area (Targeted release label is cut in the left)"
-  severity: minor
-  test: 1
-  root_cause: "Diagram nodes (4x min-w-[120px]=480px) plus arrows (3x min-w-[80px]=240px) total 720px minimum, exceeding the 608px available inside card container (720px - 48px page padding - 64px card padding)"
-  artifacts:
-    - path: "app/src/pages/HowItWorksPage.tsx"
-      issue: "min-w-[120px] on nodes (line 150) and min-w-[80px] on arrows (line 166) create rigid 720px floor; justify-center clips both sides symmetrically"
-  missing:
-    - "Remove min-w constraints from nodes and arrows to let flex shrink naturally within 608px available space"
-  debug_session: ""
-
-- truth: "App-branded logo displayed in header navigation bar before the site title"
-  status: failed
-  reason: "User reported: the site logo should also be added to the header nav bar - before the SP REST EXPLORER label"
-  severity: minor
-  test: 4
-  root_cause: "Header logo was never implemented — Header.tsx renders only a plain text Link with 'SP REST Explorer' and no img or inline SVG preceding it"
-  artifacts:
-    - path: "app/src/components/layout/Header.tsx"
-      issue: "Lines 40-42: bare <Link> with text only, no logo element"
-  missing:
-    - "Add <img src='/favicon.svg' className='h-5 w-5' /> inside the Link before the title text, with flex items-center gap-2 on the Link"
-  debug_session: ""
-
-- truth: "Header, breadcrumb, and side navigation backgrounds match GitHub Dark tone (not too dark)"
-  status: failed
-  reason: "User reported: The top area (header, breadcrumb), the side navigation area are still have a little bit too dark background."
-  severity: minor
+- truth: "Header, breadcrumb bar, and sidebar should appear slightly elevated/lighter than the main page background in dark mode"
+  status: fixed
+  reason: "User reported: the top bar, header, sidebars are still too dark"
+  severity: major
   test: 5
-  root_cause: "All chrome surfaces use bg-background (oklch 0.14) identical to page background, and --sidebar-background is set darker (0.12) instead of lighter — opposite of GitHub Dark's elevation pattern where chrome is lighter than page"
+  root_cause: "oklch values with 0.005 chroma producing colors darker than intended GitHub Dark targets. Page bg at 0.14 rendered as #08090b (darker than target #0d1117). Sidebar at 0.18 rendered as #101214 — only 8 RGB channels brighter, imperceptible on most monitors."
   artifacts:
     - path: "app/src/index.css"
-      issue: "--sidebar-background at oklch(0.12) is darker than --background (0.14); no elevated surface variable exists"
-    - path: "app/src/components/layout/Header.tsx"
-      issue: "Uses bg-background — needs elevated surface class"
-    - path: "app/src/components/navigation/BreadcrumbBar.tsx"
-      issue: "Uses bg-background — needs elevated surface class"
-    - path: "app/src/components/navigation/ResizablePanel.tsx"
-      issue: "No background class — needs bg-sidebar"
+      issue: "All dark mode oklch values used 0.005 chroma (insufficient blue) and lightness values too low"
   missing:
-    - "Change --sidebar-background from oklch(0.12) to oklch(0.18) to match GitHub Dark #161b22 elevation"
-    - "Change Header.tsx and BreadcrumbBar.tsx from bg-background to bg-sidebar"
-    - "Add bg-sidebar to ResizablePanel.tsx outer container"
+    - "Raise chroma to 0.01 across all dark mode vars for visible blue undertone"
+    - "Raise page background from 0.14 to 0.16 to match GitHub Dark #0d1117"
+    - "Raise sidebar background from 0.18 to 0.26 for clear elevation (~25 RGB channel diff)"
   debug_session: ""
