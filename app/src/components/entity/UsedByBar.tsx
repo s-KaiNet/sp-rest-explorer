@@ -1,58 +1,27 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { useMetadataSnapshot } from '@/lib/metadata'
+import { useTypeIndexes } from '@/lib/metadata'
 
 interface UsedByBarProps {
   entityFullName: string
-}
-
-interface UsedByRef {
-  entityFullName: string
-  entityName: string
-  propertyName: string
 }
 
 const MAX_VISIBLE = 10
 
 /**
  * "Used by" cross-reference bar.
- * Scans all entities' navigation properties to find which reference this entity.
+ * Uses the precomputed usedByIndex for O(1) lookups instead of scanning all entities.
  * Shows purple chips with entity.property links.
  * Hidden when 0 references.
  */
 export function UsedByBar({ entityFullName }: UsedByBarProps) {
-  const metadata = useMetadataSnapshot()
+  const typeIndexes = useTypeIndexes()
   const [expanded, setExpanded] = useState(false)
 
-  if (!metadata) return null
+  if (!typeIndexes) return null
 
-  // Scan all entities' nav properties on-demand
-  const refs: UsedByRef[] = []
-
-  for (const entity of Object.values(metadata.entities)) {
-    for (const nav of entity.navigationProperties) {
-      // Check direct reference or Collection reference
-      if (
-        nav.typeName === entityFullName ||
-        nav.typeName === `Collection(${entityFullName})`
-      ) {
-        refs.push({
-          entityFullName: entity.fullName,
-          entityName: entity.name,
-          propertyName: nav.name,
-        })
-      }
-    }
-  }
-
+  const refs = typeIndexes.usedByIndex.get(entityFullName) ?? []
   if (refs.length === 0) return null
-
-  // Sort for consistent ordering
-  refs.sort((a, b) =>
-    `${a.entityFullName}.${a.propertyName}`.localeCompare(
-      `${b.entityFullName}.${b.propertyName}`,
-    ),
-  )
 
   const visibleRefs = expanded ? refs : refs.slice(0, MAX_VISIBLE)
   const remainingCount = refs.length - MAX_VISIBLE
