@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 07 complete. Next: Phase 08 (Polish).
+**Current focus:** v1.1 Search, Types & Polish — Phase 07 complete (incl. 07-03 gap closure). Next: Phase 08 (Polish).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,10 +17,10 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 ## Current Position
 
 **Milestone:** v1.1 Search, Types & Polish
-**Phase:** 07 — Explore Types (complete)
-**Plan:** 2/2 complete
-**Status:** Phase 07 complete. TypesPage with sidebar, complex type detail, TypeLink awareness, UsedByBar O(1) lookup all shipped. Ready for Phase 08 (Polish).
-**Last activity:** 2026-02-14 — Plan 07-02 executed (TypesPage + sidebar + cross-navigation)
+**Phase:** 07 — Explore Types (complete, UAT gaps closed)
+**Plan:** 3/3 complete
+**Status:** Phase 07 fully complete. All UAT gaps (5a, 5b, 5c, 9) resolved by 07-03. Sidebar shows all types, filter matches fullName, EntityDetail shows derived types, no horizontal scroll. Ready for Phase 08 (Polish).
+**Last activity:** 2026-02-14 — Plan 07-03 executed (UAT gap closure)
 
 ```
 v1.1 Progress: ██████████████░░░░░░ 67% (2/3 phases + 07.1 + 07.2 complete)
@@ -32,8 +32,8 @@ v1.1 Progress: ██████████████░░░░░░ 67% 
 |--------|-------|
 | Phases completed | 4/5 (v1.1) — Phase 6 + 07.1 + 07.2 + 07 |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
-| Plans executed | 9 (v1.1) |
-| Tasks completed | 18 + 11 fixes (v1.1) |
+| Plans executed | 10 (v1.1) |
+| Tasks completed | 20 + 11 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
@@ -45,6 +45,7 @@ v1.1 Progress: ██████████████░░░░░░ 67% 
 | 07.2-02 | 3min | 2 | 3 |
 | 07-01 | 2min | 2 | 5 |
 | 07-02 | 4min | 3 | 8 |
+| 07-03 | 2min | 2 | 4 |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - TypeLink uses getTypeIndexes() (non-React singleton) for complex type vs entity type title text
 - ResizablePanel accepts configurable storageKey for independent sidebar widths
 - SidebarFilter accepts configurable label prop for context-specific count text
+- namespaceGroups iterates allEntities (not complexTypes) — sidebar shows all types
+- Filter predicate uses name OR fullName match for qualified name search
+- EntityDetail derived types section placed between UsedByBar and SectionJumpLinks
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -117,10 +121,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 07 Plan 02 — TypesPage + sidebar + cross-navigation (2026-02-14)
-**What happened:** Completed 07-02-PLAN.md. Built TypesSidebar/TypesSidebarItem with namespace groups. Rewrote TypesPage with ResizablePanel sidebar layout. Updated TypeLink for complex type awareness. Replaced UsedByBar O(n*m) scan with O(1) precomputed index. Phase 07 complete.
+**Last session:** Execute Phase 07 Plan 03 — UAT gap closure (2026-02-14)
+**What happened:** Completed 07-03-PLAN.md. Fixed 4 UAT gaps: namespaceGroups now includes all types (entity + complex), sidebar filter matches on fullName, EntityDetail shows derived types section, namespace headers truncate with ellipsis and no horizontal scrollbar. Phase 07 fully complete.
 **Next step:** Plan/execute Phase 08 (Polish) — independent small items completing v1.1 milestone.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07 complete — 2/2 plans)*
+*Last updated: 2026-02-14 (Phase 07 complete — 3/3 plans incl. gap closure)*
