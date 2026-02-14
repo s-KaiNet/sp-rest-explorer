@@ -95,13 +95,13 @@ Plans:
 
 **Requirements:** NAV-03, INFO-01, INFO-02
 
-**Plans:** 4 plans
+**Plans:** 4 plans (all complete)
 
 Plans:
 - [x] 08-01-PLAN.md — How It Works page content + GitHub star count in header
 - [x] 08-02-PLAN.md — Copy-to-clipboard in breadcrumb bar + favicons
 - [x] 08-03-PLAN.md — Dark mode color scheme rethink (GitHub Dark) + dark scrollbars
-- [ ] 08-04-PLAN.md — UAT gap closure: diagram overflow, header logo, dark mode elevation
+- [x] 08-04-PLAN.md — UAT gap closure: diagram overflow, header logo, dark mode elevation
 
 **Success Criteria:**
 1. User clicks a copy button in the breadcrumb bar and the `_api/...` path for the current item is copied to clipboard, with visual confirmation
@@ -123,8 +123,8 @@ Plans:
 | 7. Explore Types | v1.1 | 3/3 | Complete | 2026-02-14 |
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints index | v1.1 | 2/2 | Complete | 2026-02-14 |
-| 8. Quality-of-Life Polish | v1.1 | 3/3 | Complete | 2026-02-14 |
+| 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 8 complete — v1.1 milestone done)*
+*Last updated: 2026-02-15 (Phase 8 gap closure complete — v1.1 milestone done)*
