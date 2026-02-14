@@ -47,11 +47,12 @@
 
 **Requirements:** TYPE-01, TYPE-02, TYPE-03, TYPE-04, TYPE-05, TYPE-06
 
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
 - [x] 07-01-PLAN.md — Data layer (type indexes) + ComplexTypeDetail component
 - [x] 07-02-PLAN.md — TypesPage sidebar with namespace grouping + TypeLink cross-navigation
+- [ ] 07-03-PLAN.md — Gap closure: sidebar lists all types, fullName filter, entity derived types
 
 **Success Criteria:**
 1. User clicks "Explore Types" in the main header navigation and sees a sidebar listing all complex types grouped by namespace, with a filter input to narrow the list
