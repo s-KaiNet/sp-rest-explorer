@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-12)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.1 Search, Types & Polish — Phase 07.1 complete. Next: Phase 7 (Explore Types) or Phase 8 (Polish).
+**Current focus:** v1.1 Search, Types & Polish — Phase 07.2 complete. Next: Phase 7 (Explore Types) or Phase 8 (Polish).
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,23 +17,23 @@ See: .planning/PROJECT.md (updated 2026-02-12)
 ## Current Position
 
 **Milestone:** v1.1 Search, Types & Polish
-**Phase:** 07.1 — Fix Search Experience (complete)
-**Plan:** 2/2 complete
-**Status:** Phase 07.1 complete. Both plans executed — search index rewrite + CommandPalette 2-group UI.
-**Last activity:** 2026-02-14 — Plan 07.1-02 executed (phase complete)
+**Phase:** 07.2 — Add Path to API Endpoints Index (complete)
+**Plan:** 1/1 complete
+**Status:** Phase 07.2 complete. Dual MiniSearch indexes with path-based search and automatic mode detection.
+**Last activity:** 2026-02-14 — Plan 07.2-01 executed (phase complete)
 
 ```
-v1.1 Progress: ████████░░░░░░░░░░░░ 40% (1/3 phases + 07.1 complete)
+v1.1 Progress: ██████████░░░░░░░░░░ 50% (1/3 phases + 07.1 + 07.2 complete)
 ```
 
 ## Performance Metrics
 
 | Metric | Value |
 |--------|-------|
-| Phases completed | 2/3 (v1.1) — Phase 6 + 07.1 |
+| Phases completed | 3/3 (v1.1) — Phase 6 + 07.1 + 07.2 |
 | Requirements validated | 4/13 (v1.1) — SRCH-01, SRCH-02, SRCH-03, SRCH-04 |
-| Plans executed | 5 (v1.1) |
-| Tasks completed | 9 + 8 fixes (v1.1) |
+| Plans executed | 6 (v1.1) |
+| Tasks completed | 11 + 9 fixes (v1.1) |
 
 | Phase-Plan | Duration | Tasks | Files |
 |------------|----------|-------|-------|
@@ -41,6 +41,7 @@ v1.1 Progress: ████████░░░░░░░░░░░░ 40% 
 | 06-02 | 8min | 2+checkpoint | 5 |
 | 07.1-01 | 3min | 2 | 6 |
 | 07.1-02 | ~15min | 3 | 4 |
+| 07.2-01 | 3min | 2 | 4 |
 
 ## Accumulated Context
 
@@ -72,8 +73,15 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - 5 results initial per group with "Show more" progressive disclosure
 - SearchSelection with pre-computed path — no runtime path resolution needed
 
+**Phase 07.2 decisions:**
+- Path index tokenizes on / (not dot/underscore like name index) — matches REST path mental model
+- AND combinator for path queries — multi-term queries require ALL tokens to match
+- Path mode triggered by / or space in query; bare _api/ excluded (too broad)
+- Path index is endpoints-only — skip kind filter in path mode, entities always empty
+
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
+- Phase 07.2 inserted after Phase 7: Add path to API Endpoints index (URGENT)
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -90,10 +98,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Execute Phase 07.1 Plan 02 (2026-02-14)
-**What happened:** Completed 07.1-02-PLAN.md. Rewrote CommandPalette to 2-group display (Entities, API Endpoints) with collapsible groups and "Show more" expansion. Updated App.tsx selection handling. Post-checkpoint: expanded tree-walk from ~3.3K to ~62K endpoints using per-path ancestor tracking. Human-verified end-to-end search flow.
-**Next step:** Phase 07.1 complete. Next: Phase 7 (Explore Types) or Phase 8 (Quality-of-Life Polish).
+**Last session:** Execute Phase 07.2 Plan 01 (2026-02-14)
+**What happened:** Completed 07.2-01-PLAN.md. Built dual MiniSearch indexes (name + path) with automatic mode detection. Path index tokenizes on /, AND combinator. CommandPalette routes queries, hides Entities in path mode, highlights matched path segments.
+**Next step:** Phase 07.2 complete. Next: Phase 7 (Explore Types) or Phase 8 (Quality-of-Life Polish).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07.1 complete — 2/2 plans)*
+*Last updated: 2026-02-14 (Phase 07.2 complete — 1/1 plans)*
