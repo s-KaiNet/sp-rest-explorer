@@ -56,6 +56,18 @@
 
 ---
 
+### Phase 07.1: Fix search experience (INSERTED)
+
+**Goal:** Fix search result navigation UX so clicking any search result reliably navigates to the correct destination. Restructure search indexing to two groups (Entities, API Endpoints) with pre-computed navigation paths.
+
+**Depends on:** Phase 7
+
+**Plans:** 2 plans
+
+Plans:
+- [ ] 07.1-01-PLAN.md — BFS tree-walk and search index rewrite (entity + endpoint documents with pre-computed paths)
+- [ ] 07.1-02-PLAN.md — CommandPalette 2-group UI rewrite with collapsible groups, Show more, and fixed navigation
+
 ### Phase 8: Quality-of-Life Polish
 
 **Goal:** Small but meaningful UX improvements and content additions that round out the v1.1 milestone.
@@ -82,8 +94,9 @@
 | 5. Entity & Function Detail | v1.0 | 3/3 | Complete | 2026-02-12 |
 | 6. Global Search | v1.1 | 2/2 | Complete | 2026-02-12 |
 | 7. Explore Types | v1.1 | 0/? | Not started | — |
+| 07.1. Fix search experience | v1.1 | 0/2 | Planned | — |
 | 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-12 (Phase 6 complete)*
+*Last updated: 2026-02-14 (Phase 07.1 planned — 2 plans in 2 waves)*
