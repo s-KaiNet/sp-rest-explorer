@@ -9,9 +9,12 @@ export type {
   Metadata,
   NavigationProperty,
   Parameter,
+  PathSearchDocument,
   Property,
   SearchDocument,
 } from './types'
+
+export type { SearchMode } from './search-index'
 
 // ── Metadata singleton ──
 export { getMetadata, useMetadataSnapshot } from './metadata-store'
@@ -20,7 +23,7 @@ export { getMetadata, useMetadataSnapshot } from './metadata-store'
 export { getLookupMaps, useLookupMaps } from './lookup-maps'
 
 // ── Search index ──
-export { getSearchIndex } from './search-index'
+export { getSearchIndex, getPathSearchIndex, detectSearchMode } from './search-index'
 
 // ── Boot orchestrator ──
 export { bootMetadata, retryBoot } from './boot'

@@ -78,6 +78,15 @@ export interface LookupMaps {
   entityChildren: Map<string, ChildEntry[]>
 }
 
+export interface PathSearchDocument {
+  id: string              // Same as EndpointEntry id (full _api/... path)
+  path: string            // Full _api/... path — this IS the searchable field
+  name: string            // Leaf name (stored for display, not searched)
+  endpointKind: 'function' | 'navProperty'
+  parentEntity: string
+  isRoot: boolean
+}
+
 // ── App status ──
 
 export type AppStatus = 'idle' | 'loading' | 'ready' | 'error'
