@@ -5,14 +5,14 @@ import type { LookupMaps, Metadata, PathSearchDocument, SearchDocument } from '.
 // ── Module-level singletons ──
 
 let searchIndex: MiniSearch<SearchDocument> | null = null
-let pathSearchIndex: MiniSearch<PathSearchDocument> | null = null
+let pathDocuments: PathSearchDocument[] = []
 
 // ── Build logic ──
 
 export function buildSearchIndex(
   metadata: Metadata,
   lookupMaps: LookupMaps,
-): { nameIndex: MiniSearch<SearchDocument>; pathIndex: MiniSearch<PathSearchDocument> } {
+): { nameIndex: MiniSearch<SearchDocument> } {
   const index = new MiniSearch<SearchDocument>({
     fields: ['name', 'fullName'],
     storeFields: ['name', 'fullName', 'kind', 'path', 'parentEntity', 'isRoot', 'endpointKind'],
@@ -57,21 +57,10 @@ export function buildSearchIndex(
 
   index.addAll(docs)
 
-  // 3. Path index — tokenized on / for path-based search
-  const pathIndex = new MiniSearch<PathSearchDocument>({
-    fields: ['path'],
-    storeFields: ['path', 'name', 'endpointKind', 'parentEntity', 'isRoot'],
-    tokenize: (text) => text.split('/'),
-    searchOptions: {
-      prefix: true,
-      fuzzy: 0.2,
-      combineWith: 'AND',
-    },
-  })
-
-  const pathDocs: PathSearchDocument[] = []
+  // 3. Path documents — stored as flat array for substring filtering
+  pathDocuments = []
   for (const entry of endpoints) {
-    pathDocs.push({
+    pathDocuments.push({
       id: entry.id,
       path: entry.path,
       name: entry.name,
@@ -80,7 +69,6 @@ export function buildSearchIndex(
       isRoot: entry.isRoot,
     })
   }
-  pathIndex.addAll(pathDocs)
 
   console.log(
     '[SP Explorer] Search index:',
@@ -89,12 +77,12 @@ export function buildSearchIndex(
     entityCount,
     'entities,',
     endpointCount,
-    'endpoints). Path index:',
-    pathDocs.length,
-    'endpoints.',
+    'endpoints). Path docs:',
+    pathDocuments.length,
+    'endpoints (substring filter).',
   )
 
-  return { nameIndex: index, pathIndex }
+  return { nameIndex: index }
 }
 
 // ── Query mode detection ──
@@ -113,11 +101,10 @@ export function detectSearchMode(query: string): SearchMode {
 
 // ── Public API ──
 
-/** Build and store both search indexes from metadata. */
+/** Build and store search index + path documents from metadata. */
 export function initSearchIndex(metadata: Metadata, lookupMaps: LookupMaps): void {
   const result = buildSearchIndex(metadata, lookupMaps)
   searchIndex = result.nameIndex
-  pathSearchIndex = result.pathIndex
 }
 
 /** Get current name search index (for non-React code). */
@@ -125,7 +112,36 @@ export function getSearchIndex(): MiniSearch<SearchDocument> | null {
   return searchIndex
 }
 
-/** Get current path search index (for non-React code). */
-export function getPathSearchIndex(): MiniSearch<PathSearchDocument> | null {
-  return pathSearchIndex
+/** Search path documents using substring matching. */
+export function searchPathDocuments(query: string, limit = 50): PathSearchDocument[] {
+  if (pathDocuments.length === 0) return []
+
+  const mode = detectSearchMode(query)
+
+  if (mode === 'name') return [] // shouldn't happen, but guard
+
+  if (query.includes('/')) {
+    // SLASH MODE: contiguous substring match
+    // Strip leading _api/ from query if present (user might type "_api/web/lists")
+    const normalizedQuery = query.replace(/^_api\//i, '').toLowerCase()
+    if (normalizedQuery.length === 0) return []
+
+    return pathDocuments
+      .filter(doc => {
+        const normalizedPath = doc.path.replace(/^_api\//i, '').toLowerCase()
+        return normalizedPath.includes(normalizedQuery)
+      })
+      .slice(0, limit)
+  }
+
+  // SPACE MODE: every space-separated term must appear as substring (AND semantics)
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
+  if (terms.length === 0) return []
+
+  return pathDocuments
+    .filter(doc => {
+      const lowerPath = doc.path.toLowerCase()
+      return terms.every(term => lowerPath.includes(term))
+    })
+    .slice(0, limit)
 }

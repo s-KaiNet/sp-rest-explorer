@@ -23,7 +23,7 @@ export { getMetadata, useMetadataSnapshot } from './metadata-store'
 export { getLookupMaps, useLookupMaps } from './lookup-maps'
 
 // ── Search index ──
-export { getSearchIndex, getPathSearchIndex, detectSearchMode } from './search-index'
+export { getSearchIndex, searchPathDocuments, detectSearchMode } from './search-index'
 
 // ── Boot orchestrator ──
 export { bootMetadata, retryBoot } from './boot'
