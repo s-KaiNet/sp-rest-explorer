@@ -41,18 +41,24 @@
 
 ### Phase 7: Explore Types
 
-**Goal:** Users can browse, inspect, and cross-reference every complex type and enum type in the SharePoint REST API metadata.
+**Goal:** Users can browse, inspect, and cross-reference every complex type in the SharePoint REST API metadata — with namespace-grouped sidebar, type detail views, inheritance display, precomputed used-by index, and cross-navigation via TypeLink.
 
 **Dependencies:** Phase 6 not required, but TypeLink component from v1.0 will be extended
 
 **Requirements:** TYPE-01, TYPE-02, TYPE-03, TYPE-04, TYPE-05, TYPE-06
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 07-01-PLAN.md — Data layer (type indexes) + ComplexTypeDetail component
+- [ ] 07-02-PLAN.md — TypesPage sidebar with namespace grouping + TypeLink cross-navigation
+
 **Success Criteria:**
-1. User clicks "Explore Types" in the main header navigation and sees a sidebar listing all complex and enum types, with a filter input to narrow the list
-2. User clicks a complex type and sees its properties table; user clicks an enum type and sees its members list
-3. User viewing a type can see its base type inheritance chain (ancestors) and any derived types
-4. User viewing a type can see a "Used by" section showing which entities and functions reference this type
-5. User clicks any type reference in the Explore API views (entity detail, function detail) and navigates to that type's detail in Explore Types
+1. User clicks "Explore Types" in the main header navigation and sees a sidebar listing all complex types grouped by namespace, with a filter input to narrow the list
+2. User clicks a complex type and sees its properties table with Name, Type, Nullable columns
+3. User viewing a type can see its base type as a clickable link and any derived types as a list
+4. User viewing a type can see a "Used by" section showing which entities reference this type via navigation properties (precomputed, not scanned)
+5. User clicks any type reference in the Explore API views and navigates to that type's detail in Explore Types with sidebar synced
 
 ---
 
@@ -105,11 +111,11 @@ Plans:
 | 4. Explore API Views | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 5. Entity & Function Detail | v1.0 | 3/3 | Complete | 2026-02-12 |
 | 6. Global Search | v1.1 | 2/2 | Complete | 2026-02-12 |
-| 7. Explore Types | v1.1 | 0/? | Not started | — |
+| 7. Explore Types | v1.1 | 0/2 | Planned | — |
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints index | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 0/? | Not started | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-14 (Phase 07.2 gap closure complete — 2/2 plans)*
+*Last updated: 2026-02-14 (Phase 7 planned — 2 plans in 2 waves)*
