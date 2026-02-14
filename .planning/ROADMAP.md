@@ -74,10 +74,11 @@ Plans:
 
 **Depends on:** Phase 07.1
 
-**Plans:** 1 plan
+**Plans:** 2 plans
 
 Plans:
 - [x] 07.2-01-PLAN.md — Dual MiniSearch indexes (name + path) with mode-aware CommandPalette
+- [ ] 07.2-02-PLAN.md — Fix path search: substring matching instead of MiniSearch tokenization (gap closure)
 
 ### Phase 8: Quality-of-Life Polish
 
