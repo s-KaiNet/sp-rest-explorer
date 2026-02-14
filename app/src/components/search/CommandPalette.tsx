@@ -8,7 +8,7 @@ import {
   CommandGroup,
   CommandItem,
 } from '@/components/ui/command'
-import { getSearchIndex, getPathSearchIndex, detectSearchMode } from '@/lib/metadata'
+import { getSearchIndex, searchPathDocuments, detectSearchMode } from '@/lib/metadata'
 import type { SearchMode } from '@/lib/metadata'
 
 // ── Types ──
@@ -77,34 +77,65 @@ function HighlightedName({ name, query }: { name: string; query: string }) {
 function HighlightedPath({ path, query }: { path: string; query: string }) {
   if (!query || query.length < 3) return <span>{path}</span>
 
-  // Tokenize query the same way MiniSearch does: split on / and space
-  const queryTokens = query
-    .split(/[/ ]+/)
-    .filter(Boolean)
-    .map((t) => t.toLowerCase())
+  if (query.includes('/')) {
+    // SLASH MODE — highlight the contiguous substring match
+    const normalizedQuery = query.replace(/^_api\//i, '').toLowerCase()
+    const pathWithoutPrefix = path.replace(/^_api\//i, '')
+    const lowerPathWithoutPrefix = pathWithoutPrefix.toLowerCase()
+    const matchIdx = lowerPathWithoutPrefix.indexOf(normalizedQuery)
 
-  // Split path into segments on /
-  const segments = path.split('/')
+    if (matchIdx === -1) return <span>{path}</span>
+
+    // Calculate offset in full path (account for _api/ prefix if present)
+    const prefixLen = path.length - pathWithoutPrefix.length
+    const absStart = prefixLen + matchIdx
+    const absEnd = absStart + normalizedQuery.length
+
+    return (
+      <span>
+        {path.slice(0, absStart)}
+        <strong className="font-bold text-foreground">{path.slice(absStart, absEnd)}</strong>
+        {path.slice(absEnd)}
+      </span>
+    )
+  }
+
+  // SPACE MODE — highlight each matching term independently
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
+  const lowerPath = path.toLowerCase()
+
+  // Build a highlight map (which char positions to bold)
+  const highlights = new Array(path.length).fill(false) as boolean[]
+  for (const term of terms) {
+    let startPos = 0
+    while (startPos < lowerPath.length) {
+      const idx = lowerPath.indexOf(term, startPos)
+      if (idx === -1) break
+      for (let i = idx; i < idx + term.length; i++) highlights[i] = true
+      startPos = idx + 1
+    }
+  }
+
+  // Render with highlight spans
+  const parts: Array<{ text: string; highlight: boolean }> = []
+  let i = 0
+  while (i < path.length) {
+    const isHl = highlights[i]
+    let j = i
+    while (j < path.length && highlights[j] === isHl) j++
+    parts.push({ text: path.slice(i, j), highlight: isHl })
+    i = j
+  }
 
   return (
     <span>
-      {segments.map((segment, i) => {
-        const isMatch = queryTokens.some(
-          (token) =>
-            segment.toLowerCase().startsWith(token) ||
-            segment.toLowerCase().includes(token),
-        )
-        return (
-          <span key={i}>
-            {i > 0 && '/'}
-            {isMatch ? (
-              <strong className="font-bold text-foreground">{segment}</strong>
-            ) : (
-              <span>{segment}</span>
-            )}
-          </span>
-        )
-      })}
+      {parts.map((part, idx) =>
+        part.highlight ? (
+          <strong key={idx} className="font-bold text-foreground">{part.text}</strong>
+        ) : (
+          <span key={idx}>{part.text}</span>
+        ),
+      )}
     </span>
   )
 }
@@ -238,9 +269,20 @@ export function CommandPalette({
     if (debouncedQuery.length < 3) return null
 
     if (searchMode === 'path') {
-      const pathIndex = getPathSearchIndex()
-      if (!pathIndex) return null
-      return pathIndex.search(debouncedQuery)
+      const pathResults = searchPathDocuments(debouncedQuery)
+      // Adapt PathSearchDocument[] to same shape as SearchResult[] for uniform rendering
+      return pathResults.map((doc, i) => ({
+        id: doc.id,
+        path: doc.path,
+        name: doc.name,
+        endpointKind: doc.endpointKind,
+        parentEntity: doc.parentEntity,
+        isRoot: doc.isRoot,
+        score: 1, // uniform — results are filtered, not ranked
+        terms: [] as string[],
+        queryTerms: [] as string[],
+        match: {} as Record<string, string[]>,
+      }))
     }
 
     const nameIndex = getSearchIndex()
