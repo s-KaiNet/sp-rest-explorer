@@ -47,21 +47,21 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SIDE-01 | — | Pending |
-| SIDE-02 | — | Pending |
-| SIDE-03 | — | Pending |
-| SIDE-04 | — | Pending |
-| HOME-01 | — | Pending |
-| HOME-02 | — | Pending |
-| HOME-03 | — | Pending |
-| VISU-01 | — | Pending |
-| VISU-02 | — | Pending |
+| SIDE-01 | Phase 9 | Pending |
+| SIDE-02 | Phase 9 | Pending |
+| SIDE-03 | Phase 9 | Pending |
+| SIDE-04 | Phase 10 | Pending |
+| HOME-01 | Phase 10 | Pending |
+| HOME-02 | Phase 10 | Pending |
+| HOME-03 | Phase 10 | Pending |
+| VISU-01 | Phase 10 | Pending |
+| VISU-02 | Phase 9 | Pending |
 
 **Coverage:**
 - v1.2 requirements: 9 total
-- Mapped to phases: 0
-- Unmapped: 9
+- Mapped to phases: 9 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-15*
-*Last updated: 2026-02-15 after initial definition*
+*Last updated: 2026-02-15 after roadmap creation (phases 9-10 mapped)*

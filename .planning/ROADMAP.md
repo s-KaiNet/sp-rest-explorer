@@ -4,6 +4,7 @@
 
 - **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
 - **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
+- **v1.2 UI Improvements** — Phases 9-10 (active)
 
 ## Phases
 
@@ -29,6 +30,41 @@
 
 </details>
 
+### v1.2 UI Improvements (Phases 9-10)
+
+---
+
+### Phase 9: Explore API Sidebar Polish
+
+**Goal**: The Explore API sidebar presents root-level items cleanly — grouped by namespace, with consistent badge positioning, no visual clutter from type badges, and no animation glitches.
+**Depends on**: None (sidebar components exist from v1.0)
+
+**Requirements:** SIDE-01, SIDE-02, SIDE-03, VISU-02
+
+**Success Criteria:**
+1. User navigates forward in the Explore API sidebar and sees smooth slide animation with no horizontal scrollbar flickering
+2. User viewing the Explore API root level sees items organized into collapsible namespace groups (matching Explore Types pattern), with ungrouped items shown first under "No Group"
+3. User sees root indicator badges on the right side of sidebar items, aligned consistently with function/nav property badges
+4. User no longer sees "Entity Type" or "Complex Type" badges anywhere in the app — sidebar items, detail views, or search results
+
+---
+
+### Phase 10: Home Screens & Visual Polish
+
+**Goal**: Home pages for both Explore API and the main app are visually polished with proper branding, accurate stats, a redesigned API welcome screen, expanded recently visited, and fixed dark mode borders.
+**Depends on**: Phase 9 (Explore API home redesign benefits from namespace-grouped sidebar already in place)
+
+**Requirements:** HOME-01, HOME-02, HOME-03, SIDE-04, VISU-01
+
+**Success Criteria:**
+1. User visiting the home page sees the site icon displayed inline to the left of "SharePoint REST API Explorer" title
+2. User visiting the home page sees approximate stat values (3.5k+ functions, 2.4k entities, 11k+ properties, 60k+ endpoints) instead of exact computed numbers
+3. User entering Explore API (no endpoint selected) sees a centered welcome layout with stats and help text, matching the Explore Types home screen pattern
+4. User viewing recently visited sees both API endpoints and Types entries, with a link to navigate to /entities (Explore Types)
+5. User opening Cmd+K in dark mode sees subdued, non-distracting borders on the search modal
+
+---
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -43,7 +79,9 @@
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
+| 9. Explore API Sidebar Polish | v1.2 | 0/? | Pending | — |
+| 10. Home Screens & Visual Polish | v1.2 | 0/? | Pending | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-15 (v1.1 milestone archived)*
+*Last updated: 2026-02-15 (v1.2 phases 9-10 added)*

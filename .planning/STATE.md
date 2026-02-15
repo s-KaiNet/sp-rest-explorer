@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-15)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.2 UI Improvements — defining requirements
+**Current focus:** v1.2 UI Improvements — Phase 9: Explore API Sidebar Polish
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,15 +17,15 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.2 UI Improvements
-Phase: Not started (defining requirements)
+Phase: 9 — Explore API Sidebar Polish
 Plan: —
-Status: Defining requirements
-Last activity: 2026-02-15 — Milestone v1.2 started
+Status: Roadmap complete, ready for phase planning
+Last activity: 2026-02-15 — Roadmap created (phases 9-10)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
-v1.2 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% — Defining requirements
+v1.2 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/2 phases: 09, 10)
 ```
 
 ## Performance Metrics
@@ -60,10 +60,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** v1.2 milestone initialization (2026-02-15)
-**What happened:** Started v1.2 UI Improvements milestone — defining requirements for 9 UI polish items.
-**Next step:** Define requirements, then create roadmap.
+**Last session:** v1.2 roadmap creation (2026-02-15)
+**What happened:** Created v1.2 roadmap with 2 phases (9-10) covering all 9 requirements. Phase 9: sidebar polish (namespace grouping, badge fixes, animation fix). Phase 10: home screens & visual polish (branding, stats, API home redesign, recently visited, dark mode borders).
+**Next step:** Plan Phase 9 with `/gsd-plan-phase 9`.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-15 (v1.2 milestone started)*
+*Last updated: 2026-02-15 (v1.2 roadmap created)*
