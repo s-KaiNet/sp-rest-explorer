@@ -56,7 +56,7 @@ Plans:
 
 ---
 
-### Phase 10: Home Screens & Visual Polish
+### Phase 10: Home Screens & Visual Polish ✅ (2026-02-15)
 
 **Goal**: Home pages for both Explore API and the main app are visually polished with proper branding, accurate stats, a redesigned API welcome screen, expanded recently visited, and fixed dark mode borders.
 **Depends on**: Phase 9 (Explore API home redesign benefits from namespace-grouped sidebar already in place)
@@ -73,8 +73,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 10-01-PLAN.md — Home page icon branding, hardcoded stats, and recently visited expansion with Types entries
-- [ ] 10-02-PLAN.md — Explore API welcome screen redesign and dark mode search modal border fix
+- [x] 10-01-PLAN.md — Home page icon branding, hardcoded stats, and recently visited expansion with Types entries
+- [x] 10-02-PLAN.md — Explore API welcome screen redesign and dark mode search modal border fix
 
 ---
 
@@ -93,8 +93,8 @@ Plans:
 | 07.2. Add path to API Endpoints | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
-| 10. Home Screens & Visual Polish | v1.2 | 0/2 | Pending | — |
+| 10. Home Screens & Visual Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-15 (phase 10 planned — 2 plans in 1 wave)*
+*Last updated: 2026-02-15 (phase 10 complete — v1.2 milestone complete)*
