@@ -87,8 +87,8 @@
   --type-nav: oklch(0.72 0.16 300);
   /* Code blocks */
   --code-bg: oklch(0.20 0.01 260);
-  /* Subdued modal borders — dimmer than standard --border for less visual noise */
-  --modal-border: oklch(0.24 0.01 260);
+  /* Subdued modal borders — visible but softer than standard --border */
+  --modal-border: oklch(0.34 0.01 260);
 }
 
 @theme inline {

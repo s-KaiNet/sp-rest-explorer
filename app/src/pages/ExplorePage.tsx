@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useApiNavigation, useRecentlyVisited } from '@/hooks'
 import type { ChildEntry } from '@/lib/metadata'
+import { useMetadataSnapshot } from '@/lib/metadata'
 import {
   BreadcrumbBar,
   Sidebar,
@@ -16,6 +17,7 @@ export function ExplorePage() {
   const navigate = useNavigate()
   const { segments, children, currentEntity, currentFunction, isRoot } = useApiNavigation()
   const { addVisit } = useRecentlyVisited()
+  const metadata = useMetadataSnapshot()
 
   // Sidebar filter state — lifted here so filter sits outside slide animation
   const [filterText, setFilterText] = useState('')
@@ -37,10 +39,10 @@ export function ExplorePage() {
     return children.filter((e) => e.name.toLowerCase().includes(lower))
   }, [children, filterText])
 
-  // Count functions among root children (for welcome screen stats)
+  // Count all functions in metadata (for welcome screen stats)
   const functionCount = useMemo(() => {
-    return children.filter((c) => c.kind === 'function').length
-  }, [children])
+    return Object.keys(metadata?.functions ?? {}).length
+  }, [metadata])
 
   // Record visits for non-root endpoints
   useEffect(() => {
