@@ -70,6 +70,12 @@ Plans:
 4. User viewing recently visited sees both API endpoints and Types entries, with a link to navigate to /entities (Explore Types)
 5. User opening Cmd+K in dark mode sees subdued, non-distracting borders on the search modal
 
+**Plans:** 2 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Home page icon branding, hardcoded stats, and recently visited expansion with Types entries
+- [ ] 10-02-PLAN.md — Explore API welcome screen redesign and dark mode search modal border fix
+
 ---
 
 ## Progress
@@ -87,8 +93,8 @@ Plans:
 | 07.2. Add path to API Endpoints | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
-| 10. Home Screens & Visual Polish | v1.2 | 0/? | Pending | — |
+| 10. Home Screens & Visual Polish | v1.2 | 0/2 | Pending | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-15 (phase 9 complete — 3/3 plans, including gap closure)*
+*Last updated: 2026-02-15 (phase 10 planned — 2 plans in 1 wave)*
