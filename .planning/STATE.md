@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-15)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.2 UI Improvements — Phase 9: Explore API Sidebar Polish
+**Current focus:** v1.2 UI Improvements — Phase 10: Home Screens Visual Polish
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,15 +17,15 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.2 UI Improvements
-Phase: 9 — Explore API Sidebar Polish ✅
-Plan: 3 of 3 ✅
-Status: Phase 9 complete (all plans executed, including gap-closure plan 03)
-Last activity: 2026-02-15 — Completed 09-03 (fix namespace grouping source)
+Phase: 10 — Home Screens Visual Polish
+Plan: 1 of 2 ✅
+Status: Executing phase 10 (plan 01 complete, plan 02 pending)
+Last activity: 2026-02-15 — Completed 10-01 (home page branding & recently visited expansion)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
-v1.2 Progress: ██████████░░░░░░░░░░ 50% (1/2 phases: 09 ✅, 10) — phase 09 complete
+v1.2 Progress: ███████████████░░░░░ 75% (1.5/2 phases: 09 ✅, 10 in progress) — 10-01 complete
 ```
 
 ## Performance Metrics
@@ -42,6 +42,8 @@ v1.2 Progress: ██████████░░░░░░░░░░ 50% 
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
+- 10-01: Hardcoded approximate stats (3.5k+, 2.4k, 11k+, 60k+) for instant render, no metadata dependency
+- 10-01: Entity recently visited uses green "T" icon matching existing type-entity color from TypesPage
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -60,10 +62,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Phase 9 plan 03 execution (2026-02-15)
-**What happened:** Executed 09-03 gap-closure: fixed namespace grouping to use entry.name instead of entry.returnType in Sidebar.tsx. 1 task, 1 file modified, 1 commit (7acc716).
-**Next step:** Phase 9 fully complete. Plan and execute Phase 10, or verify Phase 9 work.
+**Last session:** Phase 10 plan 01 execution (2026-02-15)
+**What happened:** Executed 10-01: added inline favicon icon, hardcoded stats, expanded recently visited to include Types entries. 2 tasks, 3 files modified, 2 commits (4ea7d09, db91225).
+**Next step:** Execute 10-02 (remaining plan in phase 10).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-15 (09-03 gap-closure complete, phase 9 fully complete)*
+*Last updated: 2026-02-15 (10-01 complete: home page branding & recently visited expansion)*
