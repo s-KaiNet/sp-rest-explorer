@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 09-explore-api-sidebar-polish
 source: [09-01-SUMMARY.md, 09-02-SUMMARY.md]
 started: 2026-02-15T02:00:00Z
@@ -57,7 +57,11 @@ skipped: 0
   reason: "User reported: the groupping works weired. it should work exactly the same as for types: if the root name is 'Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility.GrantSiteDesignRights', then the namespace should be 'Microsoft.SharePoint.Utilities.WebTemplateExtensions.SiteScriptUtility' (everything before the last dot becomes namespace). Also if namespace is used, the items under namespace should use stripped names, ie. just SiteScriptUtility"
   severity: major
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
-  debug_session: ""
+  root_cause: "getNamespace() in Sidebar.tsx extracts namespace from entry.returnType instead of entry.name. returnType represents what a function returns, not its fully-qualified identifier. 74% of entries get grouped under wrong namespace."
+  artifacts:
+    - path: "app/src/components/navigation/Sidebar.tsx"
+      issue: "getNamespace() uses returnType parameter instead of name — lines 25-30 and call site line 54"
+  missing:
+    - "Change getNamespace() to accept name instead of returnType"
+    - "Change call site from entry.returnType to entry.name"
+  debug_session: ".planning/debug/namespace-grouping-wrong.md"
