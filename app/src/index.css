@@ -36,6 +36,8 @@
   --type-entity: oklch(0.45 0.18 155);
   --type-nav: oklch(0.55 0.2 300);
   --code-bg: oklch(0.95 0 0);
+  /* Modal border — same as standard border in light mode */
+  --modal-border: oklch(0.922 0 0);
 }
 
 .dark {
@@ -85,6 +87,8 @@
   --type-nav: oklch(0.72 0.16 300);
   /* Code blocks */
   --code-bg: oklch(0.20 0.01 260);
+  /* Subdued modal borders — dimmer than standard --border for less visual noise */
+  --modal-border: oklch(0.24 0.01 260);
 }
 
 @theme inline {
@@ -119,6 +123,7 @@
   --color-type-entity: var(--type-entity);
   --color-type-nav: var(--type-nav);
   --color-code-bg: var(--code-bg);
+  --color-modal-border: var(--modal-border);
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
