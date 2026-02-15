@@ -12,6 +12,21 @@ A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + W
 
 v1.1 adds Cmd+K command palette with dual search modes (name + path), Explore Types with namespace-grouped sidebar and type detail views (properties, base types, derived types, used-by), How It Works page, copy-to-clipboard breadcrumb button, GitHub star count badge, GitHub Dark dark mode, and app-branded favicons.
 
+## Current Milestone: v1.2 UI Improvements
+
+**Goal:** Polish the UI across Explore API, Explore Types, home page, and command palette to fix visual bugs, improve navigation consistency, and add missing UX elements.
+
+**Target features:**
+- Fix sidebar slide animation horizontal scroll on forward navigation
+- Add site icon next to title on home page
+- Update home page stats to approximate values (3.5k+ functions, 2.4k entities, 11k+ properties, 60k+ endpoints)
+- Expand recently visited to include /entities path and recent Types
+- Fix cmdk dark mode border brightness
+- Add namespace grouping to Explore API sidebar (root level only, with "No Group" first)
+- Redesign Explore API home screen (similar to Explore Types — centered message, stats, help text)
+- Remove "Entity Type" and "Complex Type" badges throughout the app
+- Move root indicator to right side of Explore API sidebar items
+
 ## Core Value
 
 Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
@@ -36,9 +51,12 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - NAV-03 — v1.1 (copy _api/ path to clipboard)
   - INFO-01, INFO-02 — v1.1 (How It Works page, navigation to it)
 
+### Active (v1.2)
+
+- [ ] UI polish and improvements — see REQUIREMENTS.md for full scope
+
 ### Backlog (future milestones)
 
-- [ ] SRCH-05: Command palette shows recently visited items when opened with no query
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
 
@@ -99,4 +117,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-15 after v1.1 milestone*
+*Last updated: 2026-02-15 after v1.2 milestone started*
