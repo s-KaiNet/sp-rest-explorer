@@ -37,6 +37,11 @@ export function ExplorePage() {
     return children.filter((e) => e.name.toLowerCase().includes(lower))
   }, [children, filterText])
 
+  // Count functions among root children (for welcome screen stats)
+  const functionCount = useMemo(() => {
+    return children.filter((c) => c.kind === 'function').length
+  }, [children])
+
   // Record visits for non-root endpoints
   useEffect(() => {
     if (isRoot || segments.length < 2) return
@@ -123,20 +128,53 @@ export function ExplorePage() {
         <div className="flex-1 overflow-y-auto bg-muted/30">
           <ContentTransition pathKey={pathKey}>
               {isRoot ? (
-                <div className="p-6">
-                  <div className="max-w-[640px] py-8">
-                    <h2 className="mb-1.5 text-lg font-bold">All Root Endpoints</h2>
-                    <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-                      The SharePoint REST API exposes{' '}
-                      <strong className="text-foreground">{children.length} root endpoints</strong>{' '}
-                      under <code className="rounded bg-muted px-1 py-0.5 text-xs">_api/</code>.
-                      Use the filter in the sidebar to narrow down by name.
-                      Long endpoint names are truncated — <strong className="text-foreground">hover to see the full name</strong>, or drag the sidebar edge to widen it.
-                    </p>
-                    <div className="flex items-center gap-2 rounded-lg bg-type-fn/5 px-3.5 py-3 text-[13px] text-type-fn">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0"><path d="M15 15l-2 5L9 9l11 4-5 2z"/><path d="m2 2 7.586 7.586"/></svg>
-                      Click any endpoint in the sidebar to explore its entity, methods, and navigation properties.
+                <div className="flex flex-1 flex-col items-center justify-center px-8 py-12 text-center">
+                  {/* Blue icon box */}
+                  <div className="mb-5 flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-type-fn/10 text-[28px] font-extrabold text-type-fn">
+                    &lt;&gt;
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="mb-2 text-xl font-bold">Explore API</h2>
+
+                  {/* Description */}
+                  <p className="mb-6 max-w-[420px] text-sm leading-relaxed text-muted-foreground">
+                    Browse all root endpoints exposed by the SharePoint REST API.
+                    Select an endpoint from the sidebar to explore its entity, methods,
+                    and navigation properties.
+                  </p>
+
+                  {/* Stats row — computed from live data */}
+                  <div className="flex gap-8">
+                    <div className="flex flex-col items-center">
+                      <span className="text-[28px] font-bold text-type-fn">
+                        {children.length.toLocaleString()}
+                      </span>
+                      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        Root Endpoints
+                      </span>
                     </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-[28px] font-bold text-type-fn">
+                        {functionCount.toLocaleString()}
+                      </span>
+                      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        Functions
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Hint box */}
+                  <div className="mt-7 flex items-center gap-2 rounded-lg bg-type-fn/10 px-[18px] py-3 text-[13px] text-blue-800 dark:text-blue-200">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
+                      <path d="M15 15l-2 5L9 9l11 4-5 2z" />
+                      <path d="m2 2 7.586 7.586" />
+                    </svg>
+                    Select an endpoint from the sidebar, or use{' '}
+                    <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[11px]">
+                      Ctrl K
+                    </kbd>{' '}
+                    to search
                   </div>
                 </div>
               ) : currentFunction ? (
