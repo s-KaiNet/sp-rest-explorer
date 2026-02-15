@@ -18,15 +18,14 @@ interface NamespaceGroup {
 }
 
 /**
- * Extract namespace from a returnType string.
+ * Extract namespace from a fully-qualified name string.
  * e.g. "SP.Web" → "SP", "SP.Publishing.Pages.SitePage" → "SP.Publishing.Pages"
- * No returnType or no dot → "Core"
+ * No dot → "Core"
  */
-function getNamespace(returnType?: string): string {
-  if (!returnType) return 'Core'
-  const lastDot = returnType.lastIndexOf('.')
+function getNamespace(name: string): string {
+  const lastDot = name.lastIndexOf('.')
   if (lastDot <= 0) return 'Core'
-  return returnType.substring(0, lastDot)
+  return name.substring(0, lastDot)
 }
 
 /**
@@ -43,7 +42,7 @@ function getStrippedName(entry: ChildEntry, namespace: string): string {
 }
 
 /**
- * Group entries by namespace extracted from returnType.
+ * Group entries by namespace extracted from entry name.
  * "Core" group always first, then alphabetical by namespace.
  * Items within each group sorted alphabetically by name.
  */
@@ -51,7 +50,7 @@ function groupByNamespace(entries: ChildEntry[]): NamespaceGroup[] {
   const groupMap = new Map<string, ChildEntry[]>()
 
   for (const entry of entries) {
-    const ns = getNamespace(entry.returnType)
+    const ns = getNamespace(entry.name)
     const existing = groupMap.get(ns)
     if (existing) {
       existing.push(entry)
