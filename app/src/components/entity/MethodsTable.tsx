@@ -8,7 +8,6 @@ interface MethodsTableProps {
 /**
  * Methods table with Method | Parameters | Returns columns.
  * Method names in blue monospace. Parameters one-per-line.
- * Composable methods show COMPOSABLE badge.
  * `this` parameter filtered from display.
  * Always sorted alphabetically by method name.
  */
@@ -63,11 +62,6 @@ export function MethodsTable({ functions }: MethodsTableProps) {
                   <span className="italic text-muted-foreground">void</span>
                 ) : (
                   <TypeLink typeName={fn.returnType} />
-                )}
-                {fn.isComposable && (
-                  <span className="ml-1.5 inline-block rounded bg-type-fn/10 px-1.5 py-0.5 align-middle text-[10px] font-semibold tracking-wide text-type-fn">
-                    COMPOSABLE
-                  </span>
                 )}
               </td>
             </tr>

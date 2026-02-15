@@ -166,14 +166,7 @@ export function ExplorePage() {
                     {!currentFunction.returnType || currentFunction.returnType === 'void' ? (
                       <span className="font-mono italic text-muted-foreground">void</span>
                     ) : (
-                      <>
-                        <TypeLink typeName={currentFunction.returnType} />
-                        {currentFunction.isComposable && (
-                          <span className="ml-1.5 inline-block rounded bg-type-fn/10 px-1.5 py-0.5 align-middle text-[10px] font-semibold text-type-fn">
-                            COMPOSABLE
-                          </span>
-                        )}
-                      </>
+                      <TypeLink typeName={currentFunction.returnType} />
                     )}
                   </div>
                 </div>
