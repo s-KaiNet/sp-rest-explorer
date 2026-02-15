@@ -64,13 +64,8 @@ export function EntityDetail({ entity }: EntityDetailProps) {
 
   return (
     <div className="p-6">
-      {/* Header: Entity name + badge */}
-      <div className="mb-1 flex items-center gap-3.5">
-        <h2 className="text-[22px] font-bold">{entity.name}</h2>
-        <span className="rounded-md bg-type-entity/10 px-2.5 py-1 text-xs font-semibold text-type-entity">
-          Entity Type
-        </span>
-      </div>
+      {/* Header: Entity name */}
+      <h2 className="mb-1 text-[22px] font-bold">{entity.name}</h2>
 
       {/* Full name */}
       <div className="mb-4 font-mono text-sm text-muted-foreground">

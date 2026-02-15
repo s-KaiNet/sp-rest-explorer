@@ -407,7 +407,7 @@ export function CommandPalette({
       title="Search API"
       description="Search across entities and API endpoints"
       showCloseButton={false}
-      className="top-[10%] translate-y-0 sm:max-w-2xl"
+      className="top-[10%] translate-y-0 sm:max-w-2xl [&]:dark:border-modal-border dark:[&_[data-slot=command-input-wrapper]]:border-modal-border"
       shouldFilter={false}
       loop
     >
@@ -416,7 +416,7 @@ export function CommandPalette({
         value={query}
         onValueChange={setQuery}
         suffix={
-          <kbd className="shrink-0 rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
+          <kbd className="shrink-0 rounded border border-border dark:border-modal-border bg-muted px-1.5 py-0.5 font-mono text-[11px] text-muted-foreground">
             ESC
           </kbd>
         }
@@ -463,21 +463,21 @@ export function CommandPalette({
       </CommandList>
 
       {/* Footer hint bar */}
-      <div className="flex items-center gap-3 border-t border-border px-3 py-2 text-xs text-muted-foreground">
+      <div className="flex items-center gap-3 border-t border-border dark:border-modal-border px-3 py-2 text-xs text-muted-foreground">
         <span className="flex items-center gap-1">
-          <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+          <kbd className="rounded border border-border dark:border-modal-border bg-muted px-1 py-0.5 font-mono text-[10px]">
             &uarr;&darr;
           </kbd>
           <span>Navigate</span>
         </span>
         <span className="flex items-center gap-1">
-          <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+          <kbd className="rounded border border-border dark:border-modal-border bg-muted px-1 py-0.5 font-mono text-[10px]">
             &crarr;
           </kbd>
           <span>Open</span>
         </span>
         <span className="flex items-center gap-1">
-          <kbd className="rounded border border-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+          <kbd className="rounded border border-border dark:border-modal-border bg-muted px-1 py-0.5 font-mono text-[10px]">
             Esc
           </kbd>
           <span>Close</span>

@@ -1,8 +1,8 @@
 import { useNavigate, useOutletContext } from 'react-router'
 import { Search, Clock, ArrowRight } from 'lucide-react'
-import { useMetadataSnapshot } from '@/lib/metadata'
 import { useRecentlyVisited } from '@/hooks'
 import type { RecentlyVisitedItem } from '@/hooks'
+import faviconUrl from '/favicon.svg'
 
 // ── Relative time helper ──
 
@@ -30,7 +30,7 @@ function RecentlyVisitedCard({
   onClick: () => void
 }) {
   // Determine icon and colors based on kind
-  // root = <> green, function = ƒ blue, navProperty = NAV purple, entity (future) = T green
+  // root = <> green, function = ƒ blue, entity = T green, navProperty = NAV purple
   let icon: string
   let colorClass: string
   if (item.kind === 'root') {
@@ -39,6 +39,9 @@ function RecentlyVisitedCard({
   } else if (item.kind === 'function') {
     icon = 'ƒ'
     colorClass = 'bg-type-fn/10 text-type-fn'
+  } else if (item.kind === 'entity') {
+    icon = 'T'
+    colorClass = 'bg-type-entity/10 text-type-entity'
   } else {
     // navProperty
     icon = 'NAV'
@@ -83,29 +86,14 @@ function RecentlyVisitedCard({
 export function HomePage() {
   const navigate = useNavigate()
   const { onSearchClick } = useOutletContext<{ onSearchClick?: () => void }>()
-  const metadata = useMetadataSnapshot()
   const { items, clearAll } = useRecentlyVisited()
-
-  // Compute stats from metadata
-  const functionCount = metadata
-    ? Object.keys(metadata.functions).length
-    : null
-  const entityCount = metadata ? Object.keys(metadata.entities).length : null
-  const navPropertyCount = metadata
-    ? Object.values(metadata.entities).reduce(
-        (sum, e) => sum + e.navigationProperties.length,
-        0,
-      )
-    : null
-  const rootCount = metadata
-    ? Object.values(metadata.functions).filter((f) => f.isRoot).length
-    : null
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       {/* ── Hero ── */}
       <div className="mb-12 text-center">
-        <h1 className="mb-2 text-[28px] font-bold tracking-tight">
+        <h1 className="mb-2 flex items-center justify-center gap-3 text-[28px] font-bold tracking-tight">
+          <img src={faviconUrl} alt="" className="h-9 w-9" />
           SharePoint REST API Explorer
         </h1>
         <p className="mb-6 text-[15px] text-muted-foreground">
@@ -134,20 +122,19 @@ export function HomePage() {
         <div className="mt-4 flex items-center justify-center gap-6 text-[12.5px] text-muted-foreground">
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-fn" />
-            {functionCount !== null ? functionCount.toLocaleString() : '...'}{' '}
-            functions
+            3.5k+ functions
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-entity" />
-            {entityCount !== null ? entityCount.toLocaleString() : '...'}{' '}
-            entities
+            2.4k entities
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-nav" />
-            {navPropertyCount !== null
-              ? navPropertyCount.toLocaleString()
-              : '...'}{' '}
-            unique properties
+            11k+ properties
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+            60k+ endpoints
           </span>
         </div>
       </div>
@@ -158,11 +145,6 @@ export function HomePage() {
         className="mb-8 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-2.5 text-[13px] text-muted-foreground transition-all hover:border-type-fn hover:bg-type-fn/5 hover:text-type-fn cursor-pointer"
       >
         Browse all root endpoints
-        {rootCount !== null && (
-          <span className="rounded-full bg-muted px-2 py-px text-[11px]">
-            {rootCount}
-          </span>
-        )}
         <ArrowRight className="h-3.5 w-3.5" />
       </button>
 

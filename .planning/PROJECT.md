@@ -2,30 +2,15 @@
 
 ## What This Is
 
-A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface with namespace-grouped sidebar, and a curated home screen with How It Works overview. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
+A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, and curated home screens with branding and live stats. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
 
 ## Current State
 
-**Shipped:** v1.1 Search, Types & Polish (2026-02-15)
-**Codebase:** ~5,000 LOC TypeScript/CSS across 65 files in `app/`
+**Shipped:** v1.2 UI Improvements (2026-02-15)
+**Codebase:** ~5,150 LOC TypeScript/CSS across 65 files in `app/`
 **Tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, React Router 7
 
-v1.1 adds Cmd+K command palette with dual search modes (name + path), Explore Types with namespace-grouped sidebar and type detail views (properties, base types, derived types, used-by), How It Works page, copy-to-clipboard breadcrumb button, GitHub star count badge, GitHub Dark dark mode, and app-branded favicons.
-
-## Current Milestone: v1.2 UI Improvements
-
-**Goal:** Polish the UI across Explore API, Explore Types, home page, and command palette to fix visual bugs, improve navigation consistency, and add missing UX elements.
-
-**Target features:**
-- Fix sidebar slide animation horizontal scroll on forward navigation
-- Add site icon next to title on home page
-- Update home page stats to approximate values (3.5k+ functions, 2.4k entities, 11k+ properties, 60k+ endpoints)
-- Expand recently visited to include /entities path and recent Types
-- Fix cmdk dark mode border brightness
-- Add namespace grouping to Explore API sidebar (root level only, with "No Group" first)
-- Redesign Explore API home screen (similar to Explore Types — centered message, stats, help text)
-- Remove "Entity Type" and "Complex Type" badges throughout the app
-- Move root indicator to right side of Explore API sidebar items
+v1.2 polished the UI with namespace-grouped Explore API sidebar, decluttered badge system, branded home page with favicon and approximate stats, redesigned Explore API welcome screen, expanded recently visited with Types entries, and subdued dark mode Cmd+K modal borders.
 
 ## Core Value
 
@@ -51,9 +36,10 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - NAV-03 — v1.1 (copy _api/ path to clipboard)
   - INFO-01, INFO-02 — v1.1 (How It Works page, navigation to it)
 
-### Active (v1.2)
-
-- [ ] UI polish and improvements — see REQUIREMENTS.md for full scope
+- **v1.2 (9 requirements):**
+  - SIDE-01 through SIDE-04 — v1.2 (sidebar animation fix, namespace grouping, badge repositioning, recently visited Types)
+  - HOME-01 through HOME-03 — v1.2 (favicon branding, approximate stats, Explore API welcome screen)
+  - VISU-01, VISU-02 — v1.2 (dark mode modal borders, badge removal)
 
 ### Backlog (future milestones)
 
@@ -75,7 +61,7 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ## Context
 
-Shipped v1.1 with ~5,000 LOC TypeScript/CSS across 65 files. Total ~2,460 lines added over v1.0.
+Shipped v1.2 with ~5,150 LOC TypeScript/CSS across 65 files. Total ~160 lines net added over v1.1 (241 insertions, 83 deletions across 11 app files).
 Tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, idb-keyval, React Router 7.
 Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot.
 Old `web/` directory preserved as reference during development.
@@ -90,10 +76,10 @@ Old `web/` directory preserved as reference during development.
 |----------|-----------|---------|
 | MiniSearch over FlexSearch | Native TS, returns full docs, faster init (19ms), simpler API | Good |
 | Sidebar as contextual nav, not tree | Single node has 5-30 children, no virtualization needed | Good |
-| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | Good — Cmd+K working well |
+| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | Good |
 | New `app/` directory | Keep old `web/` as reference during development | Good |
 | Desktop only for v1 | Focus on core UX, mobile responsive deferred | Good |
-| Dark mode from v1 | Trivial with shadcn/ui + Tailwind dark: variants | Good — GitHub Dark palette |
+| Dark mode from v1 | Trivial with shadcn/ui + Tailwind dark: variants | Good |
 | Metadata outside Zustand | Frozen 4MB singleton + useSyncExternalStore | Good |
 | @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin | Good |
 | OKLCH color space for type tokens | Perceptually uniform, dark mode adjusts lightness only | Good |
@@ -106,6 +92,10 @@ Old `web/` directory preserved as reference during development.
 | Precomputed used-by index | O(1) lookup replacing O(n*m) scans | Good |
 | GitHub Dark palette for dark mode | Blue OKLCH undertones, elevated chrome surfaces | Good |
 | Hardcoded How It Works stats | Simpler than computing from live metadata | Good |
+| Replicated TypesSidebar pattern | Different data types (EntityType[] vs ChildEntry[]) make sharing awkward | Good |
+| Namespace from entry.name not returnType | returnType caused 74% of items to land in wrong groups | Good |
+| Hardcoded home stats, live API stats | Home page needs instant render (no data), API page has data loaded | Good |
+| Scoped --modal-border CSS variable | Per-modal dark mode border control without global side effects | Good |
 
 ## Constraints
 
@@ -117,4 +107,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-15 after v1.2 milestone started*
+*Last updated: 2026-02-15 after v1.2 milestone*

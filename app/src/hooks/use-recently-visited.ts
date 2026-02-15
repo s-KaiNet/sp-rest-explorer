@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react'
 export interface RecentlyVisitedItem {
   name: string // Display name (e.g. "GetByTitle")
   path: string // Full hash path (e.g. "/_api/web/Lists/GetByTitle")
-  kind: 'function' | 'navProperty' | 'root' // For icon coloring
+  kind: 'function' | 'navProperty' | 'root' | 'entity' // For icon coloring
   timestamp: number // Date.now() when visited
 }
 
