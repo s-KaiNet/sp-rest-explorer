@@ -34,7 +34,7 @@
 
 ---
 
-### Phase 9: Explore API Sidebar Polish
+### Phase 9: Explore API Sidebar Polish ✅ (2026-02-15)
 
 **Goal**: The Explore API sidebar presents root-level items cleanly — grouped by namespace, with consistent badge positioning, no visual clutter from type badges, and no animation glitches.
 **Depends on**: None (sidebar components exist from v1.0)
@@ -51,7 +51,7 @@
 
 Plans:
 - [x] 09-01-PLAN.md — Remove Entity Type, Complex Type, and Composable badges from all locations
-- [ ] 09-02-PLAN.md — Namespace grouping, badge repositioning, and animation fix for sidebar
+- [x] 09-02-PLAN.md — Namespace grouping, badge repositioning, and animation fix for sidebar
 
 ---
 

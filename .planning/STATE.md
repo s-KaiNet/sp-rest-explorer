@@ -17,15 +17,15 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.2 UI Improvements
-Phase: 9 — Explore API Sidebar Polish
-Plan: 2 of 2
-Status: Plan 01 complete, executing plan 02
-Last activity: 2026-02-15 — Completed 09-01 (badge removal)
+Phase: 9 — Explore API Sidebar Polish ✅
+Plan: 2 of 2 ✅
+Status: Phase 9 complete (all plans executed)
+Last activity: 2026-02-15 — Completed 09-02 (namespace grouping & sidebar polish)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
-v1.2 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/2 phases: 09, 10) — executing phase 09
+v1.2 Progress: ██████████░░░░░░░░░░ 50% (1/2 phases: 09 ✅, 10) — phase 09 complete
 ```
 
 ## Performance Metrics
@@ -60,10 +60,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Phase 9 plan 01 execution (2026-02-15)
-**What happened:** Executed 09-01: removed Entity Type, Complex Type, and COMPOSABLE badges from all detail views, methods tables, and inline function views. 2 tasks, 4 files modified, 2 commits.
-**Next step:** Execute 09-02-PLAN.md (remaining sidebar polish tasks).
+**Last session:** Phase 9 plan 02 execution (2026-02-15)
+**What happened:** Executed 09-02: namespace-grouped collapsible sidebar for Explore API root, right-aligned root badges, horizontal scrollbar flicker fix, scroll-to-top reset. 2 tasks, 3 files modified, 2 commits.
+**Next step:** Plan and execute Phase 10, or verify Phase 9 work.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-15 (09-01 complete)*
+*Last updated: 2026-02-15 (09-02 complete, phase 9 complete)*
