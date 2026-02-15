@@ -4,7 +4,7 @@
 
 - **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
 - **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
-- **v1.2 UI Improvements** — Phases 9-10 (active)
+- **v1.2 UI Improvements** — Phases 9-10 (shipped 2026-02-15)
 
 ## Phases
 
