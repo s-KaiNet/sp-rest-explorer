@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useLookupMaps, useTypeIndexes } from '@/lib/metadata'
+import { useRecentlyVisited } from '@/hooks'
 import { EntityDetail } from '@/components/entity'
 import { ComplexTypeDetail, TypesSidebar } from '@/components/types'
 import { ResizablePanel, SidebarFilter } from '@/components/navigation'
@@ -10,6 +11,7 @@ export function TypesPage() {
   const maps = useLookupMaps()
   const typeIndexes = useTypeIndexes()
   const navigate = useNavigate()
+  const { addVisit } = useRecentlyVisited()
 
   const [filterText, setFilterText] = useState('')
 
@@ -67,6 +69,11 @@ export function TypesPage() {
   // Handler: sidebar type selection
   const handleTypeSelect = (type: { fullName: string }) => {
     navigate(`/entity/${encodeURIComponent(type.fullName)}`)
+    addVisit({
+      name: type.fullName.split('.').pop() || type.fullName,
+      path: `/entity/${encodeURIComponent(type.fullName)}`,
+      kind: 'entity',
+    })
   }
 
   // Resolve type for content area
