@@ -20,6 +20,7 @@ export function ExplorePage() {
   // Sidebar filter state — lifted here so filter sits outside slide animation
   const [filterText, setFilterText] = useState('')
   const prevChildrenRef = useRef(children)
+  const sidebarScrollRef = useRef<HTMLDivElement>(null)
 
   // Clear filter when navigation changes (entries change)
   useEffect(() => {
@@ -64,6 +65,13 @@ export function ExplorePage() {
   // Unique key for animation transitions
   const pathKey = segments.map((s) => s.label).join('/')
 
+  // Reset sidebar scroll position on navigation
+  useEffect(() => {
+    if (sidebarScrollRef.current) {
+      sidebarScrollRef.current.scrollTop = 0
+    }
+  }, [pathKey])
+
   // Breadcrumb segments already contain full route paths
   const handleBreadcrumbNavigate = (path: string) => navigate(path)
 
@@ -99,7 +107,7 @@ export function ExplorePage() {
             disabled={children.length === 0}
           />
           {/* Sidebar content slides on navigation */}
-          <div className="flex-1 overflow-y-auto">
+          <div ref={sidebarScrollRef} className="flex-1 overflow-y-auto overflow-x-hidden">
             <SidebarTransition pathKey={pathKey} direction={direction}>
               <Sidebar
                 entries={filteredChildren}
