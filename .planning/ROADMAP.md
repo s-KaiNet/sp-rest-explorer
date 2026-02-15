@@ -47,11 +47,12 @@
 3. User sees root indicator badges on the right side of sidebar items, aligned consistently with function/nav property badges
 4. User no longer sees "Entity Type" or "Complex Type" badges anywhere in the app — sidebar items, detail views, or search results
 
-**Plans:** 2 plans
+**Plans:** 3 plans
 
 Plans:
 - [x] 09-01-PLAN.md — Remove Entity Type, Complex Type, and Composable badges from all locations
 - [x] 09-02-PLAN.md — Namespace grouping, badge repositioning, and animation fix for sidebar
+- [ ] 09-03-PLAN.md — Fix namespace grouping to use entry.name instead of entry.returnType (gap closure)
 
 ---
 
@@ -85,7 +86,7 @@ Plans:
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
-| 9. Explore API Sidebar Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
+| 9. Explore API Sidebar Polish | v1.2 | 2/3 | In Progress | 2026-02-15 |
 | 10. Home Screens & Visual Polish | v1.2 | 0/? | Pending | — |
 
 ---
