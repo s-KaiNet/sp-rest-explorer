@@ -13,11 +13,11 @@ After a GSD update wipes and reinstalls files, this command merges user's previo
 Check for local patches directory:
 
 ```bash
-# Global install
-PATCHES_DIR="${HOME}/.claude/gsd-local-patches"
+# Global install (path templated at install time)
+PATCHES_DIR=./.opencode/gsd-local-patches
 # Local install fallback
 if [ ! -d "$PATCHES_DIR" ]; then
-  PATCHES_DIR="./.claude/gsd-local-patches"
+  PATCHES_DIR=./.opencode/gsd-local-patches
 fi
 ```
 

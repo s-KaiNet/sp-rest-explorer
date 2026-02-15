@@ -9,12 +9,12 @@ const { spawn } = require('child_process');
 
 const homeDir = os.homedir();
 const cwd = process.cwd();
-const cacheDir = path.join(homeDir, '.claude', 'cache');
+const cacheDir = path.join(homeDir, '.opencode', 'cache');
 const cacheFile = path.join(cacheDir, 'gsd-update-check.json');
 
 // VERSION file locations (check project first, then global)
-const projectVersionFile = path.join(cwd, '.claude', 'get-shit-done', 'VERSION');
-const globalVersionFile = path.join(homeDir, '.claude', 'get-shit-done', 'VERSION');
+const projectVersionFile = path.join(cwd, '.opencode', 'get-shit-done', 'VERSION');
+const globalVersionFile = path.join(homeDir, '.opencode', 'get-shit-done', 'VERSION');
 
 // Ensure cache directory exists
 if (!fs.existsSync(cacheDir)) {

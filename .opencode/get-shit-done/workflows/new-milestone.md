@@ -71,13 +71,13 @@ Keep Accumulated Context section from previous milestone.
 Delete MILESTONE-CONTEXT.md if exists (consumed).
 
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs: start milestone v[X.Y] [Name]" --files .planning/PROJECT.md .planning/STATE.md
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs: start milestone v[X.Y] [Name]" --files .planning/PROJECT.md .planning/STATE.md
 ```
 
 ## 7. Load Context and Resolve Models
 
 ```bash
-INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js init new-milestone)
+INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init new-milestone)
 ```
 
 Extract from init JSON: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `commit_docs`, `research_enabled`, `current_milestone`, `project_exists`, `roadmap_exists`.
@@ -92,10 +92,10 @@ question: "Research the domain ecosystem for new features before defining requir
 
 ```bash
 # If "Research first": persist true
-node ./.opencode/get-shit-done/bin/gsd-tools.js config-set workflow.research true
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-set workflow.research true
 
 # If "Skip research": persist false
-node ./.opencode/get-shit-done/bin/gsd-tools.js config-set workflow.research false
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-set workflow.research false
 ```
 
 **If "Research first":**
@@ -200,7 +200,7 @@ Present features by category:
 
 **If no research:** Gather requirements through conversation. Ask: "What are the main things users need to do with [new features]?" Clarify, probe for related capabilities, group into categories.
 
-**Scope each category** via question (multiSelect: true):
+**Scope each category** via question (multiSelect: true, header max 12 chars):
 - "[Feature 1]" — [brief description]
 - "[Feature 2]" — [brief description]
 - "None for this milestone" — Defer entire category
@@ -246,7 +246,7 @@ If "adjust": Return to scoping.
 
 **Commit requirements:**
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs: define milestone v[X.Y] requirements" --files .planning/REQUIREMENTS.md
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs: define milestone v[X.Y] requirements" --files .planning/REQUIREMENTS.md
 ```
 
 ## 10. Create Roadmap
@@ -321,7 +321,7 @@ Success criteria:
 
 **Commit roadmap** (after approval):
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs: create milestone v[X.Y] roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs: create milestone v[X.Y] roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
 ```
 
 ## 11. Done

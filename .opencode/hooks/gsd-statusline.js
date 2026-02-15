@@ -46,7 +46,7 @@ process.stdin.on('end', () => {
     // Current task from todos
     let task = '';
     const homeDir = os.homedir();
-    const todosDir = path.join(homeDir, '.claude', 'todos');
+    const todosDir = path.join(homeDir, '.opencode', 'todos');
     if (session && fs.existsSync(todosDir)) {
       try {
         const files = fs.readdirSync(todosDir)
@@ -68,7 +68,7 @@ process.stdin.on('end', () => {
 
     // GSD update available?
     let gsdUpdate = '';
-    const cacheFile = path.join(homeDir, '.claude', 'cache', 'gsd-update-check.json');
+    const cacheFile = path.join(homeDir, '.opencode', 'cache', 'gsd-update-check.json');
     if (fs.existsSync(cacheFile)) {
       try {
         const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
