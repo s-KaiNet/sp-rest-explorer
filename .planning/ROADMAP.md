@@ -50,7 +50,7 @@
 **Plans:** 2 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — Remove Entity Type, Complex Type, and Composable badges from all locations
+- [x] 09-01-PLAN.md — Remove Entity Type, Complex Type, and Composable badges from all locations
 - [ ] 09-02-PLAN.md — Namespace grouping, badge repositioning, and animation fix for sidebar
 
 ---
@@ -85,9 +85,9 @@ Plans:
 | 07.1. Fix search experience | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 07.2. Add path to API Endpoints | v1.1 | 2/2 | Complete | 2026-02-14 |
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
-| 9. Explore API Sidebar Polish | v1.2 | 0/2 | Pending | — |
+| 9. Explore API Sidebar Polish | v1.2 | 1/2 | In progress | — |
 | 10. Home Screens & Visual Polish | v1.2 | 0/? | Pending | — |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-15 (phase 9 planned — 2 plans)*
+*Last updated: 2026-02-15 (09-01 complete)*
