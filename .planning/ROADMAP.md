@@ -45,7 +45,7 @@
   **Plans:** 2 plans
   Plans:
   - [x] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
-  - [ ] 11-02-PLAN.md — Gap closure: fix invisible hover highlight (accent color identical to popover background)
+  - [x] 11-02-PLAN.md — Gap closure: fix invisible hover highlight (accent color identical to popover background)
 - [ ] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement
 
 ## Phase Details
@@ -84,7 +84,7 @@
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
 | 10. Home Screens & Visual Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
-| 11. Search UX Fixes | 1/1 | Complete    | 2026-02-17 | - |
+| 11. Search UX Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
 | 12. Detail & Layout Fixes | v1.3 | 0/? | Not started | - |
 
 ---
