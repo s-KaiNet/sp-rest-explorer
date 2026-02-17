@@ -98,9 +98,6 @@ export function ExplorePage() {
 
   return (
     <div className="flex flex-1 flex-col overflow-hidden">
-      {/* Breadcrumb bar — full width, spanning above both sidebar and content */}
-      <BreadcrumbBar segments={segments} onNavigate={handleBreadcrumbNavigate} />
-
       {/* Sidebar + Content horizontal layout — fills remaining height */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Resizable sidebar */}
@@ -128,6 +125,10 @@ export function ExplorePage() {
 
         {/* Right: Content area with independent scroll */}
         <div className="flex-1 overflow-y-auto bg-muted/30">
+          {/* Sticky breadcrumb — only on detail pages */}
+          {!isRoot && segments.length > 0 && (
+            <BreadcrumbBar segments={segments} onNavigate={handleBreadcrumbNavigate} />
+          )}
           <ContentTransition pathKey={pathKey}>
               {isRoot ? (
                 <div className="flex flex-1 flex-col items-center justify-center px-8 py-12 text-center">
