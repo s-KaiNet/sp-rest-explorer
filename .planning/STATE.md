@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 Phase: 11 — Search UX Fixes (complete, 2/2 plans)
 Plan: 02 complete
 Status: Phase 11 complete, ready to plan Phase 12
-Last activity: 2026-02-17 - Completed quick task 1: Replace initial screen loading skeleton with regular loading indicator
+Last activity: 2026-02-17 - Completed quick task 2: Narrow search rows, more results per group, taller dialog
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -69,13 +69,14 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 1 | Replace initial screen loading skeleton with regular loading indicator | 2026-02-17 | c170a4d | [1-replace-initial-screen-loading-skeleton-](./quick/1-replace-initial-screen-loading-skeleton-/) |
+| 2 | Narrow search result rows, increase results per group to 7, taller dialog | 2026-02-17 | 756a2e4 | [2-narrow-search-result-rows-increase-resul](./quick/2-narrow-search-result-rows-increase-resul/) |
 
 ## Session Continuity
 
-**Last session:** 2026-02-17T01:42:05Z
-**What happened:** Executed quick-1 plan — replaced blinking skeleton loading screen with simple centered spinner using theme-aware Tailwind tokens. 1 task, 1 commit (c170a4d).
+**Last session:** 2026-02-17T01:54:00Z
+**What happened:** Executed quick-2 plan — narrower search rows (py-3→py-1.5), 7 results per group (was 5), 80vh dialog (was 66vh). 1 task, 1 commit (756a2e4).
 **Next step:** `/gsd-plan-phase 12` or next quick task
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (Quick task 1 complete)*
+*Last updated: 2026-02-17 (Quick task 2 complete)*
