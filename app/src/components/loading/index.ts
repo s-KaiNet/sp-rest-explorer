@@ -1,2 +1,2 @@
-export { ContentSkeleton } from './ContentSkeleton'
+export { LoadingState } from './ContentSkeleton'
 export { ErrorState } from './ErrorState'

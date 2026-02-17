@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router'
 import { Header } from '@/components/layout'
 import { CommandPalette } from '@/components/search'
 import type { SearchSelection } from '@/components/search'
-import { ContentSkeleton, ErrorState } from '@/components/loading'
+import { LoadingState, ErrorState } from '@/components/loading'
 import { bootMetadata } from '@/lib/metadata'
 import { useRecentlyVisited } from '@/hooks'
 import { useAppStore } from '@/stores/app-store'
@@ -71,7 +71,7 @@ function App() {
         ) : status === 'error' ? (
           <ErrorState />
         ) : (
-          <ContentSkeleton />
+          <LoadingState />
         )}
       </main>
       <CommandPalette
