@@ -17,10 +17,10 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.3 Improvements
-Phase: 12 — Detail & Layout Fixes (complete, 1/1 plans)
-Plan: 01 complete
+Phase: 12 — Detail & Layout Fixes (complete, 2/2 plans)
+Plan: 02 complete
 Status: Phase 12 complete — v1.3 milestone complete
-Last activity: 2026-02-17 - Completed 12-01: nullable column fix + breadcrumb layout fix
+Last activity: 2026-02-17 - Completed 12-02: breadcrumb scroll fix (flex column split)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -49,6 +49,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 11:** Use bg-foreground/8 overlays instead of bg-accent for command palette hover/selection (accent === popover in dark mode)
 - **Phase 12:** Strict equality (=== false) for optional boolean nullable field — undefined/missing treated as nullable
 - **Phase 12:** Breadcrumb conditional on !isRoot, rendered inside content area with sticky top-0
+- **Phase 12:** Flex column split for scroll isolation — breadcrumb outside scroll container, no sticky needed
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -75,10 +76,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-17T02:16:02Z
-**What happened:** Executed 12-01 plan — fixed nullable strict equality + moved breadcrumb into content area with sticky. 2 tasks, 2 commits (3baaff9, 500e217).
-**Next step:** v1.3 milestone complete. `/gsd-add-phase` for v1.4 or `/gsd-complete-milestone`
+**Last session:** 2026-02-17T02:37:16Z
+**What happened:** Executed 12-02 plan — split content panel into flex column so breadcrumb is outside scroll container. 1 task, 1 commit (ec15237).
+**Next step:** Phase 12 complete. `/gsd-add-phase` for v1.4 or `/gsd-complete-milestone`
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (Phase 12 plan 01 complete)*
+*Last updated: 2026-02-17 (Phase 12 plan 02 complete)*
