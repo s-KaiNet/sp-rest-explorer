@@ -17,16 +17,16 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.3 Improvements
-Phase: 11 — Search UX Fixes (complete, 2/2 plans)
-Plan: 02 complete
-Status: Phase 11 complete, ready to plan Phase 12
-Last activity: 2026-02-17 - Completed quick task 2: Narrow search result rows, increase results per group to 7, taller dialog
+Phase: 12 — Detail & Layout Fixes (complete, 1/1 plans)
+Plan: 01 complete
+Status: Phase 12 complete — v1.3 milestone complete
+Last activity: 2026-02-17 - Completed 12-01: nullable column fix + breadcrumb layout fix
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
-v1.3 Progress: ██████████░░░░░░░░░░ 50% (1/2 phases: 11 ✓, 12)
+v1.3 Progress: ████████████████████ 100% (2/2 phases: 11 ✓, 12 ✓) — SHIPPED
 ```
 
 ## Performance Metrics
@@ -47,6 +47,8 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 11:** Bypass MiniSearch for special-char queries (literalNameSearch) rather than modifying tokenizer
 - **Phase 11:** Render SearchGroup header as plain div above headingless CommandGroup for layout stability
 - **Phase 11:** Use bg-foreground/8 overlays instead of bg-accent for command palette hover/selection (accent === popover in dark mode)
+- **Phase 12:** Strict equality (=== false) for optional boolean nullable field — undefined/missing treated as nullable
+- **Phase 12:** Breadcrumb conditional on !isRoot, rendered inside content area with sticky top-0
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -73,10 +75,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-17T02:08:20.626Z
-**What happened:** Executed quick-2 plan — narrower search rows (py-3→py-1.5), 7 results per group (was 5), 80vh dialog (was 66vh). 1 task, 1 commit (756a2e4).
-**Next step:** `/gsd-plan-phase 12` or next quick task
+**Last session:** 2026-02-17T02:16:02Z
+**What happened:** Executed 12-01 plan — fixed nullable strict equality + moved breadcrumb into content area with sticky. 2 tasks, 2 commits (3baaff9, 500e217).
+**Next step:** v1.3 milestone complete. `/gsd-add-phase` for v1.4 or `/gsd-complete-milestone`
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (Quick task 2 complete)*
+*Last updated: 2026-02-17 (Phase 12 plan 01 complete)*
