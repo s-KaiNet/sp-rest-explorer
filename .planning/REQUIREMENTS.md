@@ -51,18 +51,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRCH-06 | — | Pending |
-| SRCH-07 | — | Pending |
-| SRCH-08 | — | Pending |
-| SRCH-09 | — | Pending |
-| ENTD-12 | — | Pending |
-| LAYO-01 | — | Pending |
+| SRCH-06 | Phase 11 | Pending |
+| SRCH-07 | Phase 11 | Pending |
+| SRCH-08 | Phase 11 | Pending |
+| SRCH-09 | Phase 11 | Pending |
+| ENTD-12 | Phase 12 | Pending |
+| LAYO-01 | Phase 12 | Pending |
 
 **Coverage:**
 - v1.3 requirements: 6 total
-- Mapped to phases: 0
-- Unmapped: 6 (awaiting roadmap)
+- Mapped to phases: 6 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-17*
-*Last updated: 2026-02-17 after initial definition*
+*Last updated: 2026-02-17 after roadmap creation*

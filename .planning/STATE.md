@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-15)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Planning next milestone
+**Current focus:** v1.3 Improvements — Search UX fixes, detail & layout fixes
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -17,16 +17,16 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.3 Improvements
-Phase: Not started (defining requirements)
+Phase: 11 — Search UX Fixes (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-02-17 — Milestone v1.3 started
+Status: Roadmap created, ready to plan Phase 11
+Last activity: 2026-02-17 — Roadmap created (2 phases, 6 requirements)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
-v1.3 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% — DEFINING
+v1.3 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/2 phases: 11, 12)
 ```
 
 ## Performance Metrics
@@ -62,10 +62,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Milestone v1.3 initialization (2026-02-17)
-**What happened:** Started milestone v1.3 Improvements — 6 bug fixes and UX improvements for search, nullable properties, and breadcrumb layout.
-**Next step:** Define requirements, create roadmap, then `/gsd-plan-phase 11`
+**Last session:** Roadmap creation (2026-02-17)
+**What happened:** Created v1.3 roadmap — 2 phases (11-12), 6 requirements mapped. Phase 11: Search UX Fixes (SRCH-06/07/08/09). Phase 12: Detail & Layout Fixes (ENTD-12, LAYO-01).
+**Next step:** `/gsd-plan-phase 11`
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (v1.3 milestone started)*
+*Last updated: 2026-02-17 (v1.3 roadmap created)*

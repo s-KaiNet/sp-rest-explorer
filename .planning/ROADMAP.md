@@ -5,6 +5,7 @@
 - ✅ **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
 - ✅ **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
 - ✅ **v1.2 UI Improvements** — Phases 9-10 (shipped 2026-02-15) — [archive](milestones/v1.2-ROADMAP.md)
+- 🔄 **v1.3 Improvements** — Phases 11-12
 
 ## Phases
 
@@ -38,6 +39,31 @@
 
 </details>
 
+### v1.3 Improvements (Phases 11-12)
+
+- [ ] **Phase 11: Search UX Fixes** — Dot-literal matching, group collapse stability, path-length sorting, and hover feedback
+- [ ] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement
+
+## Phase Details
+
+### Phase 11: Search UX Fixes
+**Goal**: Search results in the Cmd+K palette behave predictably — dots match literally, groups collapse smoothly, results sort sensibly, and items feel interactive
+**Depends on**: Nothing (independent fixes to existing search)
+**Requirements**: SRCH-06, SRCH-07, SRCH-08, SRCH-09
+**Success Criteria** (what must be TRUE):
+  1. Typing "SP.File" in Cmd+K returns only results containing the literal substring "SP.File" — not results that match "SP" and "File" as separate tokens
+  2. Clicking anywhere on a search result group header (label, count, whitespace) toggles collapse; collapsing/expanding does not cause the header text to shift position
+  3. API Endpoints results appear sorted by path length, shortest first (e.g., `/web` before `/web/lists/getbyid(…)/items`)
+  4. Hovering over any search result item shows a visible background highlight and the cursor changes to pointer
+
+### Phase 12: Detail & Layout Fixes
+**Goal**: Entity property nullable display is accurate and the Explore API breadcrumb sits in the correct visual region
+**Depends on**: Nothing (independent of Phase 11)
+**Requirements**: ENTD-12, LAYO-01
+**Success Criteria** (what must be TRUE):
+  1. On any entity properties table, a property with `"nullable": false` in metadata shows "no" in the Nullable column; all other properties show "yes"
+  2. The Explore API breadcrumb trail renders inside the main content area (below the header chrome), not within the top header bar
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -54,7 +80,9 @@
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
 | 10. Home Screens & Visual Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
+| 11. Search UX Fixes | v1.3 | 0/? | Not started | - |
+| 12. Detail & Layout Fixes | v1.3 | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-15 (v1.2 milestone archived)*
+*Last updated: 2026-02-17 (v1.3 milestone roadmap created)*
