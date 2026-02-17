@@ -8,7 +8,7 @@ import {
   CommandGroup,
   CommandItem,
 } from '@/components/ui/command'
-import { getSearchIndex, searchPathDocuments, detectSearchMode } from '@/lib/metadata'
+import { getSearchIndex, searchPathDocuments, detectSearchMode, literalNameSearch, hasSpecialChars } from '@/lib/metadata'
 import type { SearchMode } from '@/lib/metadata'
 
 // ── Types ──
@@ -283,6 +283,11 @@ export function CommandPalette({
         queryTerms: [] as string[],
         match: {} as Record<string, string[]>,
       }))
+    }
+
+    // SRCH-06: Literal substring match when query contains special chars (dots, parens, etc.)
+    if (hasSpecialChars(debouncedQuery)) {
+      return literalNameSearch(debouncedQuery)
     }
 
     const nameIndex = getSearchIndex()

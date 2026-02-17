@@ -24,7 +24,7 @@ export { getMetadata, useMetadataSnapshot } from './metadata-store'
 export { getLookupMaps, useLookupMaps } from './lookup-maps'
 
 // ── Search index ──
-export { getSearchIndex, searchPathDocuments, detectSearchMode } from './search-index'
+export { getSearchIndex, searchPathDocuments, detectSearchMode, literalNameSearch, hasSpecialChars } from './search-index'
 
 // ── Type indexes ──
 export { getTypeIndexes, useTypeIndexes } from './type-indexes'
