@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 Phase: 11 — Search UX Fixes (complete, 2/2 plans)
 Plan: 02 complete
 Status: Phase 11 complete, ready to plan Phase 12
-Last activity: 2026-02-17 — Executed 11-02 (invisible hover fix: bg-foreground/8 overlays)
+Last activity: 2026-02-17 - Completed quick task 1: Replace initial screen loading skeleton with regular loading indicator
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -64,6 +64,12 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Blockers
 - (None)
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Replace initial screen loading skeleton with regular loading indicator | 2026-02-17 | c170a4d | [1-replace-initial-screen-loading-skeleton-](./quick/1-replace-initial-screen-loading-skeleton-/) |
+
 ## Session Continuity
 
 **Last session:** 2026-02-17T01:42:05Z
@@ -72,4 +78,4 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (Phase 11 plan 02 complete)*
+*Last updated: 2026-02-17 (Quick task 1 complete)*
