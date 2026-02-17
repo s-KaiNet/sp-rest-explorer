@@ -17,10 +17,10 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.3 Improvements
-Phase: 11 — Search UX Fixes (complete, 1/1 plans)
-Plan: 01 complete
+Phase: 11 — Search UX Fixes (complete, 2/2 plans)
+Plan: 02 complete
 Status: Phase 11 complete, ready to plan Phase 12
-Last activity: 2026-02-17 — Executed 11-01 (search UX fixes: SRCH-06/07/08/09)
+Last activity: 2026-02-17 — Executed 11-02 (invisible hover fix: bg-foreground/8 overlays)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -46,6 +46,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 - **Phase 11:** Bypass MiniSearch for special-char queries (literalNameSearch) rather than modifying tokenizer
 - **Phase 11:** Render SearchGroup header as plain div above headingless CommandGroup for layout stability
+- **Phase 11:** Use bg-foreground/8 overlays instead of bg-accent for command palette hover/selection (accent === popover in dark mode)
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -65,10 +66,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-17T01:12:17Z
-**What happened:** Executed 11-01-PLAN.md — 3 tasks, 4 commits. Literal substring search for special-char queries, stable collapsible group headers, path-length sorting, hover feedback. Phase 11 complete (1/1 plans).
+**Last session:** 2026-02-17T01:30:26Z
+**What happened:** Executed 11-02-PLAN.md — 1 task, 1 commit. Replaced invisible bg-accent hover/selection on command palette with bg-foreground/8 overlays. Phase 11 complete (2/2 plans).
 **Next step:** `/gsd-plan-phase 12` or `/gsd-verify-work 11`
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (Phase 11 complete)*
+*Last updated: 2026-02-17 (Phase 11 plan 02 complete)*
