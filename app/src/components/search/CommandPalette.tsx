@@ -140,7 +140,7 @@ function HighlightedPath({ path, query }: { path: string; query: string }) {
   )
 }
 
-// ── Collapsible search group ──
+// ── Collapsible search group (SRCH-07) ──
 
 function SearchGroup({
   heading,
@@ -161,51 +161,39 @@ function SearchGroup({
 }) {
   if (results.length === 0) return null
 
-  // Collapsed: show one-line summary
-  if (collapsed) {
-    return (
-      <div
-        className="cursor-pointer px-2 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-        onClick={() => setCollapsed(false)}
-      >
-        {heading} ({results.length}) &#9654;
-      </div>
-    )
-  }
-
-  const visible = expanded ? results : results.slice(0, INITIAL_SHOW)
+  const visible = collapsed
+    ? []
+    : expanded
+      ? results
+      : results.slice(0, INITIAL_SHOW)
   const remaining = results.length - INITIAL_SHOW
 
   return (
-    <CommandGroup
-      heading={
-        <span className="flex items-center gap-1.5">
-          <span>{heading}</span>
-          <span className="text-muted-foreground">({results.length})</span>
-          <button
-            type="button"
-            className="ml-1 text-muted-foreground hover:text-foreground"
-            onClick={(e) => {
-              e.stopPropagation()
-              setCollapsed(true)
-            }}
-          >
-            &#9660;
-          </button>
-        </span>
-      }
-    >
-      {visible.map(renderItem)}
-      {remaining > 0 && !expanded && (
-        <CommandItem
-          value={`__show_more_${heading}__`}
-          onSelect={() => setExpanded(true)}
-          className="justify-center text-xs text-muted-foreground"
-        >
-          Show {remaining} more&hellip;
-        </CommandItem>
+    <div className="p-1">
+      {/* Header row — always rendered identically regardless of collapse state */}
+      <div
+        className="flex items-center gap-1.5 px-2 py-1.5 text-xs font-medium text-muted-foreground cursor-pointer select-none hover:text-foreground"
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        <span className="w-3 text-center">{collapsed ? '\u25B6' : '\u25BC'}</span>
+        <span>{heading}</span>
+        <span>({results.length})</span>
+      </div>
+      {/* Items in CommandGroup (no heading) — hidden when collapsed */}
+      {!collapsed && (
+        <CommandGroup>
+          {visible.map(renderItem)}
+          {remaining > 0 && !expanded && (
+            <div
+              className="flex justify-center px-2 py-1.5 text-xs text-muted-foreground cursor-pointer hover:text-foreground select-none"
+              onClick={() => setExpanded(true)}
+            >
+              Show {remaining} more…
+            </div>
+          )}
+        </CommandGroup>
       )}
-    </CommandGroup>
+    </div>
   )
 }
 
@@ -340,14 +328,14 @@ export function CommandPalette({
       ? endpoints.length > 0
       : entities.length > 0 || endpoints.length > 0
 
-  // Render entity result item
+  // Render entity result item (SRCH-09: hover feedback with group class)
   const renderEntityItem = useCallback(
     (result: SearchResult) => (
       <CommandItem
         key={result.id as string}
         value={result.id as string}
         onSelect={() => handleEntitySelect(result)}
-        className="flex items-center gap-2.5 py-1"
+        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-accent"
       >
         <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-entity/10 font-mono text-xs font-medium text-type-entity">
           {'<>'}
@@ -360,19 +348,22 @@ export function CommandPalette({
             {result.fullName as string}
           </span>
         </div>
+        <span className="shrink-0 opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity">
+          →
+        </span>
       </CommandItem>
     ),
     [debouncedQuery, handleEntitySelect],
   )
 
-  // Render endpoint result item
+  // Render endpoint result item (SRCH-09: hover feedback with group class)
   const renderEndpointItem = useCallback(
     (result: SearchResult) => (
       <CommandItem
         key={result.id as string}
         value={result.id as string}
         onSelect={() => handleEndpointSelect(result)}
-        className="flex items-center gap-2.5 py-1"
+        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-accent"
       >
         {(result.endpointKind as string) === 'function' ? (
           <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-fn/10 font-mono text-xs font-medium text-type-fn">
@@ -400,6 +391,9 @@ export function CommandPalette({
             Root
           </span>
         )}
+        <span className="shrink-0 opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity">
+          →
+        </span>
       </CommandItem>
     ),
     [debouncedQuery, handleEndpointSelect, searchMode],
