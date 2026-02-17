@@ -27,7 +27,7 @@ interface CommandPaletteProps {
 
 // ── Constants ──
 
-const INITIAL_SHOW = 5
+const INITIAL_SHOW = 7
 
 // ── Query highlighting ──
 
