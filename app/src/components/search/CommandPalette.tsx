@@ -344,7 +344,7 @@ export function CommandPalette({
         key={result.id as string}
         value={result.id as string}
         onSelect={() => handleEntitySelect(result)}
-        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-accent"
+        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-foreground/8"
       >
         <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-entity/10 font-mono text-xs font-medium text-type-entity">
           {'<>'}
@@ -372,7 +372,7 @@ export function CommandPalette({
         key={result.id as string}
         value={result.id as string}
         onSelect={() => handleEndpointSelect(result)}
-        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-accent"
+        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-foreground/8"
       >
         {(result.endpointKind as string) === 'function' ? (
           <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-fn/10 font-mono text-xs font-medium text-type-fn">
