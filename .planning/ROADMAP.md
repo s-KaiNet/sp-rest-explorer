@@ -46,10 +46,11 @@
   Plans:
   - [x] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
   - [x] 11-02-PLAN.md — Gap closure: fix invisible hover highlight (accent color identical to popover background)
-- [x] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement (completed 2026-02-17)
-  **Plans:** 1 plan
+- [ ] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement
+  **Plans:** 2 plans
   Plans:
-  - [ ] 12-01-PLAN.md — Fix nullable column logic and move breadcrumb into content area
+  - [x] 12-01-PLAN.md — Fix nullable column logic and move breadcrumb into content area
+  - [ ] 12-02-PLAN.md — Gap closure: fix breadcrumb scroll container so scrollbar only covers content below breadcrumb
 
 ## Phase Details
 
@@ -88,7 +89,7 @@
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
 | 10. Home Screens & Visual Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
 | 11. Search UX Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
-| 12. Detail & Layout Fixes | v1.3 | Complete    | 2026-02-17 | - |
+| 12. Detail & Layout Fixes | v1.3 | 1/2 | In Progress | - |
 
 ---
 *Roadmap created: 2026-02-11*
