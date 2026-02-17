@@ -289,13 +289,22 @@ export function CommandPalette({
     () => (searchMode === 'path' ? [] : (searchResults ?? []).filter((r) => r.kind === 'entity')),
     [searchResults, searchMode],
   )
-  const endpoints = useMemo(
-    () =>
-      searchMode === 'path'
-        ? (searchResults ?? [])
-        : (searchResults ?? []).filter((r) => r.kind === 'endpoint'),
-    [searchResults, searchMode],
-  )
+  // SRCH-08: Sort API Endpoints by path length (shortest first) when query is active
+  const endpoints = useMemo(() => {
+    const filtered = searchMode === 'path'
+      ? (searchResults ?? [])
+      : (searchResults ?? []).filter((r) => r.kind === 'endpoint')
+
+    if (debouncedQuery.length >= 3 && filtered.length > 0) {
+      return [...filtered].sort((a, b) => {
+        const pathA = (a.path as string) ?? ''
+        const pathB = (b.path as string) ?? ''
+        return pathA.length - pathB.length
+      })
+    }
+
+    return filtered
+  }, [searchResults, searchMode, debouncedQuery])
 
   // Handle entity selection
   const handleEntitySelect = useCallback(
