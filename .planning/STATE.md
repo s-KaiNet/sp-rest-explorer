@@ -20,7 +20,7 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 Phase: 11 — Search UX Fixes (complete, 2/2 plans)
 Plan: 02 complete
 Status: Phase 11 complete, ready to plan Phase 12
-Last activity: 2026-02-17 - Completed quick task 2: Narrow search rows, more results per group, taller dialog
+Last activity: 2026-02-17 - Completed quick task 2: Narrow search result rows, increase results per group to 7, taller dialog
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
