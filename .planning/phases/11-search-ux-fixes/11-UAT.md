@@ -1,9 +1,9 @@
 ---
-status: complete
+status: diagnosed
 phase: 11-search-ux-fixes
 source: [11-01-SUMMARY.md]
 started: 2026-02-17T02:00:00Z
-updated: 2026-02-17T02:05:00Z
+updated: 2026-02-17T02:06:00Z
 ---
 
 ## Current Test
@@ -45,7 +45,12 @@ skipped: 0
   reason: "User reported: no visible background highlight"
   severity: cosmetic
   test: 4
-  root_cause: ""
-  artifacts: []
-  missing: []
+  root_cause: "Dark mode --accent (oklch(0.22 0.01 260)) is identical to --popover (oklch(0.22 0.01 260)) — hover:bg-accent paints the same color as the dialog background, producing zero contrast"
+  artifacts:
+    - path: "app/src/index.css"
+      issue: "Dark mode --accent and --popover are identical values (oklch(0.22 0.01 260))"
+    - path: "app/src/components/search/CommandPalette.tsx"
+      issue: "Lines 347, 375 use hover:bg-accent which is invisible against bg-popover in dark mode"
+  missing:
+    - "Use theme-resilient hover color on CommandItem — e.g., hover:bg-foreground/5 dark:hover:bg-foreground/8 (semi-transparent overlay always visible regardless of background)"
   debug_session: ""
