@@ -451,6 +451,11 @@ Exit skill and invoke skill("/gsd-discuss-phase [X+1] --auto")
 
 **Route B: Milestone complete (all phases done)**
 
+**Clear auto-advance** — milestone boundary is the natural stopping point:
+```bash
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-set workflow.auto_advance false
+```
+
 <if mode="yolo">
 
 ```

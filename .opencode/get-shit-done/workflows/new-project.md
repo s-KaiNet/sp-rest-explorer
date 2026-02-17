@@ -176,7 +176,8 @@ Create `.planning/config.json` with mode set to "yolo":
   "workflow": {
     "research": true|false,
     "plan_check": true|false,
-    "verifier": true|false
+    "verifier": true|false,
+    "auto_advance": true
   }
 }
 ```
@@ -188,6 +189,12 @@ Create `.planning/config.json` with mode set to "yolo":
 ```bash
 mkdir -p .planning
 node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "chore: add project config" --files .planning/config.json
+```
+
+**Persist auto-advance to config (survives context compaction):**
+
+```bash
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-set workflow.auto_advance true
 ```
 
 Proceed to Step 4 (skip Steps 3 and 5).
