@@ -1,26 +1,33 @@
-# Requirements: SP REST API Explorer — v1.3 Improvements
+# Requirements: SP REST API Explorer — v1.4 Unify Icons
 
-**Defined:** 2026-02-17
+**Defined:** 2026-02-18
 **Core Value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
 
-## v1.3 Requirements
+## v1.4 Requirements
 
 Requirements for this milestone. Each maps to roadmap phases.
 
-### Search UX
+### Icon System
 
-- [ ] **SRCH-06**: Search input treats dots literally — "SP.File" matches only items containing the exact substring "SP.File", not all items matching "SP" and "File" separately
-- [ ] **SRCH-07**: Collapsing a search result group does not cause the group label to visually jump; the entire group header row is clickable (with pointer cursor), not just the collapse icon
-- [ ] **SRCH-08**: API Endpoints search results are sorted by path length (shortest paths first)
-- [ ] **SRCH-09**: Search result items show hover highlight and pointer cursor
+- [ ] **ICON-01**: User sees distinct Lucide icons for each of the 4 API types (root, nav property, function, type/entity)
+- [ ] **ICON-02**: A reusable TypeIcon component renders the correct icon and color given a kind
+- [ ] **ICON-03**: Root endpoints use a dedicated `--type-root` CSS color token (green, OKLCH hue 155)
+- [ ] **ICON-04**: Types/entities use an orange/amber `--type-entity` CSS color token (OKLCH hue ~75-85) distinct from root green
 
-### Entity Detail
+### Explore API
 
-- [ ] **ENTD-12**: Nullable column on entity properties page shows "no" when a property has `"nullable": false`, and "yes" in all other cases
+- [ ] **EAPI-01**: Explore API sidebar displays type icons to the left of entry labels (`[icon] Label`)
+- [ ] **EAPI-02**: Explore API sidebar uses Lucide icons instead of `FN`, `NAV`, `<>` text badges
+- [ ] **EAPI-03**: Explore API welcome screen uses updated Lucide icon with correct type color
+- [ ] **EAPI-04**: Root-level namespace-grouped entries show type icons consistent with the new icon system
 
-### Layout
+### Cross-View Consistency
 
-- [ ] **LAYO-01**: Explore API breadcrumb is rendered inside the main content area, not in the header/chrome
+- [ ] **XVEW-01**: Cmd+K search modal results display Lucide icons instead of `<>`, `ƒ`, `NAV` text symbols
+- [ ] **XVEW-02**: "Root" pill badge is removed from individual search result items
+- [ ] **XVEW-03**: Home page recently visited cards display Lucide icons matching the new icon system
+- [ ] **XVEW-04**: Explore Types welcome screen uses updated Lucide icon with correct type color
+- [ ] **XVEW-05**: Explore Types sidebar uses Lucide icons consistent with the new icon system
 
 ## Future Requirements
 
@@ -44,6 +51,8 @@ Deferred to future milestones. Tracked but not in current roadmap.
 | Mobile-optimized UX | Desktop only, data density makes mobile impractical |
 | Full-tree visualization | 2,449 entities = unreadable hairball |
 | PnPjs code snippets | High value but requires mapping logic, consider post-launch |
+| Stats row / table color updates | Not icon-related, existing colors work fine in context |
+| Breadcrumb segment color changes | Not icon-related, defer to future visual polish |
 
 ## Traceability
 
@@ -51,18 +60,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| SRCH-06 | Phase 11 | Pending |
-| SRCH-07 | Phase 11 | Pending |
-| SRCH-08 | Phase 11 | Pending |
-| SRCH-09 | Phase 11 | Pending |
-| ENTD-12 | Phase 12 | Pending |
-| LAYO-01 | Phase 12 | Pending |
+| ICON-01 | — | Pending |
+| ICON-02 | — | Pending |
+| ICON-03 | — | Pending |
+| ICON-04 | — | Pending |
+| EAPI-01 | — | Pending |
+| EAPI-02 | — | Pending |
+| EAPI-03 | — | Pending |
+| EAPI-04 | — | Pending |
+| XVEW-01 | — | Pending |
+| XVEW-02 | — | Pending |
+| XVEW-03 | — | Pending |
+| XVEW-04 | — | Pending |
+| XVEW-05 | — | Pending |
 
 **Coverage:**
-- v1.3 requirements: 6 total
-- Mapped to phases: 6 ✓
-- Unmapped: 0
+- v1.4 requirements: 13 total
+- Mapped to phases: 0
+- Unmapped: 13
 
 ---
-*Requirements defined: 2026-02-17*
-*Last updated: 2026-02-17 after roadmap creation*
+*Requirements defined: 2026-02-18*
+*Last updated: 2026-02-18 after initial definition*
