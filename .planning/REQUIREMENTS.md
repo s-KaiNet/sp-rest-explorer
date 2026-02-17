@@ -60,25 +60,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ICON-01 | — | Pending |
-| ICON-02 | — | Pending |
-| ICON-03 | — | Pending |
-| ICON-04 | — | Pending |
-| EAPI-01 | — | Pending |
-| EAPI-02 | — | Pending |
-| EAPI-03 | — | Pending |
-| EAPI-04 | — | Pending |
-| XVEW-01 | — | Pending |
-| XVEW-02 | — | Pending |
-| XVEW-03 | — | Pending |
-| XVEW-04 | — | Pending |
-| XVEW-05 | — | Pending |
+| ICON-01 | Phase 13 | Pending |
+| ICON-02 | Phase 13 | Pending |
+| ICON-03 | Phase 13 | Pending |
+| ICON-04 | Phase 13 | Pending |
+| EAPI-01 | Phase 14 | Pending |
+| EAPI-02 | Phase 14 | Pending |
+| EAPI-03 | Phase 14 | Pending |
+| EAPI-04 | Phase 14 | Pending |
+| XVEW-01 | Phase 15 | Pending |
+| XVEW-02 | Phase 15 | Pending |
+| XVEW-03 | Phase 15 | Pending |
+| XVEW-04 | Phase 15 | Pending |
+| XVEW-05 | Phase 15 | Pending |
 
 **Coverage:**
 - v1.4 requirements: 13 total
-- Mapped to phases: 0
-- Unmapped: 13
+- Mapped to phases: 13 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-18*
-*Last updated: 2026-02-18 after initial definition*
+*Last updated: 2026-02-18 after roadmap creation*

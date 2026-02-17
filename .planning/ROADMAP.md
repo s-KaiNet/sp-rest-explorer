@@ -5,7 +5,8 @@
 - ✅ **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
 - ✅ **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
 - ✅ **v1.2 UI Improvements** — Phases 9-10 (shipped 2026-02-15) — [archive](milestones/v1.2-ROADMAP.md)
-- 🔄 **v1.3 Improvements** — Phases 11-12
+- ✅ **v1.3 Improvements** — Phases 11-12 (shipped 2026-02-17) — [archive](milestones/v1.3-ROADMAP.md)
+- 🔄 **v1.4 Unify Icons** — Phases 13-15
 
 ## Phases
 
@@ -39,20 +40,27 @@
 
 </details>
 
-### v1.3 Improvements (Phases 11-12)
+<details>
+<summary>v1.3 Improvements (Phases 11-12) — SHIPPED 2026-02-17</summary>
 
-- [x] **Phase 11: Search UX Fixes** — Dot-literal matching, group collapse stability, path-length sorting, and hover feedback (completed 2026-02-17)
-  **Plans:** 2 plans
-  Plans:
-  - [x] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
-  - [x] 11-02-PLAN.md — Gap closure: fix invisible hover highlight (accent color identical to popover background)
-- [x] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement (completed 2026-02-17)
-  **Plans:** 2 plans
-  Plans:
-  - [x] 12-01-PLAN.md — Fix nullable column logic and move breadcrumb into content area
-  - [ ] 12-02-PLAN.md — Gap closure: fix breadcrumb scroll container so scrollbar only covers content below breadcrumb
+- [x] Phase 11: Search UX Fixes (2/2 plans) — completed 2026-02-17
+- [x] Phase 12: Detail & Layout Fixes (2/2 plans) — completed 2026-02-17
+
+</details>
+
+### v1.4 Unify Icons (Phases 13-15)
+
+- [ ] **Phase 13: Icon System Foundation** — Define Lucide icon set, TypeIcon component, and CSS color tokens for all 4 API types
+  **Plans:** TBD
+- [ ] **Phase 14: Explore API Integration** — Apply icon system to Explore API sidebar, welcome screen, and namespace groups
+  **Plans:** TBD
+- [ ] **Phase 15: Cross-View Consistency** — Apply icons to search modal, home page, and Explore Types views
+  **Plans:** TBD
 
 ## Phase Details
+
+<details>
+<summary>v1.3 Phase Details (archived)</summary>
 
 ### Phase 11: Search UX Fixes
 **Goal**: Search results in the Cmd+K palette behave predictably — dots match literally, groups collapse smoothly, results sort sensibly, and items feel interactive
@@ -72,6 +80,39 @@
   1. On any entity properties table, a property with `"nullable": false` in metadata shows "no" in the Nullable column; all other properties show "yes"
   2. The Explore API breadcrumb trail renders inside the main content area (below the header chrome), not within the top header bar
 
+</details>
+
+### Phase 13: Icon System Foundation
+**Goal**: A reusable icon system exists for all 4 API types — each type has a distinct Lucide icon and CSS color token, ready to be used everywhere
+**Depends on**: Nothing (foundational work for v1.4)
+**Requirements**: ICON-01, ICON-02, ICON-03, ICON-04
+**Success Criteria** (what must be TRUE):
+  1. A `TypeIcon` component renders a distinct Lucide icon for each of the 4 API types: root, nav property, function, and type/entity
+  2. Each icon renders in its designated type color (root = green, nav property = purple, function = blue, type/entity = orange/amber)
+  3. A `--type-root` CSS custom property exists and produces a green color (OKLCH hue ~155) distinct from the other type colors
+  4. The `--type-entity` CSS custom property produces an orange/amber color (OKLCH hue ~75-85) clearly distinguishable from the root green
+
+### Phase 14: Explore API Integration
+**Goal**: The Explore API sidebar and welcome screen use the new icon system — icons appear left of labels, text badges are gone, namespace groups show correct type icons
+**Depends on**: Phase 13
+**Requirements**: EAPI-01, EAPI-02, EAPI-03, EAPI-04
+**Success Criteria** (what must be TRUE):
+  1. Every entry in the Explore API sidebar shows its type icon to the left of the label text (icon-first layout: `[icon] Label`)
+  2. No `FN`, `NAV`, or `<>` text badges appear anywhere in the Explore API sidebar — all replaced by Lucide icons
+  3. The Explore API welcome screen displays Lucide icons with correct type colors matching the new icon system
+  4. Root-level namespace-grouped entries in the sidebar show type icons consistent with the icon system (root entries = green icon, functions = blue icon, etc.)
+
+### Phase 15: Cross-View Consistency
+**Goal**: Every view in the app uses the unified icon system — search modal, home page, Explore Types all show consistent Lucide icons with correct type colors
+**Depends on**: Phase 13
+**Requirements**: XVEW-01, XVEW-02, XVEW-03, XVEW-04, XVEW-05
+**Success Criteria** (what must be TRUE):
+  1. Cmd+K search modal results display Lucide type icons — no `<>`, `ƒ`, `NAV`, or `T` text symbols remain
+  2. Individual search result items no longer show a "Root" pill badge — root status is conveyed solely by the green root icon
+  3. Home page recently visited cards display Lucide icons matching the type of each visited item
+  4. The Explore Types welcome screen displays the type/entity Lucide icon in orange/amber
+  5. The Explore Types sidebar entries display Lucide icons consistent with the new icon system
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -89,8 +130,11 @@
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
 | 10. Home Screens & Visual Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
 | 11. Search UX Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
-| 12. Detail & Layout Fixes | v1.3 | Complete    | 2026-02-17 | - |
+| 12. Detail & Layout Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
+| 13. Icon System Foundation | v1.4 | 0/? | Not started | - |
+| 14. Explore API Integration | v1.4 | 0/? | Not started | - |
+| 15. Cross-View Consistency | v1.4 | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-17 (Phase 11 planned — 1 plan)*
+*Last updated: 2026-02-18 (v1.4 roadmap — phases 13-15)*
