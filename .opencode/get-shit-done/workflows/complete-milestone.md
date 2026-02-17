@@ -447,7 +447,7 @@ Use `init milestone-op` for context, or load config directly:
 INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init execute-phase "1")
 ```
 
-Extract `branching_strategy`, `phase_branch_template`, `milestone_branch_template` from init JSON.
+Extract `branching_strategy`, `phase_branch_template`, `milestone_branch_template`, and `commit_docs` from init JSON.
 
 **If "none":** Skip to git_tag.
 
@@ -492,12 +492,20 @@ git checkout main
 if [ "$BRANCHING_STRATEGY" = "phase" ]; then
   for branch in $PHASE_BRANCHES; do
     git merge --squash "$branch"
+    # Strip .planning/ from staging if commit_docs is false
+    if [ "$COMMIT_DOCS" = "false" ]; then
+      git reset HEAD .planning/ 2>/dev/null || true
+    fi
     git commit -m "feat: $branch for v[X.Y]"
   done
 fi
 
 if [ "$BRANCHING_STRATEGY" = "milestone" ]; then
   git merge --squash "$MILESTONE_BRANCH"
+  # Strip .planning/ from staging if commit_docs is false
+  if [ "$COMMIT_DOCS" = "false" ]; then
+    git reset HEAD .planning/ 2>/dev/null || true
+  fi
   git commit -m "feat: $MILESTONE_BRANCH for v[X.Y]"
 fi
 
@@ -512,12 +520,22 @@ git checkout main
 
 if [ "$BRANCHING_STRATEGY" = "phase" ]; then
   for branch in $PHASE_BRANCHES; do
-    git merge --no-ff "$branch" -m "Merge branch '$branch' for v[X.Y]"
+    git merge --no-ff --no-commit "$branch"
+    # Strip .planning/ from staging if commit_docs is false
+    if [ "$COMMIT_DOCS" = "false" ]; then
+      git reset HEAD .planning/ 2>/dev/null || true
+    fi
+    git commit -m "Merge branch '$branch' for v[X.Y]"
   done
 fi
 
 if [ "$BRANCHING_STRATEGY" = "milestone" ]; then
-  git merge --no-ff "$MILESTONE_BRANCH" -m "Merge branch '$MILESTONE_BRANCH' for v[X.Y]"
+  git merge --no-ff --no-commit "$MILESTONE_BRANCH"
+  # Strip .planning/ from staging if commit_docs is false
+  if [ "$COMMIT_DOCS" = "false" ]; then
+    git reset HEAD .planning/ 2>/dev/null || true
+  fi
+  git commit -m "Merge branch '$MILESTONE_BRANCH' for v[X.Y]"
 fi
 
 git checkout "$CURRENT_BRANCH"

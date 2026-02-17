@@ -1,0 +1,10 @@
+{
+  "permission": {
+    "read": {
+      "E:/Projects/gh/src/sp-rest-explorer/app/.opencode/get-shit-done/*": "allow"
+    },
+    "external_directory": {
+      "E:/Projects/gh/src/sp-rest-explorer/app/.opencode/get-shit-done/*": "allow"
+    }
+  }
+}

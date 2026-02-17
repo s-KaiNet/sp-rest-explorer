@@ -359,11 +359,32 @@ node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs(phase-{X}): comple
 
 <step name="offer_next">
 
-**Routing is handled by `transition.md`** — do NOT emit a separate "Next Up" block here.
+**Exception:** If `gaps_found`, the `verify_phase_goal` step already presents the gap-closure path (`/gsd-plan-phase {X} --gaps`). No additional routing needed — skip auto-advance.
 
-After `verify_phase_goal` passes (or human approves), the workflow ends. The user runs `/gsd-progress` or the transition workflow handles next-step routing.
+**Auto-advance detection:**
 
-**Exception:** If `gaps_found`, the `verify_phase_goal` step already presents the gap-closure path (`/gsd-plan-phase {X} --gaps`). No additional routing needed.
+1. Parse `--auto` flag from $ARGUMENTS
+2. Read `workflow.auto_advance` from config:
+   ```bash
+   AUTO_CFG=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-get workflow.auto_advance 2>/dev/null || echo "false")
+   ```
+
+**If `--auto` flag present OR `AUTO_CFG` is true (AND verification passed with no gaps):**
+
+```
+╔══════════════════════════════════════════╗
+║  AUTO-ADVANCING → TRANSITION             ║
+║  Phase {X} verified, continuing chain    ║
+╚══════════════════════════════════════════╝
+```
+
+Execute the transition workflow inline (do NOT use Task — orchestrator context is ~10-15%, transition needs phase completion data already in context):
+
+Read and follow `./.opencode/get-shit-done/workflows/transition.md`, passing through the `--auto` flag so it propagates to the next phase invocation.
+
+**If neither `--auto` nor `AUTO_CFG` is true:**
+
+The workflow ends. The user runs `/gsd-progress` or invokes the transition workflow manually.
 </step>
 
 </process>

@@ -61,6 +61,18 @@ Use `context_content` from init JSON (already loaded via `--include context`).
 
 If `context_content` is not null, display: `Using phase context from: ${PHASE_DIR}/*-CONTEXT.md`
 
+**If `context_content` is null (no CONTEXT.md exists):**
+
+Use question:
+- header: "No context"
+- question: "No CONTEXT.md found for Phase {X}. Plans will use research and requirements only — your design preferences won't be included. Continue or capture context first?"
+- options:
+  - "Continue without context" — Plan using research + requirements only
+  - "Run discuss-phase first" — Capture design decisions before planning
+
+If "Continue without context": Proceed to step 5.
+If "Run discuss-phase first": Display `/gsd-discuss-phase {X}` and exit workflow.
+
 ## 5. Handle Research
 
 **Skip if:** `--gaps` flag, `--skip-research` flag, or `research_enabled` is false (from init) without `--research` override.
@@ -119,7 +131,7 @@ Write to: {phase_dir}/{phase_num}-RESEARCH.md
 ```
 Task(
   prompt="First, read ./.opencode/agents/gsd-phase-researcher.md for your role and instructions.\n\n" + research_prompt,
-  subagent_type="general-purpose",
+  subagent_type="general",
   model="{researcher_model}",
   description="Research Phase {phase}"
 )
@@ -208,7 +220,7 @@ Output consumed by /gsd-execute-phase. Plans need:
 ```
 Task(
   prompt="First, read ./.opencode/agents/gsd-planner.md for your role and instructions.\n\n" + filled_prompt,
-  subagent_type="general-purpose",
+  subagent_type="general",
   model="{planner_model}",
   description="Plan Phase {phase}"
 )
@@ -311,7 +323,7 @@ Return what changed.
 ```
 Task(
   prompt="First, read ./.opencode/agents/gsd-planner.md for your role and instructions.\n\n" + revision_prompt,
-  subagent_type="general-purpose",
+  subagent_type="general",
   model="{planner_model}",
   description="Revise Phase {phase} plans"
 )
@@ -336,7 +348,7 @@ Check for auto-advance trigger:
 1. Parse `--auto` flag from $ARGUMENTS
 2. Read `workflow.auto_advance` from config:
    ```bash
-   AUTO_CFG=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs config get workflow.auto_advance 2>/dev/null || echo "false")
+   AUTO_CFG=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-get workflow.auto_advance 2>/dev/null || echo "false")
    ```
 
 **If `--auto` flag present OR `AUTO_CFG` is true:**
@@ -354,7 +366,7 @@ Spawn execute-phase as Task:
 ```
 Task(
   prompt="Run /gsd-execute-phase ${PHASE}",
-  subagent_type="general-purpose",
+  subagent_type="general",
   description="Execute Phase ${PHASE}"
 )
 ```
