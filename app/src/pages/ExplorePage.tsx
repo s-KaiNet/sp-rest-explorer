@@ -123,12 +123,14 @@ export function ExplorePage() {
           </div>
         </ResizablePanel>
 
-        {/* Right: Content area with independent scroll */}
-        <div className="flex-1 overflow-y-auto bg-muted/30">
-          {/* Sticky breadcrumb — only on detail pages */}
+        {/* Right: Content area — flex column with non-scrolling breadcrumb + scrollable content */}
+        <div className="flex flex-1 flex-col overflow-hidden bg-muted/30">
+          {/* Breadcrumb — outside scroll container, only on detail pages */}
           {!isRoot && segments.length > 0 && (
             <BreadcrumbBar segments={segments} onNavigate={handleBreadcrumbNavigate} />
           )}
+          {/* Scrollable content area — scrollbar starts below breadcrumb */}
+          <div className="flex-1 overflow-y-auto">
           <ContentTransition pathKey={pathKey}>
               {isRoot ? (
                 <div className="flex flex-1 flex-col items-center justify-center px-8 py-12 text-center">
@@ -227,6 +229,7 @@ export function ExplorePage() {
                 </div>
               )}
           </ContentTransition>
+          </div>
         </div>
       </div>
     </div>
