@@ -42,9 +42,10 @@
 ### v1.3 Improvements (Phases 11-12)
 
 - [x] **Phase 11: Search UX Fixes** — Dot-literal matching, group collapse stability, path-length sorting, and hover feedback (completed 2026-02-17)
-  **Plans:** 1 plan
+  **Plans:** 2 plans
   Plans:
-  - [ ] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
+  - [x] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
+  - [ ] 11-02-PLAN.md — Gap closure: fix invisible hover highlight (accent color identical to popover background)
 - [ ] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement
 
 ## Phase Details
