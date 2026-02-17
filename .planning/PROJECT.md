@@ -12,6 +12,18 @@ A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + W
 
 v1.2 polished the UI with namespace-grouped Explore API sidebar, decluttered badge system, branded home page with favicon and approximate stats, redesigned Explore API welcome screen, expanded recently visited with Types entries, and subdued dark mode Cmd+K modal borders.
 
+## Current Milestone: v1.3 Improvements
+
+**Goal:** Fix search behavior bugs, improve search UX, fix nullable property display, and relocate Explore API breadcrumb to content area.
+
+**Target features:**
+- Fix search dot-handling so "SP.File" matches literally, not as regex
+- Fix group collapse label jump and make full row clickable
+- Sort API Endpoints search results by path length (shortest first)
+- Add hover visual feedback and pointer cursor to search results
+- Fix nullable property logic on entity detail pages
+- Move Explore API breadcrumb into main content area
+
 ## Core Value
 
 Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
@@ -107,4 +119,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-15 after v1.2 milestone*
+*Last updated: 2026-02-17 after v1.3 milestone start*

@@ -16,16 +16,17 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 
 ## Current Position
 
-**Milestone:** v1.2 UI Improvements — SHIPPED
-Phase: 10 — Home Screens Visual Polish ✅
-Plan: 2 of 2 ✅
-Status: v1.2 milestone shipped and archived
-Last activity: 2026-02-15 — Milestone v1.2 archived
+**Milestone:** v1.3 Improvements
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-02-17 — Milestone v1.3 started
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
+v1.3 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% — DEFINING
 ```
 
 ## Performance Metrics
@@ -61,10 +62,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** Milestone v1.2 archival (2026-02-15)
-**What happened:** Archived v1.2 milestone — created milestones/v1.2-ROADMAP.md and milestones/v1.2-REQUIREMENTS.md, collapsed ROADMAP.md, updated PROJECT.md with validated v1.2 requirements, deleted REQUIREMENTS.md.
-**Next step:** `/gsd-new-milestone` to start next milestone (questioning → research → requirements → roadmap)
+**Last session:** Milestone v1.3 initialization (2026-02-17)
+**What happened:** Started milestone v1.3 Improvements — 6 bug fixes and UX improvements for search, nullable properties, and breadcrumb layout.
+**Next step:** Define requirements, create roadmap, then `/gsd-plan-phase 11`
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-15 (v1.2 milestone archived)*
+*Last updated: 2026-02-17 (v1.3 milestone started)*
