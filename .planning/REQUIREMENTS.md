@@ -31,8 +31,8 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Entity Link Colors
 
-- [ ] **LINK-01**: Entity type links (e.g., SP.Alert, SP.Group) render in the entity type color (orange/amber `--type-entity`) instead of hardcoded emerald green
-- [ ] **LINK-02**: Collection wrapper links (e.g., "Collection" prefix) remain muted-foreground, only the inner type name uses entity color
+- [x] **LINK-01**: Entity type links (e.g., SP.Alert, SP.Group) render in the entity type color (orange/amber `--type-entity`) instead of hardcoded emerald green
+- [x] **LINK-02**: Collection wrapper links (e.g., "Collection" prefix) remain muted-foreground, only the inner type name uses entity color
 
 ## Future Requirements
 

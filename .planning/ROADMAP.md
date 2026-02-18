@@ -63,7 +63,7 @@
   Plans:
   - [ ] 15-01-PLAN.md — TypeIcon in search modal and home page recently visited cards
   - [ ] 15-02-PLAN.md — TypeIcon in Explore Types welcome and sidebar + text symbol cleanup
-- [ ] **Phase 16: Change color for entity links** — Make entity type links use matching type colors from the icon system
+- [x] **Phase 16: Change color for entity links** — Make entity type links use matching type colors from the icon system (completed 2026-02-18)
   **Plans:** 1 plan
   Plans:
   - [ ] 16-01-PLAN.md — Replace emerald link color with type-entity CSS variable color
@@ -131,7 +131,7 @@
 **Success Criteria** (what must be TRUE):
   1. Entity/complex type links in property tables, nav property tables, method return types, and base type chains render in the `--type-entity` color (orange/amber) — not emerald green
   2. The "Collection" prefix part of Collection(Entity) links remains muted-foreground, while the inner entity name uses the entity type color
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 ## Progress
 
@@ -154,7 +154,7 @@
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
 | 14. Explore API Integration | 1/1 | Complete    | 2026-02-18 | - |
 | 15. Cross-View Consistency | 2/2 | Complete    | 2026-02-18 | - |
-| 16. Change color for entity links | v1.4 | 0/0 | Not planned | - |
+| 16. Change color for entity links | 1/1 | Complete   | 2026-02-18 | - |
 
 ---
 *Roadmap created: 2026-02-11*
