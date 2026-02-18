@@ -51,7 +51,9 @@
 ### v1.4 Unify Icons (Phases 13-15)
 
 - [ ] **Phase 13: Icon System Foundation** — Define Lucide icon set, TypeIcon component, and CSS color tokens for all 4 API types
-  **Plans:** TBD
+  **Plans:** 1 plan
+  Plans:
+  - [ ] 13-01-PLAN.md — CSS color tokens + ApiType type + TypeIcon component
 - [ ] **Phase 14: Explore API Integration** — Apply icon system to Explore API sidebar, welcome screen, and namespace groups
   **Plans:** TBD
 - [ ] **Phase 15: Cross-View Consistency** — Apply icons to search modal, home page, and Explore Types views
