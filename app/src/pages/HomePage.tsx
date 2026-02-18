@@ -133,7 +133,7 @@ export function HomePage() {
             11k+ properties
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-root" />
             60k+ endpoints
           </span>
         </div>

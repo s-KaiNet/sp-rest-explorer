@@ -160,7 +160,7 @@ export function ExplorePage() {
                       </span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-[28px] font-bold text-type-fn">
+                      <span className="text-[28px] font-bold text-type-root">
                         {functionCount.toLocaleString()}
                       </span>
                       <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
