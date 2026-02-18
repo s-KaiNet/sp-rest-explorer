@@ -154,7 +154,7 @@
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
 | 14. Explore API Integration | 1/1 | Complete    | 2026-02-18 | - |
 | 15. Cross-View Consistency | 2/2 | Complete    | 2026-02-18 | - |
-| 16. Change color for entity links | 1/1 | Complete   | 2026-02-18 | - |
+| 16. Change color for entity links | 1/1 | Complete    | 2026-02-18 | - |
 
 ---
 *Roadmap created: 2026-02-11*
