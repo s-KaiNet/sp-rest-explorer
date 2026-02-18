@@ -9,10 +9,10 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Icon System
 
-- [ ] **ICON-01**: User sees distinct Lucide icons for each of the 4 API types (root, nav property, function, type/entity)
-- [ ] **ICON-02**: A reusable TypeIcon component renders the correct icon and color given a kind
-- [ ] **ICON-03**: Root endpoints use a dedicated `--type-root` CSS color token (green, OKLCH hue 155)
-- [ ] **ICON-04**: Types/entities use an orange/amber `--type-entity` CSS color token (OKLCH hue ~75-85) distinct from root green
+- [x] **ICON-01**: User sees distinct Lucide icons for each of the 4 API types (root, nav property, function, type/entity)
+- [x] **ICON-02**: A reusable TypeIcon component renders the correct icon and color given a kind
+- [x] **ICON-03**: Root endpoints use a dedicated `--type-root` CSS color token (green, OKLCH hue 155)
+- [x] **ICON-04**: Types/entities use an orange/amber `--type-entity` CSS color token (OKLCH hue ~75-85) distinct from root green
 
 ### Explore API
 
@@ -60,10 +60,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ICON-01 | Phase 13 | Pending |
-| ICON-02 | Phase 13 | Pending |
-| ICON-03 | Phase 13 | Pending |
-| ICON-04 | Phase 13 | Pending |
+| ICON-01 | Phase 13 | Complete |
+| ICON-02 | Phase 13 | Complete |
+| ICON-03 | Phase 13 | Complete |
+| ICON-04 | Phase 13 | Complete |
 | EAPI-01 | Phase 14 | Pending |
 | EAPI-02 | Phase 14 | Pending |
 | EAPI-03 | Phase 14 | Pending |
