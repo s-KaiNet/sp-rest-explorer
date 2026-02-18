@@ -55,7 +55,9 @@
   Plans:
   - [ ] 13-01-PLAN.md — CSS color tokens + ApiType type + TypeIcon component
 - [ ] **Phase 14: Explore API Integration** — Apply icon system to Explore API sidebar, welcome screen, and namespace groups
-  **Plans:** TBD
+  **Plans:** 1 plan
+  Plans:
+  - [ ] 14-01-PLAN.md — TypeIcon integration in sidebar entries and welcome screen
 - [ ] **Phase 15: Cross-View Consistency** — Apply icons to search modal, home page, and Explore Types views
   **Plans:** TBD
 
@@ -134,7 +136,7 @@
 | 11. Search UX Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
 | 12. Detail & Layout Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
-| 14. Explore API Integration | v1.4 | 0/? | Not started | - |
+| 14. Explore API Integration | v1.4 | 0/1 | Planned | - |
 | 15. Cross-View Consistency | v1.4 | 0/? | Not started | - |
 
 ---
