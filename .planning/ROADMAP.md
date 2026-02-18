@@ -58,7 +58,7 @@
   **Plans:** 1 plan
   Plans:
   - [ ] 14-01-PLAN.md — TypeIcon integration in sidebar entries and welcome screen
-- [ ] **Phase 15: Cross-View Consistency** — Apply icons to search modal, home page, and Explore Types views
+- [x] **Phase 15: Cross-View Consistency** — Apply icons to search modal, home page, and Explore Types views (completed 2026-02-18)
   **Plans:** 2 plans
   Plans:
   - [ ] 15-01-PLAN.md — TypeIcon in search modal and home page recently visited cards
@@ -140,7 +140,7 @@
 | 12. Detail & Layout Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
 | 14. Explore API Integration | 1/1 | Complete    | 2026-02-18 | - |
-| 15. Cross-View Consistency | 1/2 | In Progress|  | - |
+| 15. Cross-View Consistency | 2/2 | Complete   | 2026-02-18 | - |
 
 ---
 *Roadmap created: 2026-02-11*

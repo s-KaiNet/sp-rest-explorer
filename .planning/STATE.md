@@ -18,16 +18,16 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Milestone:** v1.4 Unify Icons
 Phase: 15 — Cross-View Consistency
-Plan: 01 complete (1/2 plans)
-Status: In progress — plan 15-01 complete, 15-02 remaining
-Last activity: 2026-02-18 — Executed 15-01 (Cross-View Icon Consistency)
+Plan: 02 complete (2/2 plans)
+Status: Phase 15 complete — all plans executed
+Last activity: 2026-02-18 — Executed 15-02 (Explore Types TypeIcon Migration)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
 v1.3 Progress: ████████████████████ 100% (2/2 phases: 11 ✓, 12 ✓) — SHIPPED
-v1.4 Progress: █████████████░░░░░░░ 67% (2/3 phases: 13 ✓, 14 ✓, 15)
+v1.4 Progress: ████████████████████ 100% (3/3 phases: 13 ✓, 14 ✓, 15 ✓) — SHIPPED
 ```
 
 ## Performance Metrics
@@ -57,6 +57,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 14:** Welcome hero uses bare TypeIcon(root, lg) with no background container
 - **Phase 15:** Root items in search results use green Box icon as sole indicator — no pill badge
 - **Phase 15:** Recently visited cards use TypeIcon md (20px) — larger than sidebar sm but proportional to card
+- **Phase 15:** Hint box text color corrected from green (root) to amber (entity) to match entity type semantics
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -83,10 +84,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-18T23:14:20Z
-**What happened:** Executed 15-01 — Replaced text symbols with TypeIcon in search modal and recently visited cards. Plan 1 of 2 complete.
-**Next step:** Execute 15-02 to complete Cross-View Consistency phase
+**Last session:** 2026-02-18T23:18:29Z
+**What happened:** Executed 15-02 — Replaced T text symbols with TypeIcon in Explore Types welcome and sidebar. Phase 15 complete, v1.4 milestone complete.
+**Next step:** v1.4 Unify Icons milestone complete — ready for next milestone
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-18 (phase 14 complete)*
+*Last updated: 2026-02-18 (phase 15 complete, v1.4 shipped)*
