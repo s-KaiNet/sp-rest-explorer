@@ -17,17 +17,17 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 **Milestone:** v1.4 Unify Icons
-Phase: 13 — Icon System Foundation
-Plan: 02 complete (2/2 plans)
-Status: Phase 13 complete — ready for phase 14 planning
-Last activity: 2026-02-18 — Executed 13-02 (Root-Type Color Fix)
+Phase: 14 — Explore API Integration
+Plan: 01 complete (1/1 plans)
+Status: Phase 14 complete — ready for phase 15 planning
+Last activity: 2026-02-18 — Executed 14-01 (Explore API Icon Integration)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
 v1.3 Progress: ████████████████████ 100% (2/2 phases: 11 ✓, 12 ✓) — SHIPPED
-v1.4 Progress: ███████░░░░░░░░░░░░░ 33% (1/3 phases: 13 ✓, 14, 15)
+v1.4 Progress: █████████████░░░░░░░ 67% (2/3 phases: 13 ✓, 14 ✓, 15)
 ```
 
 ## Performance Metrics
@@ -53,6 +53,8 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 12:** Flex column split for scroll isolation — breadcrumb outside scroll container, no sticky needed
 - **Phase 13:** ApiType as minimal union type — no enums or utilities, deferred to consuming phases
 - **Phase 13:** TypeIcon uses Record maps for icon/color lookup, OKLCH chroma 0.12-0.15 for muted colors
+- **Phase 14:** Caller-passed apiType prop on SidebarItem — no internal kind-to-type mapping
+- **Phase 14:** Welcome hero uses bare TypeIcon(root, lg) with no background container
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -79,10 +81,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-18T22:18:27.102Z
-**What happened:** Executed 13-02 — Fixed root-type color references across 4 components (7 class replacements). Phase 13 complete.
-**Next step:** `/gsd-plan-phase 14` to plan the Explore API Icons phase
+**Last session:** 2026-02-18T22:28:00Z
+**What happened:** Executed 14-01 — Replaced text badges with TypeIcon in Explore API sidebar and welcome hero. Phase 14 complete.
+**Next step:** `/gsd-plan-phase 15` to plan Cross-View Consistency phase
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-18 (phase 13 complete)*
+*Last updated: 2026-02-18 (phase 14 complete)*

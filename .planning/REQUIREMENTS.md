@@ -16,10 +16,10 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Explore API
 
-- [ ] **EAPI-01**: Explore API sidebar displays type icons to the left of entry labels (`[icon] Label`)
-- [ ] **EAPI-02**: Explore API sidebar uses Lucide icons instead of `FN`, `NAV`, `<>` text badges
-- [ ] **EAPI-03**: Explore API welcome screen uses updated Lucide icon with correct type color
-- [ ] **EAPI-04**: Root-level namespace-grouped entries show type icons consistent with the new icon system
+- [x] **EAPI-01**: Explore API sidebar displays type icons to the left of entry labels (`[icon] Label`)
+- [x] **EAPI-02**: Explore API sidebar uses Lucide icons instead of `FN`, `NAV`, `<>` text badges
+- [x] **EAPI-03**: Explore API welcome screen uses updated Lucide icon with correct type color
+- [x] **EAPI-04**: Root-level namespace-grouped entries show type icons consistent with the new icon system
 
 ### Cross-View Consistency
 
@@ -64,10 +64,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ICON-02 | Phase 13 | Complete |
 | ICON-03 | Phase 13 | Complete |
 | ICON-04 | Phase 13 | Complete |
-| EAPI-01 | Phase 14 | Pending |
-| EAPI-02 | Phase 14 | Pending |
-| EAPI-03 | Phase 14 | Pending |
-| EAPI-04 | Phase 14 | Pending |
+| EAPI-01 | Phase 14 | Complete |
+| EAPI-02 | Phase 14 | Complete |
+| EAPI-03 | Phase 14 | Complete |
+| EAPI-04 | Phase 14 | Complete |
 | XVEW-01 | Phase 15 | Pending |
 | XVEW-02 | Phase 15 | Pending |
 | XVEW-03 | Phase 15 | Pending |
