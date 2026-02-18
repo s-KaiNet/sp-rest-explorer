@@ -63,6 +63,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
 - Phase 07.2 inserted after Phase 07.1: Add path to API Endpoints index (URGENT)
 - Phase 09-03 inserted: Gap closure for namespace grouping (used entry.returnType instead of entry.name)
+- Phase 16 added: Change color for entity links
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation

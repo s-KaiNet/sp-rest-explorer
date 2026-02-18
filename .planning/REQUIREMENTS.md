@@ -29,6 +29,11 @@ Requirements for this milestone. Each maps to roadmap phases.
 - [x] **XVEW-04**: Explore Types welcome screen uses updated Lucide icon with correct type color
 - [x] **XVEW-05**: Explore Types sidebar uses Lucide icons consistent with the new icon system
 
+### Entity Link Colors
+
+- [ ] **LINK-01**: Entity type links (e.g., SP.Alert, SP.Group) render in the entity type color (orange/amber `--type-entity`) instead of hardcoded emerald green
+- [ ] **LINK-02**: Collection wrapper links (e.g., "Collection" prefix) remain muted-foreground, only the inner type name uses entity color
+
 ## Future Requirements
 
 Deferred to future milestones. Tracked but not in current roadmap.
@@ -73,10 +78,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | XVEW-03 | Phase 15 | Complete |
 | XVEW-04 | Phase 15 | Complete |
 | XVEW-05 | Phase 15 | Complete |
+| LINK-01 | Phase 16 | Planned |
+| LINK-02 | Phase 16 | Planned |
 
 **Coverage:**
-- v1.4 requirements: 13 total
-- Mapped to phases: 13 ✓
+- v1.4 requirements: 15 total
+- Mapped to phases: 15 ✓
 - Unmapped: 0
 
 ---

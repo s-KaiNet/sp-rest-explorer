@@ -6,7 +6,7 @@
 - ✅ **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
 - ✅ **v1.2 UI Improvements** — Phases 9-10 (shipped 2026-02-15) — [archive](milestones/v1.2-ROADMAP.md)
 - ✅ **v1.3 Improvements** — Phases 11-12 (shipped 2026-02-17) — [archive](milestones/v1.3-ROADMAP.md)
-- 🔄 **v1.4 Unify Icons** — Phases 13-15
+- 🔄 **v1.4 Unify Icons** — Phases 13-16
 
 ## Phases
 
@@ -48,7 +48,7 @@
 
 </details>
 
-### v1.4 Unify Icons (Phases 13-15)
+### v1.4 Unify Icons (Phases 13-16)
 
 - [x] **Phase 13: Icon System Foundation** — Define Lucide icon set, TypeIcon component, and CSS color tokens for all 4 API types (completed 2026-02-18)
   **Plans:** 1 plan
@@ -63,6 +63,10 @@
   Plans:
   - [ ] 15-01-PLAN.md — TypeIcon in search modal and home page recently visited cards
   - [ ] 15-02-PLAN.md — TypeIcon in Explore Types welcome and sidebar + text symbol cleanup
+- [ ] **Phase 16: Change color for entity links** — Make entity type links use matching type colors from the icon system
+  **Plans:** 1 plan
+  Plans:
+  - [ ] 16-01-PLAN.md — Replace emerald link color with type-entity CSS variable color
 
 ## Phase Details
 
@@ -120,6 +124,15 @@
   4. The Explore Types welcome screen displays the type/entity Lucide icon in orange/amber
   5. The Explore Types sidebar entries display Lucide icons consistent with the new icon system
 
+### Phase 16: Change color for entity links
+**Goal:** Entity type links (e.g., SP.Alert, SP.Group) render in the same color as their corresponding entity type icon (orange/amber) instead of default link color
+**Depends on:** Phase 13
+**Requirements:** LINK-01, LINK-02
+**Success Criteria** (what must be TRUE):
+  1. Entity/complex type links in property tables, nav property tables, method return types, and base type chains render in the `--type-entity` color (orange/amber) — not emerald green
+  2. The "Collection" prefix part of Collection(Entity) links remains muted-foreground, while the inner entity name uses the entity type color
+**Plans:** 1 plan
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -141,7 +154,8 @@
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
 | 14. Explore API Integration | 1/1 | Complete    | 2026-02-18 | - |
 | 15. Cross-View Consistency | 2/2 | Complete    | 2026-02-18 | - |
+| 16. Change color for entity links | v1.4 | 0/0 | Not planned | - |
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-18 (v1.4 roadmap — phases 13-15)*
+*Last updated: 2026-02-19 (v1.4 roadmap — phases 13-16)*
