@@ -2,6 +2,8 @@ import { useNavigate, useOutletContext } from 'react-router'
 import { Search, Clock, ArrowRight } from 'lucide-react'
 import { useRecentlyVisited } from '@/hooks'
 import type { RecentlyVisitedItem } from '@/hooks'
+import { TypeIcon } from '@/components/ui/type-icon'
+import type { ApiType } from '@/lib/api-types'
 import faviconUrl from '/favicon.svg'
 
 // ── Relative time helper ──
@@ -20,6 +22,15 @@ function relativeTime(timestamp: number): string {
   return `${weeks}w ago`
 }
 
+// ── Kind → ApiType mapping ──
+
+const kindToApiType: Record<RecentlyVisitedItem['kind'], ApiType> = {
+  root: 'root',
+  function: 'function',
+  entity: 'entity',
+  navProperty: 'nav',
+}
+
 // ── Recently Visited Card ──
 
 function RecentlyVisitedCard({
@@ -29,36 +40,16 @@ function RecentlyVisitedCard({
   item: RecentlyVisitedItem
   onClick: () => void
 }) {
-  // Determine icon and colors based on kind
-  // root = <> green, function = ƒ blue, entity = T green, navProperty = NAV purple
-  let icon: string
-  let colorClass: string
-  if (item.kind === 'root') {
-    icon = '<>'
-    colorClass = 'bg-type-root/10 text-type-root'
-  } else if (item.kind === 'function') {
-    icon = 'ƒ'
-    colorClass = 'bg-type-fn/10 text-type-fn'
-  } else if (item.kind === 'entity') {
-    icon = 'T'
-    colorClass = 'bg-type-entity/10 text-type-entity'
-  } else {
-    // navProperty
-    icon = 'NAV'
-    colorClass = 'bg-type-nav/10 text-type-nav'
-  }
-
   return (
     <button
       onClick={onClick}
       className="flex items-center gap-3 rounded-lg border border-border bg-background px-3.5 py-3 text-left transition-all hover:border-border/60 hover:bg-accent/50 hover:shadow-sm cursor-pointer"
     >
       {/* Type icon */}
-      <div
-        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded text-[10px] font-bold ${colorClass}`}
-      >
-        {icon}
-      </div>
+      <TypeIcon type={kindToApiType[item.kind]} size="md" />
+      <span className="sr-only">
+        {item.kind === 'navProperty' ? 'Navigation property' : item.kind}
+      </span>
 
       {/* Name + path */}
       <div className="min-w-0 flex-1">
