@@ -17,10 +17,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 **Milestone:** v1.4 Unify Icons
-Phase: 14 — Explore API Integration
-Plan: 01 complete (1/1 plans)
-Status: Phase 14 complete — ready for phase 15 planning
-Last activity: 2026-02-18 — Executed 14-01 (Explore API Icon Integration)
+Phase: 15 — Cross-View Consistency
+Plan: 01 complete (1/2 plans)
+Status: In progress — plan 15-01 complete, 15-02 remaining
+Last activity: 2026-02-18 — Executed 15-01 (Cross-View Icon Consistency)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -55,6 +55,8 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 13:** TypeIcon uses Record maps for icon/color lookup, OKLCH chroma 0.12-0.15 for muted colors
 - **Phase 14:** Caller-passed apiType prop on SidebarItem — no internal kind-to-type mapping
 - **Phase 14:** Welcome hero uses bare TypeIcon(root, lg) with no background container
+- **Phase 15:** Root items in search results use green Box icon as sole indicator — no pill badge
+- **Phase 15:** Recently visited cards use TypeIcon md (20px) — larger than sidebar sm but proportional to card
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -81,9 +83,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-18T23:03:39.260Z
-**What happened:** Executed 14-01 — Replaced text badges with TypeIcon in Explore API sidebar and welcome hero. Phase 14 complete.
-**Next step:** `/gsd-plan-phase 15` to plan Cross-View Consistency phase
+**Last session:** 2026-02-18T23:14:20Z
+**What happened:** Executed 15-01 — Replaced text symbols with TypeIcon in search modal and recently visited cards. Plan 1 of 2 complete.
+**Next step:** Execute 15-02 to complete Cross-View Consistency phase
 
 ---
 *State initialized: 2026-02-11*

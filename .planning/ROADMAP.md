@@ -140,7 +140,7 @@
 | 12. Detail & Layout Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
 | 14. Explore API Integration | 1/1 | Complete    | 2026-02-18 | - |
-| 15. Cross-View Consistency | v1.4 | 0/2 | Not started | - |
+| 15. Cross-View Consistency | 1/2 | In Progress|  | - |
 
 ---
 *Roadmap created: 2026-02-11*

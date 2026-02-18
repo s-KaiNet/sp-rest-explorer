@@ -23,9 +23,9 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Cross-View Consistency
 
-- [ ] **XVEW-01**: Cmd+K search modal results display Lucide icons instead of `<>`, `ƒ`, `NAV` text symbols
-- [ ] **XVEW-02**: "Root" pill badge is removed from individual search result items
-- [ ] **XVEW-03**: Home page recently visited cards display Lucide icons matching the new icon system
+- [x] **XVEW-01**: Cmd+K search modal results display Lucide icons instead of `<>`, `ƒ`, `NAV` text symbols
+- [x] **XVEW-02**: "Root" pill badge is removed from individual search result items
+- [x] **XVEW-03**: Home page recently visited cards display Lucide icons matching the new icon system
 - [ ] **XVEW-04**: Explore Types welcome screen uses updated Lucide icon with correct type color
 - [ ] **XVEW-05**: Explore Types sidebar uses Lucide icons consistent with the new icon system
 
@@ -68,9 +68,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EAPI-02 | Phase 14 | Complete |
 | EAPI-03 | Phase 14 | Complete |
 | EAPI-04 | Phase 14 | Complete |
-| XVEW-01 | Phase 15 | Pending |
-| XVEW-02 | Phase 15 | Pending |
-| XVEW-03 | Phase 15 | Pending |
+| XVEW-01 | Phase 15 | Complete |
+| XVEW-02 | Phase 15 | Complete |
+| XVEW-03 | Phase 15 | Complete |
 | XVEW-04 | Phase 15 | Pending |
 | XVEW-05 | Phase 15 | Pending |
 
