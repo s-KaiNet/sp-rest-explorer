@@ -12,6 +12,7 @@ import {
   ContentTransition,
 } from '@/components/navigation'
 import { TypeLink, EntityDetail } from '@/components/entity'
+import { TypeIcon } from '@/components/ui/type-icon'
 
 export function ExplorePage() {
   const navigate = useNavigate()
@@ -116,7 +117,6 @@ export function ExplorePage() {
               <Sidebar
                 entries={filteredChildren}
                 onNavigate={handleSidebarNavigate}
-                showTypeTags={!isRoot}
                 variant={isRoot ? 'root' : 'default'}
               />
             </SidebarTransition>
@@ -134,10 +134,8 @@ export function ExplorePage() {
           <ContentTransition pathKey={pathKey}>
               {isRoot ? (
                 <div className="flex flex-1 flex-col items-center justify-center px-8 py-12 text-center">
-                  {/* Blue icon box */}
-                  <div className="mb-5 flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-type-root/10 text-[28px] font-extrabold text-type-root">
-                    &lt;&gt;
-                  </div>
+                  {/* Type icon hero */}
+                  <TypeIcon type="root" size="lg" className="mb-5" />
 
                   {/* Title */}
                   <h2 className="mb-2 text-xl font-bold">Explore API</h2>
