@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/command'
 import { getSearchIndex, searchPathDocuments, detectSearchMode, literalNameSearch, hasSpecialChars } from '@/lib/metadata'
 import type { SearchMode } from '@/lib/metadata'
+import { TypeIcon } from '@/components/ui/type-icon'
+import type { ApiType } from '@/lib/api-types'
 
 // ── Types ──
 
@@ -346,9 +348,10 @@ export function CommandPalette({
         onSelect={() => handleEntitySelect(result)}
         className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-foreground/8"
       >
-        <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-entity/10 font-mono text-xs font-medium text-type-entity">
-          {'<>'}
+        <span className="flex size-6 shrink-0 items-center justify-center">
+          <TypeIcon type="entity" size="sm" />
         </span>
+        <span className="sr-only">Entity</span>
         <div className="min-w-0 flex-1">
           <div className="truncate text-sm">
             <HighlightedName name={result.name as string} query={debouncedQuery} />
@@ -367,44 +370,44 @@ export function CommandPalette({
 
   // Render endpoint result item (SRCH-09: hover feedback with group class)
   const renderEndpointItem = useCallback(
-    (result: SearchResult) => (
-      <CommandItem
-        key={result.id as string}
-        value={result.id as string}
-        onSelect={() => handleEndpointSelect(result)}
-        className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-foreground/8"
-      >
-        {(result.endpointKind as string) === 'function' ? (
-          <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-fn/10 font-mono text-xs font-medium text-type-fn">
-            {'\u0192'}
+    (result: SearchResult) => {
+      const apiType: ApiType = (result.isRoot as boolean)
+        ? 'root'
+        : (result.endpointKind as string) === 'function'
+          ? 'function'
+          : 'nav'
+
+      return (
+        <CommandItem
+          key={result.id as string}
+          value={result.id as string}
+          onSelect={() => handleEndpointSelect(result)}
+          className="group flex items-center gap-2.5 py-1 cursor-pointer hover:bg-foreground/8"
+        >
+          <span className="flex size-6 shrink-0 items-center justify-center">
+            <TypeIcon type={apiType} size="sm" />
           </span>
-        ) : (
-          <span className="flex size-6 shrink-0 items-center justify-center rounded bg-type-nav/10 text-[10px] font-semibold text-type-nav">
-            NAV
+          <span className="sr-only">
+            {apiType === 'root' ? 'Root' : apiType === 'function' ? 'Function' : 'Navigation property'}
           </span>
-        )}
-        <div className="min-w-0 flex-1">
-          <div className="truncate text-sm">
-            <HighlightedName name={result.name as string} query={debouncedQuery} />
+          <div className="min-w-0 flex-1">
+            <div className="truncate text-sm">
+              <HighlightedName name={result.name as string} query={debouncedQuery} />
+            </div>
+            <span className="text-xs text-muted-foreground break-all">
+              {searchMode === 'path' ? (
+                <HighlightedPath path={result.path as string} query={debouncedQuery} />
+              ) : (
+                result.path as string
+              )}
+            </span>
           </div>
-          <span className="text-xs text-muted-foreground break-all">
-            {searchMode === 'path' ? (
-              <HighlightedPath path={result.path as string} query={debouncedQuery} />
-            ) : (
-              result.path as string
-            )}
+          <span className="shrink-0 opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity">
+            →
           </span>
-        </div>
-        {(result.isRoot as boolean) && (
-          <span className="shrink-0 rounded bg-type-root/10 px-1.5 py-0.5 text-[10px] font-semibold text-type-root">
-            Root
-          </span>
-        )}
-        <span className="shrink-0 opacity-0 group-hover:opacity-100 text-muted-foreground transition-opacity">
-          →
-        </span>
-      </CommandItem>
-    ),
+        </CommandItem>
+      )
+    },
     [debouncedQuery, handleEndpointSelect, searchMode],
   )
 
