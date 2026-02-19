@@ -35,6 +35,8 @@ Fixed search UX issues (literal dot matching, group collapse stability, path-len
 
 **Deferred:** CHLG-01-06 (API Changelog), ADDL-02 (CI/CD)
 
+**Archive:** [milestones/v1.3-ROADMAP.md](milestones/v1.3-ROADMAP.md) | [milestones/v1.3-REQUIREMENTS.md](milestones/v1.3-REQUIREMENTS.md)
+
 ---
 
 ## v1.2 UI Improvements — Shipped 2026-02-15
