@@ -6,7 +6,6 @@ import { SidebarItem } from './SidebarItem'
 interface SidebarProps {
   entries: ChildEntry[]
   onNavigate: (child: ChildEntry) => void
-  showTypeTags?: boolean
   variant?: 'default' | 'root'
 }
 
@@ -83,7 +82,6 @@ function groupByNamespace(entries: ChildEntry[]): NamespaceGroup[] {
 export function Sidebar({
   entries,
   onNavigate,
-  showTypeTags = true,
   variant = 'default',
 }: SidebarProps) {
   // Track collapsed groups for root namespace view (empty set = all expanded)
@@ -150,8 +148,7 @@ export function Sidebar({
                     key={`root-${entry.name}`}
                     entry={entry}
                     onClick={() => onNavigate(entry)}
-                    showTypeTags={false}
-                    variant="root"
+                    apiType="root"
                     displayName={displayName}
                   />
                 ))}
@@ -174,8 +171,7 @@ export function Sidebar({
           key={`nav-${child.name}`}
           entry={child}
           onClick={() => onNavigate(child)}
-          showTypeTags={showTypeTags}
-          variant={variant}
+          apiType="nav"
         />
       ))}
 
@@ -186,8 +182,7 @@ export function Sidebar({
           key={`fn-${child.name}-${child.ref}`}
           entry={child}
           onClick={() => onNavigate(child)}
-          showTypeTags={showTypeTags}
-          variant={variant}
+          apiType="function"
         />
       ))}
     </div>
