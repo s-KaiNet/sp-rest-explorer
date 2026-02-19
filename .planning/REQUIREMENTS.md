@@ -23,11 +23,16 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Cross-View Consistency
 
-- [ ] **XVEW-01**: Cmd+K search modal results display Lucide icons instead of `<>`, `ƒ`, `NAV` text symbols
-- [ ] **XVEW-02**: "Root" pill badge is removed from individual search result items
-- [ ] **XVEW-03**: Home page recently visited cards display Lucide icons matching the new icon system
-- [ ] **XVEW-04**: Explore Types welcome screen uses updated Lucide icon with correct type color
-- [ ] **XVEW-05**: Explore Types sidebar uses Lucide icons consistent with the new icon system
+- [x] **XVEW-01**: Cmd+K search modal results display Lucide icons instead of `<>`, `ƒ`, `NAV` text symbols
+- [x] **XVEW-02**: "Root" pill badge is removed from individual search result items
+- [x] **XVEW-03**: Home page recently visited cards display Lucide icons matching the new icon system
+- [x] **XVEW-04**: Explore Types welcome screen uses updated Lucide icon with correct type color
+- [x] **XVEW-05**: Explore Types sidebar uses Lucide icons consistent with the new icon system
+
+### Entity Link Colors
+
+- [ ] **LINK-01**: Entity type links (e.g., SP.Alert, SP.Group) render in the entity type color (orange/amber `--type-entity`) instead of hardcoded emerald green
+- [ ] **LINK-02**: Collection wrapper links (e.g., "Collection" prefix) remain muted-foreground, only the inner type name uses entity color
 
 ## Future Requirements
 
@@ -68,15 +73,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EAPI-02 | Phase 14 | Complete |
 | EAPI-03 | Phase 14 | Complete |
 | EAPI-04 | Phase 14 | Complete |
-| XVEW-01 | Phase 15 | Pending |
-| XVEW-02 | Phase 15 | Pending |
-| XVEW-03 | Phase 15 | Pending |
-| XVEW-04 | Phase 15 | Pending |
-| XVEW-05 | Phase 15 | Pending |
+| XVEW-01 | Phase 15 | Complete |
+| XVEW-02 | Phase 15 | Complete |
+| XVEW-03 | Phase 15 | Complete |
+| XVEW-04 | Phase 15 | Complete |
+| XVEW-05 | Phase 15 | Complete |
+| LINK-01 | Phase 16 | Planned |
+| LINK-02 | Phase 16 | Planned |
 
 **Coverage:**
-- v1.4 requirements: 13 total
-- Mapped to phases: 13 ✓
+- v1.4 requirements: 15 total
+- Mapped to phases: 15 ✓
 - Unmapped: 0
 
 ---

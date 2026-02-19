@@ -5,6 +5,7 @@ import { useRecentlyVisited } from '@/hooks'
 import { EntityDetail } from '@/components/entity'
 import { ComplexTypeDetail, TypesSidebar } from '@/components/types'
 import { ResizablePanel, SidebarFilter } from '@/components/navigation'
+import { TypeIcon } from '@/components/ui/type-icon'
 
 export function TypesPage() {
   const { typeName } = useParams()
@@ -108,10 +109,8 @@ export function TypesPage() {
         {!decodedName ? (
           /* Welcome screen — no type selected */
           <div className="flex flex-1 flex-col items-center justify-center px-8 py-12 text-center">
-            {/* Green icon box */}
-            <div className="mb-5 flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-type-entity/10 text-[32px] font-extrabold text-type-entity">
-              T
-            </div>
+            {/* Type icon hero */}
+            <TypeIcon type="entity" size="lg" className="mb-5" />
 
             {/* Title */}
             <h2 className="mb-2 text-xl font-bold">Explore Types</h2>
@@ -144,7 +143,7 @@ export function TypesPage() {
             </div>
 
             {/* Hint box */}
-            <div className="mt-7 flex items-center gap-2 rounded-lg bg-type-entity/10 px-[18px] py-3 text-[13px] text-green-800 dark:text-green-200">
+            <div className="mt-7 flex items-center gap-2 rounded-lg bg-type-entity/5 px-[18px] py-3 text-[13px] text-amber-800 dark:text-amber-200">
               <svg
                 width="14"
                 height="14"

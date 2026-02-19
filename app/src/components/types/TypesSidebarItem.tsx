@@ -1,4 +1,5 @@
 import type { EntityType } from '@/lib/metadata'
+import { TypeIcon } from '@/components/ui/type-icon'
 
 interface TypesSidebarItemProps {
   type: EntityType
@@ -9,7 +10,7 @@ interface TypesSidebarItemProps {
 
 /**
  * Individual type entry in the Explore Types sidebar.
- * Shows a clickable item with active state highlight and a green "T" badge.
+ * Shows a clickable item with active state highlight and an entity TypeIcon.
  */
 export function TypesSidebarItem({
   type,
@@ -29,9 +30,7 @@ export function TypesSidebarItem({
           : 'text-foreground hover:bg-accent/50'
       }`}
     >
-      <span className="shrink-0 rounded bg-type-entity/10 px-1.5 py-0.5 text-xs font-semibold text-type-entity">
-        T
-      </span>
+      <TypeIcon type="entity" size="sm" />
       <span className="min-w-0 flex-1 truncate">{displayName}</span>
     </button>
   )
