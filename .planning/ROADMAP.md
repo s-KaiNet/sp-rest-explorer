@@ -41,11 +41,15 @@
 
 ### v1.3 Improvements (Phases 11-12)
 
-- [ ] **Phase 11: Search UX Fixes** — Dot-literal matching, group collapse stability, path-length sorting, and hover feedback
+- [x] **Phase 11: Search UX Fixes** — Dot-literal matching, group collapse stability, path-length sorting, and hover feedback (completed 2026-02-17)
+  **Plans:** 2 plans
+  Plans:
+  - [x] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
+  - [x] 11-02-PLAN.md — Gap closure: fix invisible hover highlight (accent color identical to popover background)
+- [ ] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement
   **Plans:** 1 plan
   Plans:
-  - [ ] 11-01-PLAN.md — Fix all four search UX issues (literal matching, collapse headers, path-length sort, hover feedback)
-- [ ] **Phase 12: Detail & Layout Fixes** — Nullable column display and breadcrumb placement
+  - [ ] 12-01-PLAN.md — Fix nullable column logic and move breadcrumb into content area
 
 ## Phase Details
 
@@ -83,8 +87,8 @@
 | 8. Quality-of-Life Polish | v1.1 | 4/4 | Complete | 2026-02-15 |
 | 9. Explore API Sidebar Polish | v1.2 | 3/3 | Complete | 2026-02-15 |
 | 10. Home Screens & Visual Polish | v1.2 | 2/2 | Complete | 2026-02-15 |
-| 11. Search UX Fixes | v1.3 | 0/1 | Planned | - |
-| 12. Detail & Layout Fixes | v1.3 | 0/? | Not started | - |
+| 11. Search UX Fixes | v1.3 | 2/2 | Complete | 2026-02-17 |
+| 12. Detail & Layout Fixes | v1.3 | 0/1 | Planned | - |
 
 ---
 *Roadmap created: 2026-02-11*

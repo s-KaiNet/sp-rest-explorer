@@ -17,16 +17,16 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 ## Current Position
 
 **Milestone:** v1.3 Improvements
-Phase: 11 — Search UX Fixes (not started)
-Plan: —
-Status: Roadmap created, ready to plan Phase 11
-Last activity: 2026-02-17 — Roadmap created (2 phases, 6 requirements)
+Phase: 11 — Search UX Fixes (complete, 2/2 plans)
+Plan: 02 complete
+Status: Phase 11 complete, ready to plan Phase 12
+Last activity: 2026-02-17 - Completed quick task 2: Narrow search result rows, increase results per group to 7, taller dialog
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
-v1.3 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/2 phases: 11, 12)
+v1.3 Progress: ██████████░░░░░░░░░░ 50% (1/2 phases: 11 ✓, 12)
 ```
 
 ## Performance Metrics
@@ -44,6 +44,10 @@ v1.3 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
 
+- **Phase 11:** Bypass MiniSearch for special-char queries (literalNameSearch) rather than modifying tokenizer
+- **Phase 11:** Render SearchGroup header as plain div above headingless CommandGroup for layout stability
+- **Phase 11:** Use bg-foreground/8 overlays instead of bg-accent for command palette hover/selection (accent === popover in dark mode)
+
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
 - Phase 07.2 inserted after Phase 07.1: Add path to API Endpoints index (URGENT)
@@ -60,12 +64,19 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Blockers
 - (None)
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 1 | Replace initial screen loading skeleton with regular loading indicator | 2026-02-17 | c170a4d | [1-replace-initial-screen-loading-skeleton-](./quick/1-replace-initial-screen-loading-skeleton-/) |
+| 2 | Narrow search result rows, increase results per group to 7, taller dialog | 2026-02-17 | 756a2e4 | [2-narrow-search-result-rows-increase-resul](./quick/2-narrow-search-result-rows-increase-resul/) |
+
 ## Session Continuity
 
-**Last session:** 2026-02-17T00:59:58.292Z
-**What happened:** Created v1.3 roadmap — 2 phases (11-12), 6 requirements mapped. Phase 11: Search UX Fixes (SRCH-06/07/08/09). Phase 12: Detail & Layout Fixes (ENTD-12, LAYO-01).
-**Next step:** `/gsd-plan-phase 11`
+**Last session:** 2026-02-17T02:08:20.626Z
+**What happened:** Executed quick-2 plan — narrower search rows (py-3→py-1.5), 7 results per group (was 5), 80vh dialog (was 66vh). 1 task, 1 commit (756a2e4).
+**Next step:** `/gsd-plan-phase 12` or next quick task
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (v1.3 roadmap created)*
+*Last updated: 2026-02-17 (Quick task 2 complete)*

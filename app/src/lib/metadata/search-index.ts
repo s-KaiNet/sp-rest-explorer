@@ -6,6 +6,7 @@ import type { LookupMaps, Metadata, PathSearchDocument, SearchDocument } from '.
 
 let searchIndex: MiniSearch<SearchDocument> | null = null
 let pathDocuments: PathSearchDocument[] = []
+let nameDocuments: SearchDocument[] = []
 
 // ── Build logic ──
 
@@ -56,6 +57,9 @@ export function buildSearchIndex(
   const endpointCount = endpoints.length
 
   index.addAll(docs)
+
+  // Store name documents for literal substring search (SRCH-06)
+  nameDocuments = docs
 
   // 3. Path documents — stored as flat array for substring filtering
   pathDocuments = []
@@ -110,6 +114,36 @@ export function initSearchIndex(metadata: Metadata, lookupMaps: LookupMaps): voi
 /** Get current name search index (for non-React code). */
 export function getSearchIndex(): MiniSearch<SearchDocument> | null {
   return searchIndex
+}
+
+/** Check if query contains special characters that need literal matching. */
+const SPECIAL_CHAR_RE = /[._()[\]{}]/
+
+/**
+ * Literal substring search for name-mode queries with special characters (SRCH-06).
+ * Bypasses MiniSearch tokenizer which splits on dots/underscores.
+ * Returns results where `name` or `fullName` contains the query as a case-insensitive substring.
+ */
+export function literalNameSearch(query: string): Array<SearchDocument & { score: number; terms: string[]; queryTerms: string[]; match: Record<string, string[]> }> {
+  if (nameDocuments.length === 0) return []
+  const lowerQuery = query.toLowerCase()
+  return nameDocuments
+    .filter(doc =>
+      doc.name.toLowerCase().includes(lowerQuery) ||
+      doc.fullName.toLowerCase().includes(lowerQuery),
+    )
+    .map(doc => ({
+      ...doc,
+      score: 1,
+      terms: [] as string[],
+      queryTerms: [] as string[],
+      match: {} as Record<string, string[]>,
+    }))
+}
+
+/** Returns true if a query should use literal substring matching instead of MiniSearch. */
+export function hasSpecialChars(query: string): boolean {
+  return SPECIAL_CHAR_RE.test(query)
 }
 
 /** Search path documents using substring matching. */
