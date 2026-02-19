@@ -2,29 +2,15 @@
 
 ## What This Is
 
-A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, and curated home screens with branding and live stats. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
+A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
 
 ## Current State
 
-**Shipped:** v1.2 UI Improvements (2026-02-15)
-**Codebase:** ~5,150 LOC TypeScript/CSS across 65 files in `app/`
-**Tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, React Router 7
+**Shipped:** v1.4 Unify Icons (2026-02-19)
+**Codebase:** ~5,175 LOC TypeScript/CSS across 67 files in `app/`
+**Tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, React Router 7
 
-v1.2 polished the UI with namespace-grouped Explore API sidebar, decluttered badge system, branded home page with favicon and approximate stats, redesigned Explore API welcome screen, expanded recently visited with Types entries, and subdued dark mode Cmd+K modal borders.
-
-## Current Milestone: v1.4 Unify Icons
-
-**Goal:** Replace text symbols and special characters with consistent Lucide icons across all 4 API types, introduce a dedicated color for Types/Entities, and unify icon placement across all views.
-
-**Target features:**
-- Define Lucide icon set for 4 API types: root (green), nav properties (purple), functions (blue), types/entities (orange/amber)
-- Add dedicated `--type-root` CSS token (green) and change `--type-entity` to orange/amber
-- Replace `<>`, `FN`, `NAV`, `T`, `ƒ` text symbols with Lucide icons everywhere
-- Update Explore API sidebar: move icons from right side to left (`[icon] Label`)
-- Update search modal: use new icons, remove "Root" badge from individual results
-- Update home page recently visited cards with new icons
-- Update Explore API and Explore Types welcome screen icons
-- Update Explore Types sidebar with new icon system
+v1.4 unified all type indicators across the app with a Lucide icon system — TypeIcon component renders distinct icons in designated colors for root (green Box), nav properties (purple Compass), functions (blue Zap), and types/entities (orange Braces). Entity links now use the type-entity color. Search modal footer reorganized for clarity.
 
 ## Core Value
 
@@ -60,6 +46,13 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - DETL-01 — v1.3 (nullable property logic fix)
   - LAYT-01 — v1.3 (breadcrumb relocation to content area)
 
+- **v1.4 (16 requirements):**
+  - ICON-01 through ICON-04 — v1.4 (Lucide icon system, TypeIcon component, CSS color tokens for root/entity)
+  - EAPI-01 through EAPI-04 — v1.4 (icon-first Explore API sidebar, text badges replaced)
+  - XVEW-01 through XVEW-05 — v1.4 (cross-view icon consistency: search, home, Explore Types)
+  - LINK-01, LINK-02 — v1.4 (entity link color change to type-entity)
+  - SMOD-01 — v1.4 (search modal footer layout)
+
 ### Backlog (future milestones)
 
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
@@ -80,9 +73,10 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ## Context
 
-Shipped v1.2 with ~5,150 LOC TypeScript/CSS across 65 files. Total ~160 lines net added over v1.1 (241 insertions, 83 deletions across 11 app files).
-Tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch, idb-keyval, React Router 7.
+Shipped v1.4 with ~5,175 LOC TypeScript/CSS across 67 files. ~24 lines net added over v1.3 (153 insertions, 129 deletions across 10 app files).
+Tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, idb-keyval, React Router 7.
 Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot.
+Icon system: TypeIcon component with Record-based Lucide icon/color lookup maps, OKLCH CSS custom properties for 4 type colors with dark mode variants.
 Old `web/` directory preserved as reference during development.
 
 **Known technical debt:**
@@ -115,10 +109,17 @@ Old `web/` directory preserved as reference during development.
 | Namespace from entry.name not returnType | returnType caused 74% of items to land in wrong groups | Good |
 | Hardcoded home stats, live API stats | Home page needs instant render (no data), API page has data loaded | Good |
 | Scoped --modal-border CSS variable | Per-modal dark mode border control without global side effects | Good |
+| ApiType as minimal union type | No enums or utilities, type resolution deferred to consumers | Good |
+| TypeIcon Record-based lookup maps | Cleaner than if/else, easy to extend for new types | Good |
+| OKLCH chroma 0.12-0.15 for type colors | Muted/pastel appearance, consistent with existing color system | Good |
+| Caller-passed apiType prop on SidebarItem | No internal kind-to-type mapping, keeps component simple | Good |
+| Root icon as sole root indicator | Green Box icon replaces pill badge, reduces visual clutter | Good |
+| Entity link color via CSS variable | text-type-entity handles light/dark automatically, no dual classes | Good |
+| Footer hint bar justify-between | Semantic structure over spacer element, consistent Tailwind pattern | Good |
 
 ## Constraints
 
-- **Tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, MiniSearch 7, React Router 7 (hash mode) — all locked per research
+- **Tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch 7, React Router 7 (hash mode) — all locked per research
 - **Hosting**: GitHub Pages — requires hash routing (`createHashRouter`), static output to `docs/`
 - **Data format**: Azure Blob Storage JSON format is fixed — cannot change the metadata or diff schema
 - **URL compatibility**: Hash routes must match current patterns for any bookmarked URLs
@@ -126,4 +127,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-18 after v1.4 Unify Icons milestone start*
+*Last updated: 2026-02-19 after v1.4 Unify Icons milestone completion*

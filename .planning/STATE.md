@@ -2,13 +2,13 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-18)
+See: .planning/PROJECT.md (updated 2026-02-19)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.4 Unify Icons — Consistent Lucide icons and colors for all API types
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
-- Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
+- Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
 - GitHub Pages hosting (hash routing required)
 - Azure Blob Storage data format is fixed
 - Desktop only for v1
@@ -16,55 +16,38 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 
 ## Current Position
 
-**Milestone:** v1.4 Unify Icons
-Phase: 17 — Move Icons in Search Modal
-Plan: 01 complete (1/1 plans)
-Status: Phase 17 complete — all plans executed
-Last activity: 2026-02-19 — Executed 17-01 (Split footer hint bar layout)
+**Milestone:** v1.4 Unify Icons — SHIPPED 2026-02-19
+Status: ✅ Complete — milestone archived
+Last activity: 2026-02-19 — Milestone v1.4 archived
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
 v1.3 Progress: ████████████████████ 100% (2/2 phases: 11 ✓, 12 ✓) — SHIPPED
-v1.4 Progress: ████████████████████ 100% (3/3 phases: 13 ✓, 14 ✓, 15 ✓) — SHIPPED
+v1.4 Progress: ████████████████████ 100% (5/5 phases: 13 ✓, 14 ✓, 15 ✓, 16 ✓, 17 ✓) — SHIPPED
 ```
 
 ## Performance Metrics
 
-| Metric | v1.0 | v1.1 | v1.2 |
-|--------|------|------|------|
-| Phases completed | 5 | 5 | 2 |
-| Plans executed | 11 | 13 | 5 |
-| Tasks completed | 25 | 28 | 9 |
-| Requirements validated | 38 | 13 | 9 |
-| Timeline | 2 days | 3 days | 1 day |
+| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 |
+|--------|------|------|------|------|------|
+| Phases completed | 5 | 5 | 2 | 2 | 5 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days |
 
 ## Accumulated Context
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
 
-- **Phase 11:** Bypass MiniSearch for special-char queries (literalNameSearch) rather than modifying tokenizer
-- **Phase 11:** Render SearchGroup header as plain div above headingless CommandGroup for layout stability
-- **Phase 11:** Use bg-foreground/8 overlays instead of bg-accent for command palette hover/selection (accent === popover in dark mode)
-- **Phase 12:** Strict equality (=== false) for optional boolean nullable field — undefined/missing treated as nullable
-- **Phase 12:** Breadcrumb conditional on !isRoot, rendered inside content area with sticky top-0
-- **Phase 12:** Flex column split for scroll isolation — breadcrumb outside scroll container, no sticky needed
-- **Phase 13:** ApiType as minimal union type — no enums or utilities, deferred to consuming phases
-- **Phase 13:** TypeIcon uses Record maps for icon/color lookup, OKLCH chroma 0.12-0.15 for muted colors
-- **Phase 14:** Caller-passed apiType prop on SidebarItem — no internal kind-to-type mapping
-- **Phase 14:** Welcome hero uses bare TypeIcon(root, lg) with no background container
-- **Phase 15:** Root items in search results use green Box icon as sole indicator — no pill badge
-- **Phase 15:** Recently visited cards use TypeIcon md (20px) — larger than sidebar sm but proportional to card
-- **Phase 15:** Hint box text color corrected from green (root) to amber (entity) to match entity type semantics
-- **Phase 16:** Entity link color changed from hardcoded emerald to --type-entity CSS variable (orange/amber)
-- **Phase 17:** Footer hint bar split into left (Navigate) and right (Open+Close) groups via justify-between
-
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
 - Phase 07.2 inserted after Phase 07.1: Add path to API Endpoints index (URGENT)
 - Phase 09-03 inserted: Gap closure for namespace grouping (used entry.returnType instead of entry.name)
+- Phase 13-02 inserted: Gap closure for root-type color migration (root elements rendering orange instead of green)
 - Phase 16 added: Change color for entity links
 - Phase 17 added: Move icons in search modal
 
@@ -88,10 +71,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-19T00:10:43Z
-**What happened:** Executed 17-01 — Split search modal footer hint bar into left (Navigate) and right (Open+Close) groups. Phase 17 complete.
-**Next step:** Phase 17 complete — ready for next phase or milestone
+**Last session:** 2026-02-19
+**What happened:** Archived v1.4 Unify Icons milestone. Created milestone archives, reorganized ROADMAP.md, updated PROJECT.md and MILESTONES.md, deleted REQUIREMENTS.md.
+**Next step:** `/gsd-new-milestone` to start next milestone (questioning → research → requirements → roadmap)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-19 (phase 17 complete)*
+*Last updated: 2026-02-19 (v1.4 milestone archived)*
