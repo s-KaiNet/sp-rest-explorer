@@ -1,0 +1,20 @@
+[milvus]
+uri = "http://localhost:19530"
+token = "root:Milvus"
+collection = "sp_rest_explorer"
+
+[embedding]
+provider = "ollama"
+model = "nomic-embed-text"
+
+[chunking]
+max_chunk_size = 1500
+overlap_lines = 2
+
+[watch]
+debounce_ms = 1500
+
+[compact]
+llm_provider = "openai"
+llm_model = "gpt-4o-mini"
+prompt_file = ""

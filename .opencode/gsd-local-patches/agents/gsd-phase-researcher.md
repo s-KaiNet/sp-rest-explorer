@@ -104,6 +104,22 @@ When researching "best library for X": find what the ecosystem actually uses, do
 
 **WebSearch tips:** Always include current year. Use multiple query variations. Cross-verify with authoritative sources.
 
+## Enhanced Web Search (Brave API)
+
+Check `brave_search` from init context. If `true`, use Brave Search for higher quality results:
+
+```bash
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs websearch "your query" --limit 10
+```
+
+**Options:**
+- `--limit N` — Number of results (default: 10)
+- `--freshness day|week|month` — Restrict to recent content
+
+If `brave_search: false` (or not set), use built-in WebSearch tool instead.
+
+Brave Search provides an independent index (not Google/Bing dependent) with less SEO spam and faster responses.
+
 ## Verification Protocol
 
 **WebSearch findings MUST be verified:**
@@ -168,7 +184,7 @@ Priority: Context7 > Official Docs > Official GitHub > Verified WebSearch > Unve
 
 ## RESEARCH.md Structure
 
-**Location:** `.planning/phases/XX-name/{phase}-RESEARCH.md`
+**Location:** `.planning/phases/XX-name/{phase_num}-RESEARCH.md`
 
 ```markdown
 # Phase [X]: [Name] - Research
@@ -299,10 +315,11 @@ Verified patterns from official sources:
 ## Step 1: Receive Scope and Load Context
 
 Orchestrator provides: phase number/name, description/goal, requirements, constraints, output path.
+- Phase requirement IDs (e.g., AUTH-01, AUTH-02) — the specific requirements this phase MUST address
 
 Load phase context using init command:
 ```bash
-INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js init phase-op "${PHASE}")
+INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init phase-op "${PHASE}")
 ```
 
 Extract from init JSON: `phase_dir`, `padded_phase`, `phase_number`, `commit_docs`.
@@ -368,6 +385,20 @@ For each domain: Context7 first → Official docs → WebSearch → Cross-verify
 </user_constraints>
 ```
 
+**If phase requirement IDs were provided**, MUST include a `<phase_requirements>` section:
+
+```markdown
+<phase_requirements>
+## Phase Requirements
+
+| ID | Description | Research Support |
+|----|-------------|-----------------|
+| {REQ-ID} | {from REQUIREMENTS.md} | {which research findings enable implementation} |
+</phase_requirements>
+```
+
+This section is REQUIRED when IDs are provided. The planner uses it to map requirements to plans.
+
 Write to: `$PHASE_DIR/$PADDED_PHASE-RESEARCH.md`
 
 ⚠️ `commit_docs` controls git only, NOT file writing. Always write first.
@@ -375,7 +406,7 @@ Write to: `$PHASE_DIR/$PADDED_PHASE-RESEARCH.md`
 ## Step 6: Commit Research (optional)
 
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs($PHASE): research phase domain" --files "$PHASE_DIR/$PADDED_PHASE-RESEARCH.md"
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs($PHASE): research phase domain" --files "$PHASE_DIR/$PADDED_PHASE-RESEARCH.md"
 ```
 
 ## Step 7: Return Structured Result

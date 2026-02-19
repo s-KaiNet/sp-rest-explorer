@@ -14,7 +14,7 @@ Check if `--auto` flag is present in $ARGUMENTS.
 **If auto mode:**
 - Skip brownfield mapping offer (assume greenfield)
 - Skip deep questioning (extract context from provided document)
-- Config questions still required (Step 5)
+- Config: YOLO mode is implicit (skip that question), but ask depth/git/agents FIRST (Step 2a)
 - After config: run Steps 6-9 automatically with smart defaults:
   - Research: Always yes
   - Requirements: Include all table stakes + features from provided document
@@ -22,12 +22,18 @@ Check if `--auto` flag is present in $ARGUMENTS.
   - Roadmap approval: Auto-approve
 
 **Document requirement:**
-Auto mode requires an idea document via @ reference (e.g., `/gsd-new-project --auto @prd.md`). If no document provided, error:
+Auto mode requires an idea document — either:
+- File reference: `/gsd-new-project --auto @prd.md`
+- Pasted/written text in the prompt
+
+If no document content provided, error:
 
 ```
-Error: --auto requires an idea document via @ reference.
+Error: --auto requires an idea document.
 
-Usage: /gsd-new-project --auto @your-idea.md
+Usage:
+  /gsd-new-project --auto @your-idea.md
+  /gsd-new-project --auto [paste or write your idea here]
 
 The document should describe what you want to build.
 ```
@@ -40,7 +46,7 @@ The document should describe what you want to build.
 **MANDATORY FIRST STEP — Execute these checks before ANY user interaction:**
 
 ```bash
-INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js init new-project)
+INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init new-project)
 ```
 
 Parse JSON for: `researcher_model`, `synthesizer_model`, `roadmapper_model`, `commit_docs`, `project_exists`, `has_codebase_map`, `planning_exists`, `has_existing_code`, `has_package_file`, `is_brownfield`, `needs_codebase_map`, `has_git`.
@@ -59,7 +65,7 @@ git init
 **If `needs_codebase_map` is true** (from init — existing code detected but no codebase map):
 
 Use question:
-- header: "Existing Code"
+- header: "Codebase"
 - question: "I detected existing code in this directory. Would you like to map the codebase first?"
 - options:
   - "Map codebase first" — Run /gsd-map-codebase to understand existing architecture (Recommended)
@@ -73,9 +79,129 @@ Exit command.
 
 **If "Skip mapping" OR `needs_codebase_map` is false:** Continue to Step 3.
 
+## 2a. Auto Mode Config (auto mode only)
+
+**If auto mode:** Collect config settings upfront before processing the idea document.
+
+YOLO mode is implicit (auto = YOLO). Ask remaining config questions:
+
+**Round 1 — Core settings (3 questions, no Mode question):**
+
+```
+question([
+  {
+    header: "Depth",
+    question: "How thorough should planning be?",
+    multiSelect: false,
+    options: [
+      { label: "Quick (Recommended)", description: "Ship fast (3-5 phases, 1-3 plans each)" },
+      { label: "Standard", description: "Balanced scope and speed (5-8 phases, 3-5 plans each)" },
+      { label: "Comprehensive", description: "Thorough coverage (8-12 phases, 5-10 plans each)" }
+    ]
+  },
+  {
+    header: "Execution",
+    question: "Run plans in parallel?",
+    multiSelect: false,
+    options: [
+      { label: "Parallel (Recommended)", description: "Independent plans run simultaneously" },
+      { label: "Sequential", description: "One plan at a time" }
+    ]
+  },
+  {
+    header: "Git Tracking",
+    question: "Commit planning docs to git?",
+    multiSelect: false,
+    options: [
+      { label: "Yes (Recommended)", description: "Planning docs tracked in version control" },
+      { label: "No", description: "Keep .planning/ local-only (add to .gitignore)" }
+    ]
+  }
+])
+```
+
+**Round 2 — Workflow agents (same as Step 5):**
+
+```
+question([
+  {
+    header: "Research",
+    question: "Research before planning each phase? (adds tokens/time)",
+    multiSelect: false,
+    options: [
+      { label: "Yes (Recommended)", description: "Investigate domain, find patterns, surface gotchas" },
+      { label: "No", description: "Plan directly from requirements" }
+    ]
+  },
+  {
+    header: "Plan Check",
+    question: "Verify plans will achieve their goals? (adds tokens/time)",
+    multiSelect: false,
+    options: [
+      { label: "Yes (Recommended)", description: "Catch gaps before execution starts" },
+      { label: "No", description: "Execute plans without verification" }
+    ]
+  },
+  {
+    header: "Verifier",
+    question: "Verify work satisfies requirements after each phase? (adds tokens/time)",
+    multiSelect: false,
+    options: [
+      { label: "Yes (Recommended)", description: "Confirm deliverables match phase goals" },
+      { label: "No", description: "Trust execution, skip verification" }
+    ]
+  },
+  {
+    header: "AI Models",
+    question: "Which AI models for planning agents?",
+    multiSelect: false,
+    options: [
+      { label: "Balanced (Recommended)", description: "Sonnet for most agents — good quality/cost ratio" },
+      { label: "Quality", description: "Opus for research/roadmap — higher cost, deeper analysis" },
+      { label: "Budget", description: "Haiku where possible — fastest, lowest cost" }
+    ]
+  }
+])
+```
+
+Create `.planning/config.json` with mode set to "yolo":
+
+```json
+{
+  "mode": "yolo",
+  "depth": "[selected]",
+  "parallelization": true|false,
+  "commit_docs": true|false,
+  "model_profile": "quality|balanced|budget",
+  "workflow": {
+    "research": true|false,
+    "plan_check": true|false,
+    "verifier": true|false,
+    "auto_advance": true
+  }
+}
+```
+
+**If commit_docs = No:** Add `.planning/` to `.gitignore`.
+
+**Commit config.json:**
+
+```bash
+mkdir -p .planning
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "chore: add project config" --files .planning/config.json
+```
+
+**Persist auto-advance to config (survives context compaction):**
+
+```bash
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-set workflow.auto_advance true
+```
+
+Proceed to Step 4 (skip Steps 3 and 5).
+
 ## 3. Deep Questioning
 
-**If auto mode:** Skip. Extract project context from provided document instead and proceed to Step 4.
+**If auto mode:** Skip (already handled in Step 2a). Extract project context from provided document instead and proceed to Step 4.
 
 **Display stage banner:**
 
@@ -212,10 +338,32 @@ Do not compress. Capture everything gathered.
 
 ```bash
 mkdir -p .planning
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs: initialize project" --files .planning/PROJECT.md
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs: initialize project" --files .planning/PROJECT.md
 ```
 
 ## 5. Workflow Preferences
+
+**If auto mode:** Skip — config was collected in Step 2a. Proceed to Step 5.5.
+
+**Check for global defaults** at `~/.gsd/defaults.json`. If the file exists, offer to use saved defaults:
+
+```
+question([
+  {
+    question: "Use your saved default settings? (from ~/.gsd/defaults.json)",
+    header: "Defaults",
+    multiSelect: false,
+    options: [
+      { label: "Yes (Recommended)", description: "Use saved defaults, skip settings questions" },
+      { label: "No", description: "Configure settings manually" }
+    ]
+  }
+])
+```
+
+If "Yes": read `~/.gsd/defaults.json`, use those values for config.json, and skip directly to **Commit config.json** below.
+
+If "No" or `~/.gsd/defaults.json` doesn't exist: proceed with the questions below.
 
 **Round 1 — Core workflow settings (4 questions):**
 
@@ -303,7 +451,7 @@ questions: [
     ]
   },
   {
-    header: "Model Profile",
+    header: "AI Models",
     question: "Which AI models for planning agents?",
     multiSelect: false,
     options: [
@@ -342,7 +490,7 @@ Create `.planning/config.json` with all settings:
 **Commit config.json:**
 
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "chore: add project config" --files .planning/config.json
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "chore: add project config" --files .planning/config.json
 ```
 
 **Note:** Run `/gsd-settings` anytime to update these preferences.
@@ -434,7 +582,7 @@ Your STACK.md feeds into roadmap creation. Be prescriptive:
 Write to: .planning/research/STACK.md
 Use template: ./.opencode/get-shit-done/templates/research-project/STACK.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Stack research")
+", subagent_type="general", model="{researcher_model}", description="Stack research")
 
 Task(prompt="First, read ./.opencode/agents/gsd-project-researcher.md for your role and instructions.
 
@@ -474,7 +622,7 @@ Your FEATURES.md feeds into requirements definition. Categorize clearly:
 Write to: .planning/research/FEATURES.md
 Use template: ./.opencode/get-shit-done/templates/research-project/FEATURES.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Features research")
+", subagent_type="general", model="{researcher_model}", description="Features research")
 
 Task(prompt="First, read ./.opencode/agents/gsd-project-researcher.md for your role and instructions.
 
@@ -514,7 +662,7 @@ Your ARCHITECTURE.md informs phase structure in roadmap. Include:
 Write to: .planning/research/ARCHITECTURE.md
 Use template: ./.opencode/get-shit-done/templates/research-project/ARCHITECTURE.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Architecture research")
+", subagent_type="general", model="{researcher_model}", description="Architecture research")
 
 Task(prompt="First, read ./.opencode/agents/gsd-project-researcher.md for your role and instructions.
 
@@ -554,7 +702,7 @@ Your PITFALLS.md prevents mistakes in roadmap/planning. For each pitfall:
 Write to: .planning/research/PITFALLS.md
 Use template: ./.opencode/get-shit-done/templates/research-project/PITFALLS.md
 </output>
-", subagent_type="general-purpose", model="{researcher_model}", description="Pitfalls research")
+", subagent_type="general", model="{researcher_model}", description="Pitfalls research")
 ```
 
 After all 4 agents complete, spawn synthesizer to create SUMMARY.md:
@@ -663,7 +811,7 @@ For each capability mentioned:
 
 For each category, use question:
 
-- header: "[Category name]"
+- header: "[Category]" (max 12 chars)
 - question: "Which [category] features are in v1?"
 - multiSelect: true
 - options:
@@ -740,7 +888,7 @@ If "adjust": Return to scoping.
 **Commit requirements:**
 
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs: define v1 requirements" --files .planning/REQUIREMENTS.md
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs: define v1 requirements" --files .planning/REQUIREMENTS.md
 ```
 
 ## 8. Create Roadmap
@@ -873,12 +1021,12 @@ Use question:
 **Commit roadmap (after approval or auto mode):**
 
 ```bash
-node ./.opencode/get-shit-done/bin/gsd-tools.js commit "docs: create roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit "docs: create roadmap ([N] phases)" --files .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md
 ```
 
 ## 9. Done
 
-Present completion with next steps:
+Present completion summary:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -896,7 +1044,21 @@ Present completion with next steps:
 | Roadmap        | `.planning/ROADMAP.md`      |
 
 **[N] phases** | **[X] requirements** | Ready to build ✓
+```
 
+**If auto mode:**
+
+```
+╔══════════════════════════════════════════╗
+║  AUTO-ADVANCING → DISCUSS PHASE 1        ║
+╚══════════════════════════════════════════╝
+```
+
+Exit skill and invoke skill("/gsd-discuss-phase 1 --auto")
+
+**If interactive mode:**
+
+```
 ───────────────────────────────────────────────────────────────
 
 ## ▶ Next Up

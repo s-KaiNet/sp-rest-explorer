@@ -71,9 +71,12 @@ Same methodology (goal-backward), different timing, different subject matter.
 
 **Process:**
 1. Extract phase goal from ROADMAP.md
-2. Decompose goal into requirements (what must be true)
-3. For each requirement, find covering task(s)
-4. Flag requirements with no coverage
+2. Extract requirement IDs from ROADMAP.md `**Requirements:**` line for this phase (strip brackets if present)
+3. Verify each requirement ID appears in at least one plan's `requirements` frontmatter field
+4. For each requirement, find covering task(s) in the plan that claims it
+5. Flag requirements with no coverage or missing from all plans' `requirements` fields
+
+**FAIL the verification** if any requirement ID from the roadmap is absent from all plans' `requirements` fields. This is a blocking issue, not a warning.
 
 **Red flags:**
 - Requirement has zero tasks addressing it
@@ -302,7 +305,7 @@ issue:
 
 Load phase operation context:
 ```bash
-INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js init phase-op "${PHASE_ARG}")
+INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init phase-op "${PHASE_ARG}")
 ```
 
 Extract from init JSON: `phase_dir`, `phase_number`, `has_plans`, `plan_count`.
@@ -311,7 +314,7 @@ Orchestrator provides CONTEXT.md content in the verification prompt. If provided
 
 ```bash
 ls "$phase_dir"/*-PLAN.md 2>/dev/null
-node ./.opencode/get-shit-done/bin/gsd-tools.js roadmap get-phase "$phase_number"
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "$phase_number"
 ls "$phase_dir"/*-BRIEF.md 2>/dev/null
 ```
 
@@ -324,7 +327,7 @@ Use gsd-tools to validate plan structure:
 ```bash
 for plan in "$PHASE_DIR"/*-PLAN.md; do
   echo "=== $plan ==="
-  PLAN_STRUCTURE=$(node ./.opencode/get-shit-done/bin/gsd-tools.js verify plan-structure "$plan")
+  PLAN_STRUCTURE=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs verify plan-structure "$plan")
   echo "$PLAN_STRUCTURE"
 done
 ```
@@ -342,7 +345,7 @@ Map errors/warnings to verification dimensions:
 Extract must_haves from each plan using gsd-tools:
 
 ```bash
-MUST_HAVES=$(node ./.opencode/get-shit-done/bin/gsd-tools.js frontmatter get "$PLAN_PATH" --field must_haves)
+MUST_HAVES=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs frontmatter get "$PLAN_PATH" --field must_haves)
 ```
 
 Returns JSON: `{ truths: [...], artifacts: [...], key_links: [...] }`
@@ -385,7 +388,7 @@ For each requirement: find covering task(s), verify action is specific, flag gap
 Use gsd-tools plan-structure verification (already run in Step 2):
 
 ```bash
-PLAN_STRUCTURE=$(node ./.opencode/get-shit-done/bin/gsd-tools.js verify plan-structure "$PLAN_PATH")
+PLAN_STRUCTURE=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs verify plan-structure "$PLAN_PATH")
 ```
 
 The `tasks` array in the result shows each task's completeness:

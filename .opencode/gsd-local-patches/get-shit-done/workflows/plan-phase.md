@@ -15,7 +15,15 @@ Read all files referenced by the invoking prompt's execution_context before star
 Load all context in one call (include file contents to avoid redundant reads):
 
 ```bash
-INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js init plan-phase "$PHASE" --include state,roadmap,requirements,context,research,verification,uat)
+INIT_RAW=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init plan-phase "$PHASE" --include state,roadmap,requirements,context,research,verification,uat)
+# Large payloads are written to a tmpfile — output starts with @file:/path
+if [[ "$INIT_RAW" == @file:* ]]; then
+  INIT_FILE="${INIT_RAW#@file:}"
+  INIT=$(cat "$INIT_FILE")
+  rm -f "$INIT_FILE"
+else
+  INIT="$INIT_RAW"
+fi
 ```
 
 Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`.
@@ -40,7 +48,7 @@ mkdir -p ".planning/phases/${padded_phase}-${phase_slug}"
 ## 3. Validate Phase
 
 ```bash
-PHASE_INFO=$(node ./.opencode/get-shit-done/bin/gsd-tools.js roadmap get-phase "${PHASE}")
+PHASE_INFO=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "${PHASE}")
 ```
 
 **If `found` is false:** Error with available phases. **If `found` is true:** Extract `phase_number`, `phase_name`, `goal` from JSON.
@@ -52,6 +60,18 @@ Use `context_content` from init JSON (already loaded via `--include context`).
 **CRITICAL:** Use `context_content` from INIT — pass to researcher, planner, checker, and revision agents.
 
 If `context_content` is not null, display: `Using phase context from: ${PHASE_DIR}/*-CONTEXT.md`
+
+**If `context_content` is null (no CONTEXT.md exists):**
+
+Use question:
+- header: "No context"
+- question: "No CONTEXT.md found for Phase {X}. Plans will use research and requirements only — your design preferences won't be included. Continue or capture context first?"
+- options:
+  - "Continue without context" — Plan using research + requirements only
+  - "Run discuss-phase first" — Capture design decisions before planning
+
+If "Continue without context": Proceed to step 5.
+If "Run discuss-phase first": Display `/gsd-discuss-phase {X}` and exit workflow.
 
 ## 5. Handle Research
 
@@ -73,10 +93,11 @@ Display banner:
 ### Spawn gsd-phase-researcher
 
 ```bash
-PHASE_DESC=$(node ./.opencode/get-shit-done/bin/gsd-tools.js roadmap get-phase "${PHASE}" | jq -r '.section')
+PHASE_DESC=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "${PHASE}" | jq -r '.section')
 # Use requirements_content from INIT (already loaded via --include requirements)
 REQUIREMENTS=$(echo "$INIT" | jq -r '.requirements_content // empty' | grep -A100 "## Requirements" | head -50)
-STATE_SNAP=$(node ./.opencode/get-shit-done/bin/gsd-tools.js state-snapshot)
+PHASE_REQ_IDS=$(echo "$INIT" | jq -r '.roadmap_content // empty' | grep -i "Requirements:" | head -1 | sed 's/.*Requirements:\*\*\s*//' | sed 's/[\[\]]//g' | tr ',' '\n' | sed 's/^ *//;s/ *$//' | grep -v '^$' | tr '\n' ',' | sed 's/,$//')
+STATE_SNAP=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs state-snapshot)
 # Extract decisions from state-snapshot JSON: jq '.decisions[] | "\(.phase): \(.summary) - \(.rationale)"'
 ```
 
@@ -99,19 +120,20 @@ IMPORTANT: If CONTEXT.md exists below, it contains user decisions from /gsd-disc
 
 <additional_context>
 **Phase description:** {phase_description}
+**Phase requirement IDs (MUST address):** {phase_req_ids}
 **Requirements:** {requirements}
 **Prior decisions:** {decisions}
 </additional_context>
 
 <output>
-Write to: {phase_dir}/{phase}-RESEARCH.md
+Write to: {phase_dir}/{phase_num}-RESEARCH.md
 </output>
 ```
 
 ```
 Task(
   prompt="First, read ./.opencode/agents/gsd-phase-researcher.md for your role and instructions.\n\n" + research_prompt,
-  subagent_type="general-purpose",
+  subagent_type="general",
   model="{researcher_model}",
   description="Research Phase {phase}"
 )
@@ -165,6 +187,7 @@ Planner prompt:
 
 **Project State:** {state_content}
 **Roadmap:** {roadmap_content}
+**Phase requirement IDs (every ID MUST appear in a plan's `requirements` field):** {phase_req_ids}
 **Requirements:** {requirements_content}
 
 **Phase Context:**
@@ -200,7 +223,7 @@ Output consumed by /gsd-execute-phase. Plans need:
 ```
 Task(
   prompt="First, read ./.opencode/agents/gsd-planner.md for your role and instructions.\n\n" + filled_prompt,
-  subagent_type="general-purpose",
+  subagent_type="general",
   model="{planner_model}",
   description="Plan Phase {phase}"
 )
@@ -235,6 +258,7 @@ Checker prompt:
 **Phase Goal:** {goal from ROADMAP}
 
 **Plans to verify:** {plans_content}
+**Phase requirement IDs (MUST ALL be covered):** {phase_req_ids}
 **Requirements:** {requirements_content}
 
 **Phase Context:**
@@ -303,7 +327,7 @@ Return what changed.
 ```
 Task(
   prompt="First, read ./.opencode/agents/gsd-planner.md for your role and instructions.\n\n" + revision_prompt,
-  subagent_type="general-purpose",
+  subagent_type="general",
   model="{planner_model}",
   description="Revise Phase {phase} plans"
 )
@@ -319,7 +343,59 @@ Offer: 1) Force proceed, 2) Provide guidance and retry, 3) Abandon
 
 ## 13. Present Final Status
 
-Route to `<offer_next>`.
+Route to `<offer_next>` OR `auto_advance` depending on flags/config.
+
+## 14. Auto-Advance Check
+
+Check for auto-advance trigger:
+
+1. Parse `--auto` flag from $ARGUMENTS
+2. Read `workflow.auto_advance` from config:
+   ```bash
+   AUTO_CFG=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-get workflow.auto_advance 2>/dev/null || echo "false")
+   ```
+
+**If `--auto` flag present OR `AUTO_CFG` is true:**
+
+Display banner:
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ GSD ► AUTO-ADVANCING TO EXECUTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Plans ready. Spawning execute-phase...
+```
+
+Spawn execute-phase as Task:
+```
+Task(
+  prompt="Run /gsd-execute-phase ${PHASE} --auto",
+  subagent_type="general",
+  description="Execute Phase ${PHASE}"
+)
+```
+
+**Handle execute-phase return:**
+- **PHASE COMPLETE** → Display final summary:
+  ```
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GSD ► PHASE ${PHASE} COMPLETE ✓
+  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Auto-advance pipeline finished.
+
+  Next: /gsd-discuss-phase ${NEXT_PHASE} --auto
+  ```
+- **GAPS FOUND / VERIFICATION FAILED** → Display result, stop chain:
+  ```
+  Auto-advance stopped: Execution needs review.
+
+  Review the output above and continue manually:
+  /gsd-execute-phase ${PHASE}
+  ```
+
+**If neither `--auto` nor config enabled:**
+Route to `<offer_next>` (existing behavior).
 
 </process>
 

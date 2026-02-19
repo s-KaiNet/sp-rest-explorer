@@ -11,21 +11,21 @@ Read all files referenced by the invoking prompt's execution_context before star
 ## 0. Initialize Milestone Context
 
 ```bash
-INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js init milestone-op)
+INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init milestone-op)
 ```
 
 Extract from init JSON: `milestone_version`, `milestone_name`, `phase_count`, `completed_phases`, `commit_docs`.
 
 Resolve integration checker model:
 ```bash
-CHECKER_MODEL=$(node ./.opencode/get-shit-done/bin/gsd-tools.js resolve-model gsd-integration-checker --raw)
+CHECKER_MODEL=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs resolve-model gsd-integration-checker --raw)
 ```
 
 ## 1. Determine Milestone Scope
 
 ```bash
 # Get phases in milestone (sorted numerically, handles decimals)
-node ./.opencode/get-shit-done/bin/gsd-tools.js phases list
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs phases list
 ```
 
 - Parse version from arguments or detect current from ROADMAP.md
@@ -38,9 +38,10 @@ node ./.opencode/get-shit-done/bin/gsd-tools.js phases list
 For each phase directory, read the VERIFICATION.md:
 
 ```bash
-cat .planning/phases/01-*/*-VERIFICATION.md
-cat .planning/phases/02-*/*-VERIFICATION.md
-# etc.
+# For each phase, use find-phase to resolve the directory (handles archived phases)
+PHASE_INFO=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs find-phase 01 --raw)
+# Extract directory from JSON, then read VERIFICATION.md from that directory
+# Repeat for each phase number from ROADMAP.md
 ```
 
 From each VERIFICATION.md, extract:
@@ -56,6 +57,8 @@ If a phase is missing VERIFICATION.md, flag it as "unverified phase" — this is
 
 With phase context collected:
 
+Extract `MILESTONE_REQ_IDS` from REQUIREMENTS.md traceability table — all REQ-IDs assigned to phases in this milestone.
+
 ```
 Task(
   prompt="Check cross-phase integration and E2E flows.
@@ -63,6 +66,11 @@ Task(
 Phases: {phase_dirs}
 Phase exports: {from SUMMARYs}
 API routes: {routes created}
+
+Milestone Requirements:
+{MILESTONE_REQ_IDS — list each REQ-ID with description and assigned phase}
+
+MUST map each integration finding to affected requirement IDs where applicable.
 
 Verify cross-phase wiring and E2E user flows.",
   subagent_type="gsd-integration-checker",
@@ -76,12 +84,48 @@ Combine:
 - Phase-level gaps and tech debt (from step 2)
 - Integration checker's report (wiring gaps, broken flows)
 
-## 5. Check Requirements Coverage
+## 5. Check Requirements Coverage (3-Source Cross-Reference)
 
-For each requirement in REQUIREMENTS.md mapped to this milestone:
-- Find owning phase
-- Check phase verification status
-- Determine: satisfied | partial | unsatisfied
+MUST cross-reference three independent sources for each requirement:
+
+### 5a. Parse REQUIREMENTS.md Traceability Table
+
+Extract all REQ-IDs mapped to milestone phases from the traceability table:
+- Requirement ID, description, assigned phase, current status, checked-off state (`[x]` vs `[ ]`)
+
+### 5b. Parse Phase VERIFICATION.md Requirements Tables
+
+For each phase's VERIFICATION.md, extract the expanded requirements table:
+- Requirement | Source Plan | Description | Status | Evidence
+- Map each entry back to its REQ-ID
+
+### 5c. Extract SUMMARY.md Frontmatter Cross-Check
+
+For each phase's SUMMARY.md, extract `requirements-completed` from YAML frontmatter:
+```bash
+for summary in .planning/phases/*-*/*-SUMMARY.md; do
+  node ./.opencode/get-shit-done/bin/gsd-tools.cjs summary-extract "$summary" --fields requirements_completed | jq -r '.requirements_completed'
+done
+```
+
+### 5d. Status Determination Matrix
+
+For each REQ-ID, determine status using all three sources:
+
+| VERIFICATION.md Status | SUMMARY Frontmatter | REQUIREMENTS.md | → Final Status |
+|------------------------|---------------------|-----------------|----------------|
+| passed                 | listed              | `[x]`           | **satisfied**  |
+| passed                 | listed              | `[ ]`           | **satisfied** (update checkbox) |
+| passed                 | missing             | any             | **partial** (verify manually) |
+| gaps_found             | any                 | any             | **unsatisfied** |
+| missing                | listed              | any             | **partial** (verification gap) |
+| missing                | missing             | any             | **unsatisfied** |
+
+### 5e. FAIL Gate and Orphan Detection
+
+**REQUIRED:** Any `unsatisfied` requirement MUST force `gaps_found` status on the milestone audit.
+
+**Orphan detection:** Requirements present in REQUIREMENTS.md traceability table but absent from ALL phase VERIFICATION.md files MUST be flagged as orphaned. Orphaned requirements are treated as `unsatisfied` — they were assigned but never verified by any phase.
 
 ## 6. Aggregate into v{version}-MILESTONE-AUDIT.md
 
@@ -98,7 +142,14 @@ scores:
   integration: N/M
   flows: N/M
 gaps:  # Critical blockers
-  requirements: [...]
+  requirements:
+    - id: "{REQ-ID}"
+      status: "unsatisfied | partial | orphaned"
+      phase: "{assigned phase}"
+      claimed_by_plans: ["{plan files that reference this requirement}"]
+      completed_by_plans: ["{plan files whose SUMMARY marks it complete}"]
+      verification_status: "passed | gaps_found | missing | orphaned"
+      evidence: "{specific evidence or lack thereof}"
   integration: [...]
   flows: [...]
 tech_debt:  # Non-critical, deferred
@@ -234,8 +285,13 @@ All requirements met. No critical blockers. Accumulated tech debt needs review.
 <success_criteria>
 - [ ] Milestone scope identified
 - [ ] All phase VERIFICATION.md files read
+- [ ] SUMMARY.md `requirements-completed` frontmatter extracted for each phase
+- [ ] REQUIREMENTS.md traceability table parsed for all milestone REQ-IDs
+- [ ] 3-source cross-reference completed (VERIFICATION + SUMMARY + traceability)
+- [ ] Orphaned requirements detected (in traceability but absent from all VERIFICATIONs)
 - [ ] Tech debt and deferred gaps aggregated
-- [ ] Integration checker spawned for cross-phase wiring
-- [ ] v{version}-MILESTONE-AUDIT.md created
+- [ ] Integration checker spawned with milestone requirement IDs
+- [ ] v{version}-MILESTONE-AUDIT.md created with structured requirement gap objects
+- [ ] FAIL gate enforced — any unsatisfied requirement forces gaps_found status
 - [ ] Results presented with actionable next steps
 </success_criteria>

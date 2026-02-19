@@ -3,6 +3,7 @@ description: Verifies phase goal achievement through goal-backward analysis. Che
 color: "#00FF00"
 tools:
   read: true
+  write: true
   bash: true
   grep: true
   glob: true
@@ -57,7 +58,7 @@ Set `is_re_verification = false`, proceed with Step 1.
 ```bash
 ls "$PHASE_DIR"/*-PLAN.md 2>/dev/null
 ls "$PHASE_DIR"/*-SUMMARY.md 2>/dev/null
-node ./.opencode/get-shit-done/bin/gsd-tools.js roadmap get-phase "$PHASE_NUM"
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "$PHASE_NUM"
 grep -E "^| $PHASE_NUM" .planning/REQUIREMENTS.md 2>/dev/null
 ```
 
@@ -89,9 +90,25 @@ must_haves:
       via: "fetch in useEffect"
 ```
 
-**Option B: Derive from phase goal**
+**Option B: Use Success Criteria from ROADMAP.md**
 
-If no must_haves in frontmatter:
+If no must_haves in frontmatter, check for Success Criteria:
+
+```bash
+PHASE_DATA=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs roadmap get-phase "$PHASE_NUM" --raw)
+```
+
+Parse the `success_criteria` array from the JSON output. If non-empty:
+1. **Use each Success Criterion directly as a truth** (they are already observable, testable behaviors)
+2. **Derive artifacts:** For each truth, "What must EXIST?" — map to concrete file paths
+3. **Derive key links:** For each artifact, "What must be CONNECTED?" — this is where stubs hide
+4. **Document must-haves** before proceeding
+
+Success Criteria from ROADMAP.md are the contract — they take priority over Goal-derived truths.
+
+**Option C: Derive from phase goal (fallback)**
+
+If no must_haves in frontmatter AND no Success Criteria in ROADMAP:
 
 1. **State the goal** from ROADMAP.md
 2. **Derive truths:** "What must be TRUE?" — list 3-7 observable, testable behaviors
@@ -121,7 +138,7 @@ For each truth:
 Use gsd-tools for artifact verification against must_haves in PLAN frontmatter:
 
 ```bash
-ARTIFACT_RESULT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js verify artifacts "$PLAN_PATH")
+ARTIFACT_RESULT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs verify artifacts "$PLAN_PATH")
 ```
 
 Parse JSON result: `{ all_passed, passed, total, artifacts: [{path, exists, issues, passed}] }`
@@ -170,7 +187,7 @@ Key links are critical connections. If broken, the goal fails even with all arti
 Use gsd-tools for key link verification against must_haves in PLAN frontmatter:
 
 ```bash
-LINKS_RESULT=$(node ./.opencode/get-shit-done/bin/gsd-tools.js verify key-links "$PLAN_PATH")
+LINKS_RESULT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs verify key-links "$PLAN_PATH")
 ```
 
 Parse JSON result: `{ all_verified, verified, total, links: [{from, to, via, verified, detail}] }`
@@ -220,17 +237,31 @@ Status: WIRED (state displayed) | NOT_WIRED (state exists, not rendered)
 
 ## Step 6: Check Requirements Coverage
 
-If REQUIREMENTS.md has requirements mapped to this phase:
+**6a. Extract requirement IDs from PLAN frontmatter:**
+
+```bash
+grep -A5 "^requirements:" "$PHASE_DIR"/*-PLAN.md 2>/dev/null
+```
+
+Collect ALL requirement IDs declared across plans for this phase.
+
+**6b. Cross-reference against REQUIREMENTS.md:**
+
+For each requirement ID from plans:
+1. Find its full description in REQUIREMENTS.md (`**REQ-ID**: description`)
+2. Map to supporting truths/artifacts verified in Steps 3-5
+3. Determine status:
+   - ✓ SATISFIED: Implementation evidence found that fulfills the requirement
+   - ✗ BLOCKED: No evidence or contradicting evidence
+   - ? NEEDS HUMAN: Can't verify programmatically (UI behavior, UX quality)
+
+**6c. Check for orphaned requirements:**
 
 ```bash
 grep -E "Phase $PHASE_NUM" .planning/REQUIREMENTS.md 2>/dev/null
 ```
 
-For each requirement: parse description → identify supporting truths/artifacts → determine status.
-
-- ✓ SATISFIED: All supporting truths verified
-- ✗ BLOCKED: One or more supporting truths failed
-- ? NEEDS HUMAN: Can't verify programmatically
+If REQUIREMENTS.md maps additional IDs to this phase that don't appear in ANY plan's `requirements` field, flag as **ORPHANED** — these requirements were expected but no plan claimed them. ORPHANED requirements MUST appear in the verification report.
 
 ## Step 7: Scan for Anti-Patterns
 
@@ -238,12 +269,12 @@ Identify files modified in this phase from SUMMARY.md key-files section, or extr
 
 ```bash
 # Option 1: Extract from SUMMARY frontmatter
-SUMMARY_FILES=$(node ./.opencode/get-shit-done/bin/gsd-tools.js summary-extract "$PHASE_DIR"/*-SUMMARY.md --fields key-files)
+SUMMARY_FILES=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs summary-extract "$PHASE_DIR"/*-SUMMARY.md --fields key-files)
 
 # Option 2: Verify commits exist (if commit hashes documented)
 COMMIT_HASHES=$(grep -oE "[a-f0-9]{7,40}" "$PHASE_DIR"/*-SUMMARY.md | head -10)
 if [ -n "$COMMIT_HASHES" ]; then
-  COMMITS_VALID=$(node ./.opencode/get-shit-done/bin/gsd-tools.js verify commits $COMMIT_HASHES)
+  COMMITS_VALID=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs verify commits $COMMIT_HASHES)
 fi
 
 # Fallback: grep for files
@@ -320,7 +351,9 @@ gaps:
 
 ## Create VERIFICATION.md
 
-Create `.planning/phases/{phase_dir}/{phase}-VERIFICATION.md`:
+**ALWAYS use the Write tool to create files** — never use `Bash(cat << 'EOF')` or heredoc commands for file creation.
+
+Create `.planning/phases/{phase_dir}/{phase_num}-VERIFICATION.md`:
 
 ```markdown
 ---
@@ -381,8 +414,8 @@ human_verification: # Only if status: human_needed
 
 ### Requirements Coverage
 
-| Requirement | Status | Blocking Issue |
-| ----------- | ------ | -------------- |
+| Requirement | Source Plan | Description | Status | Evidence |
+| ----------- | ---------- | ----------- | ------ | -------- |
 
 ### Anti-Patterns Found
 
@@ -414,7 +447,7 @@ Return with:
 
 **Status:** {passed | gaps_found | human_needed}
 **Score:** {N}/{M} must-haves verified
-**Report:** .planning/phases/{phase_dir}/{phase}-VERIFICATION.md
+**Report:** .planning/phases/{phase_dir}/{phase_num}-VERIFICATION.md
 
 {If passed:}
 All must-haves verified. Phase goal achieved. Ready to proceed.

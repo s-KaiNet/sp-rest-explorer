@@ -128,7 +128,9 @@ Continue debugging {slug}. Evidence is in the debug file.
 </objective>
 
 <prior_state>
-Debug file: @.planning/debug/{slug}.md
+<files_to_read>
+- .planning/debug/{slug}.md (Debug session state)
+</files_to_read>
 </prior_state>
 
 <checkpoint_response>
