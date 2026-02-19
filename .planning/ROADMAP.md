@@ -6,7 +6,7 @@
 - ✅ **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
 - ✅ **v1.2 UI Improvements** — Phases 9-10 (shipped 2026-02-15) — [archive](milestones/v1.2-ROADMAP.md)
 - ✅ **v1.3 Improvements** — Phases 11-12 (shipped 2026-02-17) — [archive](milestones/v1.3-ROADMAP.md)
-- 🔄 **v1.4 Unify Icons** — Phases 13-16
+- 🔄 **v1.4 Unify Icons** — Phases 13-17
 
 ## Phases
 
@@ -48,7 +48,7 @@
 
 </details>
 
-### v1.4 Unify Icons (Phases 13-16)
+### v1.4 Unify Icons (Phases 13-17)
 
 - [x] **Phase 13: Icon System Foundation** — Define Lucide icon set, TypeIcon component, and CSS color tokens for all 4 API types (completed 2026-02-18)
   **Plans:** 1 plan
@@ -63,7 +63,7 @@
   Plans:
   - [ ] 15-01-PLAN.md — TypeIcon in search modal and home page recently visited cards
   - [ ] 15-02-PLAN.md — TypeIcon in Explore Types welcome and sidebar + text symbol cleanup
-- [ ] **Phase 16: Change color for entity links** — Make entity type links use matching type colors from the icon system
+- [x] **Phase 16: Change color for entity links** — Make entity type links use matching type colors from the icon system (completed 2026-02-18)
   **Plans:** 1 plan
   Plans:
   - [ ] 16-01-PLAN.md — Replace emerald link color with type-entity CSS variable color
@@ -131,7 +131,7 @@
 **Success Criteria** (what must be TRUE):
   1. Entity/complex type links in property tables, nav property tables, method return types, and base type chains render in the `--type-entity` color (orange/amber) — not emerald green
   2. The "Collection" prefix part of Collection(Entity) links remains muted-foreground, while the inner entity name uses the entity type color
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 ## Progress
 
@@ -154,7 +154,18 @@
 | 13. Icon System Foundation | 2/2 | Complete    | 2026-02-18 | - |
 | 14. Explore API Integration | 1/1 | Complete    | 2026-02-18 | - |
 | 15. Cross-View Consistency | 2/2 | Complete    | 2026-02-18 | - |
-| 16. Change color for entity links | v1.4 | 0/0 | Not planned | - |
+| 16. Change color for entity links | 1/1 | Complete    | 2026-02-18 | - |
+
+### Phase 17: Move icons in search modal
+**Goal:** The search modal footer hint bar splits into two groups — "Navigate" on the left, "Open" and "Close" on the right — for better visual separation of navigation vs. action hints
+**Depends on:** Nothing (independent UI adjustment)
+**Requirements:** SMOD-01
+**Success Criteria** (what must be TRUE):
+  1. The "↑↓ Navigate" hint appears on the left side of the search modal footer bar
+  2. The "↵ Open" and "Esc Close" hints appear on the right side of the search modal footer bar, separated from Navigate
+**Plans:** 1 plan
+Plans:
+- [ ] 17-01-PLAN.md — Split footer hint bar into left (Navigate) and right (Open, Close) groups
 
 ---
 *Roadmap created: 2026-02-11*

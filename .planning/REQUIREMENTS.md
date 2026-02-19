@@ -31,8 +31,12 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Entity Link Colors
 
-- [ ] **LINK-01**: Entity type links (e.g., SP.Alert, SP.Group) render in the entity type color (orange/amber `--type-entity`) instead of hardcoded emerald green
-- [ ] **LINK-02**: Collection wrapper links (e.g., "Collection" prefix) remain muted-foreground, only the inner type name uses entity color
+- [x] **LINK-01**: Entity type links (e.g., SP.Alert, SP.Group) render in the entity type color (orange/amber `--type-entity`) instead of hardcoded emerald green
+- [x] **LINK-02**: Collection wrapper links (e.g., "Collection" prefix) remain muted-foreground, only the inner type name uses entity color
+
+### Search Modal Layout
+
+- [ ] **SMOD-01**: Search modal footer hint bar shows "Navigate" on the left and "Open" + "Close" on the right
 
 ## Future Requirements
 
@@ -80,10 +84,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | XVEW-05 | Phase 15 | Complete |
 | LINK-01 | Phase 16 | Planned |
 | LINK-02 | Phase 16 | Planned |
+| SMOD-01 | Phase 17 | Planned |
 
 **Coverage:**
-- v1.4 requirements: 15 total
-- Mapped to phases: 15 ✓
+- v1.4 requirements: 16 total
+- Mapped to phases: 16 ✓
 - Unmapped: 0
 
 ---
