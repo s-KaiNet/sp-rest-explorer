@@ -17,10 +17,10 @@ See: .planning/PROJECT.md (updated 2026-02-18)
 ## Current Position
 
 **Milestone:** v1.4 Unify Icons
-Phase: 16 — Change Color for Entity Links
+Phase: 17 — Move Icons in Search Modal
 Plan: 01 complete (1/1 plans)
-Status: Phase 16 complete — all plans executed
-Last activity: 2026-02-18 — Executed 16-01 (Replace Entity Link Color)
+Status: Phase 17 complete — all plans executed
+Last activity: 2026-02-19 — Executed 17-01 (Split footer hint bar layout)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -59,6 +59,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 15:** Recently visited cards use TypeIcon md (20px) — larger than sidebar sm but proportional to card
 - **Phase 15:** Hint box text color corrected from green (root) to amber (entity) to match entity type semantics
 - **Phase 16:** Entity link color changed from hardcoded emerald to --type-entity CSS variable (orange/amber)
+- **Phase 17:** Footer hint bar split into left (Navigate) and right (Open+Close) groups via justify-between
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -87,10 +88,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-18T23:49:07Z
-**What happened:** Executed 16-01 — Replaced emerald entity link color with --type-entity CSS variable (orange/amber). Phase 16 complete.
-**Next step:** Phase 16 complete — ready for next phase or milestone
+**Last session:** 2026-02-19T00:10:43Z
+**What happened:** Executed 17-01 — Split search modal footer hint bar into left (Navigate) and right (Open+Close) groups. Phase 17 complete.
+**Next step:** Phase 17 complete — ready for next phase or milestone
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-18 (phase 16 complete)*
+*Last updated: 2026-02-19 (phase 17 complete)*

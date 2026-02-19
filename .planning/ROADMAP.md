@@ -163,7 +163,7 @@
 **Success Criteria** (what must be TRUE):
   1. The "↑↓ Navigate" hint appears on the left side of the search modal footer bar
   2. The "↵ Open" and "Esc Close" hints appear on the right side of the search modal footer bar, separated from Navigate
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 Plans:
 - [ ] 17-01-PLAN.md — Split footer hint bar into left (Navigate) and right (Open, Close) groups
 

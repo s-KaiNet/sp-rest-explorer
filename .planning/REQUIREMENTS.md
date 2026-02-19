@@ -36,7 +36,7 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Search Modal Layout
 
-- [ ] **SMOD-01**: Search modal footer hint bar shows "Navigate" on the left and "Open" + "Close" on the right
+- [x] **SMOD-01**: Search modal footer hint bar shows "Navigate" on the left and "Open" + "Close" on the right
 
 ## Future Requirements
 
