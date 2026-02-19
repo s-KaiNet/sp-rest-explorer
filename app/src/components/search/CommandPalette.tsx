@@ -396,7 +396,7 @@ export function CommandPalette({
           </span>
         </div>
         {(result.isRoot as boolean) && (
-          <span className="shrink-0 rounded bg-type-entity/10 px-1.5 py-0.5 text-[10px] font-semibold text-type-entity">
+          <span className="shrink-0 rounded bg-type-root/10 px-1.5 py-0.5 text-[10px] font-semibold text-type-root">
             Root
           </span>
         )}

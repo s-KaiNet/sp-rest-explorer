@@ -35,7 +35,7 @@ function RecentlyVisitedCard({
   let colorClass: string
   if (item.kind === 'root') {
     icon = '<>'
-    colorClass = 'bg-type-entity/10 text-type-entity'
+    colorClass = 'bg-type-root/10 text-type-root'
   } else if (item.kind === 'function') {
     icon = 'ƒ'
     colorClass = 'bg-type-fn/10 text-type-fn'
@@ -133,7 +133,7 @@ export function HomePage() {
             11k+ properties
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-root" />
             60k+ endpoints
           </span>
         </div>
@@ -142,7 +142,7 @@ export function HomePage() {
       {/* ── Browse All Root Endpoints Button ── */}
       <button
         onClick={() => navigate('/_api')}
-        className="mb-8 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-2.5 text-[13px] text-muted-foreground transition-all hover:border-type-fn hover:bg-type-fn/5 hover:text-type-fn cursor-pointer"
+        className="mb-8 flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-border px-4 py-2.5 text-[13px] text-muted-foreground transition-all hover:border-type-root hover:bg-type-root/5 hover:text-type-root cursor-pointer"
       >
         Browse all root endpoints
         <ArrowRight className="h-3.5 w-3.5" />

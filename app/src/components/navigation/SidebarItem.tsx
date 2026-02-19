@@ -24,7 +24,7 @@ export function SidebarItem({
     >
       <span className="min-w-0 flex-1 truncate">{displayName ?? entry.name}</span>
       {variant === 'root' && (
-        <span className="shrink-0 rounded bg-type-entity/10 px-1.5 py-0.5 text-xs font-medium font-mono text-type-entity">
+        <span className="shrink-0 rounded bg-type-root/10 px-1.5 py-0.5 text-xs font-medium font-mono text-type-root">
           {'<>'}
         </span>
       )}

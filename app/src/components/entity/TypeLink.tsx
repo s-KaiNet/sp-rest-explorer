@@ -20,8 +20,8 @@ interface TypeLinkProps {
 /**
  * Renders an entity type name as a clickable link or plain text.
  *
- * - Entity types → green clickable link to /entity/{typeName}
- * - Collection(Entity) → split link: dimmed "Collection" + green inner type
+ * - Entity types → emerald clickable link to /entity/{typeName}
+ * - Collection(Entity) → split link: dimmed "Collection" + emerald inner type
  * - Edm.* primitives → gray monospace text (not clickable)
  * - Collection(Edm.*) → gray monospace text (not clickable)
  */
@@ -63,7 +63,7 @@ export function TypeLink({ typeName, className }: TypeLinkProps) {
         <span className="text-muted-foreground">(</span>
         <Link
           to={`/entity/${encodeURIComponent(innerType)}`}
-          className="font-medium text-type-entity hover:underline"
+          className="font-medium text-emerald-600 hover:underline dark:text-emerald-400"
           title={`View ${innerType} ${typeLabel(innerType)}`}
         >
           {innerType}
@@ -86,7 +86,7 @@ export function TypeLink({ typeName, className }: TypeLinkProps) {
   return (
     <Link
       to={`/entity/${encodeURIComponent(typeName)}`}
-      className={`font-mono font-medium text-type-entity hover:underline ${className ?? ''}`}
+      className={`font-mono font-medium text-emerald-600 hover:underline dark:text-emerald-400 ${className ?? ''}`}
       title={`View ${typeName} ${typeLabel(typeName)}`}
     >
       {typeName}

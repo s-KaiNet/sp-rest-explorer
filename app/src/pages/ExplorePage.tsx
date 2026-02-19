@@ -135,7 +135,7 @@ export function ExplorePage() {
               {isRoot ? (
                 <div className="flex flex-1 flex-col items-center justify-center px-8 py-12 text-center">
                   {/* Blue icon box */}
-                  <div className="mb-5 flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-type-fn/10 text-[28px] font-extrabold text-type-fn">
+                  <div className="mb-5 flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-type-root/10 text-[28px] font-extrabold text-type-root">
                     &lt;&gt;
                   </div>
 
@@ -152,7 +152,7 @@ export function ExplorePage() {
                   {/* Stats row — computed from live data */}
                   <div className="flex gap-8">
                     <div className="flex flex-col items-center">
-                      <span className="text-[28px] font-bold text-type-fn">
+                      <span className="text-[28px] font-bold text-type-root">
                         {children.length.toLocaleString()}
                       </span>
                       <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -160,7 +160,7 @@ export function ExplorePage() {
                       </span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-[28px] font-bold text-type-fn">
+                      <span className="text-[28px] font-bold text-type-root">
                         {functionCount.toLocaleString()}
                       </span>
                       <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -170,7 +170,7 @@ export function ExplorePage() {
                   </div>
 
                   {/* Hint box */}
-                  <div className="mt-7 flex items-center gap-2 rounded-lg bg-type-fn/10 px-[18px] py-3 text-[13px] text-blue-800 dark:text-blue-200">
+                  <div className="mt-7 flex items-center gap-2 rounded-lg bg-type-root/10 px-[18px] py-3 text-[13px] text-green-800 dark:text-green-200">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
                       <path d="M15 15l-2 5L9 9l11 4-5 2z" />
                       <path d="m2 2 7.586 7.586" />
