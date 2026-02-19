@@ -315,6 +315,7 @@ Verified patterns from official sources:
 ## Step 1: Receive Scope and Load Context
 
 Orchestrator provides: phase number/name, description/goal, requirements, constraints, output path.
+- Phase requirement IDs (e.g., AUTH-01, AUTH-02) — the specific requirements this phase MUST address
 
 Load phase context using init command:
 ```bash
@@ -383,6 +384,20 @@ For each domain: Context7 first → Official docs → WebSearch → Cross-verify
 [Copy verbatim from CONTEXT.md ## Deferred Ideas]
 </user_constraints>
 ```
+
+**If phase requirement IDs were provided**, MUST include a `<phase_requirements>` section:
+
+```markdown
+<phase_requirements>
+## Phase Requirements
+
+| ID | Description | Research Support |
+|----|-------------|-----------------|
+| {REQ-ID} | {from REQUIREMENTS.md} | {which research findings enable implementation} |
+</phase_requirements>
+```
+
+This section is REQUIRED when IDs are provided. The planner uses it to map requirements to plans.
 
 Write to: `$PHASE_DIR/$PADDED_PHASE-RESEARCH.md`
 

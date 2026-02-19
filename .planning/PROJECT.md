@@ -12,17 +12,19 @@ A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + W
 
 v1.2 polished the UI with namespace-grouped Explore API sidebar, decluttered badge system, branded home page with favicon and approximate stats, redesigned Explore API welcome screen, expanded recently visited with Types entries, and subdued dark mode Cmd+K modal borders.
 
-## Current Milestone: v1.3 Improvements
+## Current Milestone: v1.4 Unify Icons
 
-**Goal:** Fix search behavior bugs, improve search UX, fix nullable property display, and relocate Explore API breadcrumb to content area.
+**Goal:** Replace text symbols and special characters with consistent Lucide icons across all 4 API types, introduce a dedicated color for Types/Entities, and unify icon placement across all views.
 
 **Target features:**
-- Fix search dot-handling so "SP.File" matches literally, not as regex
-- Fix group collapse label jump and make full row clickable
-- Sort API Endpoints search results by path length (shortest first)
-- Add hover visual feedback and pointer cursor to search results
-- Fix nullable property logic on entity detail pages
-- Move Explore API breadcrumb into main content area
+- Define Lucide icon set for 4 API types: root (green), nav properties (purple), functions (blue), types/entities (orange/amber)
+- Add dedicated `--type-root` CSS token (green) and change `--type-entity` to orange/amber
+- Replace `<>`, `FN`, `NAV`, `T`, `ƒ` text symbols with Lucide icons everywhere
+- Update Explore API sidebar: move icons from right side to left (`[icon] Label`)
+- Update search modal: use new icons, remove "Root" badge from individual results
+- Update home page recently visited cards with new icons
+- Update Explore API and Explore Types welcome screen icons
+- Update Explore Types sidebar with new icon system
 
 ## Core Value
 
@@ -52,6 +54,11 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - SIDE-01 through SIDE-04 — v1.2 (sidebar animation fix, namespace grouping, badge repositioning, recently visited Types)
   - HOME-01 through HOME-03 — v1.2 (favicon branding, approximate stats, Explore API welcome screen)
   - VISU-01, VISU-02 — v1.2 (dark mode modal borders, badge removal)
+
+- **v1.3 (6 requirements):**
+  - SRCH-05 through SRCH-08 — v1.3 (dot-handling literal search, group collapse fix, path-length sort, hover feedback)
+  - DETL-01 — v1.3 (nullable property logic fix)
+  - LAYT-01 — v1.3 (breadcrumb relocation to content area)
 
 ### Backlog (future milestones)
 
@@ -119,4 +126,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-17 after v1.3 milestone start*
+*Last updated: 2026-02-18 after v1.4 Unify Icons milestone start*

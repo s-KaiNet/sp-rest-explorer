@@ -48,6 +48,12 @@ This returns all phases with plan/summary counts and disk status. Use this to ve
 - All phases complete (all plans have summaries)? Check `disk_status === 'complete'` for each.
 - `progress_percent` should be 100%.
 
+**Requirements completion check (REQUIRED before presenting):**
+
+Parse REQUIREMENTS.md traceability table:
+- Count total v1 requirements vs checked-off (`[x]`) requirements
+- Identify any non-Complete rows in the traceability table
+
 Present:
 
 ```
@@ -60,7 +66,24 @@ Includes:
 - Phase 4: Polish (1/1 plan complete)
 
 Total: {phase_count} phases, {total_plans} plans, all complete
+Requirements: {N}/{M} v1 requirements checked off
 ```
+
+**If requirements incomplete** (N < M):
+
+```
+⚠ Unchecked Requirements:
+
+- [ ] {REQ-ID}: {description} (Phase {X})
+- [ ] {REQ-ID}: {description} (Phase {Y})
+```
+
+MUST present 3 options:
+1. **Proceed anyway** — mark milestone complete with known gaps
+2. **Run audit first** — `/gsd-audit-milestone` to assess gap severity
+3. **Abort** — return to development
+
+If user selects "Proceed anyway": note incomplete requirements in MILESTONES.md under `### Known Gaps` with REQ-IDs and descriptions.
 
 <config-check>
 
@@ -669,6 +692,9 @@ Milestone completion is successful when:
 - [ ] STATE.md updated with fresh project reference
 - [ ] Git tag created (v[X.Y])
 - [ ] Milestone commit made (includes archive files and deletion)
+- [ ] Requirements completion checked against REQUIREMENTS.md traceability table
+- [ ] Incomplete requirements surfaced with proceed/audit/abort options
+- [ ] Known gaps recorded in MILESTONES.md if user proceeded with incomplete requirements
 - [ ] User knows next step (/gsd-new-milestone)
 
 </success_criteria>

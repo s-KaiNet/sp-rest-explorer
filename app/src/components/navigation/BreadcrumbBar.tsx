@@ -22,7 +22,7 @@ export function BreadcrumbBar({ segments, onNavigate }: BreadcrumbBarProps) {
   return (
     <nav
       aria-label="API path breadcrumb"
-      className="group z-10 flex min-h-[40px] shrink-0 flex-wrap items-center border-b border-border bg-sidebar px-4 py-2"
+      className="group flex shrink-0 min-h-[40px] flex-wrap items-center border-b border-border bg-sidebar px-4 py-2"
     >
       {segments.map((segment, index) => {
         const isLast = index === segments.length - 1

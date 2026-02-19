@@ -436,6 +436,11 @@ Check for auto-advance trigger:
    AUTO_CFG=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-get workflow.auto_advance 2>/dev/null || echo "false")
    ```
 
+**If `--auto` flag present AND `AUTO_CFG` is not true:** Persist auto-advance to config (handles direct `--auto` usage without new-project):
+```bash
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs config-set workflow.auto_advance true
+```
+
 **If `--auto` flag present OR `AUTO_CFG` is true:**
 
 Display banner:

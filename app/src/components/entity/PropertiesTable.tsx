@@ -41,10 +41,10 @@ export function PropertiesTable({ properties }: PropertiesTableProps) {
               <TypeLink typeName={prop.typeName} />
             </td>
             <td className="border-b border-border/50 py-1.5 font-mono text-xs">
-              {prop.nullable ? (
-                <span className="text-muted-foreground">yes</span>
-              ) : (
+              {prop.nullable === false ? (
                 <span className="font-semibold text-type-fn">no</span>
+              ) : (
+                <span className="text-muted-foreground">yes</span>
               )}
             </td>
           </tr>

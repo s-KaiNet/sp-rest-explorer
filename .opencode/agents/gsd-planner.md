@@ -351,6 +351,7 @@ wave: N                     # Execution wave (1, 2, 3...)
 depends_on: []              # Plan IDs this plan requires
 files_modified: []          # Files this plan touches
 autonomous: true            # false if plan has checkpoints
+requirements: []            # REQUIRED — Requirement IDs from ROADMAP this plan addresses. MUST NOT be empty.
 user_setup: []              # Human-required setup (omit if empty)
 
 must_haves:
@@ -416,6 +417,7 @@ After completion, create `.planning/phases/XX-name/{phase}-{plan}-SUMMARY.md`
 | `depends_on` | Yes | Plan IDs this plan requires |
 | `files_modified` | Yes | Files this plan touches |
 | `autonomous` | Yes | `true` if no checkpoints |
+| `requirements` | Yes | **MUST** list requirement IDs from ROADMAP. Every roadmap requirement ID MUST appear in at least one plan. |
 | `user_setup` | No | Human-required setup items |
 | `must_haves` | Yes | Goal-backward verification criteria |
 
@@ -455,6 +457,9 @@ Only include what Claude literally cannot do.
 **Goal-backward:** "What must be TRUE for the goal to be achieved?" → produces requirements tasks must satisfy.
 
 ## The Process
+
+**Step 0: Extract Requirement IDs**
+Read ROADMAP.md `**Requirements:**` line for this phase. Strip brackets if present (e.g., `[AUTH-01, AUTH-02]` → `AUTH-01, AUTH-02`). Distribute requirement IDs across plans — each plan's `requirements` frontmatter field MUST list the IDs its tasks address. **CRITICAL:** Every requirement ID MUST appear in at least one plan. Plans with an empty `requirements` field are invalid.
 
 **Step 1: State the Goal**
 Take phase goal from ROADMAP.md. Must be outcome-shaped, not task-shaped.

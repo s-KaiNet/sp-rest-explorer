@@ -2,10 +2,10 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-15)
+See: .planning/PROJECT.md (updated 2026-02-18)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v1.3 Improvements — Search UX fixes, detail & layout fixes
+**Current focus:** v1.4 Unify Icons — Consistent Lucide icons and colors for all API types
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, React Router 7
@@ -16,17 +16,18 @@ See: .planning/PROJECT.md (updated 2026-02-15)
 
 ## Current Position
 
-**Milestone:** v1.3 Improvements
-Phase: 11 — Search UX Fixes (complete, 2/2 plans)
-Plan: 02 complete
-Status: Phase 11 complete, ready to plan Phase 12
-Last activity: 2026-02-17 - Completed quick task 2: Narrow search result rows, increase results per group to 7, taller dialog
+**Milestone:** v1.4 Unify Icons
+Phase: 13 — Icon System Foundation
+Plan: —
+Status: Roadmap created, ready for phase planning
+Last activity: 2026-02-18 — Roadmap created (phases 13-15)
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
-v1.3 Progress: ██████████░░░░░░░░░░ 50% (1/2 phases: 11 ✓, 12)
+v1.3 Progress: ████████████████████ 100% (2/2 phases: 11 ✓, 12 ✓) — SHIPPED
+v1.4 Progress: ░░░░░░░░░░░░░░░░░░░░ 0% (0/3 phases: 13, 14, 15)
 ```
 
 ## Performance Metrics
@@ -47,6 +48,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - **Phase 11:** Bypass MiniSearch for special-char queries (literalNameSearch) rather than modifying tokenizer
 - **Phase 11:** Render SearchGroup header as plain div above headingless CommandGroup for layout stability
 - **Phase 11:** Use bg-foreground/8 overlays instead of bg-accent for command palette hover/selection (accent === popover in dark mode)
+- **Phase 12:** Strict equality (=== false) for optional boolean nullable field — undefined/missing treated as nullable
+- **Phase 12:** Breadcrumb conditional on !isRoot, rendered inside content area with sticky top-0
+- **Phase 12:** Flex column split for scroll isolation — breadcrumb outside scroll container, no sticky needed
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -73,10 +77,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-17T02:08:20.626Z
-**What happened:** Executed quick-2 plan — narrower search rows (py-3→py-1.5), 7 results per group (was 5), 80vh dialog (was 66vh). 1 task, 1 commit (756a2e4).
-**Next step:** `/gsd-plan-phase 12` or next quick task
+**Last session:** 2026-02-17T23:59:38.353Z
+**What happened:** Created v1.4 roadmap — 3 phases (13-15) covering 13 requirements. Icon system foundation → Explore API integration → cross-view consistency.
+**Next step:** `/gsd-plan-phase 13` to plan the Icon System Foundation phase
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-17 (Quick task 2 complete)*
+*Last updated: 2026-02-18 (v1.4 roadmap created)*
