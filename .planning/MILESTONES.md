@@ -1,5 +1,42 @@
 # Milestones: SP REST API Explorer — New UI
 
+## v1.4 Unify Icons — Shipped 2026-02-19
+
+**Phases:** 13-17 | **Plans:** 7 | **Tasks:** 12 | **Requirements:** 16/16 validated
+
+Unified all type indicators across the app with a Lucide icon system. TypeIcon component renders distinct icons in designated OKLCH colors for 4 API types. Replaced all text symbols (<>, FN, NAV, T, Root pill) with consistent Lucide icons. Entity links use type-entity CSS variable color. ~24 lines net across 10 app files in 2 days (35 commits).
+
+**Key accomplishments:**
+1. TypeIcon component with Lucide icons (Box, Compass, Zap, Braces) and CSS color tokens for all 4 API types: root (green), nav property (purple), function (blue), type/entity (orange/amber)
+2. Icon-first Explore API sidebar — replaced all text badges (FN, NAV, <>) with Lucide icons left of labels
+3. Cross-view consistency — search modal, home page recently visited, Explore Types all use unified TypeIcon with zero remaining text symbols
+4. Entity type links render in orange/amber (--type-entity) matching TypeIcon entity color instead of hardcoded emerald
+5. Search modal footer hint bar split into left (Navigate) and right (Open + Close) groups
+
+**Deferred:** CHLG-01-06 (API Changelog), ADDL-02 (CI/CD)
+
+**Archive:** [milestones/v1.4-ROADMAP.md](milestones/v1.4-ROADMAP.md) | [milestones/v1.4-REQUIREMENTS.md](milestones/v1.4-REQUIREMENTS.md)
+
+---
+
+## v1.3 Improvements — Shipped 2026-02-17
+
+**Phases:** 11-12 | **Plans:** 4 | **Tasks:** 8 | **Requirements:** 6/6 validated
+
+Fixed search UX issues (literal dot matching, group collapse stability, path-length sort, hover feedback), corrected nullable property display logic, and relocated breadcrumb to content area. Targeted fixes that improved daily usability of existing features.
+
+**Key accomplishments:**
+1. Literal substring search for special characters (dots) bypassing MiniSearch tokenizer
+2. Stable group header collapse with no layout shift (div-based headers above headingless CommandGroups)
+3. Path-length sorted API endpoint results (shortest paths first)
+4. Hover feedback on all search result items (bg-foreground/8 overlays)
+5. Nullable property strict equality check (=== false for optional boolean)
+6. Breadcrumb relocated from header to content area with scroll isolation
+
+**Deferred:** CHLG-01-06 (API Changelog), ADDL-02 (CI/CD)
+
+---
+
 ## v1.2 UI Improvements — Shipped 2026-02-15
 
 **Phases:** 9-10 | **Plans:** 5 | **Tasks:** 9 | **Requirements:** 9/9 validated
@@ -58,4 +95,4 @@ Rebuilt the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 **Archive:** [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) | [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md)
 
 ---
-*Last updated: 2026-02-15*
+*Last updated: 2026-02-19*

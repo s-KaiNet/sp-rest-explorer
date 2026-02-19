@@ -117,7 +117,7 @@ export function HomePage() {
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-entity" />
-            2.4k entities
+            2.4k+ entities
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-type-nav" />
