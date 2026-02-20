@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "scripts": {
+    "index": "memsearch index .planning/milestones/ .planning/research/ .planning/phases/",
+    "re-index": "memsearch index .planning/milestones/ .planning/research/ .planning/phases/ --force",
+    "watch-index": "memsearch watch .planning/milestones/ .planning/research/ .planning/phases/"
+  }
+}

@@ -12,9 +12,4 @@ max_chunk_size = 1500
 overlap_lines = 2
 
 [watch]
-debounce_ms = 1500
-
-[compact]
-llm_provider = "openai"
-llm_model = "gpt-4o-mini"
-prompt_file = ""
+debounce_ms = 2500
