@@ -1,6 +1,6 @@
 {
   "version": "1.20.5",
-  "timestamp": "2026-02-19T21:19:28.288Z",
+  "timestamp": "2026-02-22T20:39:10.330Z",
   "files": {
     "get-shit-done/bin/gsd-tools.cjs": "0b328ed0c16dae3a36cbd386152b6edcf653f03f72ce7da047cad419470f874f",
     "get-shit-done/bin/gsd-tools.test.cjs": "1ae5ae3639191aaf7b3b61f65faf789a95f416c30a8676f508badf141846a33e",

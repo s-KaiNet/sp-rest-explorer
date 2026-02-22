@@ -18,4 +18,5 @@ npx skills add wshobson/agents --skill typescript-advanced-types --agent opencod
 npx skills add wshobson/agents --skill api-design-principles --agent opencode
 npx skills add wshobson/agents --skill tailwind-design-system --agent opencode
 npx skills add giuseppe-trisciuoglio/developer-kit --skill shadcn-ui --agent opencode
+npx skills add anthropics/skills --skill skill-creator
 ```
