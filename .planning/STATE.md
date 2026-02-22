@@ -2,10 +2,10 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-19)
+See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Planning next milestone
+**Current focus:** v2.0 Backend Rework — rewrite Azure Functions backend
 
 **Key Constraints:**
 - Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
@@ -16,9 +16,10 @@ See: .planning/PROJECT.md (updated 2026-02-19)
 
 ## Current Position
 
-**Milestone:** v1.4 Unify Icons — SHIPPED 2026-02-19
-Status: ✅ Complete — milestone archived
-Last activity: 2026-02-19 — Milestone v1.4 archived
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-02-22 — Milestone v2.0 started
 
 ```
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -71,10 +72,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-19
-**What happened:** Archived v1.4 Unify Icons milestone. Created milestone archives, reorganized ROADMAP.md, updated PROJECT.md and MILESTONES.md, deleted REQUIREMENTS.md.
-**Next step:** `/gsd-new-milestone` to start next milestone (questioning → research → requirements → roadmap)
+**Last session:** 2026-02-22
+**What happened:** Started v2.0 Backend Rework milestone. Researched legacy `az-funcs/` codebase, identified deprecated deps and pain points, gathered milestone goals.
+**Next step:** Define requirements, then create roadmap
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-19 (v1.4 milestone archived)*
+*Last updated: 2026-02-22 (v2.0 milestone started)*

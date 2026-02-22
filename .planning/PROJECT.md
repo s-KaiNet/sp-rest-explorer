@@ -4,11 +4,26 @@
 
 A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
 
+## Current Milestone: v2.0 Backend Rework
+
+**Goal:** Rewrite the Azure Functions backend from scratch — modern TypeScript, updated SDKs, simplified blob layout, client credentials auth, resilient daily timer.
+
+**Target features:**
+- New TypeScript Azure Functions project (v4 programming model) replacing `az-funcs/`
+- Client credentials MSAL auth (replacing deprecated ROPC username/password flow)
+- SharePoint `$metadata` XML fetch with retry logic and timeout
+- XML-to-JSON parsing pipeline (xml2js, lz-string compression)
+- Simplified blob storage layout: single `api-files` container with `metadata.latest.*` and monthly `<year>y_m<month>_metadata.*` snapshots
+- Modern SDK stack: `@azure/storage-blob` v12, `@azure/functions` v4, current versions of msal-node, axios, xml2js, lz-string, jsondiffpatch
+- Developer-friendly deployment workflow (local dev, publish to Azure)
+- No diff generation (GenerateDiff function dropped entirely)
+
 ## Current State
 
 **Shipped:** v1.4 Unify Icons (2026-02-19)
-**Codebase:** ~5,175 LOC TypeScript/CSS across 67 files in `app/`
-**Tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, React Router 7
+**Frontend codebase:** ~5,175 LOC TypeScript/CSS across 67 files in `app/`
+**Frontend tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, React Router 7
+**Backend codebase (legacy):** `az-funcs/` — Azure Functions v2, deprecated SDKs, ROPC auth, 2 timer functions
 
 v1.4 unified all type indicators across the app with a Lucide icon system — TypeIcon component renders distinct icons in designated colors for root (green Box), nav properties (purple Compass), functions (blue Zap), and types/entities (orange Braces). Entity links now use the type-entity color. Search modal footer reorganized for clarity.
 
@@ -53,10 +68,21 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - LINK-01, LINK-02 — v1.4 (entity link color change to type-entity)
   - SMOD-01 — v1.4 (search modal footer layout)
 
+### Active
+
+- [ ] Rewrite Azure Functions backend from scratch (new project, modern tooling)
+- [ ] Client credentials MSAL auth replacing ROPC flow
+- [ ] SharePoint metadata fetch with retry/timeout resilience
+- [ ] XML-to-JSON parsing pipeline with lz-string compression
+- [ ] Simplified blob layout: `api-files` only, monthly snapshots with 1-indexed months
+- [ ] Developer deployment workflow for Azure Functions
+- [ ] Drop GenerateDiff function entirely (no `diff-files` container)
+
 ### Backlog (future milestones)
 
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
+- [ ] Frontend changes to consume new blob layout (if any needed)
 
 ### Out of Scope
 
@@ -74,14 +100,21 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 ## Context
 
 Shipped v1.4 with ~5,175 LOC TypeScript/CSS across 67 files. ~24 lines net added over v1.3 (153 insertions, 129 deletions across 10 app files).
-Tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, idb-keyval, React Router 7.
+Frontend tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, idb-keyval, React Router 7.
 Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot.
 Icon system: TypeIcon component with Record-based Lucide icon/color lookup maps, OKLCH CSS custom properties for 4 type colors with dark mode variants.
 Old `web/` directory preserved as reference during development.
 
+**Legacy backend (`az-funcs/`):**
+- Azure Functions v2, TypeScript, 2 timer-triggered functions (GenerateMetadata + GenerateDiff)
+- Deprecated: `azure-storage` SDK v2, ROPC auth flow, TSLint, azure-functions-pack, bluebird promisify
+- Pain points: no retry/timeout, module-scope Date stale across warm starts, zero-indexed months, `context.done()` legacy pattern
+- Key libs to preserve logic from: xml2js XML→JSON parser (`src/metadataParser.ts`), lz-string compression, MSAL auth (switching to client credentials)
+
 **Known technical debt:**
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
 - Recently visited kind mapping relies on depth heuristic (depth 2 = root)
+- Legacy `az-funcs/` backend needs full rewrite (v2.0 milestone target)
 
 ## Key Decisions
 
@@ -116,6 +149,9 @@ Old `web/` directory preserved as reference during development.
 | Root icon as sole root indicator | Green Box icon replaces pill badge, reduces visual clutter | Good |
 | Entity link color via CSS variable | text-type-entity handles light/dark automatically, no dual classes | Good |
 | Footer hint bar justify-between | Semantic structure over spacer element, consistent Tailwind pattern | Good |
+| Switch ROPC to client credentials | ROPC deprecated by Microsoft, no MFA support, service app doesn't need user context | — Pending |
+| Drop GenerateDiff function | diff-files container not needed, simplifies blob layout | — Pending |
+| Rewrite backend from scratch | Too many deprecated deps and patterns to incrementally migrate | — Pending |
 
 ## Constraints
 
@@ -127,4 +163,4 @@ Old `web/` directory preserved as reference during development.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-19 after v1.4 Unify Icons milestone completion*
+*Last updated: 2026-02-22 after v2.0 Backend Rework milestone started*
