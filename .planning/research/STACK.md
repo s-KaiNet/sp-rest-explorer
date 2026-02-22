@@ -1,27 +1,27 @@
 # Stack Research
 
-**Domain:** Data-heavy API documentation explorer SPA (static, GitHub Pages)
-**Researched:** 2026-02-11
+**Domain:** Azure Functions backend for SharePoint metadata processing (timer-triggered, blob storage, MSAL auth)
+**Researched:** 2026-02-22
 **Confidence:** HIGH
 
 ## Verification Summary
 
-The locked choices from Phase 1 research are **mostly confirmed with version updates**. Key corrections:
+All package versions verified against npm registry and Context7 documentation on 2026-02-22. Key findings:
 
-| Original Choice | Actual Current Version | Status |
-|----------------|----------------------|--------|
-| React 19 | **19.2.4** | ✅ Confirmed — latest stable |
-| Vite 6 | **7.3.1** | ⚠️ **UPDATE** — Vite 7 is current, Vite 6 still maintained at 6.4.1 |
-| TypeScript 5 | **5.9.3** | ✅ Confirmed |
-| Zustand 5 | **5.0.11** | ✅ Confirmed |
-| Tailwind CSS 4 | **4.1.18** | ✅ Confirmed |
-| React Router 7 | **7.13.0** | ✅ Confirmed — `createHashRouter` verified in docs |
-| react-arborist 3.4.x | **3.4.3** | ✅ Confirmed — supports React ≥16.14 |
-| MiniSearch 7.x | **7.2.0** | ✅ Confirmed |
-| cmdk v1.x | **1.1.1** | ✅ Confirmed — supports React 18/19 |
-| @tanstack/react-table 8.x | **8.21.3** | ✅ Confirmed |
-| lucide-react | **0.563.0** | ✅ Confirmed |
-| shadcn/ui | CLI at **3.8.4** | ✅ Confirmed — Vite installation guide current |
+| Legacy Package | Replacement | Latest Version | Status |
+|----------------|-------------|----------------|--------|
+| `azure-storage` v2 | `@azure/storage-blob` | **12.31.0** | ✅ Modern SDK, fully typed |
+| `@azure/msal-node` 2.16.0 (ROPC) | `@azure/msal-node` (client credentials) | **5.0.4** | ⚠️ Major version jump (2→5) |
+| `@azure/functions` (v2 model) | `@azure/functions` (v4 model) | **4.11.2** | ✅ Code-centric, no function.json |
+| `axios` 1.7.7 | `axios` | **1.13.5** | ✅ Minor update |
+| `xml2js` 0.4.19 | `xml2js` | **0.6.2** | ✅ Still best fit for existing parser |
+| `lz-string` 1.4.4 | `lz-string` | **1.5.0** | ✅ Includes own types |
+| `jsondiffpatch` 0.3.11 | `jsondiffpatch` | **0.7.3** | ⚠️ ESM-only in v0.7 |
+| `typescript` 5.6.3 | `typescript` | **5.9.x** | ✅ Matches frontend |
+| `tslint` 5.x | `eslint` + `typescript-eslint` | ESLint **10.x** | ✅ TSLint long dead |
+| `bluebird` 3.x | Native `Promise` / `util.promisify` | N/A — **DROP** | ✅ Node 20+ has native promises |
+| `handlebars` 4.x | N/A | N/A — **DROP** | ✅ Was for diff HTML — diff dropped |
+| `azure-functions-pack` 1.x | N/A | N/A — **DROP** | ✅ v4 model doesn't need bundling |
 
 ---
 
@@ -31,87 +31,339 @@ The locked choices from Phase 1 research are **mostly confirmed with version upd
 
 | Technology | Version | Purpose | Why Recommended | Confidence |
 |------------|---------|---------|-----------------|------------|
-| React | 19.2.x | UI framework | Latest stable. Concurrent features, `use()` API, improved Suspense. Industry standard for SPA development. | HIGH — npm registry verified |
-| React DOM | 19.2.x | DOM rendering | Paired with React. Required for SPA rendering. | HIGH |
-| Vite | 7.x | Build tool & dev server | **Updated from v6.** Vite 7 is the current latest (7.3.1). Requires Node.js 20.19+ or 22.12+. `@vitejs/plugin-react` 5.x supports Vite 4–7. Native ESM, fast HMR, Rollup-based production bundling. | HIGH — npm + Context7 verified |
-| TypeScript | 5.9.x | Type safety | Latest stable. Strict mode, modern features, excellent IDE support. | HIGH — npm verified |
-| Zustand | 5.0.x | State management | Lightweight (2KB), hook-based, persist middleware built-in. Perfect for single-store pattern (one large JSON blob + UI state). No boilerplate. v5 requires `useShallow` for array/object selectors. | HIGH — Context7 verified |
-| Tailwind CSS | 4.x | Styling | v4 uses `@tailwindcss/vite` plugin (no PostCSS config). CSS-first configuration, automatic content detection, dark mode via `dark:` variants. Zero runtime. | HIGH — Context7 verified |
-| React Router | 7.x | Client-side routing | `createHashRouter` confirmed in v7.9.4+ docs. Hash routing required for GitHub Pages (no server-side routing). Library mode (not framework mode) — no `@react-router/dev` needed. | HIGH — Context7 verified |
+| `@azure/functions` | 4.11.x | Azure Functions v4 programming model | Code-centric function definitions (no `function.json`). Timer triggers, blob outputs defined in TypeScript. Types included. Must be in `dependencies` (not `devDependencies`). Supports Node.js 20 and 22. | HIGH — npm + Context7 + MS Learn verified |
+| TypeScript | 5.9.x | Type safety | Matches frontend project. Strict mode. Compiles to `dist/` for Azure Functions. | HIGH — npm verified |
+| Node.js | 20.x (LTS) | Runtime | Azure Functions v4 supports Node 18/20/22. Use 20 LTS for stability. Node 22 is supported but newer. | HIGH — MS Learn verified |
 
-### Feature Libraries
+### Azure SDK Libraries
 
 | Library | Version | Purpose | Why Recommended | Confidence |
 |---------|---------|---------|-----------------|------------|
-| react-arborist | 3.4.x | Virtualized tree view | Built on react-window. Virtual rendering, keyboard nav, search/filter, drag-and-drop (not needed but free). Rich `TreeApi` and `NodeApi` for programmatic control (`scrollTo`, `openParents`, `focus`). Peer dep: React ≥16.14 (React 19 ✅). | HIGH — Context7 API verified |
-| MiniSearch | 7.2.x | Full-text search index | Native TypeScript generic `MiniSearch<T>`. Returns stored documents directly (no separate Map needed). Prefix + fuzzy + field boosting. ~19ms init / ~1ms search at 6K items. MIT license, 29KB minified. | HIGH — Context7 verified |
-| cmdk | 1.1.x | Command palette (Cmd+K) | Fast, unstyled, accessible. `Command.Dialog` for modal overlay. Keyboard navigation built-in. Peer dep: React 18/19 ✅. shadcn/ui wraps this as `<CommandDialog>`. | HIGH — Context7 verified |
-| @tanstack/react-table | 8.x | Data tables | Headless, sortable, filterable. Used for properties/methods tables in entity detail views. Peer dep: React ≥16.8 ✅. Types included in base package. | HIGH — Context7 verified |
-| @tanstack/react-virtual | 3.x | List virtualization | For the Types list (~2,449 entities). `useVirtualizer` hook. Peer dep: React 16–19 ✅. Separate from react-arborist (which handles tree virtualization). | HIGH — npm verified |
-| lucide-react | latest (0.563.x) | Icons | Tree-shakeable SVG icons. Default icon library for shadcn/ui. Consistent style. No version pinning needed — follows semver. | HIGH — shadcn/ui docs verified |
-| react-resizable-panels | 4.x | Resizable sidebar | Peer dep: React 18/19 ✅. Keyboard accessible. CSS-based, no canvas. Replaces the current `interactjs` approach. | HIGH — npm verified |
+| `@azure/storage-blob` | 12.31.x | Blob Storage operations | Replaces deprecated `azure-storage` v2. Typed API. `BlobServiceClient` + `ContainerClient` + `BlockBlobClient`. Connection string auth via `BlobServiceClient.fromConnectionString()`. | HIGH — Context7 + npm verified |
+| `@azure/msal-node` | 5.0.x | Microsoft Entra ID auth | Client credentials flow via `ConfidentialClientApplication.acquireTokenByClientCredential()`. Scope format: `<resource>/.default`. Replaces legacy ROPC (`acquireTokenByUsernamePassword`). v5 is latest — v3 also maintained but v5 is `@latest` on npm. | HIGH — Context7 + npm verified |
 
-### UI Component System
+### Processing Libraries
 
-| Tool | Version | Purpose | Notes | Confidence |
-|------|---------|---------|-------|------------|
-| shadcn/ui (CLI: `shadcn`) | 3.8.x | Component scaffolding | NOT a dependency — copies component source into project. Uses Radix UI primitives under the hood. Tailwind CSS 4 compatible. Components needed: Button, Dialog, Command, Tabs, Table, Collapsible, Breadcrumb, Input, Badge, Tooltip, DropdownMenu, Sheet (mobile drawer), Skeleton. | HIGH — Context7 verified |
-| class-variance-authority | 0.7.x | Component variant styling | Required by shadcn/ui components. Enables type-safe variant props. | HIGH |
-| clsx | 2.x | Conditional classnames | Required by shadcn/ui `cn()` utility. | HIGH |
-| tailwind-merge | 3.x | Tailwind class dedup | Required by shadcn/ui `cn()` utility. Merges conflicting Tailwind classes. | HIGH |
-| tw-animate-css | 1.x | CSS animations | Required by shadcn/ui for component animations (dialog enter/exit, etc.). | HIGH |
+| Library | Version | Purpose | Why Recommended | Confidence |
+|---------|---------|---------|-----------------|------------|
+| `axios` | 1.13.x | HTTP client | Fetches `$metadata` XML from SharePoint. Built-in timeout, retry interceptors. TypeScript types included. Proven in legacy code. | HIGH — npm verified |
+| `xml2js` | 0.6.x | XML-to-JSON parser | **Keep xml2js** — the existing `MetadataParser` class is tightly coupled to xml2js's `$` attribute accessor pattern. xml2js 0.6.2 is the latest. Rewriting the parser for a different XML library (like `fast-xml-parser`) gains nothing for this use case. | HIGH — npm verified |
+| `lz-string` | 1.5.x | String compression | Compresses JSON metadata for `metadata.latest.zip.json`. v1.5.0 includes own TypeScript types — **remove** `@types/lz-string` (deprecated stub). Binary compatible with v1.4.4 output. | HIGH — npm + GitHub verified |
 
 ### Development Tools
 
 | Tool | Version | Purpose | Notes | Confidence |
 |------|---------|---------|-------|------------|
-| @vitejs/plugin-react | 5.x | Vite React integration | Fast Refresh, JSX transform. Peer dep: Vite 4–7 ✅. | HIGH |
-| @tailwindcss/vite | 4.x | Tailwind Vite plugin | Replaces PostCSS-based setup. Matches Tailwind CSS version. | HIGH |
-| ESLint | 10.x | Linting | ESLint 10 is current. Use flat config format (`eslint.config.js`). | HIGH |
-| @eslint/js | 10.x | ESLint core rules | Base recommended rules. | HIGH |
-| typescript-eslint | 8.x | TypeScript lint rules | `@typescript-eslint/parser` + `@typescript-eslint/eslint-plugin` in one package. | HIGH |
-| eslint-plugin-react-hooks | 7.x | React hooks lint rules | Enforces Rules of Hooks + exhaustive deps. | HIGH |
-| eslint-plugin-react-refresh | 0.5.x | Fast Refresh lint rules | Warns on components not compatible with React Fast Refresh. | HIGH |
-| Prettier | 3.x | Code formatting | 3.8.1 current. Standard formatting. | HIGH |
-| @types/react | 19.x | React type definitions | 19.2.13 current. | HIGH |
-| @types/react-dom | 19.x | React DOM types | 19.2.3 current. | HIGH |
-
-### Testing (Optional but Recommended)
-
-| Tool | Version | Purpose | Notes | Confidence |
-|------|---------|---------|-------|------------|
-| Vitest | 4.x | Test runner | Vite-native test runner. Shares Vite config. Fast, Jest-compatible API. | HIGH |
-| @testing-library/react | 16.x | React component testing | Peer dep: React 18/19 ✅. | HIGH |
-| @testing-library/jest-dom | 6.x | DOM assertion matchers | `toBeInTheDocument()`, `toHaveTextContent()`, etc. | HIGH |
-| @testing-library/user-event | 14.x | User interaction simulation | `userEvent.click()`, `userEvent.type()`. More realistic than `fireEvent`. | HIGH |
-| jsdom | 28.x | DOM environment | Provides browser-like DOM for Vitest. | HIGH |
+| ESLint | 10.x | Linting | Flat config format (`eslint.config.js`). Replaces TSLint 5.x (deprecated since 2019). | HIGH |
+| `typescript-eslint` | 8.x | TypeScript lint rules | `@typescript-eslint/parser` + `@typescript-eslint/eslint-plugin`. | HIGH |
+| `@types/xml2js` | latest | xml2js types | xml2js doesn't ship its own types. | HIGH |
+| `@types/node` | 20.x | Node.js types | Match the target Node.js version. | HIGH |
+| Azure Functions Core Tools | 4.x | Local dev + deployment | `func init`, `func start`, `func azure functionapp publish`. Install globally via npm: `npm install -g azure-functions-core-tools@4`. | HIGH — MS Learn verified |
 
 ---
 
-## Installation Commands
+## Libraries to DROP (not needed in new backend)
+
+| Library | Why Drop | Replacement |
+|---------|----------|-------------|
+| `bluebird` | Used only for `promisify`. Node.js has native `util.promisify()` and `xml2js` 0.6.x supports promises natively via `parseStringPromise()`. | Native promises |
+| `handlebars` + `handlebars-helpers` | Used only in `GenerateDiff` for HTML diff rendering. GenerateDiff is dropped entirely. | Nothing — not needed |
+| `jsondiffpatch` | Used only in `GenerateDiff`. That function is being dropped. | Nothing — not needed |
+| `azure-functions-pack` | Webpack bundler for Azure Functions v2. Not needed — v4 model uses `main` field in `package.json` to find functions. | `main` field in package.json |
+| `cross-zip-cli` + `copyfiles` | Part of the old `funcpack` deployment pipeline. Not needed with `func azure functionapp publish`. | Azure Functions Core Tools |
+| `ts-node` | Not needed — TypeScript compiles to `dist/`, Azure Functions runs the compiled JS. | `tsc` build step |
+| `tslint` + `tslint-config-standard` | TSLint deprecated since 2019. | ESLint + typescript-eslint |
+| `@types/bluebird` | Bluebird is being dropped. | Nothing |
+| `@types/lz-string` | Deprecated stub — lz-string 1.5.0 includes own types. | Nothing |
+| `@types/handlebars` | Handlebars is being dropped. | Nothing |
+| `node-static` + `concurrently` | Old local dev utilities. Not needed with `func start`. | Azure Functions Core Tools |
+
+---
+
+## Azure Functions v4 Programming Model — Key Patterns
+
+### Project Structure (Recommended for TypeScript)
+
+```
+api/                              # New backend directory (replaces az-funcs/)
+├── src/
+│   └── functions/
+│       └── generateMetadata.ts   # Timer function — config + handler in one file
+├── dist/                         # Compiled output (gitignored)
+├── host.json
+├── local.settings.json           # Local env vars (gitignored)
+├── package.json                  # "main": "dist/src/functions/*.js"
+├── tsconfig.json
+├── eslint.config.js
+└── .funcignore                   # Excludes .vscode/, test/, local.settings.json, src/
+```
+
+### Timer Trigger (v4 Model)
+
+```typescript
+import { app, InvocationContext, Timer } from '@azure/functions';
+
+export async function generateMetadata(
+  myTimer: Timer,
+  context: InvocationContext
+): Promise<void> {
+  context.log('Generating metadata files...');
+  // ... pipeline logic
+}
+
+app.timer('generateMetadata', {
+  schedule: '0 0 1 * * *',     // Daily at 1:00 AM UTC
+  handler: generateMetadata,
+});
+```
+
+**Key v4 differences from legacy v2:**
+- No `function.json` files — configuration is in code via `app.timer()`
+- No `context.done()` — return a Promise (async/await)
+- `@azure/functions` is a runtime dependency (not devDependency)
+- `package.json` must have `"main": "dist/src/functions/*.js"` (glob to find compiled functions)
+- `context.log()` replaces `context.log.info()` (though `.info()` still works)
+
+### host.json (v4)
+
+```json
+{
+  "version": "2.0",
+  "logging": {
+    "applicationInsights": {
+      "samplingSettings": {
+        "isEnabled": true,
+        "excludedTypes": "Request"
+      }
+    }
+  },
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.*, 5.0.0)"
+  }
+}
+```
+
+### tsconfig.json (v4 TypeScript)
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+**Key tsconfig changes from legacy:**
+- `"module": "Node16"` replaces `"commonjs"` — supports ESM imports while producing CJS output
+- `"target": "ES2022"` replaces `"es6"` — Node 20 supports ES2022 features
+- `"strict": true` replaces `"noImplicitAny": false` — catch errors at compile time
+- `"moduleResolution": "Node16"` replaces `"node"` — required for `module: "Node16"`
+
+### package.json Pattern
+
+```json
+{
+  "name": "sp-rest-explorer-api",
+  "version": "2.0.0",
+  "main": "dist/src/functions/*.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prestart": "npm run build",
+    "start": "func start",
+    "lint": "eslint src/",
+    "deploy": "npm run build && func azure functionapp publish sharepoint-rest-explorer"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.11.0",
+    "@azure/storage-blob": "^12.31.0",
+    "@azure/msal-node": "^5.0.0",
+    "axios": "^1.13.0",
+    "xml2js": "^0.6.2",
+    "lz-string": "^1.5.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.0",
+    "@types/node": "^20.0.0",
+    "@types/xml2js": "^0.4.14",
+    "eslint": "^10.0.0",
+    "@eslint/js": "^10.0.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}
+```
+
+---
+
+## Client Credentials Auth Pattern (Replacing ROPC)
+
+### Why Switch
+The legacy code uses ROPC (`acquireTokenByUsernamePassword`) which:
+- Is deprecated by Microsoft
+- Doesn't work with MFA-enabled accounts
+- Requires storing user passwords in environment variables
+- Violates least-privilege (uses user context when app context suffices)
+
+### New Pattern
+
+```typescript
+import { ConfidentialClientApplication } from '@azure/msal-node';
+
+const msalConfig = {
+  auth: {
+    clientId: process.env.AZ_ClientId!,
+    authority: `https://login.microsoftonline.com/${process.env.AZ_TenantId}`,
+    clientSecret: process.env.AZ_ClientSecret!,
+  },
+};
+
+const cca = new ConfidentialClientApplication(msalConfig);
+
+async function getAccessToken(spUrl: string): Promise<string> {
+  const result = await cca.acquireTokenByClientCredential({
+    scopes: [`${spUrl}/.default`],  // NOTE: .default suffix required for client credentials
+  });
+
+  if (!result) {
+    throw new Error('Failed to acquire token via client credentials');
+  }
+
+  return result.accessToken;
+}
+```
+
+**Key differences from legacy ROPC:**
+- Uses `acquireTokenByClientCredential()` instead of `acquireTokenByUsernamePassword()`
+- Scope format: `<resource>/.default` (not `<resource>/AllSites.Read`)
+- No username/password needed — only `clientId`, `clientSecret`, `tenantId`
+- Requires Azure AD app registration with **application permissions** (not delegated)
+- App registration needs `Sites.Read.All` application permission with admin consent
+
+### Environment Variables (new)
+
+```
+AZ_ClientId=<app-registration-client-id>
+AZ_ClientSecret=<app-registration-client-secret>
+AZ_TenantId=<azure-ad-tenant-id>
+SP_Url=https://<tenant>.sharepoint.com
+AzureWebJobsStorage=<storage-connection-string>
+```
+
+**Removed:** `SP_User`, `SP_Password` (no longer needed with client credentials)
+
+---
+
+## Blob Storage Pattern (Replacing azure-storage v2)
+
+### Legacy Pattern (azure-storage v2 + bluebird)
+
+```typescript
+// OLD — promisify-based, callback-based SDK
+import { createBlobService } from 'azure-storage';
+import { promisify } from 'bluebird';
+
+const blobService = createBlobService(connectionString);
+const createBlockBlobFromTextAsync = promisify(blobService.createBlockBlobFromText.bind(blobService));
+await createBlockBlobFromTextAsync(container, blobName, content);
+```
+
+### New Pattern (@azure/storage-blob v12)
+
+```typescript
+// NEW — native async/await, typed API
+import { BlobServiceClient } from '@azure/storage-blob';
+
+const blobServiceClient = BlobServiceClient.fromConnectionString(
+  process.env.AzureWebJobsStorage!
+);
+const containerClient = blobServiceClient.getContainerClient('api-files');
+
+// Ensure container exists with public blob access
+await containerClient.createIfNotExists({ access: 'blob' });
+
+// Upload text content
+const blockBlobClient = containerClient.getBlockBlobClient('metadata.latest.json');
+await blockBlobClient.upload(jsonContent, Buffer.byteLength(jsonContent), {
+  blobHTTPHeaders: { blobContentType: 'application/json' },
+});
+```
+
+**Key differences:**
+- No promisification needed — native async/await
+- Fluent client hierarchy: `BlobServiceClient` → `ContainerClient` → `BlockBlobClient`
+- Content type headers can be set on upload
+- Connection string auth via `BlobServiceClient.fromConnectionString()`
+
+---
+
+## xml2js Migration Notes
+
+### v0.4.19 → v0.6.2 Changes
+
+The legacy parser uses:
+```typescript
+import { Parser } from 'xml2js';
+import { promisify } from 'bluebird';
+
+const parser = new Parser();
+const parseStringAsync = promisify(parser.parseString);
+const obj = await parseStringAsync(content);
+```
+
+In v0.6.x, use the built-in promise API:
+```typescript
+import { parseStringPromise } from 'xml2js';
+
+const obj = await parseStringPromise(content);
+```
+
+**No other breaking changes** — the `$` attribute accessor pattern (`obj['edmx:Edmx']['edmx:DataServices'][0]['Schema']`) is unchanged.
+
+---
+
+## Deployment Approach
+
+### Recommended: Azure Functions Core Tools (`func`)
 
 ```bash
-# 1. Scaffold the project
-npm create vite@latest app -- --template react-ts
+# One-time: install globally
+npm install -g azure-functions-core-tools@4
 
-# 2. Core dependencies
-npm install react@19 react-dom@19 react-router zustand minisearch react-arborist cmdk @tanstack/react-table @tanstack/react-virtual lucide-react react-resizable-panels
+# Local development
+func start                     # Runs locally with local.settings.json
 
-# 3. shadcn/ui prerequisites
-npm install tailwindcss @tailwindcss/vite class-variance-authority clsx tailwind-merge tw-animate-css
-
-# 4. Dev dependencies
-npm install -D typescript @types/react @types/react-dom @vitejs/plugin-react eslint @eslint/js typescript-eslint eslint-plugin-react-hooks eslint-plugin-react-refresh prettier
-
-# 5. Testing (optional)
-npm install -D vitest @testing-library/react @testing-library/jest-dom @testing-library/user-event jsdom
-
-# 6. Initialize shadcn/ui (after Vite config + Tailwind are set up)
-npx shadcn@latest init
-
-# 7. Add shadcn/ui components as needed
-npx shadcn@latest add button dialog command tabs table collapsible breadcrumb input badge tooltip dropdown-menu sheet skeleton
+# Deploy to Azure
+func azure functionapp publish sharepoint-rest-explorer
 ```
+
+This is the same tool the legacy project used (`deploy-az` script). It:
+- Compiles TypeScript (via `prestart`/`prebuild` scripts)
+- Packages and deploys to the existing Azure Functions app
+- Reads connection from Azure CLI login (`az login`)
+
+### NOT Recommended for This Project
+
+| Approach | Why Not |
+|----------|---------|
+| GitHub Actions CI/CD | Backlog item (ADDL-02). Too complex for initial backend rework. |
+| ZIP deploy via Azure CLI | More steps than `func publish`. Core Tools handles it. |
+| VS Code deploy button | Not scriptable. Use CLI for reproducibility. |
+| Azure DevOps Pipelines | Overkill for a single developer project. |
 
 ---
 
@@ -119,17 +371,11 @@ npx shadcn@latest add button dialog command tabs table collapsible breadcrumb in
 
 | Category | Recommended | Alternative | When to Use Alternative |
 |----------|-------------|-------------|-------------------------|
-| Build tool | Vite 7 | Vite 6 (6.4.1) | If a dependency has Vite 7 incompatibility (unlikely — `@vitejs/plugin-react` 5.x supports both). Vite 6 is still maintained with security patches. |
-| State management | Zustand | Jotai | If you need atomic/granular reactivity for many independent pieces of state. Overkill here — one store with one large blob + UI flags. |
-| State management | Zustand | Redux Toolkit | If you need Redux DevTools ecosystem, middleware chains, or team familiarity. Too much boilerplate for this app's simple state shape. |
-| Routing | React Router 7 | TanStack Router | If you need type-safe route params and file-based routing. Hash mode support is less proven. Our app has 4 simple routes — React Router is simpler. |
-| Search | MiniSearch | FlexSearch | If searching 50K+ items where sub-millisecond matters. At 6K items both are instant (~1ms). FlexSearch returns only IDs (need separate Map), worse DX. |
-| Search | MiniSearch | uFuzzy | If you need zero init time and minimal memory. Less feature-rich (no field boosting, no stored fields). Good fallback if MiniSearch is somehow too slow. |
-| Tree view | react-arborist | Custom + react-window | If react-arborist's API doesn't fit the contextual sidebar pattern. May need custom wrapper regardless — research says sidebar shows children of current node, not full tree. |
-| UI components | shadcn/ui | Radix UI Themes | If you want a pre-styled component library instead of copy-paste. Less customizable, heavier bundle. |
-| Tables | @tanstack/react-table | AG Grid | If you need Excel-like features (cell editing, row grouping, pivoting). Massive overkill for read-only property tables. |
-| Icons | lucide-react | Heroicons | If you prefer Heroicons style. Less integrated with shadcn/ui (which defaults to lucide). |
-| CSS | Tailwind CSS 4 | CSS Modules | If you prefer scoped CSS-in-file. Slower iteration, no utility-first composition, no built-in dark mode toggle. |
+| Blob SDK | `@azure/storage-blob` v12 | `@azure/identity` + `DefaultAzureCredential` | If you need managed identity auth instead of connection strings. Overkill for timer functions with `AzureWebJobsStorage` already available. |
+| HTTP client | `axios` | Node.js native `fetch` | If you want zero dependencies. Axios has better timeout/retry/interceptor support and the legacy code already uses it. Keep for consistency. |
+| XML parser | `xml2js` | `fast-xml-parser` | If starting fresh with no existing parser code. fast-xml-parser is 10x faster and actively maintained (5.3.2). But rewriting MetadataParser is pure risk for zero user-facing gain. |
+| MSAL version | `@azure/msal-node` v5 | `@azure/msal-node` v3.8.x | If v5 has compatibility issues. v3.8.x is still maintained (last release: Jan 2026). Both support `acquireTokenByClientCredential`. v5 is `@latest` on npm. |
+| Compression | `lz-string` | `pako` (zlib) | If you need standard gzip. lz-string is kept for backward compatibility — the frontend decompresses `metadata.latest.zip.json` with lz-string. Changing compression format would require frontend changes. |
 
 ---
 
@@ -137,163 +383,83 @@ npx shadcn@latest add button dialog command tabs table collapsible breadcrumb in
 
 | Avoid | Why | Use Instead |
 |-------|-----|-------------|
-| Element UI / Ant Design / MUI | Heavy component libraries with their own styling systems. Conflict with Tailwind. Large bundle. | shadcn/ui (copy-paste, Tailwind-native, tree-shaken) |
-| Redux (vanilla) | Excessive boilerplate for simple state. Actions, reducers, action creators for what Zustand does in 20 lines. | Zustand 5 |
-| Webpack | Slow HMR, complex config, outdated for new projects. | Vite 7 |
-| CSS-in-JS (styled-components, Emotion) | Runtime overhead, larger bundle, conflicts with Tailwind. Moving away from industry favor. | Tailwind CSS 4 |
-| Fuse.js | ~15ms per search at 6K items. Marginal for type-ahead. 34 seconds for 86 searches at 162K items. | MiniSearch (~1ms at 6K items) |
-| react-table (v7, old package) | Deprecated. Replaced by @tanstack/react-table v8. | @tanstack/react-table 8.x |
-| react-window (standalone) | react-arborist already uses react-window internally for tree virtualization. Don't add separately for the tree. | Built into react-arborist |
-| interactjs | Heavy drag-and-drop library used in old code for resizable panels. Overkill. | react-resizable-panels |
-| Create React App | Deprecated, unmaintained. | Vite |
-| Next.js / Remix | SSR frameworks. This is a static SPA on GitHub Pages — no server. | Vite + React Router (library mode) |
+| `azure-storage` v2 | Deprecated. No TypeScript types. Callback-based API requires promisification with bluebird. | `@azure/storage-blob` v12 |
+| `acquireTokenByUsernamePassword` (ROPC) | Deprecated by Microsoft. Doesn't support MFA. Stores user credentials. | `acquireTokenByClientCredential` (client credentials) |
+| `bluebird` | Unnecessary in Node 20+. All Azure SDKs and xml2js support native promises. | Native `Promise`, `async/await` |
+| `azure-functions-pack` | Webpack bundler for v2 model. v4 model doesn't need bundling — it uses `main` field in package.json. | v4 `main` glob pattern |
+| TSLint | Dead project since 2019. No updates. | ESLint + typescript-eslint |
+| `handlebars` / `jsondiffpatch` | Only used for GenerateDiff function which is being dropped. | Nothing — not needed |
+| `context.done()` | Legacy v2 pattern. v4 uses async/await — function completes when Promise resolves. | `return` / `async/await` |
+| Module-scope `new Date()` | **Critical bug in legacy code.** `let now = new Date()` at module scope gets cached across Azure Functions warm starts. Can produce stale date values days/weeks old. | Compute `new Date()` inside the handler function on each invocation. |
+
+---
+
+## MSAL v5 vs v2 — Migration Notes
+
+The project jumps from `@azure/msal-node` 2.16.0 to 5.0.x. Key considerations:
+
+1. **No functional breaking changes for client credentials flow.** The `acquireTokenByClientCredential()` API is identical in v2, v3, and v5.
+2. **v5 is latest `@latest` on npm** (5.0.4, published Feb 11, 2026). v3.8.x is also actively maintained.
+3. The MSAL team noted: "There have been no functional changes in the MSAL Node v2 release" (from v1→v2). Similarly, v2→v3→v5 are primarily dependency bumps and internal refactoring.
+4. **ROPC is still available in v5** but we're deliberately switching away from it to client credentials.
+5. Since we're rewriting from scratch (not migrating), there's no migration cost — just use v5.
+
+**Recommendation:** Use `@azure/msal-node` v5.0.x. If issues arise, fall back to v3.8.x — both support the same client credentials API.
 
 ---
 
 ## Version Compatibility Matrix
 
-All peer dependency compatibility verified against npm registry on 2026-02-11.
-
-| Package | React 19 | Vite 7 | TypeScript 5.9 | Notes |
-|---------|----------|--------|----------------|-------|
-| react-arborist 3.4.3 | ✅ (≥16.14) | N/A | ✅ | No Vite dep |
-| cmdk 1.1.1 | ✅ (18/19) | N/A | ✅ | No Vite dep |
-| @tanstack/react-table 8.21.3 | ✅ (≥16.8) | N/A | ✅ | No Vite dep |
-| @tanstack/react-virtual 3.13.18 | ✅ (16–19) | N/A | ✅ | No Vite dep |
-| zustand 5.0.11 | ✅ (≥18) | N/A | ✅ | Optional peer: immer |
-| react-router 7.13.0 | ✅ (≥18) | N/A | ✅ | No Vite dep |
-| react-resizable-panels 4.6.2 | ✅ (18/19) | N/A | ✅ | No Vite dep |
-| @vitejs/plugin-react 5.1.4 | N/A | ✅ (4–7) | ✅ | Bridges React + Vite |
-| @tailwindcss/vite 4.1.18 | N/A | ✅ | ✅ | Matches Tailwind ver |
-| @testing-library/react 16.3.2 | ✅ (18/19) | N/A | ✅ | Optional |
-| lucide-react 0.563.0 | ✅ | N/A | ✅ | No version constraints |
-| minisearch 7.2.0 | N/A | N/A | ✅ | Pure JS, no React dep |
+| Package | Node.js 20 | TypeScript 5.9 | Azure Functions v4 Runtime | Notes |
+|---------|------------|----------------|---------------------------|-------|
+| `@azure/functions` 4.11.x | ✅ (18/20/22) | ✅ | ✅ (4.25+) | Types included |
+| `@azure/storage-blob` 12.31.x | ✅ (LTS) | ✅ | ✅ | No direct AF dependency |
+| `@azure/msal-node` 5.0.x | ✅ (LTS) | ✅ | ✅ | No direct AF dependency |
+| `axios` 1.13.x | ✅ | ✅ | ✅ | Types included |
+| `xml2js` 0.6.x | ✅ | ✅ (via @types) | ✅ | Needs @types/xml2js |
+| `lz-string` 1.5.x | ✅ | ✅ (own types) | ✅ | Drop @types/lz-string |
+| ESLint 10.x | ✅ (≥18) | ✅ (via typescript-eslint) | N/A | Dev tool |
+| typescript-eslint 8.x | ✅ | ✅ | N/A | Dev tool |
 
 ---
 
-## Zustand v5 Gotcha: `useShallow` Requirement
+## Installation Commands
 
-Zustand v5 changed selector behavior. Selectors returning new references (arrays, objects) can cause infinite loops. This is the most likely migration pitfall.
+```bash
+# 1. Create project directory (new directory, not inside az-funcs/)
+mkdir api && cd api
 
-**Problem:**
-```typescript
-// ❌ This causes "Maximum update depth exceeded" in Zustand v5
-const [query, setQuery] = useAppStore(s => [s.searchQuery, s.setSearchQuery])
+# 2. Initialize Azure Functions project
+func init --worker-runtime typescript --model V4
+
+# 3. Core dependencies
+npm install @azure/functions @azure/storage-blob @azure/msal-node axios xml2js lz-string
+
+# 4. Dev dependencies
+npm install -D typescript @types/node@20 @types/xml2js eslint @eslint/js typescript-eslint
+
+# 5. Remove packages added by func init that we don't need
+# (func init may add @azure/functions to devDependencies — move to dependencies)
 ```
-
-**Solution:**
-```typescript
-import { useShallow } from 'zustand/shallow'
-
-// ✅ Correct in Zustand v5
-const [query, setQuery] = useAppStore(useShallow(s => [s.searchQuery, s.setSearchQuery]))
-
-// ✅ Or even better: select individual values
-const query = useAppStore(s => s.searchQuery)
-const setQuery = useAppStore(s => s.setSearchQuery)
-```
-
----
-
-## Vite 7 vs Vite 6 Decision
-
-**Recommendation: Use Vite 7** because:
-
-1. It's the current `@latest` on npm (7.3.1 as of 2026-02-11)
-2. `@vitejs/plugin-react` 5.x explicitly supports Vite 4–7
-3. `@tailwindcss/vite` 4.x works with Vite 7
-4. `npm create vite@latest` scaffolds a Vite 7 project
-5. Node.js requirement (20.19+ or 22.12+) is fine — GitHub Actions `setup-node` supports Node 22
-
-The original research specified Vite 6, which was current at the time (2026-02-10). Vite 7 was released between then and now. Since this is a greenfield project, there's no migration cost — use the latest.
-
-**If Vite 7 causes issues:** Fall back to `vite@6` (6.4.1). Both are maintained. The Vite config is identical between v6 and v7 for this project's needs.
-
----
-
-## Node.js Requirement
-
-Vite 7 requires **Node.js 20.19+ or 22.12+**. GitHub Actions should use:
-
-```yaml
-- uses: actions/setup-node@v4
-  with:
-    node-version: 22
-```
-
----
-
-## shadcn/ui Setup Notes
-
-shadcn/ui is NOT installed as a package. It's a CLI that copies component source files into your project. Setup flow:
-
-1. Install prerequisites (Tailwind CSS 4, CVA, clsx, tailwind-merge, tw-animate-css)
-2. Configure `vite.config.ts` with path aliases (`@/` → `./src/`)
-3. Configure `tsconfig.json` with matching path aliases
-4. Run `npx shadcn@latest init` — creates `components.json` + `lib/utils.ts`
-5. Add components: `npx shadcn@latest add <component-name>`
-
-Components are source files in `src/components/ui/` — fully customizable, no version lock-in.
-
----
-
-## React Router 7: Library Mode (Not Framework Mode)
-
-React Router 7 can be used as a library (like v6) or as a framework (with `@react-router/dev`). **Use library mode.**
-
-- No `@react-router/dev` needed
-- No file-based routing
-- No SSR/streaming
-- Just `createHashRouter` + `RouterProvider` — same pattern as React Router 6
-
-```typescript
-import { createHashRouter, RouterProvider } from 'react-router'
-
-const router = createHashRouter([
-  {
-    path: '/',
-    element: <AppLayout />,
-    children: [
-      { index: true, element: <ExplorerPage /> },
-      { path: '_api/*', element: <ExplorerPage /> },
-      { path: 'entity', element: <TypesPage /> },
-      { path: 'entity/:typeName', element: <TypesPage /> },
-      { path: 'api-diff', element: <ChangelogPage /> },
-      { path: 'api-diff/:monthKey', element: <ChangelogPage /> },
-      { path: 'how-it-works', element: <HowItWorksPage /> },
-    ],
-  },
-])
-
-function App() {
-  return <RouterProvider router={router} />
-}
-```
-
----
-
-## TanStack Table v8 vs v9
-
-The original research locked @tanstack/react-table 8.x. Current latest is **8.21.3** — there is no v9 release. v8 is the current major version. No change needed.
-
-Note from TanStack Table docs: "May have compatibility issues with React 19's new Compiler." This is LOW confidence — the React Compiler is opt-in and this app doesn't need it. Standard React 19 without the Compiler works fine.
 
 ---
 
 ## Sources
 
-- npm registry (verified 2026-02-11) — all version numbers
-- Context7 `/websites/react_dev` — React 19 features, `use()` API
-- Context7 `/vitejs/vite/v7.0.0` — Vite 7 migration, Node.js requirements
-- Context7 `/pmndrs/zustand/v5.0.8` — Zustand v5 migration, `useShallow` requirement
-- Context7 `/remix-run/react-router/react-router_7.9.4` — `createHashRouter` API, library mode
-- Context7 `/websites/tailwindcss` — Tailwind CSS v4 Vite integration
-- Context7 `/websites/tanstack_table` — TanStack Table v8 installation, React 19 note
-- Context7 `/brimdata/react-arborist` — Tree API reference, NodeApi, search/filter
-- Context7 `/pacocoursey/cmdk` — Command palette API, Dialog, keyboard shortcut pattern
-- Context7 `/shadcn-ui/ui/shadcn_3.5.0` — Vite installation guide, manual dependencies
-- Context7 `/lucaong/minisearch` — MiniSearch API, search options, TypeScript usage
+- npm registry (verified 2026-02-22) — all version numbers
+- Context7 `/websites/learn_microsoft_en-us_azure_azure-functions` — v4 programming model, timer trigger pattern, folder structure, migration guide
+- Context7 `/azuread/microsoft-authentication-library-for-js` — ConfidentialClientApplication, client credentials flow, acquireTokenByClientCredential
+- Context7 `/azure/azure-sdk-for-js` — @azure/storage-blob upload pattern, BlobServiceClient, migration from azure-storage v2
+- Microsoft Learn: Azure Functions Node.js developer guide — folder structure, package.json main field, supported Node.js versions
+- Microsoft Learn: Migrate to v4 Node.js programming model — function.json removal, app.timer() registration
+- npm `@azure/functions` 4.11.2 — v4 model GA, supported Node versions
+- npm `@azure/storage-blob` 12.31.0 — published 2026-02-10
+- npm `@azure/msal-node` 5.0.4 — published 2026-02-11
+- npm `axios` 1.13.5 — published 2026-02-13
+- npm `xml2js` 0.6.2 — published 2023-07-26
+- npm `lz-string` 1.5.0 — published 2023-03-04, includes own TypeScript types
+- npm `jsondiffpatch` 0.7.3 — ESM-only, but irrelevant (dropping this library)
 
 ---
-*Stack research for: SP REST API Explorer rebuild (Vue 2 → React 19)*
-*Researched: 2026-02-11*
+*Stack research for: SP REST API Explorer v2.0 Backend Rework (Azure Functions)*
+*Researched: 2026-02-22*

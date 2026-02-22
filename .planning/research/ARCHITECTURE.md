@@ -1,16 +1,14 @@
 # Architecture Research
 
-**Domain:** Data-heavy SPA — API documentation explorer (React 19)
-**Researched:** 2026-02-11
+**Domain:** Azure Functions v4 backend — SharePoint metadata fetch/parse/upload pipeline
+**Researched:** 2026-02-22
 **Confidence:** HIGH
 
-## Verdict: Proposed Architecture is Sound — With Three Corrections
+## Verdict: Single Timer Function with Pipeline Stages, @azure/storage-blob for All Blob Ops
 
-The architecture defined in `1-RESEARCH.md` — Zustand store (immutable) → MiniSearch index + useMemo derived views → react-arborist/detail panels — is fundamentally correct for this data scale (~4MB JSON, 2,449 entities, 3,528 functions). After verifying against official docs and current patterns, **three corrections** are recommended:
+The v4 programming model replaces function.json bindings with code-first registration via `app.timer()`. For this project, **use @azure/storage-blob SDK directly for all blob uploads** instead of declarative output bindings. Rationale: the blob names are dynamic (date-based monthly snapshots like `2026y_m2_metadata.json`) — output bindings require the path to be known at configuration time, but our blob names are computed at runtime from the current date. The SDK approach is cleaner, more explicit, and avoids the `output.storageBlob()` + `context.extraOutputs.set()` ceremony that doesn't support dynamic paths well.
 
-1. **Split the Zustand store**: Keep metadata outside the reactive store (module-level singleton). Only UI state belongs in Zustand.
-2. **Use iterative DFS with visited Set** for tree walking — not recursive DFS with depth cap.
-3. **Keep MiniSearch on the main thread** — 19ms is not worth Web Worker complexity.
+**Module system: CommonJS.** The `@azure/functions` v4 npm package only publishes a CommonJS module (confirmed: [GitHub issue #287](https://github.com/Azure/azure-functions-nodejs-library/issues/287) — ESM support not yet shipped). TypeScript compiles to CommonJS via `"module": "commonjs"` in tsconfig. This is the standard, well-tested path.
 
 ---
 
@@ -18,845 +16,653 @@ The architecture defined in `1-RESEARCH.md` — Zustand store (immutable) → Mi
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                          BROWSER                                        │
+│                    AZURE FUNCTIONS v4 RUNTIME                           │
+│                                                                         │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │  Timer Trigger (daily 1:00 AM UTC — CRON: "0 0 1 * * *")        │  │
+│  │                                                                   │  │
+│  │  app.timer("generateMetadata", { schedule, handler })             │  │
+│  └────────────────────────┬──────────────────────────────────────────┘  │
+│                           │                                             │
+│  ┌────────────────────────▼──────────────────────────────────────────┐  │
+│  │                    PIPELINE STAGES                                 │  │
+│  │                                                                   │  │
+│  │  1. AUTH ──► 2. FETCH ──► 3. PARSE ──► 4. COMPRESS ──► 5. UPLOAD │  │
+│  │                                                                   │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌─────────┐  ┌──────┐│  │
+│  │  │  MSAL    │  │  Axios   │  │  xml2js  │  │lz-string│  │Blob  ││  │
+│  │  │  client  │→ │  HTTP    │→ │  parse + │→ │compress │→ │SDK   ││  │
+│  │  │  creds   │  │  + retry │  │  enrich  │  │to UTF16 │  │upload││  │
+│  │  └──────────┘  └──────────┘  └──────────┘  └─────────┘  └──────┘│  │
+│  └───────────────────────────────────────────────────────────────────┘  │
 │                                                                         │
 │  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                    Presentation Layer                             │   │
-│  │                                                                  │   │
-│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐     │   │
-│  │  │ Explorer  │  │  Types   │  │Changelog │  │ HowItWorks   │     │   │
-│  │  │  Page     │  │  Page    │  │  Page    │  │   Page        │     │   │
-│  │  └─────┬────┘  └─────┬────┘  └────┬─────┘  └──────────────┘     │   │
-│  │        │              │            │                              │   │
-│  │  ┌─────┴──────────────┴────────────┴──────────────────────┐      │   │
-│  │  │       Shared Components (Breadcrumb, CmdK, Tables)     │      │   │
-│  │  └────────────────────────────────────────────────────────┘      │   │
-│  └──────────────────────────┬───────────────────────────────────────┘   │
-│                             │                                           │
-│  ┌──────────────────────────┴───────────────────────────────────────┐   │
-│  │                     Hooks Layer                                   │   │
+│  │                    SHARED MODULES                                 │   │
 │  │                                                                   │   │
-│  │  useFilteredRootNodes()  useSearchIndex()  useEntityLookup()      │   │
-│  │  useMetadata()           useDiffData()     useRecentVisits()      │   │
-│  └──────────┬──────────────────────┬────────────────────────────────┘   │
-│             │                      │                                    │
-│  ┌──────────┴──────────┐   ┌──────┴─────────────────────────────────┐  │
-│  │   UI State Store    │   │        Data Singletons (module-level)   │  │
-│  │    (Zustand)        │   │                                         │  │
-│  │                     │   │  metadataStore.ts  (Metadata object)     │  │
-│  │  searchQuery        │   │  searchIndex.ts    (MiniSearch instance) │  │
-│  │  hiddenNamespaces   │   │  lookupMaps.ts     (Map<string, Entity>)│  │
-│  │  currentPath        │   │  treeBuilder.ts    (lazy child compute) │  │
-│  │  isLoading          │   │  diffStore.ts      (MonthDiffData[])    │  │
-│  └─────────────────────┘   └─────────────────────────────────────────┘  │
-│                                                                         │
-│  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │                    Services Layer                                 │   │
-│  │                                                                   │   │
-│  │  api.ts (fetch from Azure Blob) → initializer.ts (orchestrate)   │   │
+│  │  config.ts (env vars)    │  types/ (interfaces)                   │   │
+│  │  logger.ts (context.log) │  blob-naming.ts (path generation)      │   │
 │  └──────────────────────────────────────────────────────────────────┘   │
 │                                                                         │
-└──────────────┬──────────────────────────────────────────────────────────┘
-               │ fetch()
-               ▼
-    ┌──────────────────────┐
-    │  Azure Blob Storage  │
-    │  (metadata + diffs)  │
-    └──────────────────────┘
+└──────────────────┬──────────────────────────────────────────────────────┘
+                   │ HTTPS (upload)
+                   ▼
+        ┌──────────────────────┐
+        │  Azure Blob Storage  │
+        │                      │
+        │  Container: api-files│
+        │  ├─ metadata.latest  │
+        │  │  ├─ .xml          │
+        │  │  ├─ .json         │
+        │  │  └─ .zip.json     │
+        │  └─ 2026y_m2_metadata│
+        │     ├─ .xml          │
+        │     ├─ .json         │
+        │     └─ .zip.json     │
+        └──────────────────────┘
 ```
 
 ### Component Responsibilities
 
 | Component | Responsibility | Communicates With |
 |-----------|----------------|-------------------|
-| **Explorer Page** | API tree navigation, sidebar with contextual children, entity/function detail | Hooks layer → data singletons + UI store |
-| **Types Page** | Virtualized entity type list, type detail panels | Hooks layer → lookup maps |
-| **Changelog Page** | Month tab display, diff table rendering with color coding | Hooks layer → diff store |
-| **HowItWorks Page** | Static content, no data dependencies | Nothing (static) |
-| **Cmd+K Palette** | Global search overlay, result grouping, navigation | searchIndex singleton via useSearchIndex() |
-| **Breadcrumb** | Path display, segment navigation, copy-path | UI store (currentPath) |
-| **UI State Store** | Filter prefs, search query, loading state, nav state | Hooks layer reads; components write via actions |
-| **Data Singletons** | Immutable metadata, lookup maps, search index | Initialized once on app load; read-only after |
-| **Services** | HTTP fetch, data parsing, initialization orchestration | Azure Blob → singletons |
-
----
-
-## Critical Architectural Decision #1: Metadata Outside Zustand
-
-### The Problem
-
-The proposed architecture stores the ~4MB metadata object inside the Zustand store:
-
-```typescript
-// ❌ PROPOSED (from 1-RESEARCH.md)
-interface AppStore {
-  metadata: Metadata | null;  // ← 4MB object in reactive state
-  searchQuery: string;
-  // ...
-}
-```
-
-**Why this is suboptimal:**
-
-Zustand uses `Object.is` (reference equality) for change detection — it does NOT deep-compare. So storing 4MB in Zustand won't cause comparison performance issues. **However**, the real problem is **subscription noise**:
-
-- Every component that calls `useAppStore(s => s.metadata)` subscribes to the store.
-- When ANY store property changes (e.g., `searchQuery` updates on every debounced keystroke), Zustand checks whether each subscriber's selected value changed.
-- For `metadata`, the reference never changes (it's immutable), so the check returns `false` and no re-render occurs. But the check still runs for every subscriber on every state change.
-- With `useShallow`, you can mitigate this, but it's unnecessary complexity.
-
-**Source:** Zustand official docs confirm `Object.is` comparison. Multiple Zustand performance guides recommend separating static/immutable data from frequently-changing UI state. (HIGH confidence — Context7 verified)
-
-### The Solution: Module-Level Singletons for Static Data
-
-```typescript
-// ✅ RECOMMENDED
-// src/data/metadataStore.ts — NOT a Zustand store
-
-let _metadata: Metadata | null = null;
-let _entityMap: Map<string, EntityType> | null = null;
-let _functionMap: Map<number, FunctionImport> | null = null;
-
-export function setMetadata(data: Metadata): void {
-  _metadata = Object.freeze(data);  // Freeze to enforce immutability
-  _entityMap = new Map(Object.entries(data.entities));
-  _functionMap = new Map(
-    Object.entries(data.functions).map(([k, v]) => [Number(k), v])
-  );
-}
-
-export function getMetadata(): Metadata {
-  if (!_metadata) throw new Error('Metadata not loaded');
-  return _metadata;
-}
-
-export function getEntity(fullName: string): EntityType | undefined {
-  return _entityMap?.get(fullName);
-}
-
-export function getFunction(id: number): FunctionImport | undefined {
-  return _functionMap?.get(id);
-}
-```
-
-**Then use a simple hook for React integration:**
-
-```typescript
-// src/hooks/useMetadata.ts
-import { useSyncExternalStore } from 'react';
-
-let _metadata: Metadata | null = null;
-let _listeners = new Set<() => void>();
-
-function subscribe(cb: () => void) {
-  _listeners.add(cb);
-  return () => _listeners.delete(cb);
-}
-
-export function notifyMetadataReady(data: Metadata) {
-  _metadata = Object.freeze(data);
-  _listeners.forEach(cb => cb());
-}
-
-export function useMetadata(): Metadata | null {
-  return useSyncExternalStore(subscribe, () => _metadata);
-}
-```
-
-### What Stays in Zustand
-
-Only reactive UI state that components need to respond to:
-
-```typescript
-// src/store/index.ts
-interface UIStore {
-  // Loading state
-  isLoading: boolean;
-
-  // Filter/search state (changes trigger derived view recomputation)
-  searchQuery: string;
-  hiddenNamespaces: string[];
-
-  // Navigation state
-  currentPath: string;
-
-  // Actions
-  setLoading: (loading: boolean) => void;
-  setSearchQuery: (query: string) => void;
-  setHiddenNamespaces: (ns: string[]) => void;
-  setCurrentPath: (path: string) => void;
-}
-
-export const useUIStore = create<UIStore>()(
-  persist(
-    (set) => ({
-      isLoading: true,
-      searchQuery: '',
-      hiddenNamespaces: DEFAULT_HIDDEN_NAMESPACES,
-      currentPath: '',
-
-      setLoading: (loading) => set({ isLoading: loading }),
-      setSearchQuery: (query) => set({ searchQuery: query }),
-      setHiddenNamespaces: (ns) => set({ hiddenNamespaces: ns }),
-      setCurrentPath: (path) => set({ currentPath: path }),
-    }),
-    {
-      name: 'sp-rest-explorer-ui',
-      partialize: (state) => ({
-        hiddenNamespaces: state.hiddenNamespaces,
-      }),
-    }
-  )
-);
-```
-
-**Confidence:** HIGH — Zustand's `Object.is` behavior verified via Context7/official docs. Separation of static vs reactive data is a well-documented Zustand best practice.
-
----
-
-## Critical Architectural Decision #2: MiniSearch Stays on Main Thread
-
-### The Question
-
-Should the ~19ms MiniSearch index build happen on the main thread or in a Web Worker?
-
-### The Answer: Main Thread
-
-**Rationale:**
-
-| Factor | Main Thread | Web Worker |
-|--------|-------------|------------|
-| Index build time | ~19ms (measured for 6K items) | ~19ms + ~5-10ms message passing |
-| Implementation complexity | Zero | Significant (worker file, message protocol, transferable objects, error handling) |
-| Data transfer | None (direct access) | Must serialize/transfer MiniSearch instance OR rebuild in worker |
-| Search query latency | ~1ms (direct function call) | ~3-5ms (postMessage round trip) |
-| MiniSearch transferability | N/A | MiniSearch instances are NOT transferable — would need to keep worker alive for all search queries OR serialize the index |
-| Blocking risk | 19ms — imperceptible, well below 50ms jank threshold | None |
-| Maintenance cost | None | Must maintain worker lifecycle, error boundaries, fallback for browsers |
-
-**The 19ms index build is less than a single frame (16.67ms at 60fps) and well under the 50ms "long task" threshold.** Using a Web Worker for this adds architectural complexity (worker lifecycle, message passing, non-transferable MiniSearch instances) for zero perceived performance benefit.
-
-**When to reconsider:** If the dataset grows beyond ~50K items or index build exceeds 200ms, move to a Web Worker. At 6K items, this is premature optimization.
-
-**MiniSearch-specific concern:** MiniSearch instances contain internal data structures (trie, inverted index) that are NOT `Transferable` objects. This means:
-- You can't build the index in a Worker and transfer it to the main thread
-- You'd need to keep the Worker alive and proxy ALL search queries through `postMessage`
-- This turns every search from a ~1ms sync call into a ~3-5ms async round trip
-
-**Confidence:** HIGH — MiniSearch docs confirm internal structure is not transferable. Performance numbers from uFuzzy benchmark extrapolated to 6K items.
-
----
-
-## Critical Architectural Decision #3: Tree Walking Strategy
-
-### The Problem
-
-The metadata has a **recursive structure**: entities reference each other via navigation properties, creating cycles:
-
-```
-SP.User → Groups (SP.GroupCollection) → GetById → SP.Group → Users → SP.User → ...
-```
-
-The tree must be walked to:
-1. Build the flat MiniSearch search index (~6K items) on load
-2. Compute children lazily when a node is expanded in the UI
-
-### For Search Index Building: Iterative DFS with Path-Based Visited Set
-
-**Why iterative DFS (not recursive):**
-- Stack depth up to 9 levels is safe for recursion, BUT iterative is simpler to reason about for cycle detection
-- No risk of stack overflow on pathological data shapes
-- Easier to instrument with performance measurements
-
-**Why path-based visited set (not depth cap alone):**
-- Depth cap of 10 would allow the same entity to appear multiple times at different paths — this is intentional and correct (e.g., `GetById` under `web/Lists/...` AND under `web/SiteGroups/...`)
-- BUT cycles must be broken: `SP.User → Groups → Users → Groups → Users → ...`
-- Use a **composite key**: `entityFullName + "/" + parentPath` — prevents infinite cycles while allowing the same entity at different tree positions
-
-```typescript
-// src/services/searchIndexBuilder.ts
-
-interface IndexBuildContext {
-  items: SearchableItem[];
-  // Track entity visits per tree branch to break cycles
-  // Key: entityFullName, Value: Set of ancestor paths where this entity appeared
-  entityVisited: Map<string, Set<string>>;
-}
-
-export function buildSearchableItems(metadata: Metadata): SearchableItem[] {
-  const ctx: IndexBuildContext = {
-    items: [],
-    entityVisited: new Map(),
-  };
-
-  // Stack-based iterative DFS
-  type StackEntry = {
-    type: 'function' | 'navProperty';
-    name: string;
-    entityFullName: string | undefined;  // return type / target type
-    parentPath: string[];
-    depth: number;
-  };
-
-  const stack: StackEntry[] = [];
-
-  // Push all root functions (reversed for correct DFS order)
-  const rootFuncs = Object.values(metadata.functions).filter(f => f.isRoot);
-  for (let i = rootFuncs.length - 1; i >= 0; i--) {
-    stack.push({
-      type: 'function',
-      name: rootFuncs[i].name,
-      entityFullName: rootFuncs[i].returnType,
-      parentPath: [],
-      depth: 0,
-    });
-  }
-
-  while (stack.length > 0) {
-    const entry = stack.pop()!;
-    const currentPath = [...entry.parentPath, entry.name];
-    const fullPath = currentPath.join('/');
-
-    // Add to search index
-    ctx.items.push({
-      id: `tree-${fullPath}`,
-      name: entry.name,
-      fullName: entry.name,
-      type: entry.type,
-      path: currentPath,
-      fullPath,
-      isRoot: entry.parentPath.length === 0,
-    });
-
-    // Resolve entity for children
-    if (!entry.entityFullName) continue;
-    const entity = metadata.entities[entry.entityFullName];
-    if (!entity) continue;
-
-    // Cycle detection: has this entity appeared as an ancestor in THIS branch?
-    const ancestorKey = entry.entityFullName;
-    if (!ctx.entityVisited.has(ancestorKey)) {
-      ctx.entityVisited.set(ancestorKey, new Set());
-    }
-    const visitedPaths = ctx.entityVisited.get(ancestorKey)!;
-
-    // Build a branch signature from the ancestor entity chain
-    const branchSig = currentPath.slice(0, -1).join('/');
-    if (visitedPaths.has(branchSig)) continue; // Cycle — skip children
-    visitedPaths.add(branchSig);
-
-    // Hard depth limit as safety net
-    if (entry.depth >= 10) continue;
-
-    // Push children (nav properties + functions) in reverse for DFS order
-    const children: StackEntry[] = [];
-
-    if (entity.navigationProperties) {
-      for (const navProp of entity.navigationProperties) {
-        children.push({
-          type: 'navProperty',
-          name: navProp.name,
-          entityFullName: navProp.typeName,
-          parentPath: currentPath,
-          depth: entry.depth + 1,
-        });
-      }
-    }
-
-    if (entity.functionIds) {
-      for (const funcId of entity.functionIds) {
-        const func = metadata.functions[funcId];
-        if (func) {
-          children.push({
-            type: 'function',
-            name: func.name,
-            entityFullName: func.returnType,
-            parentPath: currentPath,
-            depth: entry.depth + 1,
-          });
-        }
-      }
-    }
-
-    // Push in reverse for correct DFS order
-    for (let i = children.length - 1; i >= 0; i--) {
-      stack.push(children[i]);
-    }
-  }
-
-  return ctx.items;
-}
-```
-
-### For UI Tree Expansion: Lazy Computation (No Walking)
-
-When a user expands a tree node, compute children on-demand from the metadata lookup maps. This is what the existing `TreeBuilder.getChildren()` does — and it's correct:
-
-```typescript
-// src/services/treeBuilder.ts
-export function getChildren(
-  entityFullName: string,
-  parentPath: string[],
-): TreeNode[] {
-  const entity = getEntity(entityFullName); // O(1) Map lookup
-  if (!entity) return [];
-
-  const children: TreeNode[] = [];
-
-  // Navigation properties
-  for (const navProp of entity.navigationProperties) {
-    const targetEntity = getEntity(navProp.typeName);
-    children.push({
-      id: [...parentPath, navProp.name].join('/'),
-      name: navProp.name,
-      entityFullName: navProp.typeName,
-      type: 'navProperty',
-      isLeaf: !targetEntity || !hasChildren(targetEntity),
-      children: null, // Lazy — computed when expanded
-    });
-  }
-
-  // Functions
-  for (const funcId of entity.functionIds) {
-    const func = getFunction(funcId);
-    if (!func) continue;
-    const returnEntity = func.returnType ? getEntity(func.returnType) : null;
-    children.push({
-      id: [...parentPath, func.name].join('/'),
-      name: func.name,
-      entityFullName: func.returnType,
-      type: 'function',
-      isLeaf: !returnEntity || !hasChildren(returnEntity),
-      children: null,
-    });
-  }
-
-  return children;
-}
-```
-
-**Key insight:** react-arborist expects a `children` property on each node. For lazy loading, provide `children: null` (signals "has children, not loaded yet") and use the `childrenAccessor` prop or update the data on expand. This avoids pre-computing the entire tree.
-
-**Confidence:** HIGH — Tree walking algorithm verified against data structure. react-arborist lazy loading confirmed via Context7 docs.
-
----
-
-## Data Flow
-
-### Startup Flow (Critical Path)
-
-```
-App mounts
-    │
-    ├─ 1. fetch metadata JSON (~4MB, ~300-800ms network)
-    │      └─ Response → Object.freeze() → module singleton
-    │
-    ├─ 2. Build lookup maps (~2ms, sync, main thread)
-    │      ├─ entityMap: Map<string, EntityType> (2,449 entries)
-    │      └─ functionMap: Map<number, FunctionImport> (3,528 entries)
-    │
-    ├─ 3. Build search index (~19ms, sync, main thread)
-    │      ├─ Iterative DFS walk → ~6,000 SearchableItems
-    │      └─ MiniSearch.addAll(items)
-    │
-    ├─ 4. Build root nodes (~1ms, sync)
-    │      └─ Filter functions where isRoot=true → 793 TreeNode[]
-    │
-    ├─ 5. Fetch diff data (6 files in parallel, ~100-500ms)
-    │      └─ Results → module singleton
-    │
-    └─ 6. set({ isLoading: false }) → UI renders
-```
-
-**Total initialization budget:** ~20-25ms of main thread work after network fetch completes. Well under the 50ms long task threshold.
-
-### Search Flow
-
-```
-User presses Ctrl+K
-    │
-    └─ CommandPalette opens (no data work)
-
-User types query (debounced 300ms)
-    │
-    └─ MiniSearch.search(query) → ~1ms
-        │
-        └─ Results grouped by type (function/entity/navProp)
-            │
-            └─ Render ~20-50 result items with highlighted matches
-
-User selects a result
-    │
-    ├─ setCurrentPath(result.fullPath)  → Zustand UI store
-    ├─ Router navigates to /#/_api/{path} or /#/entity/{type}
-    └─ Sidebar computes children of selected node (lazy, ~1ms)
-```
-
-### Navigation Flow (Explorer)
-
-```
-User clicks sidebar item or breadcrumb segment
-    │
-    ├─ setCurrentPath(newPath) → Zustand UI store
-    ├─ Router updates URL
-    │
-    └─ Components re-derive:
-        ├─ Breadcrumb: split path by '/' → clickable segments
-        ├─ Sidebar: getChildren(entityFullName, path) → child nodes
-        └─ Content: resolve entity/function from path → detail view
-```
-
-### Filter Flow (Root Endpoint View)
-
-```
-User types in root endpoint filter
-    │
-    └─ setSearchQuery(input) via debounce
-
-useMemo in useFilteredRootNodes() recomputes:
-    │
-    ├─ Input: 793 root functions + hiddenNamespaces + searchQuery
-    ├─ Operation: Array.filter() — ~0.1ms for 793 items
-    └─ Output: filtered TreeNode[]
-
-react-arborist receives new data prop → reconciles efficiently
-```
+| **Timer Trigger** | Entry point. Registers daily schedule. Orchestrates pipeline stages sequentially. Handles top-level error logging. | Pipeline stages (calls in sequence) |
+| **Auth (MSAL)** | Acquires OAuth token via client credentials flow. Caches token for reuse within the same invocation. | Azure AD login endpoint |
+| **Fetch (Axios)** | HTTP GET to SharePoint `$metadata` endpoint with Bearer token. Retry logic and timeout. | SharePoint Online |
+| **Parse (xml2js)** | Converts XML string → Metadata JSON object. Extracts associations, entities, complex types, functions. Populates collection objects and entity methods. | None (pure transformation) |
+| **Compress (lz-string)** | `compressToUTF16()` on the JSON string for the `.zip.json` blob. | None (pure transformation) |
+| **Upload (Blob SDK)** | Creates container if missing. Uploads 6 blobs: 3 latest + 3 monthly snapshot. Sets public access. | Azure Blob Storage |
+| **Config** | Reads environment variables with validation. Single source of truth for all settings. | `process.env` |
+| **Blob Naming** | Generates month-based blob paths with 1-indexed months (fixing legacy 0-indexed bug). | None (pure functions) |
 
 ---
 
 ## Recommended Project Structure
 
 ```
-src/
-├── components/
-│   ├── layout/
-│   │   ├── AppHeader.tsx           # Nav bar with route links + Ctrl+K trigger
-│   │   ├── AppLayout.tsx           # Root layout: header + outlet
-│   │   └── ResizablePanel.tsx      # Draggable sidebar resize
-│   ├── explorer/
-│   │   ├── ExplorerPage.tsx        # Route component: sidebar + content
-│   │   ├── Sidebar.tsx             # Contextual children list OR root endpoint list
-│   │   ├── SidebarItem.tsx         # Single item renderer (icon + name + type tag)
-│   │   ├── BreadcrumbBar.tsx       # Full-width path breadcrumb + copy button
-│   │   ├── EntityDetail.tsx        # Entity properties, nav props, methods tables
-│   │   ├── FunctionDetail.tsx      # Function params, return type display
-│   │   ├── HomeScreen.tsx          # Landing: hero, recent, popular endpoints
-│   │   └── RootEndpoints.tsx       # State 3: all 793 root endpoints with filter
-│   ├── types/
-│   │   ├── TypesPage.tsx           # Route component: type list sidebar + detail
-│   │   ├── TypesList.tsx           # Virtualized filterable type list (2,449 items)
-│   │   ├── TypeDetail.tsx          # Entity detail: base type, used-by, sections
-│   │   └── TypesWelcome.tsx        # Landing state when no type selected
-│   ├── changelog/
-│   │   ├── ChangelogPage.tsx       # Route component: month tabs + diff content
-│   │   ├── MonthTabs.tsx           # Horizontal tab bar for 6 months
-│   │   ├── DiffSummary.tsx         # Summary stats bar (added/updated/removed)
-│   │   ├── DiffEntityCard.tsx      # Collapsible entity change card
-│   │   └── DiffEmptyState.tsx      # Empty month placeholder
-│   ├── search/
-│   │   ├── CommandPalette.tsx       # Cmd+K overlay (cmdk + MiniSearch)
-│   │   ├── SearchResultItem.tsx     # Single result: icon + name + path
-│   │   └── HighlightedText.tsx      # Simple indexOf-based text highlighting
-│   ├── shared/
-│   │   ├── PropsTable.tsx           # Reusable properties table
-│   │   ├── MethodsTable.tsx         # Reusable methods table
-│   │   ├── NavPropsTable.tsx        # Reusable nav properties table
-│   │   ├── TypeLink.tsx             # Smart link: entity types → route, Edm.* → plain
-│   │   ├── DocBanner.tsx            # Official documentation link banner
-│   │   └── LoadingState.tsx         # Skeleton loading screens
-│   └── pages/
-│       └── HowItWorksPage.tsx       # Static info page
-├── hooks/
-│   ├── useMetadata.ts               # useSyncExternalStore for metadata singleton
-│   ├── useFilteredRootNodes.ts      # useMemo: root functions filtered by query/namespaces
-│   ├── useSearchIndex.ts            # Wrapper: search() + autoSuggest()
-│   ├── useEntityLookup.ts           # O(1) entity resolution by fullName
-│   ├── useFunctionLookup.ts         # O(1) function resolution by ID
-│   ├── useRecentVisits.ts           # localStorage-backed recent visits
-│   ├── useDiffData.ts               # Access diff data singleton
-│   └── useTreeChildren.ts           # Lazy child computation for tree nodes
-├── data/
-│   ├── metadataStore.ts             # Module singleton: frozen Metadata + lookup Maps
-│   ├── searchIndex.ts               # MiniSearch instance: build + query
-│   ├── diffStore.ts                 # Module singleton: MonthDiffData[]
-│   └── initializer.ts              # Orchestrates fetch → store → index pipeline
-├── services/
-│   ├── api.ts                       # HTTP fetch for metadata + diff files
-│   ├── treeBuilder.ts               # getChildren() for lazy tree expansion
-│   ├── searchIndexBuilder.ts        # DFS tree walk → SearchableItem[] → MiniSearch
-│   ├── metadataParser.ts            # Path navigation, URI template building
-│   ├── docLinks.ts                  # Official MS doc link mapping
-│   └── consts.ts                    # Blob URLs, default namespaces, etc.
-├── store/
-│   └── index.ts                     # Zustand UI-only store
-├── types/
-│   ├── metadata.ts                  # Metadata, EntityType, FunctionImport, etc.
-│   ├── tree.ts                      # TreeNode, SearchableItem
-│   └── diff.ts                      # DiffChanges, MonthDiffData, ChangeType
-├── App.tsx                           # Router setup + initialization orchestration
-├── main.tsx                          # React root + StrictMode
-└── index.css                         # Tailwind imports
+functions/                          # NEW directory (separate from az-funcs/)
+├── src/
+│   ├── functions/
+│   │   └── generateMetadata.ts     # Timer trigger registration + orchestrator
+│   ├── stages/
+│   │   ├── auth.ts                 # MSAL client credentials token acquisition
+│   │   ├── fetch.ts                # SharePoint $metadata XML fetch with retry
+│   │   ├── parse.ts                # XML → Metadata JSON transformation
+│   │   ├── compress.ts             # lz-string compression
+│   │   └── upload.ts               # @azure/storage-blob upload operations
+│   ├── lib/
+│   │   ├── config.ts               # Environment variable access + validation
+│   │   ├── blob-naming.ts          # Blob path generation (latest + monthly)
+│   │   └── logger.ts               # Logger wrapper (InvocationContext.log)
+│   └── types/
+│       ├── metadata.ts             # Metadata, EntityType, FunctionImport, etc.
+│       ├── association.ts          # Association (internal parsing type)
+│       └── index.ts                # Barrel export
+├── host.json                       # Functions runtime config + extension bundle
+├── local.settings.json             # Local dev environment variables (gitignored)
+├── local.sample.settings.json      # Template for local.settings.json
+├── package.json                    # Dependencies + main entry + scripts
+├── tsconfig.json                   # TypeScript config (CommonJS output)
+└── .funcignore                     # Exclude src/, node_modules from deployment
 ```
 
 ### Structure Rationale
 
-- **`data/`**: Module-level singletons for immutable data. NOT React components, NOT Zustand stores. Plain TypeScript modules with getter functions. This is the core architectural distinction — static data lives outside React's render cycle.
-- **`hooks/`**: React hooks that bridge `data/` singletons and `store/` into component-consumable APIs. Every component accesses data through hooks, never directly importing from `data/`.
-- **`store/`**: Zustand store for UI state only. Tiny footprint — just search query, filter prefs, loading state, current path.
-- **`services/`**: Pure functions with no React dependency. Testable in isolation. Tree building, index building, HTTP fetching.
-- **`components/`**: Feature-organized, not type-organized. Each feature folder is self-contained with its page, sub-components, and any feature-specific logic.
-- **`types/`**: Shared TypeScript interfaces. Imported by all layers.
+- **`src/functions/`**: Azure Functions v4 convention. The `main` field in package.json points to `dist/src/functions/*.js` to auto-register all functions. Only one file here (`generateMetadata.ts`) since we have a single timer function.
+- **`src/stages/`**: Each pipeline stage is a separate module with a single responsibility. Stages are pure-ish functions (auth depends on external service, but the interface is clean). Testable in isolation.
+- **`src/lib/`**: Shared utilities. Config reads env vars once. Blob naming generates paths. Logger wraps InvocationContext for consistent log formatting.
+- **`src/types/`**: TypeScript interfaces shared across stages. These types define the contract between parse output and upload input — they are the same types the frontend consumes.
+- **No `src/index.ts` barrel**: Each stage imports what it needs directly. Barrel files add complexity with no benefit in a 5-file pipeline.
 
 ---
 
-## Architectural Patterns
+## Azure Functions v4 Timer Registration (Code-First)
 
-### Pattern 1: Immutable Data Singleton + useSyncExternalStore
+**Source:** Microsoft Learn — Azure Functions Node.js developer guide (HIGH confidence — Context7 verified)
 
-**What:** Store large immutable data outside React's state management. Use `useSyncExternalStore` to notify React when the data is ready.
+In v4, there is NO `function.json`. The function is registered in code:
 
-**When to use:** Data that is fetched once, never mutated, and consumed by many components. The 4MB metadata object is the textbook case.
-
-**Trade-offs:**
-- Pro: Zero subscription overhead for static data. No re-render storms. No selector complexity.
-- Pro: `Object.freeze()` enforces immutability at runtime.
-- Con: Slightly more code than a simple Zustand `set()`. Must handle the "not loaded yet" state.
-
-**Example:**
 ```typescript
-// data/metadataStore.ts
-let _metadata: Metadata | null = null;
-let _subscribers = new Set<() => void>();
+// src/functions/generateMetadata.ts
+import { app, InvocationContext, Timer } from "@azure/functions";
+import { acquireToken } from "../stages/auth";
+import { fetchMetadataXml } from "../stages/fetch";
+import { parseMetadata } from "../stages/parse";
+import { compressJson } from "../stages/compress";
+import { uploadAllBlobs } from "../stages/upload";
+import { getConfig } from "../lib/config";
 
-function subscribe(cb: () => void) {
-  _subscribers.add(cb);
-  return () => _subscribers.delete(cb);
+async function generateMetadata(
+  timer: Timer,
+  context: InvocationContext
+): Promise<void> {
+  context.log("GenerateMetadata: started");
+
+  // Fresh Date per invocation — fixes legacy warm-start stale date bug
+  const now = new Date();
+
+  const config = getConfig();
+
+  // Stage 1: Auth
+  const token = await acquireToken(config, context);
+
+  // Stage 2: Fetch XML
+  const xml = await fetchMetadataXml(config.spUrl, token, context);
+
+  // Stage 3: Parse XML → JSON
+  const metadata = await parseMetadata(xml, context);
+  const jsonStr = JSON.stringify(metadata, null, 2);
+
+  // Stage 4: Compress
+  const compressedJson = compressJson(jsonStr);
+
+  // Stage 5: Upload
+  await uploadAllBlobs(config, now, xml, jsonStr, compressedJson, context);
+
+  context.log("GenerateMetadata: completed successfully");
 }
 
-function getSnapshot(): Metadata | null {
-  return _metadata;
-}
-
-export function initializeMetadata(data: Metadata): void {
-  _metadata = Object.freeze(data) as Metadata;
-  _subscribers.forEach(cb => cb());
-}
-
-// hooks/useMetadata.ts
-import { useSyncExternalStore } from 'react';
-
-export function useMetadata(): Metadata | null {
-  return useSyncExternalStore(subscribe, getSnapshot);
-}
+app.timer("generateMetadata", {
+  schedule: "0 0 1 * * *",   // Daily at 1:00 AM UTC
+  handler: generateMetadata,
+});
 ```
 
-**Confidence:** HIGH — `useSyncExternalStore` is a React 18+ API specifically designed for this pattern. Verified via React official docs (Context7).
+### Key v4 Details
 
-### Pattern 2: useMemo for Derived Views (No Cloning)
+| Aspect | v2 (Legacy `az-funcs/`) | v4 (New `functions/`) |
+|--------|-------------------------|------------------------|
+| Function config | `function.json` per function | `app.timer()` in code |
+| Handler signature | `export = function(context, timer)` | `async (timer, context) => void` |
+| Parameter order | `context` first | `timer` first, `context` second |
+| Completion signal | `context.done()` | Return/throw from async function |
+| Logging | `context.log()` | `context.log()` (unchanged) |
+| Output bindings | `context.bindings.latestJson = data` | `output.storageBlob()` + `context.extraOutputs.set()` OR SDK direct |
+| Module format | CommonJS (`export =`) | CommonJS (`import/export` compiled to CJS) |
+| Entry point | `function.json` → `scriptFile` | `package.json` → `"main": "dist/src/functions/*.js"` |
 
-**What:** All filtered/sorted views of the metadata are computed via `useMemo` from the frozen source. No cloning, no mutation, no separate cache.
+---
 
-**When to use:** Any time a component needs a subset of the metadata (filtered root nodes, sorted entities, etc.)
+## Pipeline Stage Details
 
-**Trade-offs:**
-- Pro: Eliminates the 4MB `JSON.parse(JSON.stringify())` deep clone per filter change (the root cause of the current performance problem).
-- Pro: React handles cache invalidation via dependency arrays. No manual cache management.
-- Con: `useMemo` recomputes when dependencies change. For the root endpoint filter (793 items × simple string match), this is ~0.1ms — negligible.
+### Stage 1: Auth — Client Credentials via @azure/msal-node
 
-**Example:**
-```typescript
-// hooks/useFilteredRootNodes.ts
-export function useFilteredRootNodes(): FunctionImport[] {
-  const metadata = useMetadata();
-  const searchQuery = useUIStore(s => s.searchQuery);
-  const hiddenNamespaces = useUIStore(s => s.hiddenNamespaces);
+**Source:** MSAL.js official docs (HIGH confidence — Context7 verified)
 
-  return useMemo(() => {
-    if (!metadata) return [];
-
-    return Object.values(metadata.functions)
-      .filter(f => f.isRoot)
-      .filter(f => {
-        if (hiddenNamespaces.some(ns => f.name.startsWith(ns))) return false;
-        if (searchQuery && searchQuery.length >= 2) {
-          return f.name.toLowerCase().includes(searchQuery.toLowerCase());
-        }
-        return true;
-      });
-  }, [metadata, searchQuery, hiddenNamespaces]);
-}
-```
-
-**Confidence:** HIGH — `useMemo` behavior verified via React docs (Context7). Array.filter on 793 items is trivially fast.
-
-### Pattern 3: Lazy Tree Children with react-arborist
-
-**What:** Tree nodes start with `children: null`. When a node is expanded, compute its children from the lookup maps and update the node.
-
-**When to use:** The Explorer tree, where each node can have 5-100+ children, and the total tree depth is 9 levels.
-
-**Trade-offs:**
-- Pro: Only computes children for expanded nodes. Most of the ~6K possible nodes are never computed.
-- Pro: Each child computation is O(n) where n = number of nav props + functions on the entity. Typically 5-50 items, takes <1ms.
-- Con: react-arborist expects the full `data` array with children already resolved. For lazy loading, you need to manage a "tree data" state that gets updated as nodes expand.
-
-**Important react-arborist detail:** react-arborist v3.x uses `initialData` (set once) OR `data` (controlled). For our use case, use `data` (controlled) and update it when nodes expand:
+The legacy code uses `acquireTokenByUsernamePassword` (ROPC flow) which is deprecated by Microsoft, doesn't support MFA, and requires a user account. Switch to `acquireTokenByClientCredential` (app-only, no user context).
 
 ```typescript
-// State for the tree data (root nodes + expanded children)
-const [treeData, setTreeData] = useState<TreeNode[]>([]);
+// src/stages/auth.ts
+import {
+  ConfidentialClientApplication,
+  AuthenticationResult,
+} from "@azure/msal-node";
+import { AppConfig } from "../lib/config";
+import { InvocationContext } from "@azure/functions";
 
-// When a node is expanded, compute its children and update tree data
-function onToggle(id: string, isOpen: boolean) {
-  if (isOpen) {
-    setTreeData(prev => {
-      // Find the node, compute children if not yet loaded
-      return updateNodeChildren(prev, id, computeChildren);
+let msalClient: ConfidentialClientApplication | null = null;
+
+export async function acquireToken(
+  config: AppConfig,
+  context: InvocationContext
+): Promise<string> {
+  // Reuse MSAL client across warm starts (safe — config is immutable)
+  if (!msalClient) {
+    msalClient = new ConfidentialClientApplication({
+      auth: {
+        clientId: config.clientId,
+        authority: `https://login.microsoftonline.com/${config.tenantId}`,
+        clientSecret: config.clientSecret,
+      },
     });
   }
-}
-```
 
-**Confidence:** HIGH — react-arborist data model verified via Context7. `searchTerm` and `searchMatch` props confirmed.
+  context.log("Auth: acquiring token via client credentials");
 
-### Pattern 4: React.lazy + Suspense for Route Code-Splitting
+  const result: AuthenticationResult | null =
+    await msalClient.acquireTokenByClientCredential({
+      // Client credentials MUST use .default scope
+      scopes: [`${config.spUrl}/.default`],
+    });
 
-**What:** Each route page is a `React.lazy()` dynamic import, wrapped in `Suspense`.
-
-**When to use:** All 4 main route pages. The Explorer page is largest; Types, Changelog, HowItWorks are smaller.
-
-**Trade-offs:**
-- Pro: Users visiting only the Explorer page never download Types/Changelog/HowItWorks code.
-- Pro: React 19 + React Router 7 support `lazy` at the route level — the router downloads code before rendering (better than `React.lazy` which downloads on render).
-- Con: Minor flash of loading state on first navigation to a lazy route.
-
-**Recommended approach:** Use React Router 7's `lazy` property (verified via Context7):
-
-```typescript
-const router = createHashRouter([
-  {
-    path: '/',
-    element: <AppLayout />,
-    children: [
-      {
-        index: true,
-        lazy: () => import('./components/explorer/ExplorerPage'),
-      },
-      {
-        path: '_api/*',
-        lazy: () => import('./components/explorer/ExplorerPage'),
-      },
-      {
-        path: 'entity',
-        lazy: () => import('./components/types/TypesPage'),
-      },
-      {
-        path: 'entity/:typeName',
-        lazy: () => import('./components/types/TypesPage'),
-      },
-      {
-        path: 'api-diff',
-        lazy: () => import('./components/changelog/ChangelogPage'),
-      },
-      {
-        path: 'api-diff/:monthKey',
-        lazy: () => import('./components/changelog/ChangelogPage'),
-      },
-      {
-        path: 'how-it-works',
-        lazy: () => import('./components/pages/HowItWorksPage'),
-      },
-    ],
-  },
-]);
-```
-
-**React Router 7's `lazy` vs `React.lazy`:** Router-level `lazy` is better because it downloads the route code in parallel with other assets during navigation, before the component renders. `React.lazy` only triggers download when the component renders. (Verified via React docs, Context7.)
-
-**Confidence:** HIGH — React Router 7 `lazy` route property confirmed via Context7.
-
-### Pattern 5: React 19 `use()` for Initial Data Loading
-
-**What:** Use React 19's `use()` hook with Suspense to handle the initial metadata fetch, instead of `useEffect` + loading state.
-
-**When to use:** The app-level data loading on startup.
-
-**Trade-offs:**
-- Pro: Cleaner code — no manual loading state management. Suspense handles the fallback UI.
-- Pro: Aligns with React 19 recommended patterns.
-- Con: Requires creating the fetch promise outside the component (in module scope or parent), NOT inside render. The promise must be cached/stable.
-
-**Example:**
-```typescript
-// data/initializer.ts
-let _metadataPromise: Promise<Metadata> | null = null;
-
-export function getMetadataPromise(): Promise<Metadata> {
-  if (!_metadataPromise) {
-    _metadataPromise = fetch(METADATA_URL)
-      .then(res => res.json())
-      .then(data => {
-        initializeMetadata(data);
-        buildSearchIndex(data);
-        return data;
-      });
+  if (!result?.accessToken) {
+    throw new Error("Auth: failed to acquire access token");
   }
-  return _metadataPromise;
-}
 
-// App.tsx
-import { Suspense, use } from 'react';
-
-function App() {
-  return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <AppContent />
-    </Suspense>
-  );
-}
-
-function AppContent() {
-  const metadata = use(getMetadataPromise());
-  // metadata is guaranteed to be loaded here
-  return <RouterProvider router={router} />;
+  context.log("Auth: token acquired");
+  return result.accessToken;
 }
 ```
 
-**Confidence:** MEDIUM — `use()` API confirmed in React 19 docs (Context7). The pattern of caching the promise in module scope is documented but relatively new. Fallback: traditional `useEffect` + loading state works fine.
+**Critical detail — `.default` scope:** Client credentials flow requires `<resource>/.default` as the scope. The legacy code used `${spUrl}/AllSites.Read` which worked with ROPC but will NOT work with client credentials. The `.default` scope requests all permissions that the app registration has been granted via admin consent.
+
+**MSAL client reuse:** The `ConfidentialClientApplication` instance is module-scoped. Azure Functions reuses the same Node.js process across invocations (warm starts). The MSAL client has built-in token caching — it will return a cached token if still valid, avoiding unnecessary Azure AD calls.
+
+**Confidence:** HIGH — `acquireTokenByClientCredential` API confirmed via Context7 MSAL docs. `.default` scope requirement confirmed.
+
+### Stage 2: Fetch — Axios with Retry and Timeout
+
+```typescript
+// src/stages/fetch.ts
+import axios, { AxiosError } from "axios";
+import { InvocationContext } from "@azure/functions";
+
+const MAX_RETRIES = 3;
+const RETRY_DELAY_MS = 5000;
+const TIMEOUT_MS = 60000; // 60 seconds
+
+export async function fetchMetadataXml(
+  spUrl: string,
+  token: string,
+  context: InvocationContext
+): Promise<string> {
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      context.log(`Fetch: attempt ${attempt}/${MAX_RETRIES}`);
+
+      const response = await axios.get(`${spUrl}/_api/$metadata`, {
+        headers: { Authorization: `Bearer ${token}` },
+        timeout: TIMEOUT_MS,
+        responseType: "text",
+      });
+
+      context.log(`Fetch: received ${response.data.length} bytes`);
+      return response.data;
+    } catch (error) {
+      const isRetryable =
+        error instanceof AxiosError &&
+        (error.code === "ECONNRESET" ||
+          error.code === "ETIMEDOUT" ||
+          error.code === "ECONNABORTED" ||
+          (error.response?.status ?? 0) >= 500);
+
+      if (attempt < MAX_RETRIES && isRetryable) {
+        context.log(
+          `Fetch: retryable error (${(error as AxiosError).code}), waiting ${RETRY_DELAY_MS}ms`
+        );
+        await delay(RETRY_DELAY_MS);
+        continue;
+      }
+
+      throw new Error(
+        `Fetch: failed after ${attempt} attempts: ${(error as Error).message}`
+      );
+    }
+  }
+
+  throw new Error("Fetch: unreachable");
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+```
+
+**Addresses legacy pain point:** The old code had zero retry/timeout logic. SharePoint metadata endpoint can be slow (~5-20 seconds) and occasionally returns 503 during maintenance windows.
+
+### Stage 3: Parse — xml2js Transformation
+
+The parser is the most complex stage and should be ported from the existing `metadataParser.ts` with these improvements:
+
+1. **Use `xml2js.parseStringPromise()`** instead of bluebird promisify (xml2js has native Promise support)
+2. **Keep the same output shape** — the frontend depends on the Metadata JSON format
+3. **Extract as functional code** — replace class with module functions
+4. **Preserve all existing logic**: association extraction, entity/complex type extraction, function import extraction, Collection object population, entity method population, alias mapping, Internal API filtering
+
+```typescript
+// src/stages/parse.ts (simplified interface)
+import { parseStringPromise } from "xml2js";
+import { Metadata } from "../types/metadata";
+import { InvocationContext } from "@azure/functions";
+
+export async function parseMetadata(
+  xml: string,
+  context: InvocationContext
+): Promise<Metadata> {
+  context.log("Parse: starting XML → JSON transformation");
+
+  const obj = await parseStringPromise(xml);
+  const schemas = obj["edmx:Edmx"]["edmx:DataServices"][0]["Schema"];
+
+  // Port existing extraction logic:
+  const associations = extractAssociations(schemas);
+  const entities = extractEntities(schemas, associations);
+  const functions = extractFunctions(schemas);
+
+  const metadata: Metadata = {
+    entities: Object.fromEntries(entities),
+    functions: Object.fromEntries(
+      functions.map((f) => [f.id, f])
+    ),
+  };
+
+  populateCollectionObjects(metadata);
+  populateEntityMethods(metadata);
+
+  const entityCount = Object.keys(metadata.entities).length;
+  const funcCount = Object.keys(metadata.functions).length;
+  context.log(`Parse: completed — ${entityCount} entities, ${funcCount} functions`);
+
+  return metadata;
+}
+```
+
+**Key decisions for the port:**
+- **Same output JSON shape**: The frontend's `Metadata`, `EntityType`, `FunctionImport`, `Property`, `NavigationProperty`, and `Parameter` interfaces must match exactly.
+- **Functions as modules, not classes**: The `MetadataParser` class had instance state (associations, entities, functions maps) that was only used during `parseMetadata()`. Convert to module-level functions that take parameters and return values.
+- **bluebird removal**: xml2js v0.5+ ships `parseStringPromise()` natively. No need for bluebird promisify.
+
+### Stage 4: Compress — lz-string
+
+```typescript
+// src/stages/compress.ts
+import { compressToUTF16 } from "lz-string";
+
+export function compressJson(jsonStr: string): string {
+  return compressToUTF16(jsonStr);
+}
+```
+
+Trivial stage. Keeping it separate for pipeline clarity and testability.
+
+### Stage 5: Upload — @azure/storage-blob v12
+
+**Source:** Azure SDK for JS official docs (HIGH confidence — Context7 verified)
+
+```typescript
+// src/stages/upload.ts
+import {
+  BlobServiceClient,
+  ContainerClient,
+} from "@azure/storage-blob";
+import { generateBlobNames } from "../lib/blob-naming";
+import { AppConfig } from "../lib/config";
+import { InvocationContext } from "@azure/functions";
+
+export async function uploadAllBlobs(
+  config: AppConfig,
+  now: Date,
+  xml: string,
+  json: string,
+  compressedJson: string,
+  context: InvocationContext
+): Promise<void> {
+  const blobServiceClient = BlobServiceClient.fromConnectionString(
+    config.storageConnectionString
+  );
+
+  const containerClient = blobServiceClient.getContainerClient("api-files");
+  await containerClient.createIfNotExists({ access: "blob" });
+
+  const blobNames = generateBlobNames(now);
+
+  // Upload latest blobs (overwritten daily)
+  await uploadBlob(containerClient, "metadata.latest.xml", xml, context);
+  await uploadBlob(containerClient, "metadata.latest.json", json, context);
+  await uploadBlob(containerClient, "metadata.latest.zip.json", compressedJson, context);
+
+  // Upload monthly snapshot blobs
+  await uploadBlob(containerClient, `${blobNames.monthly}.xml`, xml, context);
+  await uploadBlob(containerClient, `${blobNames.monthly}.json`, json, context);
+  await uploadBlob(containerClient, `${blobNames.monthly}.zip.json`, compressedJson, context);
+
+  context.log(`Upload: 6 blobs uploaded to api-files container`);
+}
+
+async function uploadBlob(
+  container: ContainerClient,
+  blobName: string,
+  content: string,
+  context: InvocationContext
+): Promise<void> {
+  const blockBlobClient = container.getBlockBlobClient(blobName);
+  await blockBlobClient.upload(content, Buffer.byteLength(content));
+  context.log(`Upload: ${blobName} (${Buffer.byteLength(content)} bytes)`);
+}
+```
+
+**Why @azure/storage-blob SDK instead of output bindings:**
+
+| Concern | Output Bindings (`output.storageBlob()`) | SDK Direct (`@azure/storage-blob`) |
+|---------|-------------------------------------------|--------------------------------------|
+| Dynamic blob names | ❌ Path is fixed at registration time. Binding expressions like `{DateTime}` exist but are limited and don't support 1-indexed months. | ✅ Full control — compute any blob name at runtime |
+| Multiple blobs per invocation | ❌ Need one output binding per blob, all declared upfront. 6 bindings = cluttered registration. | ✅ Loop over names, upload dynamically |
+| Container creation | ❌ Bindings don't create containers. Need separate SDK call anyway. | ✅ `createIfNotExists()` built in |
+| Public access level | ❌ Can't set container access level via bindings | ✅ `{ access: "blob" }` on create |
+| Error handling per blob | ❌ Binding errors are opaque | ✅ Try/catch per upload with specific error info |
+| Content-Type header | ❌ Limited control | ✅ Full `BlobHTTPHeaders` control |
+| Connection | Uses `AzureWebJobsStorage` app setting via `connection` property | Uses `AzureWebJobsStorage` via `BlobServiceClient.fromConnectionString()` |
+
+**Verdict:** SDK is clearly better for this use case. Output bindings are designed for simple, fixed-path single-blob writes. Our use case (6 dynamic blobs, container creation, public access) maps cleanly to the SDK.
+
+**Confidence:** HIGH — `BlobServiceClient.fromConnectionString()` and `ContainerClient` APIs confirmed via Context7 Azure SDK docs.
 
 ---
 
-## Anti-Patterns to Avoid
+## Blob Naming — Fixing the 0-Indexed Month Bug
 
-### Anti-Pattern 1: Deep Cloning for Filtering
+The legacy code uses `date.getMonth()` which returns 0-11. The new code uses 1-indexed months:
 
-**What people do:** `JSON.parse(JSON.stringify(metadata))` to create a mutable copy for filtering.
-**Why it's wrong:** Cloning 4MB of JSON takes ~30-50ms on every filter change. With 793 root items and debounced search, this causes noticeable jank.
-**Do this instead:** Keep metadata frozen. Use `useMemo` to compute filtered arrays from the immutable source. Filtering 793 items with `Array.filter()` takes ~0.1ms.
+```typescript
+// src/lib/blob-naming.ts
+export interface BlobNames {
+  monthly: string; // e.g., "2026y_m2_metadata"
+}
 
-### Anti-Pattern 2: Storing Derived Data in the Store
+export function generateBlobNames(date: Date): BlobNames {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // FIX: 1-indexed (January = 1)
 
-**What people do:** Store filtered results, sorted lists, or computed views in Zustand alongside the source data.
-**Why it's wrong:** Creates data synchronization problems. When the source changes, every derived cache must be invalidated manually. Easy to have stale data.
-**Do this instead:** Derive everything via `useMemo` in hooks. The memoization key IS the synchronization mechanism — when the source or filters change, React automatically recomputes.
+  return {
+    monthly: `${year}y_m${month}_metadata`,
+  };
+}
+```
 
-### Anti-Pattern 3: Pre-Computing the Entire Tree
+**Note:** The legacy code also generated weekly snapshots (`2026y_w8_metadata`). Per PROJECT.md, the new design drops weekly snapshots — only monthly + latest.
 
-**What people do:** Walk the entire 9-level recursive tree on load and store all ~6K nodes in a flat array for the tree component.
-**Why it's wrong:** Most nodes are never viewed. Pre-computing 6K nodes wastes memory and startup time.
-**Do this instead:** Pre-compute only the search index (which NEEDS all items for global search). For the tree UI, compute children lazily on expand. The search index walk and the tree expansion are separate concerns.
+---
 
-### Anti-Pattern 4: Using useEffect for Data Derivation
+## Configuration Management
 
-**What people do:** `useEffect(() => { setFilteredData(filter(data)) }, [data, filters])` — deriving data in an effect and storing in state.
-**Why it's wrong:** Causes an extra render cycle (first render with stale data, then effect fires and triggers re-render with new data). React docs explicitly warn against this pattern.
-**Do this instead:** `useMemo(() => filter(data), [data, filters])` — compute during render, no extra cycle.
+```typescript
+// src/lib/config.ts
+export interface AppConfig {
+  clientId: string;
+  clientSecret: string;
+  tenantId: string;
+  spUrl: string;
+  storageConnectionString: string;
+}
 
-### Anti-Pattern 5: Putting Search Results in Global State
+export function getConfig(): AppConfig {
+  const config: AppConfig = {
+    clientId: requireEnv("AZ_ClientId"),
+    clientSecret: requireEnv("AZ_ClientSecret"),
+    tenantId: requireEnv("AZ_TenantId"),
+    spUrl: requireEnv("SP_Url"),
+    storageConnectionString: requireEnv("AzureWebJobsStorage"),
+  };
 
-**What people do:** Store MiniSearch results in Zustand so the command palette and other components can share them.
-**Why it's wrong:** Search results are transient (change on every keystroke) and scoped to the command palette. Putting them in global state causes unnecessary subscription notifications.
-**Do this instead:** Keep search results as local state within the CommandPalette component. MiniSearch queries are ~1ms — no need to cache globally.
+  return config;
+}
+
+function requireEnv(name: string): string {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`Missing required environment variable: ${name}`);
+  }
+  return value;
+}
+```
+
+**Changes from legacy:**
+- **Removed:** `SP_User` and `SP_Password` (not needed with client credentials flow)
+- **Removed:** `CUSTOMCONNSTR_` fallback (unnecessary Azure complexity)
+- **Added:** Fail-fast validation — throw immediately if any env var is missing
+
+### local.sample.settings.json
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AZ_ClientId": "<app-registration-client-id>",
+    "AZ_ClientSecret": "<app-registration-client-secret>",
+    "AZ_TenantId": "<azure-ad-tenant-id>",
+    "SP_Url": "https://<tenant>.sharepoint.com"
+  }
+}
+```
+
+---
+
+## host.json Configuration
+
+```json
+{
+  "version": "2.0",
+  "extensionBundle": {
+    "id": "Microsoft.Azure.Functions.ExtensionBundle",
+    "version": "[4.0.0, 5.0.0)"
+  },
+  "logging": {
+    "logLevel": {
+      "default": "Information",
+      "Function.generateMetadata": "Information"
+    }
+  }
+}
+```
+
+**Extension bundles:** Required even though we don't use declarative bindings — the timer trigger extension is provided via the bundle. Version range `[4.0.0, 5.0.0)` is the current recommended range (confirmed via Microsoft Learn host.json reference).
+
+**Confidence:** HIGH — host.json schema confirmed via Microsoft Learn docs.
+
+---
+
+## package.json Configuration
+
+```json
+{
+  "name": "sp-rest-explorer-functions",
+  "version": "2.0.0",
+  "main": "dist/src/functions/*.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "start": "npm run build && func start",
+    "deploy": "npm run build && func azure functionapp publish <app-name>"
+  },
+  "dependencies": {
+    "@azure/functions": "^4.6.0",
+    "@azure/msal-node": "^2.16.0",
+    "@azure/storage-blob": "^12.26.0",
+    "axios": "^1.7.0",
+    "lz-string": "^1.5.0",
+    "xml2js": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/lz-string": "^1.5.0",
+    "@types/xml2js": "^0.4.14",
+    "typescript": "^5.6.0"
+  }
+}
+```
+
+**Key package.json detail — `"main"` field:** In v4, the Functions runtime uses the `main` field glob to discover and register functions. The glob `dist/src/functions/*.js` matches all compiled function files in the output directory. This replaces the per-function `function.json` discovery mechanism from v2.
+
+**`@azure/functions` is a runtime dependency:** In v4, `@azure/functions` is used at runtime for `app.timer()` registration and the `InvocationContext` type. In v2, it was only a dev dependency (used for types).
+
+---
+
+## tsconfig.json Configuration
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+```
+
+**Module system decision — CommonJS:**
+- `@azure/functions` v4 only ships CommonJS (confirmed via [GitHub issue #287](https://github.com/Azure/azure-functions-nodejs-library/issues/287))
+- Azure Functions Node.js worker loads modules via `require()` (CommonJS)
+- ESM support is technically possible with workarounds (tsup bundler, `.mjs` extensions) but adds complexity for zero benefit
+- CommonJS is the recommended, battle-tested path for Azure Functions v4 TypeScript
+
+**`target: ES2022`:** Azure Functions v4 requires Node.js 18+ (recommended: 20 or 22). ES2022 is fully supported and gives access to modern JS features (top-level await in modules, `Array.at()`, `Object.hasOwn()`).
+
+**`strict: true`:** Upgrade from legacy code's `noImplicitAny: false`. The new codebase should be fully strict.
+
+**Confidence:** HIGH — tsconfig patterns confirmed via Microsoft Learn Azure Functions Node.js guide + multiple verified blog posts.
+
+---
+
+## Data Flow
+
+### Complete Pipeline Flow
+
+```
+Timer fires (daily 1:00 AM UTC)
+    │
+    ├─ 1. AUTH: MSAL client credentials → Azure AD
+    │      └─ Returns: Bearer access token (string)
+    │      └─ ~200-500ms (cached on warm start: ~1ms)
+    │
+    ├─ 2. FETCH: GET /_api/$metadata → SharePoint Online
+    │      └─ Returns: XML string (~4MB)
+    │      └─ ~5-20 seconds (retry up to 3x on failure)
+    │
+    ├─ 3. PARSE: xml2js → extract → enrich → Metadata
+    │      └─ Returns: Metadata object + JSON string
+    │      └─ ~1-3 seconds
+    │
+    ├─ 4. COMPRESS: lz-string compressToUTF16
+    │      └─ Returns: compressed JSON string
+    │      └─ ~500ms-1s
+    │
+    └─ 5. UPLOAD: 6 blobs to Azure Blob Storage
+           ├─ createIfNotExists("api-files", { access: "blob" })
+           ├─ metadata.latest.xml     ← raw XML
+           ├─ metadata.latest.json    ← pretty JSON
+           ├─ metadata.latest.zip.json ← lz-string compressed
+           ├─ {year}y_m{month}_metadata.xml
+           ├─ {year}y_m{month}_metadata.json
+           └─ {year}y_m{month}_metadata.zip.json
+           └─ ~2-5 seconds total
+```
+
+**Total execution time:** ~10-30 seconds typical. Well within Azure Functions default timeout (5 minutes for Consumption plan).
+
+### Error Flow
+
+```
+Any stage throws
+    │
+    ├─ Error propagates to handler (async function)
+    ├─ Azure Functions runtime catches unhandled rejection
+    ├─ Logs error via context.log.error (if structured logging used)
+    ├─ Function marked as failed in Azure portal
+    └─ Timer retries on next scheduled run (no built-in retry for timer triggers)
+```
+
+**Note:** Timer triggers do NOT have automatic retry like queue triggers. If the function fails, it simply runs again at the next scheduled time. For this use case (daily metadata refresh), this is acceptable — missing one day's run means the data is 1 day stale, which is fine. If stronger retry is needed, wrap the pipeline in a try/catch with a manual delay-and-retry loop.
 
 ---
 
@@ -864,113 +670,237 @@ function AppContent() {
 
 ### External Services
 
-| Service | Integration Pattern | Notes |
-|---------|---------------------|-------|
-| Azure Blob Storage (metadata) | Single `fetch()` call on app mount. URL from env/config constant. | ~4MB response. Consider `Accept-Encoding: gzip` (auto by browsers). Response is cached in module singleton. |
-| Azure Blob Storage (diffs) | 6 parallel `fetch()` calls for monthly diff files. | ~50-200KB each. Pattern: `{year}y_m{month}_metadata_diffChanges.json`. Some months may 404 (no changes). |
-| GitHub Pages | Static hosting of built SPA. | Base path: `/sp-rest-explorer/`. Hash routing avoids 404 issues. |
+| Service | Protocol | Auth | Notes |
+|---------|----------|------|-------|
+| Azure AD (`login.microsoftonline.com`) | HTTPS | Client ID + Secret | Token acquisition. MSAL handles token caching. |
+| SharePoint Online (`{tenant}.sharepoint.com`) | HTTPS | Bearer token | `/_api/$metadata` endpoint returns OData CSDL XML |
+| Azure Blob Storage | HTTPS | Connection string | `AzureWebJobsStorage` app setting. Same storage account as Functions runtime uses. |
 
-### Internal Boundaries
+### New Components (to be created)
 
-| Boundary | Communication | Notes |
-|----------|---------------|-------|
-| Data singletons ↔ Hooks | Direct function call (import) | Hooks import from `data/`. No indirection needed. |
-| Zustand store ↔ Hooks | `useUIStore(selector)` | Standard Zustand pattern. Use atomic selectors. |
-| Hooks ↔ Components | Standard React hook consumption | Every data access goes through a hook. Components never import from `data/` or `services/` directly. |
-| Services ↔ Data | `initializer.ts` orchestrates the pipeline | Services (fetch, build index, etc.) write to data singletons. Only happens once on startup. |
-| Router ↔ Pages | React Router 7 `<Outlet />` + `useParams()` | Hash routing for GitHub Pages. `lazy` imports for code splitting. |
+| Component | File | Type | Dependencies |
+|-----------|------|------|-------------|
+| Timer function | `src/functions/generateMetadata.ts` | Function registration | All stages |
+| Auth stage | `src/stages/auth.ts` | Module | `@azure/msal-node`, config |
+| Fetch stage | `src/stages/fetch.ts` | Module | `axios`, config |
+| Parse stage | `src/stages/parse.ts` | Module | `xml2js`, types |
+| Compress stage | `src/stages/compress.ts` | Module | `lz-string` |
+| Upload stage | `src/stages/upload.ts` | Module | `@azure/storage-blob`, blob-naming, config |
+| Config | `src/lib/config.ts` | Module | `process.env` |
+| Blob naming | `src/lib/blob-naming.ts` | Module | None |
+| Types | `src/types/*.ts` | Type definitions | None |
+
+### Modified Components
+
+**None.** The new `functions/` directory is entirely separate from `az-funcs/`. No existing files are modified.
+
+### Frontend Integration Points
+
+The frontend (`app/`) consumes blobs from Azure Blob Storage via HTTP fetch:
+- `metadata.latest.json` — pretty-printed metadata JSON (~4MB)
+- `metadata.latest.zip.json` — lz-string compressed metadata
+
+**The blob URL format and JSON schema must remain identical.** The frontend's `services/api.ts` fetches from hardcoded blob URLs. As long as the new backend writes to the same container (`api-files`) with the same blob names (`metadata.latest.*`), the frontend requires zero changes.
 
 ---
 
-## Build Order (Dependencies Between Components)
+## Patterns to Follow
 
-This defines what must be built first for the rest to work.
+### Pattern 1: Fresh Date per Invocation
+
+**What:** Compute `new Date()` INSIDE the handler, not at module scope.
+
+**Why:** Azure Functions reuses the same Node.js process across invocations (warm starts). Module-scope variables persist between invocations. The legacy code had `let now = new Date()` at module scope, which meant the date was stale after the first cold start.
+
+```typescript
+// ❌ LEGACY BUG (az-funcs/GenerateMetadata/index.ts line 10)
+let now = new Date(); // Module scope — stale across warm starts!
+
+// ✅ CORRECT
+async function generateMetadata(timer: Timer, context: InvocationContext) {
+  const now = new Date(); // Fresh per invocation
+}
+```
+
+### Pattern 2: Module-Scoped MSAL Client (Safe Reuse)
+
+**What:** Create the `ConfidentialClientApplication` once at module scope and reuse it across invocations.
+
+**Why:** MSAL clients have built-in token caching. Creating a new client per invocation wastes the cache and forces a new Azure AD token request every time (~200-500ms). The client config (clientId, tenantId, clientSecret) is immutable from environment variables, so reuse is safe.
+
+```typescript
+// src/stages/auth.ts
+let msalClient: ConfidentialClientApplication | null = null;
+
+export async function acquireToken(config: AppConfig, context: InvocationContext) {
+  if (!msalClient) {
+    msalClient = new ConfidentialClientApplication({ ... });
+  }
+  // MSAL internally caches tokens and returns cached if still valid
+  return msalClient.acquireTokenByClientCredential({ scopes: [...] });
+}
+```
+
+### Pattern 3: Pipeline Stage Isolation
+
+**What:** Each stage is a pure-ish function that takes input and returns output. No shared mutable state between stages.
+
+**Why:** Makes each stage independently testable. Can mock the auth stage to test fetch, mock fetch to test parse, etc. The orchestrator (`generateMetadata.ts`) is the only place that knows about all stages.
+
+```
+acquireToken(config) → token
+fetchMetadataXml(spUrl, token) → xml
+parseMetadata(xml) → metadata
+compressJson(jsonStr) → compressedJson
+uploadAllBlobs(config, now, xml, jsonStr, compressedJson) → void
+```
+
+### Pattern 4: Fail-Fast Config Validation
+
+**What:** Validate all environment variables at the start of each invocation, before any work begins.
+
+**Why:** Better to fail immediately with "Missing AZ_ClientId" than to fail 20 seconds later after fetching metadata and parsing XML, with an opaque MSAL error.
+
+---
+
+## Anti-Patterns to Avoid
+
+### Anti-Pattern 1: Using Output Bindings for Dynamic Blob Names
+
+**What:** Registering `output.storageBlob({ path: "api-files/{dynamicName}" })` and trying to set the blob name at runtime.
+
+**Why bad:** Azure Functions v4 output bindings resolve the path at registration time, not at invocation time. Binding expressions like `{DateTime}` exist but don't support custom formats (e.g., 1-indexed months). For 6 blobs with computed names, you'd need 6 static output bindings — defeating the purpose.
+
+**Instead:** Use `@azure/storage-blob` SDK directly. Full control, clear code, no binding magic.
+
+### Anti-Pattern 2: Module-Scope Date
+
+**What:** `let now = new Date()` outside the handler function.
+
+**Why bad:** Azure Functions warm starts reuse the Node.js process. The date variable will be from the first cold start, potentially hours or days old. This was a real bug in the legacy code — monthly snapshots could be written with wrong month.
+
+**Instead:** Always compute dates inside the handler.
+
+### Anti-Pattern 3: Mixing v2 and v4 Patterns
+
+**What:** Having both `function.json` files and `app.timer()` registrations in the same function app.
+
+**Why bad:** Azure Functions v4 ignores ALL `function.json` files as soon as any v4 function is registered. This is an all-or-nothing migration.
+
+**Instead:** The new `functions/` project is 100% v4. The old `az-funcs/` is preserved as reference but never deployed alongside.
+
+### Anti-Pattern 4: ESM in Azure Functions
+
+**What:** Using `"type": "module"` in package.json with `.mjs` extensions.
+
+**Why bad:** The `@azure/functions` v4 package only ships CommonJS. While ESM can be made to work with bundlers (tsup) or workarounds, it adds complexity and fragility. The Azure Functions Node.js worker internally uses `require()` to load function modules.
+
+**Instead:** Use CommonJS. TypeScript `import/export` syntax compiles cleanly to `require()`/`module.exports` via `"module": "commonjs"` in tsconfig.
+
+---
+
+## Build Order (Dependency Chain)
+
+Each layer depends only on layers above it.
 
 ### Layer 1: Foundation (no dependencies)
-1. **TypeScript interfaces** (`types/metadata.ts`, `types/tree.ts`, `types/diff.ts`)
-2. **Constants** (`services/consts.ts` — blob URLs, default namespaces)
-3. **Zustand UI store** (`store/index.ts`)
 
-### Layer 2: Data Layer (depends on Layer 1)
-4. **HTTP fetch service** (`services/api.ts`)
-5. **Metadata singleton** (`data/metadataStore.ts`)
-6. **Lookup maps** (inside `metadataStore.ts` — entityMap, functionMap)
-7. **Tree builder** (`services/treeBuilder.ts` — `getChildren()`)
-8. **Search index builder** (`services/searchIndexBuilder.ts`)
-9. **MiniSearch wrapper** (`data/searchIndex.ts`)
-10. **Initialization orchestrator** (`data/initializer.ts`)
+1. **TypeScript interfaces** (`src/types/metadata.ts`, `src/types/association.ts`, `src/types/index.ts`)
+   - Port from `az-funcs/src/interfaces/` — EntityType, FunctionImport, Property, NavigationProperty, Parameter, Metadata
+   - Add Association (used internally by parser only)
+   - These define the contract; everything else depends on them
 
-### Layer 3: Hooks (depends on Layer 2)
-11. **useMetadata** (`hooks/useMetadata.ts`)
-12. **useEntityLookup** / **useFunctionLookup**
-13. **useFilteredRootNodes** (`hooks/useFilteredRootNodes.ts`)
-14. **useSearchIndex** (`hooks/useSearchIndex.ts`)
-15. **useTreeChildren** (`hooks/useTreeChildren.ts`)
-16. **useDiffData** (`hooks/useDiffData.ts`)
-17. **useRecentVisits** (`hooks/useRecentVisits.ts`)
+2. **Config module** (`src/lib/config.ts`)
+   - AppConfig interface + getConfig() + requireEnv()
+   - No external dependencies
 
-### Layer 4: Shared Components (depends on Layer 3)
-18. **TypeLink** (used everywhere entity types are displayed)
-19. **PropsTable**, **MethodsTable**, **NavPropsTable** (shared table components)
-20. **HighlightedText** (search result highlighting)
-21. **LoadingState** (skeleton screens)
-22. **DocBanner** (official doc link banner)
+3. **Blob naming** (`src/lib/blob-naming.ts`)
+   - generateBlobNames() — pure function, no dependencies
 
-### Layer 5: Features (depends on Layers 3-4)
-23. **AppLayout + AppHeader + ResizablePanel** (shell)
-24. **CommandPalette** (global search — can be built early, tested standalone)
-25. **BreadcrumbBar** (shared by Explorer views)
-26. **Explorer Page** (sidebar, entity detail, function detail, home screen)
-27. **Types Page** (type list, type detail)
-28. **Changelog Page** (month tabs, diff cards)
-29. **HowItWorks Page** (static — can be built anytime)
+### Layer 2: Pipeline Stages (depends on Layer 1)
 
-### Layer 6: Integration (depends on Layer 5)
-30. **Router setup** (App.tsx — wire all pages with lazy loading)
-31. **Initialization flow** (App.tsx — Suspense + use() for data loading)
-32. **Deployment** (Vite config, GitHub Actions)
+4. **Auth stage** (`src/stages/auth.ts`)
+   - Depends on: `@azure/msal-node`, config types
+   - Can be tested with mock Azure AD endpoint or MSAL test utilities
 
-### Build order implications for roadmap:
-- **Layers 1-3 can be built and tested without any UI.** Write unit tests against the data layer + hooks layer before touching components.
-- **Layer 4 shared components can be built in isolation** with Storybook or a simple test harness.
-- **Layer 5 features can be built in parallel** once the shared components exist.
-- **The CommandPalette (24) is independent of all page features** — it only needs the search index hook. Build it early for immediate search functionality.
+5. **Fetch stage** (`src/stages/fetch.ts`)
+   - Depends on: `axios`
+   - Can be tested with nock/msw HTTP mocks
+
+6. **Parse stage** (`src/stages/parse.ts`)
+   - Depends on: `xml2js`, types
+   - The most complex stage. Port line-by-line from `az-funcs/src/metadataParser.ts`
+   - Can be tested with fixture XML files
+   - **Build this before anything else in the pipeline** — it's the core logic
+
+7. **Compress stage** (`src/stages/compress.ts`)
+   - Depends on: `lz-string`
+   - Trivial — one function call
+
+8. **Upload stage** (`src/stages/upload.ts`)
+   - Depends on: `@azure/storage-blob`, config, blob-naming
+   - Can be tested against Azurite (local storage emulator)
+
+### Layer 3: Orchestration (depends on Layer 2)
+
+9. **Timer function** (`src/functions/generateMetadata.ts`)
+   - Depends on: all stages
+   - Wires everything together
+   - Requires Azure Functions runtime to test (or mock InvocationContext)
+
+### Layer 4: Project Infrastructure
+
+10. **Project files** (`package.json`, `tsconfig.json`, `host.json`, `.funcignore`, `local.sample.settings.json`)
+    - These should be created FIRST so the project compiles, but they're "infrastructure" not "code"
+
+### Suggested Implementation Sequence
+
+```
+1. Create project scaffold (package.json, tsconfig, host.json)     ← enables compilation
+2. Port TypeScript interfaces from az-funcs/src/interfaces/         ← types first
+3. Build config + blob-naming modules                               ← simple, enables testing
+4. Port parse stage from az-funcs/src/metadataParser.ts             ← core logic, most complex
+5. Build auth stage (client credentials)                            ← new code, MSAL API
+6. Build fetch stage (axios + retry)                                ← new code, straightforward
+7. Build compress stage                                             ← trivial
+8. Build upload stage                                               ← @azure/storage-blob API
+9. Wire orchestrator (timer function)                               ← connects all stages
+10. Test end-to-end with local.settings.json + func start           ← integration test
+```
+
+**Why parse stage (#4) before auth/fetch (#5-6):** The parser is the most complex code and the most likely to have bugs during porting. It can be tested in isolation with saved XML fixture files — no Azure AD credentials or SharePoint access needed. Get the core logic right first, then build the surrounding infrastructure.
 
 ---
 
 ## Scalability Considerations
 
-| Concern | Current (6K items) | 10x growth (60K items) | 100x growth (600K items) |
-|---------|---------------------|------------------------|--------------------------|
-| **JSON fetch** | ~4MB, 300-800ms | ~40MB — need streaming/chunking | Not viable as single fetch |
-| **MiniSearch init** | ~19ms | ~190ms — move to Web Worker | ~1900ms — Web Worker required |
-| **MiniSearch search** | ~1ms | ~10ms — still fine debounced | ~100ms — need indexing strategy change |
-| **useMemo filtering** | ~0.1ms (793 items) | ~1ms — still fine | ~10ms — consider virtualized filtering |
-| **Entity Map lookups** | O(1), ~2,449 entries | O(1), 24K entries — still fine | O(1), 245K entries — memory concern |
-| **Tree expansion** | ~1ms (5-100 children) | Same (per-node) | Same (per-node) |
-| **Bundle size** | ~200-300KB gzipped | Same (data is fetched, not bundled) | Same |
+| Concern | Current | If Metadata Doubles | Notes |
+|---------|---------|---------------------|-------|
+| XML fetch size | ~4MB | ~8MB | axios handles. Increase timeout. |
+| Parse time | ~1-3s | ~2-6s | Still well within 5min timeout |
+| Compress time | ~0.5-1s | ~1-2s | lz-string is CPU-bound, not memory |
+| Upload time | ~2-5s (6 blobs) | ~4-10s | Parallel uploads would help |
+| Total execution | ~10-30s | ~20-60s | Consumption plan 5min timeout is plenty |
+| Storage cost | ~6 blobs/month × ~4MB each ≈ 24MB/month | ~48MB/month | Negligible at Azure Blob pricing |
 
-**First bottleneck at growth:** JSON fetch size. At 40MB, the initial load becomes unusable on slow connections. Solution: split metadata into per-namespace chunks, lazy-load on demand.
-
-**Second bottleneck:** MiniSearch init time. At 60K items, move index building to a Web Worker. The search queries can still be fast (<10ms) on main thread — the issue is only the one-time build.
-
-**Current recommendation:** Build for 6K items. Don't pre-optimize for 60K. The architecture supports migrating to Web Workers later without rewriting components (only `data/searchIndex.ts` would change).
+**Optimization opportunities (not needed now):**
+- Parallel blob uploads (currently sequential — simpler, and 2-5s total is fine)
+- Skip monthly snapshot if content unchanged (hash comparison)
+- Gzip blob content for smaller storage footprint
 
 ---
 
 ## Sources
 
-- **Zustand store patterns, selectors, `useShallow`, `partialize`**: Context7 `/pmndrs/zustand` — HIGH confidence
-- **React 19 `use()` hook, Suspense for data loading**: Context7 `/websites/react_dev` — HIGH confidence
-- **React `useMemo` for expensive calculations**: Context7 `/websites/react_dev` — HIGH confidence
-- **React Router 7 `lazy` route property**: Context7 `/websites/react_dev` + `/remix-run/react-router` — HIGH confidence
-- **MiniSearch API, `addAll`, search options, stored fields**: Context7 `/lucaong/minisearch` — HIGH confidence
-- **react-arborist `searchTerm`, `searchMatch`, `data` prop, filtering**: Context7 `/brimdata/react-arborist` — HIGH confidence
-- **MiniSearch transferability / Web Worker feasibility**: Perplexity search + MiniSearch design doc — MEDIUM confidence
-- **Zustand `Object.is` comparison behavior**: Zustand official docs + Perplexity verified — HIGH confidence
-- **DFS vs BFS for cyclic tree walking**: Perplexity + standard CS algorithm analysis — HIGH confidence
-- **`useSyncExternalStore` for external state**: React 18+ official docs — HIGH confidence
+- **Azure Functions v4 Node.js programming model, timer trigger, folder structure, package.json `main` field**: Context7 `/websites/learn_microsoft_en-us_azure_azure-functions` — HIGH confidence
+- **MSAL Node.js `ConfidentialClientApplication`, `acquireTokenByClientCredential`, `.default` scope**: Context7 `/azuread/microsoft-authentication-library-for-js` — HIGH confidence
+- **@azure/storage-blob `BlobServiceClient.fromConnectionString()`, `ContainerClient`, `BlockBlobClient.upload()`**: Context7 `/azure/azure-sdk-for-js` — HIGH confidence
+- **Azure Functions v4 ESM limitation** (CommonJS only): [GitHub issue #287](https://github.com/Azure/azure-functions-nodejs-library/issues/287) — HIGH confidence
+- **host.json extensionBundle configuration**: Microsoft Learn host.json reference — HIGH confidence
+- **Azure Functions v4 output bindings `output.storageBlob()` + `context.extraOutputs.set()`**: Microsoft Learn blob output binding reference — HIGH confidence
+- **Dynamic blob naming limitations with bindings**: [GitHub issue #85](https://github.com/Azure/azure-functions-host/issues/85) + Stack Overflow — HIGH confidence
+- **Legacy code analysis** (`az-funcs/`): Direct code review — HIGH confidence
 
 ---
-*Architecture research for: SP REST API Explorer — data-heavy SPA rebuild*
-*Researched: 2026-02-11*
+*Architecture research for: SP REST API Explorer — v2.0 Backend Rework (Azure Functions v4)*
+*Researched: 2026-02-22*

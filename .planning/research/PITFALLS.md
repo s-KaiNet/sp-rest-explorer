@@ -1,593 +1,480 @@
-# Pitfalls Research: Vue 2 → React 19 SPA Rebuild
+# Pitfalls Research: Azure Functions Backend Rewrite (v2 → v4)
 
-**Domain:** Static SPA rebuild (Vue 2 → React 19 + Vite + Tailwind CSS 4 + shadcn/ui), GitHub Pages deployment
-**Researched:** 2026-02-11
-**Confidence:** HIGH (verified via Context7, official docs, Perplexity cross-referenced)
+**Domain:** Azure Functions backend rewrite — v4 programming model, modern SDKs, client credentials auth, blob storage, timer triggers
+**Researched:** 2026-02-22
+**Confidence:** HIGH (verified via Context7 @azure/functions docs, Microsoft Learn official docs, MSAL Node docs, @azure/storage-blob migration guide)
 
-> **Scope:** Pitfalls the existing Phase 1 research (1-RESEARCH.md) does NOT cover.
-> The existing research already addresses: deep clone perf, tree re-render storms, search blocking main thread, GitHub Pages 404 (hash routing), large bundle size, types list DOM node count, stale cache collisions, filter logic inversion, react-arborist async lazy loading, and recursive tree depth limiting. This document covers everything else.
+> **Scope:** Pitfalls specific to rewriting the `az-funcs/` backend from scratch — Azure Functions v2→v4 migration, deprecated SDK replacement, auth flow change, and deployment. Does NOT cover frontend pitfalls (those are in the v1.x research archives).
 
 ---
 
 ## Critical Pitfalls
 
-### Pitfall 1: 4MB JSON.parse() Blocks the Main Thread on Startup
+### Pitfall 1: SharePoint App-Only Access REQUIRES Certificates — Client Secrets Are Blocked
 
 **What goes wrong:**
-`JSON.parse()` is synchronous. Parsing the ~4MB metadata JSON takes 200–800ms depending on device. During this time, the browser cannot paint, respond to clicks, or run animations. The loading spinner freezes. On low-end devices or throttled connections, users see a white screen or frozen UI for 1+ seconds after the fetch completes.
+You configure MSAL `ConfidentialClientApplication` with `clientSecret` for the client credentials flow (replacing ROPC), obtain a valid access token, but get **403 Forbidden** or **401 Unauthorized** when calling SharePoint REST APIs (e.g., `_api/$metadata`). The token is valid, Microsoft Entra ID is happy, but SharePoint rejects it.
 
 **Why it happens:**
-Developers `await fetch().then(r => r.json())` without realizing that `.json()` calls `JSON.parse()` on the main thread. The fetch itself is async, but the parse is synchronous and cannot be interrupted.
+Microsoft documentation explicitly states: **"In Entra ID when doing app-only you must use a certificate to request access to SharePoint CSOM/REST API's"** and **"Can I use other means besides certificates for realizing app-only access for my Azure AD app? No, all other options are blocked by SharePoint Online and will result in an Access Denied message."** (Source: [Microsoft Learn — Granting access via Entra ID App-Only](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread))
+
+Client secrets work fine for Microsoft Graph API, but SharePoint REST APIs enforce certificate-only authentication for app-only (client credentials) flows. This is a SharePoint-specific restriction, not a general Entra ID limitation.
 
 **How to avoid:**
-Parse in a Web Worker. The structured clone transfer between worker and main thread adds ~20-50ms overhead but keeps the UI thread completely free:
-
+1. Generate a self-signed certificate (PFX + CER) for the app registration
+2. Upload the CER public key to the Entra ID app registration under Certificates & secrets → Certificates
+3. Use MSAL `ConfidentialClientApplication` with `clientCertificate` instead of `clientSecret`:
 ```typescript
-// worker.ts
-self.onmessage = (e: MessageEvent<string>) => {
-  const data = JSON.parse(e.data);
-  self.postMessage(data);
-};
-
-// main thread
-const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
-const response = await fetch(url);
-const text = await response.text(); // text(), not json()
-worker.postMessage(text);
-worker.onmessage = (e) => store.setMetadata(e.data);
-```
-
-If Worker is deemed over-engineered for this scale, accept the 200-800ms freeze but ensure a CSS-only spinner (not React-rendered) is visible before React even mounts. The freeze happens after fetch, so the spinner must be in `index.html`, not in a React component.
-
-**Warning signs:**
-- Lighthouse "Total Blocking Time" > 500ms
-- Users on mobile report "white screen" after loading bar completes
-- React Profiler shows a gap between mount and first meaningful paint
-
-**Phase to address:** Phase 1 — Core data layer (metadata fetching). Decision: use `response.text()` + Worker parse, or accept freeze with CSS spinner.
-
-**Confidence:** HIGH — verified via React docs, multiple sources agree on JSON.parse blocking behavior.
-
----
-
-### Pitfall 2: React 19 Ref Callback Cleanup Breaks Implicit Returns
-
-**What goes wrong:**
-React 19 supports returning a cleanup function from ref callbacks. If existing code (or copied snippets) uses arrow functions with implicit returns in ref callbacks, React 19 interprets the returned value as a cleanup function and tries to call it on unmount, causing runtime errors.
-
-```typescript
-// BROKEN in React 19 — implicit return of DOM element
-<div ref={(el) => (containerRef = el)} />
-
-// React 19 thinks `el` (the DOM node) is a cleanup function
-// On unmount, React calls `el()` → TypeError: el is not a function
-```
-
-**Why it happens:**
-React 18 ignored ref callback return values. React 19 treats them as cleanup functions. This is a silent behavioral change — TypeScript catches it (ref callbacks must return `void | (() => void)`), but JS code or `any`-typed refs won't warn until runtime.
-
-**How to avoid:**
-Always use block bodies for ref callbacks. Never implicit-return:
-
-```typescript
-// CORRECT — block body, no return
-<div ref={(el) => { containerRef = el; }} />
-```
-
-This applies to all ref callbacks including those in react-arborist custom renderers and shadcn/ui component wrappers.
-
-**Warning signs:**
-- TypeScript errors about ref callback return types after upgrading to React 19 types
-- `TypeError: X is not a function` on component unmount
-- Components that work on mount but crash on route navigation
-
-**Phase to address:** Phase 1 — Scaffolding. Set `"strict": true` in tsconfig to catch at compile time.
-
-**Confidence:** HIGH — verified via React 19 upgrade guide on react.dev (Context7).
-
----
-
-### Pitfall 3: Zustand Persist Middleware Shallow Merge Overwrites State
-
-**What goes wrong:**
-Zustand's `persist` middleware uses shallow merge by default when rehydrating. If the persisted state has a subset of fields (via `partialize`), and the store shape changes between versions (e.g., adding `searchQuery` field), rehydration overwrites the entire top-level state, setting new fields to `undefined`.
-
-Example: Store v1 persists `{ hiddenNamespaces: [...] }`. Store v2 adds `theme: 'dark'`. On rehydration, shallow merge produces `{ hiddenNamespaces: [...], theme: undefined }` — the default `'light'` is lost.
-
-**Why it happens:**
-`Object.assign({}, currentState, persistedState)` is shallow. If `persistedState` doesn't have `theme`, the default from `currentState` survives. But if `persistedState` has `theme: undefined` (from a browser where the field existed but was cleared), it overwrites the default.
-
-**How to avoid:**
-1. Always use `version` and `migrate` in persist config:
-```typescript
-persist(
-  (set) => ({ /* ... */ }),
-  {
-    name: 'sp-rest-explorer',
-    version: 1,
-    partialize: (state) => ({ hiddenNamespaces: state.hiddenNamespaces }),
-    migrate: (persisted, version) => {
-      if (version === 0) {
-        // Handle migration from v0 → v1
-        return { ...persisted, hiddenNamespaces: persisted.hiddenNamespaces ?? DEFAULT_HIDDEN };
-      }
-      return persisted;
-    },
+const msalConfig = {
+  auth: {
+    clientId: process.env.AZ_ClientId,
+    authority: `https://login.microsoftonline.com/${process.env.AZ_TenantId}`,
+    clientCertificate: {
+      thumbprintSha256: process.env.CERT_THUMBPRINT,
+      privateKey: process.env.CERT_PRIVATE_KEY, // PEM string
+    }
   }
-)
+};
 ```
-2. `partialize` must ONLY persist fields that are user preferences, never derived state.
-3. Never persist `metadata`, `isLoading`, or `searchQuery` — these are session state.
+4. Store the certificate private key as a PEM string in Azure Functions app settings (or use Azure Key Vault)
+5. The scope for SharePoint client credentials is: `https://{tenant}.sharepoint.com/.default` — note the `.default` suffix is mandatory for client credentials flows
 
 **Warning signs:**
-- User preferences reset after code deployments
-- `undefined` values appearing in state after rehydration
-- Console errors about reading properties of `undefined` on first load
+- Token acquisition succeeds but SharePoint calls fail with 401/403
+- `x-ms-diagnostics` header contains `3002002; reason=App principal does not exist`
+- Works against Microsoft Graph but fails against SharePoint REST APIs
 
-**Phase to address:** Phase 1 — Store setup. Add `version: 1` from day one.
+**Phase to address:**
+Phase 1 (Auth & Infra Setup) — this must be the FIRST thing validated. If auth doesn't work, nothing else matters. Test with a simple `_api/web` call before building the rest of the pipeline.
 
-**Confidence:** HIGH — verified via Zustand v5 docs (Context7) and persist middleware documentation.
+**Confidence:** HIGH — verified via Microsoft official documentation (November 2025 update) and multiple community confirmations on SharePoint Stack Exchange and Microsoft Q&A.
 
 ---
 
-### Pitfall 4: Tailwind CSS v4 Default Changes Silently Break Styling
+### Pitfall 2: Client Credentials Scope Format is `https://{tenant}.sharepoint.com/.default` — NOT Individual Permissions
 
 **What goes wrong:**
-Tailwind CSS v4 changes multiple defaults that cause visual regressions without any build errors or warnings:
-
-| Change | v3 Default | v4 Default | Impact |
-|--------|-----------|-----------|--------|
-| `border` color | `gray-200` | `currentColor` | All borders become text-colored (often black/white) |
-| `ring` width | `3px` | `1px` | Focus rings become nearly invisible |
-| `ring` color | `blue-500` | `currentColor` | Focus rings lose their distinctive color |
-| `shadow-sm` | (old values) | Renamed, values shifted | Box shadows change appearance |
-| `hover:` variant | Always applied | Only on hover-capable devices | Hover states disappear on touch devices |
+You use granular scopes like `https://{tenant}.sharepoint.com/AllSites.Read` (the format used in ROPC flows) with `acquireTokenByClientCredential()`, and get an `AADSTS70011: The provided request must include a 'scope' input parameter` error or a token with no permissions.
 
 **Why it happens:**
-The Tailwind v4 upgrade tool (`npx @tailwindcss/upgrade`) handles utility class renames but does NOT fix default value changes. Code that relied on `border` implicitly being `border-gray-200` will silently render differently.
+Client credentials (app-only) flows use a fundamentally different scope format than delegated (user) flows. The legacy ROPC code uses: `scopes: [`${spUrl}/AllSites.Read`]` — this is a **delegated** scope format. Client credentials MUST use the `.default` scope, which requests all application permissions granted in the Entra ID portal: `scopes: ["https://{tenant}.sharepoint.com/.default"]`.
+
+The MSAL Node docs confirm: **"With client credentials flows permissions need to be granted in the portal by a tenant administrator. The scope is always in the format `<resource>/.default`"** (Source: [MSAL Node request docs](https://github.com/azuread/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/docs/request.md), verified via Context7).
 
 **How to avoid:**
-1. After running the upgrade tool, manually audit all uses of `border`, `ring`, `ring-*`, and `shadow-*` classes.
-2. For shadcn/ui components: use the latest shadcn/ui CLI (`npx shadcn@latest`) which generates v4-compatible component code. Do NOT manually convert v3 component code — re-add components with the CLI.
-3. Set explicit values: `border-border` (using CSS variable), `ring-3 ring-blue-500`, never bare `ring`.
-4. For dark mode: Replace `darkMode: 'class'` config with CSS-based variant:
-```css
-@import "tailwindcss";
-@custom-variant dark (&:where(.dark, .dark *));
-```
+1. Grant `Sites.Read.All` (or `Sites.FullControl.All`) as **Application** permissions (NOT delegated) in Azure Portal → App Registration → API Permissions
+2. Get admin consent for those permissions
+3. Use exactly: `scopes: ["https://{tenant}.sharepoint.com/.default"]`
+4. Remove the old `SP_User` and `SP_Password` environment variables — they are no longer needed
 
 **Warning signs:**
-- Borders appearing as thick black/white lines instead of subtle gray
-- Focus rings nearly invisible during keyboard navigation
-- Hover states not working on iPad/tablet testing
-- Components looking "off" compared to shadcn/ui examples
+- `AADSTS70011` scope error during token acquisition
+- Token succeeds but returns 0 permissions
+- Scope string contains anything other than `/.default` for client credentials
 
-**Phase to address:** Phase 1 — Scaffolding + component setup. Use Tailwind v4 from the start (don't start with v3 and migrate).
+**Phase to address:**
+Phase 1 (Auth Setup) — validate scope format immediately.
 
-**Confidence:** HIGH — verified via Tailwind CSS v4 upgrade guide (Context7) and official changelog.
+**Confidence:** HIGH — Context7 MSAL Node docs + Microsoft Learn SharePoint app-only documentation.
 
 ---
 
-### Pitfall 5: shadcn/ui Dark Mode Requires CSS Variable Architecture From Day One
+### Pitfall 3: Module-Scope `new Date()` Returns Stale Time on Azure Functions Warm Starts
 
 **What goes wrong:**
-shadcn/ui uses CSS variables for all colors (e.g., `--background`, `--foreground`, `--primary`). If you set up colors using Tailwind's default color palette (`bg-gray-900`, `text-white`) instead of CSS variables, dark mode becomes a per-component retrofit requiring hundreds of `dark:` variant additions.
+The legacy code has `let now = new Date()` at **module scope** (line 10 of `GenerateMetadata/index.ts`). On the first invocation (cold start), this captures the correct time. On subsequent invocations (warm starts), `now` retains the stale value from the first invocation — meaning monthly blob names use the wrong date, potentially overwriting the wrong monthly snapshot.
 
 **Why it happens:**
-Developers start building with Tailwind color utilities directly, then try to add dark mode later. shadcn/ui's dark mode works by swapping CSS variable values in `.dark` class — but only if you use the variable-based classes (`bg-background`, `text-foreground`, `bg-card`, etc.).
+Azure Functions reuses the same process across invocations (warm starts). Module-scope code runs once during cold start and is cached. Variables set at module scope persist their initial values. This is documented Azure Functions behavior.
+
+The impact in the existing code: `Utils.generateMonthBlobName(now)` uses the stale `now`, so if the function cold-starts in January and warm-runs in February, it keeps writing to `2026y_m0_metadata` (January) instead of `2026y_m1_metadata` (February).
 
 **How to avoid:**
-1. Run `npx shadcn@latest init` FIRST — it sets up the CSS variable architecture in `globals.css`.
-2. Always use semantic color tokens from shadcn/ui: `bg-background`, `text-foreground`, `bg-card`, `text-muted-foreground`, `bg-primary`, etc.
-3. Never use raw Tailwind colors (`bg-gray-900`) for surfaces/text — only for decorative accents.
-4. For Tailwind v4, CSS variables go in `:root` and `.dark` selectors using `@theme inline`:
-```css
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-```
-
-**Warning signs:**
-- Component looks good in light mode but broken/unreadable in dark mode
-- `dark:` prefix appearing in more than 20% of utility classes
-- Colors don't match between shadcn/ui components and custom UI
-
-**Phase to address:** Phase 1 — Scaffolding. Initialize shadcn/ui before writing any components.
-
-**Confidence:** HIGH — verified via shadcn/ui Tailwind v4 guide and official docs.
-
----
-
-### Pitfall 6: Zustand v5 Selector Instability Causes Infinite Re-render Loops
-
-**What goes wrong:**
-Zustand v5 enforces strict selector reference stability. Selectors that return new object/array references on every call trigger infinite re-renders, crashing the app with "Maximum update depth exceeded."
-
+1. **NEVER** compute date/time at module scope
+2. Create `new Date()` inside the handler function:
 ```typescript
-// BROKEN — creates new array reference every render
-const [search, setSearch] = useAppStore(state => [state.searchQuery, state.setSearchQuery]);
-
-// BROKEN — creates new object reference every render
-const filters = useAppStore(state => ({
-  hidden: state.hiddenNamespaces,
-  query: state.searchQuery,
-}));
+app.timer('generateMetadata', {
+  schedule: '0 0 1 * * *',
+  handler: async (timer, context) => {
+    const now = new Date(); // Always fresh
+    // ... rest of handler
+  }
+});
 ```
+3. As a general rule: module scope should only contain configuration constants, type definitions, and client singletons (SDK clients, MSAL app instances). NEVER mutable state or time-dependent values.
+
+**Warning signs:**
+- Blob names stop changing month-to-month
+- Monthly snapshots don't appear in storage
+- `context.log` shows month values that don't match calendar month
+
+**Phase to address:**
+Phase 2 (Timer + Pipeline) — establish the pattern from the start with a code review checklist.
+
+**Confidence:** HIGH — this is a known bug in the existing `az-funcs/` code (documented in PROJECT.md as a pain point). Well-documented Azure Functions behavior.
+
+---
+
+### Pitfall 4: Azure Functions v4 — `main` Field in package.json MUST Point to Compiled Output
+
+**What goes wrong:**
+You create a new Azure Functions v4 TypeScript project, register functions using `app.timer()`, everything works locally, but after deploying to Azure the portal shows **"No job functions found"** and the function never fires.
 
 **Why it happens:**
-Zustand v4 used `Object.is` by default but tolerated unstable selectors in most cases. Zustand v5 strictly re-renders on any reference change, which aligns with React's default behavior but catches patterns that v4 silently accepted.
+In v4, functions are registered via code (not `function.json` files). The Azure Functions runtime discovers functions by loading the `main` entry point from `package.json`. If `main` points to the wrong path (e.g., `src/functions/*.ts` instead of `dist/src/functions/*.js`), the runtime silently finds zero functions. **The v3 model's `function.json` files are IGNORED** when any v4 function is registered.
+
+Key requirements per Microsoft docs:
+- `@azure/functions` v4 must be in **`dependencies`** (not `devDependencies`) — it's runtime code now
+- `main` in `package.json` must point to the **compiled JS output**, e.g., `"main": "dist/src/functions/*.js"`
+- The runtime requires `@azure/functions` v4.0.0+, Node.js 18+, Runtime v4.25+, Core Tools v4.0.5382+
 
 **How to avoid:**
-1. Use `useShallow` for multi-value selectors:
+1. Set `"main": "dist/src/functions/*.js"` in `package.json` (match your `tsconfig.json` `outDir`)
+2. Move `@azure/functions` from `devDependencies` to `dependencies`
+3. Ensure `tsconfig.json` output matches the `main` glob pattern
+4. Test locally with `npm run build && func start` — if functions appear locally, the `main` path is correct
+5. After deploying, check Azure Portal → Function App → Functions — if empty, the `main` path is wrong
+
+**Warning signs:**
+- `func start` locally shows "No job functions found"
+- Azure portal shows 0 functions after deployment
+- Build succeeds but no functions are registered at runtime
+- Any v3 `function.json` files in the project are being silently ignored
+
+**Phase to address:**
+Phase 1 (Project Scaffolding) — get the project structure right from day one. This is the #1 most common v4 migration issue based on Stack Overflow and Microsoft Q&A reports.
+
+**Confidence:** HIGH — verified via Microsoft Learn migration guide, Context7 Azure Functions docs, and multiple confirmed Stack Overflow answers.
+
+---
+
+### Pitfall 5: xml2js Parser Options MUST Match Legacy Output Structure Exactly
+
+**What goes wrong:**
+You rewrite the metadata parser using xml2js with default options, the parsing succeeds, but the output JSON structure is subtly different from the legacy output. The frontend renders empty tables, missing properties, or crashes on undefined lookups — because it expects specific property paths like `obj['edmx:Edmx']['edmx:DataServices'][0]['Schema']`.
+
+**Why it happens:**
+xml2js has several options that dramatically affect output structure, all with specific defaults that have changed across versions:
+
+| Option | Default | Impact if Changed |
+|--------|---------|-------------------|
+| `explicitArray` | `true` (since 0.2) | Every child is an array `[value]` even if single. Setting to `false` changes access patterns |
+| `attrkey` | `$` (since 0.2) | Attributes accessed via `obj.$`. Was `@` in 0.1 |
+| `charkey` | `_` (since 0.2) | Text content via `obj._`. Was `#` in 0.1 |
+| `explicitRoot` | `true` | Root tag is included in output |
+| `trim` | `false` | Whitespace in text nodes is preserved |
+| `normalizeTags` | `false` | Tag names keep original case |
+
+The legacy code uses `new Parser()` with **default options** (xml2js 0.4.x). The frontend's metadata JSON is shaped by these defaults. If you use a different xml2js version or change any options, the access paths change and the frontend breaks.
+
+**How to avoid:**
+1. Use `new Parser()` with **zero custom options** — exactly as the legacy code does
+2. Pin xml2js version to `^0.4.23` (latest 0.4.x, same major as legacy `^0.4.19`)
+3. **Snapshot test:** Parse the same XML input with old and new code, `JSON.stringify` both outputs, and `assert.deepStrictEqual()` them
+4. Critical paths to verify:
+   - `obj['edmx:Edmx']['edmx:DataServices'][0]['Schema']` — the colon-separated tag names with array wrappers
+   - `schema.$.Namespace` — attribute access pattern
+   - `func.$.IsBindable`, `func.$.IsComposable` — boolean string attributes
+   - `type.NavigationProperty[i].$.ToRole` — nested attribute access
+
+**Warning signs:**
+- Frontend renders but shows 0 entities or 0 functions
+- `Cannot read properties of undefined` errors in frontend console
+- JSON file is different size than the legacy one
+- Entity count doesn't match expected ~2,449
+
+**Phase to address:**
+Phase 2 (XML Parsing Pipeline) — must include a byte-for-byte comparison test against the known-good legacy output.
+
+**Confidence:** HIGH — xml2js option documentation verified via npm (npmjs.com/package/xml2js), and the legacy code's dependency on default options confirmed by reading the source.
+
+---
+
+### Pitfall 6: v4 Blob Output Bindings Require `extraOutputs` Registration at Function Definition Time
+
+**What goes wrong:**
+In v2, blob output bindings were declarative in `function.json` and accessed via `context.bindings.latestJson = data`. In v4, you try to create an `output.storageBlob()` inside the handler or forget to register it in `extraOutputs`, and nothing gets written to blob storage — **silently**. No errors, no warnings, just empty blobs.
+
+**Why it happens:**
+In v4, output bindings must be:
+1. **Declared** at function registration time using `output.storageBlob()` 
+2. **Registered** in the function's `extraOutputs` array
+3. **Set** via `context.extraOutputs.set(bindingObject, data)` inside the handler
+
+Creating a new `output.storageBlob()` inside the handler (a common mistake) won't work because the runtime doesn't know about it. The binding must be the **same object reference** registered in `extraOutputs`.
+
+**How to avoid:**
+For declarative bindings (simple, fixed blob paths like `metadata.latest.json`):
 ```typescript
-import { useShallow } from 'zustand/shallow';
-const { searchQuery, setSearchQuery } = useAppStore(
-  useShallow(state => ({ searchQuery: state.searchQuery, setSearchQuery: state.setSearchQuery }))
+import { app, output, InvocationContext, Timer } from '@azure/functions';
+
+const latestJsonBlob = output.storageBlob({
+  path: 'api-files/metadata.latest.json',
+  connection: 'AzureWebJobsStorage',
+});
+
+const latestXmlBlob = output.storageBlob({
+  path: 'api-files/metadata.latest.xml',
+  connection: 'AzureWebJobsStorage',
+});
+
+app.timer('generateMetadata', {
+  schedule: '0 0 1 * * *',
+  extraOutputs: [latestJsonBlob, latestXmlBlob],
+  handler: async (timer: Timer, context: InvocationContext) => {
+    // ... fetch and parse metadata ...
+    context.extraOutputs.set(latestJsonBlob, JSON.stringify(parsed, null, 4));
+    context.extraOutputs.set(latestXmlBlob, xmlContent);
+  }
+});
+```
+
+For **dynamic** blob paths (monthly snapshots with date-computed names), declarative bindings won't work. Use the `@azure/storage-blob` SDK programmatically instead:
+```typescript
+const containerClient = blobServiceClient.getContainerClient('api-files');
+const blobName = `${year}y_m${month}_metadata.json`;
+const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+await blockBlobClient.upload(content, Buffer.byteLength(content));
+```
+
+**Warning signs:**
+- No errors in logs but blob content is empty or missing
+- `context.bindings.xyz = data` pattern from v2 doesn't work in v4
+- Output binding declared inside handler function body
+
+**Phase to address:**
+Phase 2 (Blob Upload Pipeline) — decide upfront which blobs use declarative bindings vs programmatic SDK.
+
+**Confidence:** HIGH — verified via Context7 Azure Functions docs and Microsoft Learn blob output binding documentation.
+
+---
+
+### Pitfall 7: `azure-storage` v2 → `@azure/storage-blob` v12 API Is Completely Different
+
+**What goes wrong:**
+You try to incrementally migrate blob operations by updating import paths, but the entire API surface has changed. `createBlobService()` doesn't exist. `createBlockBlobFromText()` doesn't exist. Promisify patterns are unnecessary because the v12 SDK is natively async/await.
+
+**Why it happens:**
+The Azure Storage SDK was completely rewritten from v2 (`azure-storage`) to v12 (`@azure/storage-blob`). It's not a version upgrade — it's a different package with a different architecture:
+
+| v2 (`azure-storage`) | v12 (`@azure/storage-blob`) |
+|----------------------|---------------------------|
+| `createBlobService(connString)` | `BlobServiceClient.fromConnectionString(connString)` |
+| `blobService.createContainerIfNotExists(name, opts, callback)` | `containerClient.createIfNotExists(opts)` |
+| `blobService.createBlockBlobFromText(container, blob, text, callback)` | `blockBlobClient.upload(text, text.length)` |
+| Callback-based, requires `bluebird.promisify()` | Native Promises/async-await |
+| Single monolithic package | Modular package per service |
+| Connection string auth only | Connection string, SharedKey, DefaultAzureCredential, SAS |
+
+**How to avoid:**
+1. Don't try to incrementally migrate — rewrite blob operations from scratch using the v12 API
+2. Use the official [migration guide](https://github.com/azure/azure-sdk-for-js/blob/main/sdk/storage/storage-blob/MigrationGuide.md)
+3. Key pattern for this project:
+```typescript
+import { BlobServiceClient } from '@azure/storage-blob';
+
+const blobServiceClient = BlobServiceClient.fromConnectionString(
+  process.env.AzureWebJobsStorage!
 );
+const containerClient = blobServiceClient.getContainerClient('api-files');
+await containerClient.createIfNotExists({ access: 'blob' }); // public read
+
+// Upload text content
+const blockBlobClient = containerClient.getBlockBlobClient('metadata.latest.json');
+await blockBlobClient.upload(jsonContent, Buffer.byteLength(jsonContent), {
+  blobHTTPHeaders: { blobContentType: 'application/json' }
+});
 ```
-2. Prefer individual scalar selectors (most performant, no wrapper needed):
-```typescript
-const searchQuery = useAppStore(state => state.searchQuery);
-const setSearchQuery = useAppStore(state => state.setSearchQuery);
-```
-3. Never return arrays or objects from selectors without `useShallow`.
+4. Remove `bluebird` entirely — no more promisify needed
 
 **Warning signs:**
-- `Maximum update depth exceeded` error on component mount
-- React DevTools showing hundreds of re-renders per second
-- App freezing when navigating to a specific route
+- `createBlobService is not a function` errors
+- Import errors from `azure-storage` package
+- Attempting to promisify v12 SDK methods (they're already async)
 
-**Phase to address:** Phase 1 — Store setup. Establish selector patterns as part of the store module.
+**Phase to address:**
+Phase 2 (Blob Operations) — use v12 SDK from the start, don't try to bridge.
 
-**Confidence:** HIGH — verified via Zustand v5 migration guide (Context7).
+**Confidence:** HIGH — verified via Context7 `@azure/storage-blob` migration guide and README.
 
 ---
 
 ## Moderate Pitfalls
 
-### Pitfall 7: MiniSearch `addAll()` Blocks Main Thread During Index Build
+### Pitfall 8: lz-string `compressToUTF16` — Frontend Doesn't Use It Anymore
 
 **What goes wrong:**
-`MiniSearch.addAll()` is synchronous. For ~6,000 items, this takes ~19ms — usually imperceptible. But the tree walk that BUILDS the ~6,000 `SearchableItem` array from the metadata (BFS/DFS traversal of recursive entity graph capped at depth 10) could take 50-200ms depending on the metadata structure. Combined with JSON parsing, this can create a 300-1000ms freeze on startup.
+You spend time implementing the `compressToUTF16` compression pipeline and generating `metadata.latest.zip.json`, then discover that neither the old Vue frontend nor the new React frontend actually consumes it. Both frontends fetch `metadata.latest.json` (the uncompressed version) directly.
 
 **Why it happens:**
-Developers benchmark `addAll()` in isolation but forget the index preparation step (walking the metadata tree to build the flat array of searchable items).
+The legacy backend generates three blob files: `.xml`, `.json`, and `.zip.json`. But the frontend (both old `web/` and new `app/`) only uses `metadata.latest.json`. The `.zip.json` file appears to be a legacy artifact that was never wired up in the frontend, or was abandoned early on. HTTP gzip compression from Azure Blob Storage makes the lz-string compression redundant for browser clients.
 
 **How to avoid:**
-1. Measure the FULL pipeline: `fetch → parse → tree walk → addAll()` — not just `addAll()`.
-2. If total exceeds 100ms, use `MiniSearch.addAllAsync()` with a `batchSize` of 500-1000:
-```typescript
-await miniSearch.addAllAsync(items, { chunkSize: 1000 });
-```
-3. Show a meaningful loading state during index build ("Indexing search...").
-4. Alternatively, move both tree walk and index build to the same Web Worker as JSON parsing.
+1. Check if `metadata.latest.zip.json` is consumed anywhere before building the compression pipeline
+2. Based on codebase analysis: **it is NOT consumed** — both `web/config/prod.env.js` and `app/src/lib/constants.ts` reference `metadata.latest.json` only
+3. Still generate it for backward compatibility (cheap to add), but don't block on it and don't make it part of the critical path
+4. Consider dropping it entirely in v2.0 to simplify
 
 **Warning signs:**
-- Lighthouse TBT (Total Blocking Time) spike on initial load
-- Search "not ready" for 1-2 seconds after metadata appears loaded
-- Mobile users report app freezing briefly after loading spinner disappears
+- Building a complex decompression pipeline that nothing uses
+- Wasting time debugging UTF-16 encoding issues for a dead code path
 
-**Phase to address:** Phase 1 — Search index setup.
+**Phase to address:**
+Phase 2 (Pipeline) — decide early whether to keep `.zip.json` generation. Recommendation: skip it for MVP, add later if needed.
 
-**Confidence:** HIGH — MiniSearch `addAllAsync` verified via MiniSearch docs; tree walk timing is estimated (MEDIUM confidence on exact ms).
+**Confidence:** HIGH — verified by searching both frontend codebases for `zip.json`, `decompressFromUTF16`, and `lz-string` — zero results in either frontend.
 
 ---
 
-### Pitfall 8: MiniSearch Tokenizer Strips Dots and Parens from SP.Web, GetById()
+### Pitfall 9: Timer Trigger CRON Expression — 6-Part Format, Not 5-Part Unix Cron
 
 **What goes wrong:**
-MiniSearch's default tokenizer splits on non-alphanumeric characters. Searching for `SP.Web` tokenizes to `["sp", "web"]` and matches any item containing both "sp" AND "web" anywhere — returning false positives. Searching for `GetById()` tokenizes to `["getbyid"]` and drops the parentheses, which is fine, but users searching for `SP.` expecting prefix filtering of the SP namespace get unexpected results.
+You configure the timer with a standard 5-part Unix cron expression like `0 1 * * *` (daily at 1 AM), and get a runtime error: `The TimeSpan string '0 1 * * *' is not a valid TimeSpan`. Or worse, the 6-part format is used incorrectly and the function fires every second.
 
 **Why it happens:**
-The default `tokenize` function uses word boundaries. Dots, parentheses, and other special characters are treated as separators. This is correct for natural language but wrong for code-like identifiers.
+Azure Functions timer triggers use **6-part NCRONTAB expressions** (second, minute, hour, day, month, day-of-week), not the standard 5-part Unix cron. The legacy `function.json` has `"schedule": "0 0 1 * * *"` which means "at second 0, minute 0, hour 1 (1:00 AM) every day."
+
+| Position | Unix cron (5-part) | Azure Functions (6-part) |
+|----------|-------------------|--------------------------|
+| 1st | Minute | **Second** |
+| 2nd | Hour | Minute |
+| 3rd | Day | Hour |
+| 4th | Month | Day |
+| 5th | Day-of-week | Month |
+| 6th | — | Day-of-week |
 
 **How to avoid:**
-Index BOTH the full qualified name (with dots) AND the short name:
 ```typescript
-const miniSearch = new MiniSearch<SearchableItem>({
-  fields: ['name', 'fullName', 'fullPath'],
-  storeFields: ['name', 'fullName', 'type', 'path', 'fullPath', 'isRoot'],
-  tokenize: (text) => {
-    // Split on dots and camelCase boundaries, PLUS keep the full string
-    const standard = text.toLowerCase().split(/[\s\.\(\)\/]+/).filter(Boolean);
-    const full = [text.toLowerCase().replace(/[()]/g, '')];
-    return [...new Set([...standard, ...full])];
-  },
-  searchOptions: {
-    tokenize: (query) => {
-      // Also handle search queries the same way
-      const standard = query.toLowerCase().split(/[\s\.\(\)\/]+/).filter(Boolean);
-      const full = [query.toLowerCase().replace(/[()]/g, '')];
-      return [...new Set([...standard, ...full])];
-    },
-    boost: { name: 3, fullName: 1, fullPath: 0.5 },
-    fuzzy: 0.2,
-    prefix: true,
-  },
+app.timer('generateMetadata', {
+  schedule: '0 0 1 * * *', // 6-part: sec=0, min=0, hour=1, every day
+  handler: async (timer, context) => { ... }
 });
 ```
-Test with these queries: `SP.Web`, `SP.`, `GetById`, `web/Lists`, `currentuser`.
+1. Always include 6 parts
+2. Test locally — `func start` will validate the expression
+3. The legacy schedule `0 0 1 * * *` means daily at 01:00:00 — preserve this
 
 **Warning signs:**
-- Searching "SP.Web" returns all SP.* entities (too many results)
-- Searching "GetById()" returns nothing (parens break the query)
-- Users complaining search "doesn't find what I'm looking for"
+- Timer error in function startup logs
+- Function fires too frequently (e.g., every second if the first field is `*`)
+- Function never fires (invalid expression silently rejected)
 
-**Phase to address:** Phase 1 — Search index builder.
+**Phase to address:**
+Phase 2 (Timer Setup) — copy the exact schedule from `function.json` into the v4 code registration.
 
-**Confidence:** MEDIUM — tokenizer behavior inferred from MiniSearch docs and standard NLP tokenization; custom tokenizer not verified against MiniSearch v7 API. Validate during implementation.
+**Confidence:** HIGH — verified via Context7 Azure Functions timer trigger documentation.
 
 ---
 
-### Pitfall 9: Vite `base` Path Mismatch Between Dev and Production
+### Pitfall 10: Zero-Indexed Months in Legacy Blob Names → 1-Indexed in New Code
 
 **What goes wrong:**
-Setting `base: '/sp-rest-explorer/'` in `vite.config.ts` means all asset URLs are prefixed with `/sp-rest-explorer/` in production. But in dev mode, Vite serves at `http://localhost:5173/` (root). If code uses `import.meta.env.BASE_URL` for constructing URLs (e.g., for fetching metadata), the URL differs between dev and prod:
-- Dev: `http://localhost:5173/metadata.json`
-- Prod: `https://user.github.io/sp-rest-explorer/metadata.json`
-
-But the metadata is fetched from Azure Blob Storage (external URL), not from the app itself — so `base` should NOT affect the metadata fetch URL. The trap is accidentally using relative paths or `BASE_URL` for the external fetch.
+The new code generates monthly blob names with 1-indexed months (e.g., `2026y_m2_metadata.json` for February), but the legacy code used `date.getMonth()` which is 0-indexed (e.g., `2026y_m1_metadata.json` for February). If the frontend or changelog feature ever references old blob names, the URL patterns won't match.
 
 **Why it happens:**
-Developers see `base` in the config and assume it applies to all URLs. It only applies to asset URLs (JS, CSS, images) — not to `fetch()` calls.
+JavaScript's `Date.getMonth()` returns 0–11. The legacy `Utils.generateMonthBlobName()` uses `date.getMonth()` directly, producing `2026y_m0_metadata` for January. PROJECT.md explicitly states the v2.0 goal is "monthly snapshots with 1-indexed months."
 
 **How to avoid:**
-1. Hardcode the Azure Blob Storage URL as an environment variable:
-```typescript
-// .env
-VITE_METADATA_URL=https://pnptelemetryproxy.azurewebsites.net/api/...
-```
-2. Never use relative paths for external data fetches.
-3. Test the production build locally with `vite preview` before deploying:
-```bash
-npm run build && npx vite preview --port 4173
-```
-4. Verify that `base` is set correctly for the repo name, including trailing slash.
+1. New code uses `date.getMonth() + 1` for month blob names: `${year}y_m${month}_metadata`
+2. Document the naming convention change clearly
+3. If the future API Changelog feature needs to read old blobs, it must handle BOTH naming conventions
+4. Consider: do any existing consumers rely on the zero-indexed naming? Verify before changing.
 
 **Warning signs:**
-- Assets (JS/CSS) return 404 in production but work in dev
-- Metadata fetch works in dev but fails in production (or vice versa)
-- Favicon and static images missing in production
+- Blob not found (404) when accessing monthly snapshots
+- Off-by-one in month when comparing old vs new snapshots
 
-**Phase to address:** Phase 1 — Vite config setup.
+**Phase to address:**
+Phase 2 (Blob Layout) — define the naming convention before writing any blob code. Test with January data to catch the boundary case.
 
-**Confidence:** HIGH — verified via Vite v7 docs (Context7).
+**Confidence:** HIGH — confirmed by reading `az-funcs/src/utils.ts` line 34: `date.getMonth()` (0-indexed).
 
 ---
 
-### Pitfall 10: react-arborist `data` Prop Reference Instability Causes Full Tree Re-renders
+### Pitfall 11: Deployment — `func azure functionapp publish` Requires Build Step First
 
 **What goes wrong:**
-react-arborist re-renders when the `data` prop reference changes. If the filtered/derived tree data array is computed inline or without proper memoization, every parent re-render creates a new array reference, causing react-arborist to diff and re-render the entire visible tree.
-
-```typescript
-// BROKEN — new array reference every render
-<Tree data={metadata.functions.filter(f => !hidden.includes(f.namespace))} />
-
-// BROKEN — useMemo with wrong dependencies
-const treeData = useMemo(() => buildTree(metadata), [metadata, searchQuery, hiddenNamespaces, unrelatedState]);
-```
+You run `func azure functionapp publish <app-name>` on a TypeScript project and it deploys successfully, but Azure shows 0 functions. The raw `.ts` files were uploaded instead of compiled `.js` files.
 
 **Why it happens:**
-React's `useMemo` only prevents recomputation when dependencies are stable. If any dependency changes (even an unrelated one mistakenly included), the tree data is rebuilt, creating a new reference, triggering react-arborist's internal reconciliation across all visible nodes.
+The `func` CLI doesn't automatically run `npm run build` before deploying. For TypeScript projects, you must build first so the `dist/` directory contains compiled JS. The `main` field in `package.json` points to `dist/`, but if `dist/` doesn't exist or is stale, the runtime finds nothing.
 
 **How to avoid:**
-1. Use `useMemo` with minimal, correct dependencies:
-```typescript
-const treeData = useMemo(
-  () => buildFilteredRootNodes(metadata, hiddenNamespaces),
-  [metadata, hiddenNamespaces] // Only what actually affects the result
-);
-```
-2. Separate search from tree filtering — use react-arborist's `searchTerm`/`searchMatch` props for search (it handles visibility internally), and only rebuild `data` when the structural filter changes (namespace hiding).
-3. Profile with React DevTools Profiler — look for `<Tree>` re-renders that don't correspond to user actions.
+1. Always run `npm run build` before `func azure functionapp publish`
+2. Add a npm script: `"deploy": "npm run build && func azure functionapp publish <app-name>"`
+3. For GitHub Actions: build step must run BEFORE the deploy step
+4. Include `.funcignore` to exclude `src/`, `node_modules/`, and other dev files from the deployment package
+5. **GitHub Actions gotcha:** Since September 2024, `actions/upload-artifact@v4` excludes hidden files by default — the `.azurefunctions` folder is hidden and essential. Add `include-hidden-files: true` if using artifacts.
 
 **Warning signs:**
-- Tree flickers or scrolls to top when typing in search
-- React DevTools shows `<Tree>` re-rendering on every keystroke
-- Noticeable lag when expanding/collapsing tree nodes
+- Deployment succeeds but 0 functions shown
+- `.ts` files in Azure deployment instead of `.js`
+- `dist/` directory missing or containing stale output
 
-**Phase to address:** Phase 1 — Tree view implementation.
+**Phase to address:**
+Phase 3 (Deployment) — create deployment scripts/workflows early and test them.
 
-**Confidence:** HIGH — react-arborist docs confirm `data` prop drives rendering (Context7); memoization pattern is standard React.
+**Confidence:** HIGH — verified via Microsoft Learn migration guide and multiple community reports.
 
 ---
 
-### Pitfall 11: React Router 7 `createHashRouter` Lacks Data Router Features
+### Pitfall 12: `context.done()` and `context.log.error()` Are v2 Patterns — v4 Uses Different APIs
 
 **What goes wrong:**
-The existing research recommends `createHashRouter` with route-level `loader` and `action` functions for data fetching. However, `createHashRouter` in React Router 7 is a legacy compatibility API primarily for SPAs that cannot use the full framework mode. While it supports data routers, the ecosystem and documentation increasingly assume `createBrowserRouter` or framework mode. Edge cases with hash routing + lazy loading + error boundaries may be less tested.
+You copy logging and completion patterns from the legacy code (`context.log.error()`, `context.done()`) and get runtime errors or warnings. The function appears to hang because it's waiting for `context.done()` which doesn't exist in v4.
 
 **Why it happens:**
-React Router 7 positions itself as a framework (successor to Remix). The hash router is maintained for backward compatibility but is not the "happy path." Documentation examples predominantly use `createBrowserRouter`.
+v4 changed the context API:
+
+| v2 Pattern | v4 Replacement |
+|-----------|----------------|
+| `context.done()` | Just return (async functions complete automatically) |
+| `context.done(err)` | Throw the error |
+| `context.log.error(msg)` | `context.error(msg)` |
+| `context.log.warn(msg)` | `context.warn(msg)` |
+| `context.log.info(msg)` | `context.log(msg)` |
+| `context.bindings.xyz = data` | `context.extraOutputs.set(binding, data)` |
 
 **How to avoid:**
-1. Use `createHashRouter` in library mode (not framework mode) — this is the correct approach for GitHub Pages.
-2. Do NOT use React Router's framework features (`react-router.config.ts`, `@react-router/dev`, SSR/pre-rendering). These require `createBrowserRouter`.
-3. Keep routing simple: define routes as objects with `element` props, use `React.lazy()` for code splitting. Do NOT use `loader`/`action` functions — they add complexity with no benefit for a static SPA that fetches all data from a single external JSON.
-4. Install `react-router` (not `@react-router/dev`) — the library-only package.
+1. Don't copy v2 patterns — rewrite handlers from scratch following v4 patterns
+2. Use async handler functions that return naturally
+3. Error handling: wrap in try/catch, let unhandled errors propagate
 
 **Warning signs:**
-- Imports from `@react-router/dev` or `react-router.config.ts` in a hash-routed app
-- `loader` functions in routes that just read from Zustand store
-- Build errors about missing server modules
+- `context.done is not a function` error
+- `context.log.error is not a function` error
+- Function hangs / times out after logic completes
 
-**Phase to address:** Phase 1 — Router setup.
+**Phase to address:**
+Phase 1 (Project Scaffolding) — establish the v4 handler pattern from the first function.
 
-**Confidence:** MEDIUM — React Router 7 hash routing verified as supported (Context7), but "less tested edge cases" is an inference, not a documented issue.
+**Confidence:** HIGH — verified via Context7 Azure Functions v4 migration guide.
 
 ---
 
-### Pitfall 12: GitHub Actions Deploy Fails Silently on Permissions or Path Misconfiguration
+### Pitfall 13: Blob Public Access — Container Must Be `blob` Access Level for Frontend to Read
 
 **What goes wrong:**
-GitHub Actions deployment to GitHub Pages fails or deploys stale content when:
-1. Workflow lacks `id-token: write` permission (required by `actions/deploy-pages@v4`)
-2. `upload-pages-artifact` points to wrong directory (e.g., `dist` vs `docs`)
-3. GitHub Pages source is set to "Deploy from a branch" instead of "GitHub Actions"
-4. Concurrency group isn't set, causing parallel deployments to corrupt each other
+You create the `api-files` container but forget to set public access, or Azure's default security settings block public access. The frontend gets CORS or 403 errors when fetching `metadata.latest.json`.
 
 **Why it happens:**
-GitHub Pages deployment via Actions requires THREE settings to align: workflow permissions, artifact path, and repo Pages settings. Missing any one causes silent failures — the workflow "succeeds" but the site doesn't update.
+Azure Storage containers default to private access. The legacy code explicitly sets `publicAccessLevel: 'blob'`. In v12 SDK, the method is `containerClient.createIfNotExists({ access: 'blob' })`. Additionally, Azure Storage accounts created after 2023 may have "Allow Blob public access" disabled at the account level, which overrides container-level settings.
 
 **How to avoid:**
-Verified working configuration:
-```yaml
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: true
-
-steps:
-  - uses: actions/configure-pages@v5
-  - run: npm run build
-  - uses: actions/upload-pages-artifact@v3
-    with:
-      path: ./dist  # Must match Vite's build.outDir
-  - uses: actions/deploy-pages@v4
-```
-Then in repo Settings → Pages → Source: select "GitHub Actions" (NOT "Deploy from a branch").
+1. Use `{ access: 'blob' }` when creating the container (allows public read for individual blobs, but not container listing)
+2. Verify the Storage Account has "Allow Blob public access" enabled in Azure Portal → Storage Account → Configuration
+3. Configure CORS on the Storage Account: Origin `*`, Methods `GET`, Headers `*`
+4. Test by opening the blob URL directly in a browser: `https://{account}.blob.core.windows.net/api-files/metadata.latest.json`
 
 **Warning signs:**
-- Workflow shows green checkmark but site shows old content
-- 404 page on `https://user.github.io/repo-name/`
-- Workflow fails with "Error: No permission to deploy to GitHub Pages"
+- Frontend shows loading state indefinitely
+- Browser console shows 403 or CORS errors for blob URLs
+- Blob URL returns XML error about public access
 
-**Phase to address:** Phase 1 — CI/CD setup.
+**Phase to address:**
+Phase 2 (Blob Operations) — verify public access as part of the first successful blob upload test.
 
-**Confidence:** HIGH — verified via Vite static deploy guide and actions/deploy-pages docs.
-
----
-
-## Minor Pitfalls
-
-### Pitfall 13: Tailwind v4 CSS-First Config Breaks `@apply` in Component Files
-
-**What goes wrong:**
-Tailwind v4 removes `tailwind.config.js` in favor of CSS-based configuration (`@theme`, `@custom-variant`). The `@apply` directive still works but behaves differently: it can only reference utilities that are defined in the same CSS scope. If custom utilities are defined in `globals.css` but `@apply` is used in a CSS module, the reference fails.
-
-**Why it happens:**
-Tailwind v4's CSS-first approach means configuration is scoped to the CSS file that imports `tailwindcss`. Separate CSS files don't inherit each other's `@theme` definitions.
-
-**How to avoid:**
-1. Minimize `@apply` usage — prefer inline Tailwind classes in JSX (the standard approach with shadcn/ui).
-2. If `@apply` is needed, put it in `globals.css` where `@import "tailwindcss"` lives.
-3. Do NOT use CSS modules with Tailwind v4 — use utility classes in JSX instead.
-
-**Warning signs:**
-- Build warnings about unknown utility classes in `@apply`
-- Styles working in dev but missing in production
-- Custom utilities not available outside `globals.css`
-
-**Phase to address:** Phase 1 — Styling setup.
-
-**Confidence:** MEDIUM — inferred from Tailwind v4 architecture; specific `@apply` scoping behavior needs validation.
-
----
-
-### Pitfall 14: React 19 StrictMode Double-Invokes Ref Callbacks and Effects
-
-**What goes wrong:**
-React 19 in StrictMode double-invokes ref callbacks on initial mount (to simulate Suspense fallback replacement) and double-runs effects. This means:
-- `useEffect` side effects (like building MiniSearch index) run twice in dev
-- Ref callbacks fire twice, which can cause issues with imperative DOM measurements
-- `useMemo` and `useCallback` reuse results from the first render during the second render (optimization, not a bug)
-
-**Why it happens:**
-React 19 StrictMode is stricter about simulating mount/unmount cycles to catch bugs early. This is dev-only behavior — production is unaffected.
-
-**How to avoid:**
-1. Ensure all effects are idempotent — building a MiniSearch index twice should produce the same result (it does, as long as you create a new instance, not addAll to an existing one).
-2. Use cleanup functions in effects:
-```typescript
-useEffect(() => {
-  const index = new MiniSearch({ /* ... */ });
-  index.addAll(items);
-  setSearchIndex(index);
-  return () => { /* cleanup if needed */ };
-}, [items]);
-```
-3. Don't disable StrictMode to "fix" double-render issues — fix the effect instead.
-
-**Warning signs:**
-- Console logs appearing twice in development
-- MiniSearch index containing duplicate entries (if you `addAll` to an existing instance)
-- Performance seeming worse in dev than prod (expected — double rendering)
-
-**Phase to address:** Phase 1 — Effects and lifecycle setup.
-
-**Confidence:** HIGH — verified via React 19 upgrade guide (Context7).
-
----
-
-### Pitfall 15: `forwardRef` Removal Breaks Third-Party Component Wrapping Patterns
-
-**What goes wrong:**
-React 19 makes `forwardRef` optional — `ref` is now a regular prop. But shadcn/ui components (based on Radix primitives) may still use `forwardRef` internally. If you wrap a shadcn/ui component and forget to forward the ref, features like focus management, scroll-to-element, and form validation break silently.
-
-**Why it happens:**
-`forwardRef` still works in React 19, but developers see "forwardRef is no longer needed" and remove it from wrapper components without adding `ref` as a prop.
-
-**How to avoid:**
-1. When wrapping shadcn/ui components, always accept and pass through `ref`:
-```typescript
-function CustomButton({ ref, ...props }: ButtonProps & { ref?: React.Ref<HTMLButtonElement> }) {
-  return <Button ref={ref} {...props} />;
-}
-```
-2. Don't strip `forwardRef` from existing shadcn/ui component files — they're generated code and should be treated as-is.
-3. Wait for shadcn/ui to officially update components to use `ref` as a prop before modifying.
-
-**Warning signs:**
-- Focus not moving to expected element after dialog open
-- `scrollIntoView` not working on tree nodes
-- Form validation not highlighting the correct input
-
-**Phase to address:** Phase 1 — Component authoring patterns.
-
-**Confidence:** MEDIUM — `forwardRef` still works in React 19 (no breaking change), but the migration path for wrappers needs care. shadcn/ui components as of early 2026 may already be updated.
-
----
-
-### Pitfall 16: Metadata Stored in Zustand Triggers Unnecessary Re-renders
-
-**What goes wrong:**
-Storing the entire ~4MB parsed metadata object in Zustand state means ANY component using `useAppStore(state => state.metadata)` re-renders whenever ANY state field changes (if using a non-selective selector). Even with selective selectors, components that read `metadata` re-render whenever the reference changes — which happens on every `setMetadata` call.
-
-**Why it happens:**
-Zustand uses `Object.is` for equality checks. The metadata object reference only changes on initial load (once), but if any code accidentally calls `setMetadata` again (e.g., on re-fetch or hot reload), all metadata-consuming components re-render even if the data is identical.
-
-**How to avoid:**
-1. `setMetadata` should only be called ONCE on initial load. Guard against re-calls:
-```typescript
-setMetadata: (data) => set((state) => {
-  if (state.metadata !== null) return state; // Already loaded, no-op
-  return { metadata: data };
-}),
-```
-2. Never select the entire metadata object — use derived selectors:
-```typescript
-// BAD — re-renders on any metadata change
-const metadata = useAppStore(state => state.metadata);
-
-// GOOD — only re-renders when entities change (never, since metadata is immutable)
-const entities = useAppStore(state => state.metadata?.entities);
-```
-3. For the MiniSearch index and tree data, compute them OUTSIDE the store using `useMemo` in hooks, not as store state.
-
-**Warning signs:**
-- React DevTools showing frequent re-renders of EntityDocs or PropsTable
-- Typing in search causes detail panel to flicker
-- Performance degradation as more components are added
-
-**Phase to address:** Phase 1 — Store design.
-
-**Confidence:** HIGH — standard Zustand pattern, verified via docs.
+**Confidence:** HIGH — confirmed by reading legacy code and general Azure Storage documentation.
 
 ---
 
@@ -595,90 +482,100 @@ const entities = useAppStore(state => state.metadata?.entities);
 
 | Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
 |----------|-------------------|----------------|-----------------|
-| Skip Web Worker for JSON parse | Simpler code, one fewer file | 200-800ms UI freeze on load | MVP only — add Worker in Phase 2 if TBT > 200ms |
-| Use `any` types for metadata JSON | Faster initial development | No autocomplete, silent runtime errors | Never — define types from day one using the JSON schema |
-| Inline all styles without design tokens | Ship faster | Dark mode retrofit requires touching every component | Never — use shadcn/ui CSS variables from the start |
-| Skip `version` in Zustand persist | Less boilerplate | Future store shape changes break existing users' localStorage | Never — version: 1 from day one |
-| Use `initialData` instead of `data` prop in react-arborist | Less code (uncontrolled) | Cannot programmatically update tree without remounting | Acceptable for MVP if no tree manipulation needed |
-
-## Performance Traps
-
-| Trap | Symptoms | Prevention | When It Breaks |
-|------|----------|------------|----------------|
-| Building search index on every metadata change | Search lag, TBT spike | Build index once, store ref outside React state | If metadata re-fetched (shouldn't happen in SPA) |
-| react-arborist `searchMatch` on 5000+ nodes per keystroke | Typing lag in search input | Debounce search term (300ms), use MiniSearch instead of tree-level filtering for deep search | At ~1000+ visible nodes without debounce |
-| Re-deriving tree data on unrelated state changes | Tree scroll position resets, flicker | Minimal `useMemo` dependencies, separate search from structure | With 3+ simultaneous state changes |
-| Persisting large state to localStorage | Quota exceeded (5-10MB limit), slow serialization | Only persist preferences (~100 bytes), never metadata | If someone adds metadata to `partialize` |
+| Skip `.zip.json` generation | Saves 1-2 hours of lz-string work | None — no consumer exists | Always (it's unused) |
+| Hardcode blob paths instead of config | Faster to implement | Harder to change if storage layout changes | MVP only — extract to constants early |
+| Skip retry logic on SharePoint fetch | Simpler code | Transient failures cause missed daily snapshots | Never — retry is essential for daily timer |
+| Single function file instead of module split | Less boilerplate | Parser/auth/storage logic all in one file | Never — split by responsibility |
+| Use `AzureWebJobsStorage` for everything | No extra config | Tight coupling to Functions storage | Acceptable for this project (single storage account) |
+| Skip setting `Content-Type` header on blobs | Works without it | Browsers may not parse JSON correctly | Never — always set `application/json` |
 
 ## Integration Gotchas
 
 | Integration | Common Mistake | Correct Approach |
 |-------------|----------------|------------------|
-| Azure Blob Storage fetch | Using relative URL or `BASE_URL` prefix | Hardcode full external URL in env variable |
-| GitHub Pages + hash routing | Adding `404.html` redirect script | Not needed with `createHashRouter` — all routes are `/#/path` |
-| shadcn/ui CLI | Running `npx shadcn init` with Tailwind v3 config present | Ensure Tailwind v4 CSS-first config before running CLI |
-| Vite build output | Setting `outDir: '../docs'` (old manual deploy pattern) | Use `outDir: 'dist'` + GitHub Actions artifact upload |
-| lucide-react icons | Importing from barrel file `import { Icon } from 'lucide-react'` | Import specific icons `import { Search } from 'lucide-react'` for tree-shaking |
+| SharePoint `$metadata` | No timeout on HTTP request; SharePoint occasionally hangs for 30+ seconds | Use `axios` with `timeout: 30000` and retry logic (3 attempts with exponential backoff) |
+| SharePoint `$metadata` | `response.data` returns a parsed object instead of raw XML string | Ensure `responseType: 'text'` in axios config — SharePoint returns XML, and axios may auto-parse it |
+| MSAL token cache | Creating new `ConfidentialClientApplication` on every invocation | Create MSAL client at **module scope** (singleton) so token cache persists across warm starts — tokens are cached automatically |
+| Blob Storage Content-Type | Uploading JSON without content type header | Set `blobHTTPHeaders: { blobContentType: 'application/json' }` on upload — otherwise Azure defaults to `application/octet-stream` |
+| Blob Storage CORS | Forgetting CORS configuration on the storage account | Add CORS rule: Origin `*`, Methods `GET`, Allowed Headers `*`, Max Age `86400` |
+| Azure Functions environment | Using `process.env.X` without fallback | Use a helper that checks both `process.env.X` and `process.env.CUSTOMCONNSTR_X` (Azure custom connection strings) |
+
+## Performance Traps
+
+| Trap | Symptoms | Prevention | When It Breaks |
+|------|----------|------------|----------------|
+| Parsing 4MB XML synchronously on function cold start | Function timeout (default 5 min on Consumption plan) | xml2js is async by design — don't wrap in sync; ensure the pipeline is fully async/await | When XML grows beyond ~10MB or function timeout is set below 2 minutes |
+| `JSON.stringify(parsed, null, 4)` on 4MB object | Produces ~12MB pretty-printed JSON; slow to upload | Use `JSON.stringify(parsed)` (no indentation) for blob storage; save ~8MB per upload | Already a pain point — 4x size for readability nobody uses |
+| Creating new `BlobServiceClient` on every invocation | Connection overhead on each function run | Create at module scope (singleton) — connection pooling persists across warm starts | On frequent invocations (shouldn't matter for daily timer, but good practice) |
+| Uploading blobs sequentially instead of in parallel | Total time = sum of all uploads | Use `Promise.all()` for independent uploads (latest.json, latest.xml, monthly.json, monthly.xml) | When upload count exceeds 4-5 blobs |
+
+## Security Mistakes
+
+| Mistake | Risk | Prevention |
+|---------|------|------------|
+| Storing certificate private key in code or committed config | Certificate compromised → full SharePoint access | Store in Azure Functions App Settings or Key Vault; never commit to git |
+| Using `clientSecret` for SharePoint REST API calls | 401/403 errors that seem inexplicable | Use certificate-based auth only (SharePoint enforces this) |
+| Leaving `SP_User`/`SP_Password` in environment | Unused credentials lingering in config; ROPC could be re-enabled accidentally | Remove user credentials entirely from app settings |
+| Container access level `container` instead of `blob` | Anyone can list ALL blobs in the container | Use `blob` access level — allows reading individual blobs by URL but not listing |
+| Not granting admin consent for application permissions | Token works but has no permissions; silent failure | Verify admin consent in Azure Portal → App Registration → API Permissions (green checkmarks) |
 
 ## "Looks Done But Isn't" Checklist
 
-- [ ] **Search:** Works for `SP.Web` (dot in name), `GetById()` (parens), single-character queries — verify tokenizer handles special chars
-- [ ] **Dark mode:** All custom components (not just shadcn/ui ones) respect CSS variables — check breadcrumbs, code blocks, loading states
-- [ ] **Hash routing:** Deep links work after deploy — test `/#/entity/SP.Web` directly in address bar after GitHub Pages deployment
-- [ ] **Loading state:** CSS spinner visible DURING JSON parse, not just during fetch — the parse freeze can hide the spinner
-- [ ] **Keyboard navigation:** Cmd+K opens search, Escape closes it, arrow keys work in search results — test without mouse
-- [ ] **Tree scroll position:** Navigating back to tree view preserves scroll position — react-arborist resets on `data` prop change
-- [ ] **localStorage:** Works in private/incognito mode (localStorage available but cleared on close) — don't crash if localStorage throws
-- [ ] **Mobile viewport:** Content doesn't overflow horizontally — test at 375px width with long entity names like `SP.WorkManagement.OM.TaskWriteResult`
-- [ ] **Concurrent deploys:** Pushing twice rapidly doesn't corrupt the deployment — verify concurrency group in workflow
+- [ ] **Auth:** Token acquired ≠ SharePoint accepts it — test with an actual `_api/web` GET request, not just token acquisition
+- [ ] **Blob upload:** Upload succeeds ≠ frontend can read it — test the public URL in a browser (CORS + public access)
+- [ ] **XML parsing:** Parser runs without errors ≠ output matches legacy format — run a snapshot comparison test
+- [ ] **Timer trigger:** Function registered ≠ timer fires — check Azure Portal → Function → Monitor for actual invocations
+- [ ] **Monthly snapshots:** Blob written ≠ correct filename — verify month is 1-indexed, not 0-indexed
+- [ ] **Deployment:** Deploy succeeds ≠ functions discovered — check Azure Portal → Functions list (common v4 issue)
+- [ ] **Content-Type:** Blob exists ≠ browser parses it correctly — verify `Content-Type: application/json` in blob properties
+- [ ] **Environment vars:** Works locally ≠ works in Azure — verify all `local.settings.json` values are also in Azure App Settings (minus `SP_User`/`SP_Password`, plus certificate config)
 
 ## Recovery Strategies
 
 | Pitfall | Recovery Cost | Recovery Steps |
 |---------|---------------|----------------|
-| Shallow merge overwrites state | LOW | Add `version` + `migrate` to persist config, deploy new version, users' localStorage auto-migrates |
-| Wrong `base` path in Vite | LOW | Fix `vite.config.ts`, rebuild, redeploy — no user-facing data loss |
-| Selector infinite loops | LOW | Wrap with `useShallow` or split into scalar selectors — localized fix |
-| JSON parse blocking | MEDIUM | Add Web Worker — requires new file, message passing, slightly different data flow |
-| Missing CSS variables for dark mode | HIGH | Retrofit requires touching every component's color classes — prevention is much cheaper |
-| Wrong tree data structure for react-arborist | HIGH | Changing the data shape requires updating tree builder, search index builder, and all node renderers |
+| Certificate vs secret auth failure | LOW | Generate certificate, upload to Entra ID, update MSAL config — no code architecture change |
+| Wrong scope format (.default) | LOW | Change one string literal — `scopes: ["https://{tenant}.sharepoint.com/.default"]` |
+| Stale module-scope Date | LOW | Move `new Date()` into handler — 1-line fix |
+| Wrong `main` path in package.json | LOW | Fix the glob pattern, redeploy — no code change needed |
+| xml2js output structure mismatch | HIGH | Must identify which parser options produce the legacy output; potentially requires deep debugging of every access path in the 302-line parser file |
+| Blob output binding not working | MEDIUM | Switch between declarative binding and programmatic SDK approach — may require refactoring handler |
+| Monthly blob name format wrong | LOW | Fix the month calculation, but old incorrectly-named blobs remain in storage |
+| Deployment discovers 0 functions | LOW | Fix `main` in package.json, rebuild, redeploy |
 
 ## Pitfall-to-Phase Mapping
 
 | Pitfall | Prevention Phase | Verification |
 |---------|------------------|--------------|
-| JSON.parse blocking (1) | Phase 1: Core data layer | Lighthouse TBT < 200ms on throttled CPU |
-| Ref callback cleanup (2) | Phase 1: Scaffolding | TypeScript strict mode catches at compile time |
-| Zustand persist merge (3) | Phase 1: Store setup | Add unit test: clear localStorage → load → verify defaults |
-| Tailwind v4 defaults (4) | Phase 1: Scaffolding | Visual regression test: border, ring, shadow on key components |
-| Dark mode CSS vars (5) | Phase 1: Scaffolding | Toggle dark mode after first component — must work immediately |
-| Selector instability (6) | Phase 1: Store setup | React DevTools Profiler — no component re-renders > 2x per action |
-| MiniSearch addAll blocking (7) | Phase 1: Search setup | Measure with `performance.now()` — total pipeline < 100ms |
-| MiniSearch tokenizer (8) | Phase 1: Search setup | Test queries: `SP.Web`, `SP.`, `GetById()`, `web/Lists` |
-| Vite base path (9) | Phase 1: Vite config | `vite preview` serves correctly at `/sp-rest-explorer/` |
-| Tree data reference (10) | Phase 1: Tree view | React DevTools — Tree doesn't re-render on search keystroke |
-| Hash router scope (11) | Phase 1: Router setup | No `@react-router/dev` imports in codebase |
-| GitHub Actions deploy (12) | Phase 1: CI/CD | First deploy succeeds, second deploy updates correctly |
-| @apply scoping (13) | Phase 1: Styling | No `@apply` in component-level CSS files |
-| StrictMode double-invoke (14) | Phase 1: Effects | Search index doesn't contain duplicates in dev mode |
-| forwardRef patterns (15) | Phase 1: Component authoring | Wrapped components receive and forward refs correctly |
-| Metadata re-render (16) | Phase 1: Store design | Only `setMetadata` is called once; React Profiler confirms |
+| Certificate-only auth (Pitfall 1) | Phase 1 — Auth Setup | Successfully call `_api/web` with client credentials token |
+| Scope format `.default` (Pitfall 2) | Phase 1 — Auth Setup | Token contains expected permissions (decode JWT at jwt.ms) |
+| Module-scope Date stale (Pitfall 3) | Phase 2 — Timer Handler | `new Date()` is inside handler body, not at module scope |
+| `main` field wrong path (Pitfall 4) | Phase 1 — Scaffolding | `func start` discovers and lists the function locally |
+| xml2js output structure (Pitfall 5) | Phase 2 — Parser | Snapshot test passes: new output === legacy output for same input |
+| Blob binding registration (Pitfall 6) | Phase 2 — Blob Upload | Blob appears in storage with correct content after test run |
+| azure-storage → storage-blob (Pitfall 7) | Phase 2 — Blob Upload | All blob operations use `@azure/storage-blob` v12 API |
+| lz-string unused (Pitfall 8) | Phase 2 — Pipeline | Decision documented; skip or include `.zip.json` |
+| CRON 6-part format (Pitfall 9) | Phase 2 — Timer | Timer fires at expected time (check Monitor tab) |
+| Month indexing change (Pitfall 10) | Phase 2 — Blob Layout | February snapshot named `2026y_m2_metadata` not `2026y_m1_metadata` |
+| TypeScript build before deploy (Pitfall 11) | Phase 3 — Deployment | Deploy script includes `npm run build` step; functions appear in portal |
+| v2 context API patterns (Pitfall 12) | Phase 1 — Scaffolding | No `context.done()`, `context.log.error()`, or `context.bindings` in codebase |
+| Blob public access (Pitfall 13) | Phase 2 — Blob Upload | Blob URL accessible from browser without authentication |
 
 ## Sources
 
-- React 19 Upgrade Guide — https://react.dev/blog/2024/04/25/react-19-upgrade-guide (Context7, HIGH confidence)
-- React 19 Release Notes — https://react.dev/blog/2024/12/05/react-19 (Context7, HIGH confidence)
-- Zustand v5 Migration Guide — https://zustand.docs.pmnd.rs/migrations/migrating-to-v5 (Context7, HIGH confidence)
-- Zustand Persist Middleware — https://zustand.docs.pmnd.rs/integrations/persisting-store-data (Context7, HIGH confidence)
-- Tailwind CSS v4 Upgrade Guide — https://tailwindcss.com/docs/upgrade-guide (Context7, HIGH confidence)
-- Tailwind CSS v4 Dark Mode — https://tailwindcss.com/docs/dark-mode (Context7, HIGH confidence)
-- Vite v7 Build Guide — https://vite.dev/guide/build (Context7, HIGH confidence)
-- React Router v7 Hash Router — https://reactrouter.com/api/data-routers/createHashRouter (Context7, HIGH confidence)
-- react-arborist README — https://github.com/brimdata/react-arborist (Context7, HIGH confidence)
-- MiniSearch API — https://lucaong.github.io/minisearch/ (Perplexity + GitHub, MEDIUM confidence)
-- shadcn/ui Tailwind v4 Guide — https://ui.shadcn.com/docs/tailwind-v4 (Perplexity, MEDIUM confidence)
-- GitHub Actions Deploy Pages — https://vite.dev/guide/static-deploy (Perplexity + official docs, HIGH confidence)
+- [Microsoft Learn — Granting access via Entra ID App-Only](https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread) — Official docs confirming certificate-only auth requirement (HIGH confidence)
+- [Microsoft Learn — Migrate to v4 Node.js model](https://learn.microsoft.com/en-us/azure/azure-functions/functions-node-upgrade-v4) — Official v4 migration guide (HIGH confidence)
+- [Microsoft Learn — Timer trigger for Azure Functions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-timer) — NCRONTAB format, verified via Context7 (HIGH confidence)
+- [Microsoft Learn — Blob storage output binding](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-storage-blob-output) — v4 extraOutputs pattern (HIGH confidence)
+- [Context7 — MSAL Node ConfidentialClientApplication](https://github.com/azuread/microsoft-authentication-library-for-js/blob/dev/lib/msal-node/docs/request.md) — Client credentials scope `.default` requirement (HIGH confidence)
+- [Context7 — @azure/storage-blob Migration Guide](https://github.com/azure/azure-sdk-for-js/blob/main/sdk/storage/storage-blob/MigrationGuide.md) — v2 to v12 API changes (HIGH confidence)
+- [npm — xml2js options documentation](https://www.npmjs.com/package/xml2js) — Parser options and version defaults (HIGH confidence)
+- [Microsoft Learn — Azure Functions runtime versions](https://learn.microsoft.com/en-us/azure/azure-functions/functions-versions) — Node.js 20/22 support dates (HIGH confidence)
+- [Microsoft TechCommunity — Sites.Selected for SPO](https://techcommunity.microsoft.com/blog/spblog/develop-applications-that-use-sites-selected-permissions-for-spo-sites-/3790476) — Certificate requirement for SharePoint APIs (HIGH confidence)
+- [Stack Overflow — Azure Functions v4 no functions found after deploy](https://stackoverflow.com/questions/75994451/azure-function-app-v4-node-js-no-functions-found-after-zip-deployment) — Common deployment issue (MEDIUM confidence)
+- [GitHub Actions — upload-artifact hidden files exclusion](https://stackoverflow.com/questions/78999440/github-actions-deployment-of-azure-functions-stopped-working) — `.azurefunctions` folder issue (MEDIUM confidence)
+- Legacy codebase: `az-funcs/` directory — all source files read directly (HIGH confidence)
 
 ---
-*Pitfalls research for: SP REST API Explorer Vue 2 → React 19 rebuild*
-*Researched: 2026-02-11*
+*Pitfalls research for: Azure Functions Backend Rewrite (v2.0)*
+*Researched: 2026-02-22*
