@@ -104,43 +104,43 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PROJ-01 | — | Pending |
-| PROJ-02 | — | Pending |
-| PROJ-03 | — | Pending |
-| AUTH-01 | — | Pending |
-| AUTH-02 | — | Pending |
-| FTCH-01 | — | Pending |
-| FTCH-02 | — | Pending |
-| FTCH-03 | — | Pending |
-| FTCH-04 | — | Pending |
-| PROC-01 | — | Pending |
-| PROC-02 | — | Pending |
-| PROC-03 | — | Pending |
-| PROC-04 | — | Pending |
-| BLOB-01 | — | Pending |
-| BLOB-02 | — | Pending |
-| BLOB-03 | — | Pending |
-| BLOB-04 | — | Pending |
-| BLOB-05 | — | Pending |
-| BLOB-06 | — | Pending |
-| BLOB-07 | — | Pending |
-| BLOB-08 | — | Pending |
-| OPS-01 | — | Pending |
-| OPS-02 | — | Pending |
-| OPS-03 | — | Pending |
-| OPS-04 | — | Pending |
-| OPS-05 | — | Pending |
-| OPS-06 | — | Pending |
-| OPS-07 | — | Pending |
-| DEPL-01 | — | Pending |
-| DEPL-02 | — | Pending |
-| DEPL-03 | — | Pending |
+| PROJ-01 | Phase 18 | Pending |
+| PROJ-02 | Phase 18 | Pending |
+| PROJ-03 | Phase 18 | Pending |
+| AUTH-01 | Phase 18 | Pending |
+| AUTH-02 | Phase 18 | Pending |
+| FTCH-01 | Phase 19 | Pending |
+| FTCH-02 | Phase 19 | Pending |
+| FTCH-03 | Phase 19 | Pending |
+| FTCH-04 | Phase 19 | Pending |
+| PROC-01 | Phase 19 | Pending |
+| PROC-02 | Phase 19 | Pending |
+| PROC-03 | Phase 19 | Pending |
+| PROC-04 | Phase 19 | Pending |
+| BLOB-01 | Phase 20 | Pending |
+| BLOB-02 | Phase 20 | Pending |
+| BLOB-03 | Phase 20 | Pending |
+| BLOB-04 | Phase 20 | Pending |
+| BLOB-05 | Phase 20 | Pending |
+| BLOB-06 | Phase 20 | Pending |
+| BLOB-07 | Phase 20 | Pending |
+| BLOB-08 | Phase 20 | Pending |
+| OPS-01 | Phase 20 | Pending |
+| OPS-02 | Phase 20 | Pending |
+| OPS-03 | Phase 20 | Pending |
+| OPS-04 | Phase 20 | Pending |
+| OPS-05 | Phase 20 | Pending |
+| OPS-06 | Phase 20 | Pending |
+| OPS-07 | Phase 20 | Pending |
+| DEPL-01 | Phase 21 | Pending |
+| DEPL-02 | Phase 21 | Pending |
+| DEPL-03 | Phase 21 | Pending |
 
 **Coverage:**
 - v1 requirements: 31 total
-- Mapped to phases: 0
-- Unmapped: 31
+- Mapped to phases: 31
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-22 after initial definition*
+*Last updated: 2026-02-23 — traceability updated with phase mappings (phases 18-21)*
