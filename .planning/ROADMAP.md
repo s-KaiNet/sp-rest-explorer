@@ -122,7 +122,9 @@ Plans:
   1. `npm run build` compiles TypeScript to JavaScript and `npm run deploy` publishes to Azure successfully
   2. Azure Portal shows the function registered and executing on its daily schedule
   3. Frontend loads metadata from the new blob URLs without any changes (data format compatibility confirmed)
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 21-01-PLAN.md — Update build/deploy scripts, deploy to Azure, configure secrets, validate production blobs
 
 ## Progress
 
