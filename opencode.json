@@ -1,6 +1,10 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "mcp": {
+        "grep": {
+            "type": "remote",
+            "url": "https://mcp.grep.app"
+        },
         "parallel-search": {
             "url": "https://search-mcp.parallel.ai/mcp",
             "type": "remote",
