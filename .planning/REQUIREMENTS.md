@@ -20,15 +20,15 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 
 ### Data Fetch
 
-- [ ] **FTCH-01**: Function fetches SharePoint `_api/$metadata` XML endpoint with Bearer token
-- [ ] **FTCH-02**: Fetch retries up to 3 times with exponential backoff on network failures and 5xx errors
-- [ ] **FTCH-03**: Fetch respects 429 Retry-After headers from SharePoint throttling
-- [ ] **FTCH-04**: Fetch has a 60-second timeout per attempt
+- [x] **FTCH-01**: Function fetches SharePoint `_api/$metadata` XML endpoint with Bearer token
+- [x] **FTCH-02**: Fetch retries up to 3 times with exponential backoff on network failures and 5xx errors
+- [x] **FTCH-03**: Fetch respects 429 Retry-After headers from SharePoint throttling
+- [x] **FTCH-04**: Fetch has a 60-second timeout per attempt
 
 ### Data Processing
 
 - [ ] **PROC-01**: XML-to-JSON parsing produces identical output structure to legacy MetadataParser (entities, functions, associations, navProperties, collection types)
-- [ ] **PROC-02**: TypeScript interfaces ported from legacy (EntityType, FunctionImport, Metadata, Property, NavigationProperty, Parameter, Association)
+- [x] **PROC-02**: TypeScript interfaces ported from legacy (EntityType, FunctionImport, Metadata, Property, NavigationProperty, Parameter, Association)
 - [ ] **PROC-03**: JSON output uses compact format (no indentation)
 - [ ] **PROC-04**: Parsed JSON is compressed via lz-string `compressToUTF16` for .zip.json blobs
 
@@ -109,12 +109,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROJ-03 | Phase 18 | Complete |
 | AUTH-01 | Phase 18 | Complete |
 | AUTH-02 | Phase 18 | Complete |
-| FTCH-01 | Phase 19 | Pending |
-| FTCH-02 | Phase 19 | Pending |
-| FTCH-03 | Phase 19 | Pending |
-| FTCH-04 | Phase 19 | Pending |
+| FTCH-01 | Phase 19 | Complete |
+| FTCH-02 | Phase 19 | Complete |
+| FTCH-03 | Phase 19 | Complete |
+| FTCH-04 | Phase 19 | Complete |
 | PROC-01 | Phase 19 | Pending |
-| PROC-02 | Phase 19 | Pending |
+| PROC-02 | Phase 19 | Complete |
 | PROC-03 | Phase 19 | Pending |
 | PROC-04 | Phase 19 | Pending |
 | BLOB-01 | Phase 20 | Pending |
