@@ -109,7 +109,10 @@ Plans:
   3. If the fetch stage fails after all retries, no blobs are written (all-or-nothing) — function exits with an error log
   4. Function logs structured milestones with durations for each pipeline stage (auth, fetch, parse, compress, upload)
   5. Blobs are uploaded to an auto-created `api-files` container with correct Content-Type headers and public blob access level
-**Plans**: TBD
+**Plans**: 2 plans
+Plans:
+- [ ] 20-01-PLAN.md — Install @azure/storage-blob, create blob upload module with buildBlobList() and uploadBlobs(), unit tests
+- [ ] 20-02-PLAN.md — Shared handler with structured logging, timer trigger with retry, HTTP trigger, handler tests
 
 ### Phase 21: Deployment & Validation
 **Goal**: Function deployed to Azure, running daily in production, producing blobs the frontend successfully loads
@@ -127,7 +130,7 @@ Plans:
 |-------|-----------|:--------------:|--------|-----------|
 | 18. Project Scaffolding & Auth Validation | v2.0 | Complete    | 2026-02-23 | 2026-02-23 |
 | 19. Data Pipeline | 3/3 | Complete    | 2026-02-23 | - |
-| 20. Function Orchestration | v2.0 | 0/? | Not started | - |
+| 20. Function Orchestration | v2.0 | 0/2 | Not started | - |
 | 21. Deployment & Validation | v2.0 | 0/? | Not started | - |
 | 1. Project Scaffolding | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 2. Data Layer & UI Foundation | v1.0 | 2/2 | Complete | 2026-02-11 |
