@@ -93,7 +93,11 @@ Plans:
   3. Parse stage produces JSON output identical in structure to legacy MetadataParser (entities, functions, associations, navProperties, collection types)
   4. TypeScript interfaces for all metadata types (EntityType, FunctionImport, Metadata, Property, NavigationProperty, Parameter, Association) are defined and used
   5. Compressed output via lz-string `compressToUTF16` is produced and can be decompressed back to the original JSON
-**Plans**: TBD
+**Plans**: 3 plans
+Plans:
+- [ ] 19-01-PLAN.md — Install deps, define metadata interfaces, build fetch module with retry/timeout
+- [ ] 19-02-PLAN.md — TDD MetadataParser against golden reference (byte-identical JSON output)
+- [ ] 19-03-PLAN.md — lz-string compression, pipeline entry point, integration tests
 
 ### Phase 20: Function Orchestration
 **Goal**: A complete daily timer function that runs the full pipeline (auth → fetch → parse → compress → upload) and writes 6 blobs to Azure Blob Storage
