@@ -17,12 +17,12 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 ## Current Position
 
 Phase: 20 — Function Orchestration
-Plan: 1/2 complete
-Status: In progress — Plan 01 (blob upload module) complete, Plan 02 (handler + triggers) next
-Last activity: 2026-02-23 — Phase 20 Plan 01 executed (blob upload module with buildBlobList + uploadBlobs)
+Plan: 2/2 complete
+Status: Phase 20 complete — all plans executed, ready for Phase 21 (Deployment)
+Last activity: 2026-02-23 — Phase 20 Plan 02 executed (handler + triggers with structured logging, 5 unit tests)
 
 ```
-v2.0 Progress: ██████████░░░░░░░░░░  50% (2/4 phases: 18 ✓, 19 ✓, 20, 21)
+v2.0 Progress: ███████████████░░░░░  75% (3/4 phases: 18 ✓, 19 ✓, 20 ✓, 21)
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
@@ -39,6 +39,7 @@ v1.4 Progress: ████████████████████ 100%
 | Tasks completed | 25 | 28 | 9 | 8 | 12 |
 | Requirements validated | 38 | 13 | 9 | 6 | 16 |
 | Timeline | 2 days | 3 days | 1 day | 1 day | 2 days |
+| Phase 20 P02 | 3min | 3 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -62,6 +63,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - (20-01) Buffer.byteLength('utf-8') for upload content length — critical for multi-byte lz-string output
 - (20-01) Separated buildBlobList() as exported pure function for easy unit testing without SDK mocking
 - (20-01) Descriptive error throw on missing AzureWebJobsStorage env var — fail fast
+- (20-02) Shared handler pattern: both timer and HTTP triggers call handleMetadataGeneration() — single orchestration source
+- (20-02) Error re-throw with enrichment: attach stageTimings/failedStage to error for HTTP JSON response extraction
+- (20-02) local.settings.json is gitignored — TIMER_SCHEDULE and AzureWebJobsStorage added on disk only
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -91,10 +95,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-23T21:31:05.465Z
-**What happened:** Executed Phase 20 Plan 01 — installed @azure/storage-blob, created blob-uploader.ts with buildBlobList() and uploadBlobs(), 5 unit tests pass. 3 min execution.
-**Next step:** Execute Phase 20 Plan 02 — shared handler with structured logging, timer trigger, HTTP trigger
+**Last session:** 2026-02-23T21:36:57.396Z
+**What happened:** Executed Phase 20 Plan 02 — shared handler with structured logging, timer + HTTP triggers, 5 unit tests. 3 min execution. Phase 20 complete.
+**Next step:** Plan/execute Phase 21 (Deployment) — deploy Azure Functions app
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-23 (Phase 20 Plan 01 complete — blob upload module)*
+*Last updated: 2026-02-23 (Phase 20 complete — function orchestration)*

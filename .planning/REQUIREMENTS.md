@@ -45,13 +45,13 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 
 ### Operations
 
-- [ ] **OPS-01**: Function runs on a daily timer trigger (default 1 AM UTC)
-- [ ] **OPS-02**: Timer schedule is configurable via app setting (not hardcoded)
-- [ ] **OPS-03**: Date is computed fresh inside the function handler on every invocation (no module-scope Date)
-- [ ] **OPS-04**: Function logs structured milestones: auth, fetch, parse, compress, upload with durations
-- [ ] **OPS-05**: HTTP trigger endpoint allows manual execution with function key authentication
-- [ ] **OPS-06**: Function-level retry policy configured for whole-function failures
-- [ ] **OPS-07**: If fetch fails after all retries, function exits without writing any blobs (all-or-nothing)
+- [x] **OPS-01**: Function runs on a daily timer trigger (default 1 AM UTC)
+- [x] **OPS-02**: Timer schedule is configurable via app setting (not hardcoded)
+- [x] **OPS-03**: Date is computed fresh inside the function handler on every invocation (no module-scope Date)
+- [x] **OPS-04**: Function logs structured milestones: auth, fetch, parse, compress, upload with durations
+- [x] **OPS-05**: HTTP trigger endpoint allows manual execution with function key authentication
+- [x] **OPS-06**: Function-level retry policy configured for whole-function failures
+- [x] **OPS-07**: If fetch fails after all retries, function exits without writing any blobs (all-or-nothing)
 
 ### Deployment
 
@@ -125,13 +125,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | BLOB-06 | Phase 20 | Complete |
 | BLOB-07 | Phase 20 | Complete |
 | BLOB-08 | Phase 20 | Complete |
-| OPS-01 | Phase 20 | Pending |
-| OPS-02 | Phase 20 | Pending |
-| OPS-03 | Phase 20 | Pending |
-| OPS-04 | Phase 20 | Pending |
-| OPS-05 | Phase 20 | Pending |
-| OPS-06 | Phase 20 | Pending |
-| OPS-07 | Phase 20 | Pending |
+| OPS-01 | Phase 20 | Complete |
+| OPS-02 | Phase 20 | Complete |
+| OPS-03 | Phase 20 | Complete |
+| OPS-04 | Phase 20 | Complete |
+| OPS-05 | Phase 20 | Complete |
+| OPS-06 | Phase 20 | Complete |
+| OPS-07 | Phase 20 | Complete |
 | DEPL-01 | Phase 21 | Pending |
 | DEPL-02 | Phase 21 | Pending |
 | DEPL-03 | Phase 21 | Pending |
