@@ -9,3 +9,12 @@ node_modules/
 src/
 .git/
 .vscode/
+.test-fixtures/
+**/*.test.ts
+**/*.spec.ts
+vitest.config.*
+*.md
+.env.example
+package-lock.json
+.github/
+.planning/

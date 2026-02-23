@@ -7,7 +7,8 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc",
+    "deploy": "npm run clean && npm run build && func azure functionapp publish sp-rest-explorer-new",
     "start": "npm run build && func start",
     "lint": "eslint src/",
     "clean": "rimraf dist",
