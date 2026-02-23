@@ -30,7 +30,7 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 - [x] **PROC-01**: XML-to-JSON parsing produces identical output structure to legacy MetadataParser (entities, functions, associations, navProperties, collection types)
 - [x] **PROC-02**: TypeScript interfaces ported from legacy (EntityType, FunctionImport, Metadata, Property, NavigationProperty, Parameter, Association)
 - [x] **PROC-03**: JSON output uses compact format (no indentation)
-- [ ] **PROC-04**: Parsed JSON is compressed via lz-string `compressToUTF16` for .zip.json blobs
+- [x] **PROC-04**: Parsed JSON is compressed via lz-string `compressToUTF16` for .zip.json blobs
 
 ### Blob Storage
 
@@ -116,7 +116,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROC-01 | Phase 19 | Complete |
 | PROC-02 | Phase 19 | Complete |
 | PROC-03 | Phase 19 | Complete |
-| PROC-04 | Phase 19 | Pending |
+| PROC-04 | Phase 19 | Complete |
 | BLOB-01 | Phase 20 | Pending |
 | BLOB-02 | Phase 20 | Pending |
 | BLOB-03 | Phase 20 | Pending |
