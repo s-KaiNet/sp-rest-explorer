@@ -13,7 +13,7 @@
 
 ### v2.0 Backend Rework (Phases 18-21)
 
-- [ ] **Phase 18: Project Scaffolding & Auth Validation** — New Functions v4 project with certificate-based SharePoint auth proven end-to-end
+- [x] **Phase 18: Project Scaffolding & Auth Validation** — New Functions v4 project with certificate-based SharePoint auth proven end-to-end (completed 2026-02-23)
 - [ ] **Phase 19: Data Pipeline** — Fetch metadata XML from SharePoint with retry/timeout, parse to JSON, compress with lz-string
 - [ ] **Phase 20: Function Orchestration** — Wire pipeline into daily timer function with blob upload, structured logging, and operational controls
 - [ ] **Phase 21: Deployment & Validation** — Build, publish to Azure, verify production blobs consumed by frontend
@@ -81,7 +81,7 @@
   5. TypeScript compiles in strict mode with zero errors and ESLint passes
 **Plans**: 1 plan
 Plans:
-- [ ] 18-01-PLAN.md — Scaffold project, auth module, HTTP trigger with end-to-end SharePoint validation
+- [x] 18-01-PLAN.md — Scaffold project, auth module, HTTP trigger with end-to-end SharePoint validation
 
 ### Phase 19: Data Pipeline
 **Goal**: Isolated, testable pipeline stages that fetch SharePoint metadata XML, parse it to the exact JSON shape the frontend consumes, and compress it
@@ -121,7 +121,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|:--------------:|--------|-----------|
-| 18. Project Scaffolding & Auth Validation | v2.0 | 0/? | Not started | - |
+| 18. Project Scaffolding & Auth Validation | v2.0 | 1/1 | Complete | 2026-02-23 |
 | 19. Data Pipeline | v2.0 | 0/? | Not started | - |
 | 20. Function Orchestration | v2.0 | 0/? | Not started | - |
 | 21. Deployment & Validation | v2.0 | 0/? | Not started | - |

@@ -17,12 +17,12 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 ## Current Position
 
 Phase: 18 — Project Scaffolding & Auth Validation
-Plan: —
-Status: Not started (roadmap created, awaiting plan)
-Last activity: 2026-02-23 — Roadmap created for v2.0
+Plan: 1/1 complete
+Status: Phase 18 complete — ready for Phase 19 planning
+Last activity: 2026-02-23 — Phase 18 Plan 01 executed (scaffolding + auth validated)
 
 ```
-v2.0 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/4 phases: 18, 19, 20, 21)
+v2.0 Progress: █████░░░░░░░░░░░░░░░  25% (1/4 phases: 18 ✓, 19, 20, 21)
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
@@ -44,6 +44,12 @@ v1.4 Progress: ████████████████████ 100%
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
+
+**v2.0 Decisions:**
+- (18-01) Used `backend/` directory name for new Azure Functions project
+- (18-01) authLevel: 'function' for validateAuth HTTP trigger
+- (18-01) MSAL thumbprintSha256 (not deprecated thumbprint) for certificate auth
+- (18-01) PEM newline normalization in auth module for env var encoding resilience
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -73,10 +79,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-23T00:25:56.251Z
-**What happened:** Created roadmap for v2.0 Backend Rework — 4 phases (18-21) covering all 31 requirements. Phase structure: Scaffolding+Auth → Data Pipeline → Function Orchestration → Deployment.
-**Next step:** `/gsd-plan-phase 18` — plan Project Scaffolding & Auth Validation
+**Last session:** 2026-02-23T01:48:07Z
+**What happened:** Executed Phase 18 Plan 01 — scaffolded backend/ project, created auth module with MSAL certificate-based credentials, validated end-to-end SharePoint auth via checkpoint. 3 tasks, 11 files created.
+**Next step:** `/gsd-plan-phase 19` — plan Data Pipeline phase
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-23 (v2.0 roadmap created)*
+*Last updated: 2026-02-23 (Phase 18 Plan 01 complete)*

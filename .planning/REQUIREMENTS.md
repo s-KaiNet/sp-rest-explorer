@@ -9,14 +9,14 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 
 ### Project Setup
 
-- [ ] **PROJ-01**: New `functions/` directory with Azure Functions v4 project structure (package.json, tsconfig.json, host.json, .funcignore)
-- [ ] **PROJ-02**: TypeScript in strict mode with ESLint replacing deprecated TSLint
-- [ ] **PROJ-03**: All runtime dependencies installed and version-pinned (@azure/functions, @azure/storage-blob, @azure/msal-node, axios, xml2js, lz-string)
+- [x] **PROJ-01**: New `functions/` directory with Azure Functions v4 project structure (package.json, tsconfig.json, host.json, .funcignore)
+- [x] **PROJ-02**: TypeScript in strict mode with ESLint replacing deprecated TSLint
+- [x] **PROJ-03**: All runtime dependencies installed and version-pinned (@azure/functions, @azure/storage-blob, @azure/msal-node, axios, xml2js, lz-string)
 
 ### Authentication
 
-- [ ] **AUTH-01**: Function authenticates to SharePoint using MSAL client credentials flow with certificate (not client secret, not ROPC)
-- [ ] **AUTH-02**: Authentication credentials (tenant ID, client ID, certificate path/thumbprint, SP URL) configurable via environment variables
+- [x] **AUTH-01**: Function authenticates to SharePoint using MSAL client credentials flow with certificate (not client secret, not ROPC)
+- [x] **AUTH-02**: Authentication credentials (tenant ID, client ID, certificate path/thumbprint, SP URL) configurable via environment variables
 
 ### Data Fetch
 
@@ -104,11 +104,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PROJ-01 | Phase 18 | Pending |
-| PROJ-02 | Phase 18 | Pending |
-| PROJ-03 | Phase 18 | Pending |
-| AUTH-01 | Phase 18 | Pending |
-| AUTH-02 | Phase 18 | Pending |
+| PROJ-01 | Phase 18 | Complete |
+| PROJ-02 | Phase 18 | Complete |
+| PROJ-03 | Phase 18 | Complete |
+| AUTH-01 | Phase 18 | Complete |
+| AUTH-02 | Phase 18 | Complete |
 | FTCH-01 | Phase 19 | Pending |
 | FTCH-02 | Phase 19 | Pending |
 | FTCH-03 | Phase 19 | Pending |
