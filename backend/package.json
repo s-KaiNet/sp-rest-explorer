@@ -2,7 +2,7 @@
   "name": "sp-rest-explorer-backend",
   "version": "2.0.0",
   "description": "Azure Functions v4 backend for SP REST API Explorer",
-  "main": "dist/src/functions/*.js",
+  "main": "dist/src/index.js",
   "engines": {
     "node": ">=20.0.0"
   },
