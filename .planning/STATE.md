@@ -16,10 +16,10 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 
 ## Current Position
 
-Phase: 19 — Data Pipeline
-Plan: 3/3 complete
-Status: Phase 19 complete — ready for Phase 20
-Last activity: 2026-02-23 — Phase 19 Plan 03 executed (lz-string compression + pipeline orchestrator)
+Phase: 20 — Function Orchestration
+Plan: 1/2 complete
+Status: In progress — Plan 01 (blob upload module) complete, Plan 02 (handler + triggers) next
+Last activity: 2026-02-23 — Phase 20 Plan 01 executed (blob upload module with buildBlobList + uploadBlobs)
 
 ```
 v2.0 Progress: ██████████░░░░░░░░░░  50% (2/4 phases: 18 ✓, 19 ✓, 20, 21)
@@ -59,6 +59,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - (19-03) Thin compressJson() wrapper over lz-string — single place to change compression strategy
 - (19-03) PipelineResult stores all three artifacts (xml, json, compressedJson) for Phase 20 flexibility
 - (19-03) Integration tests without mocking — exercises real parse→compress chain against golden fixtures
+- (20-01) Buffer.byteLength('utf-8') for upload content length — critical for multi-byte lz-string output
+- (20-01) Separated buildBlobList() as exported pure function for easy unit testing without SDK mocking
+- (20-01) Descriptive error throw on missing AzureWebJobsStorage env var — fail fast
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -88,10 +91,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-23T21:08:58.780Z
-**What happened:** Executed Phase 19 Plan 03 — created compressJson() lz-string wrapper, runPipeline() orchestrator, and PipelineResult interface. All 10 tests pass (5 parser + 3 compression + 2 pipeline integration). Phase 19 complete.
-**Next step:** Plan Phase 20 (Triggers & Upload) — Azure Functions triggers + blob upload using pipeline output
+**Last session:** 2026-02-23T21:31:05.465Z
+**What happened:** Executed Phase 20 Plan 01 — installed @azure/storage-blob, created blob-uploader.ts with buildBlobList() and uploadBlobs(), 5 unit tests pass. 3 min execution.
+**Next step:** Execute Phase 20 Plan 02 — shared handler with structured logging, timer trigger, HTTP trigger
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-23 (Phase 19 complete — all 3 plans executed)*
+*Last updated: 2026-02-23 (Phase 20 Plan 01 complete — blob upload module)*

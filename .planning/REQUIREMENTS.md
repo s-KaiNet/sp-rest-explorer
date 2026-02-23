@@ -34,14 +34,14 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 
 ### Blob Storage
 
-- [ ] **BLOB-01**: Function uploads `metadata.latest.json` to `api-files` container on every run
-- [ ] **BLOB-02**: Function uploads `metadata.latest.xml` to `api-files` container on every run
-- [ ] **BLOB-03**: Function uploads `metadata.latest.zip.json` to `api-files` container on every run
-- [ ] **BLOB-04**: Function uploads monthly snapshot `{year}y_m{month}_metadata.json` with 1-indexed months
-- [ ] **BLOB-05**: Function uploads monthly snapshot `{year}y_m{month}_metadata.xml` with 1-indexed months
-- [ ] **BLOB-06**: Function uploads monthly snapshot `{year}y_m{month}_metadata.zip.json` with 1-indexed months
-- [ ] **BLOB-07**: Container `api-files` is auto-created with public blob access level if it doesn't exist
-- [ ] **BLOB-08**: Blob uploads set correct Content-Type headers (application/json, application/xml)
+- [x] **BLOB-01**: Function uploads `metadata.latest.json` to `api-files` container on every run
+- [x] **BLOB-02**: Function uploads `metadata.latest.xml` to `api-files` container on every run
+- [x] **BLOB-03**: Function uploads `metadata.latest.zip.json` to `api-files` container on every run
+- [x] **BLOB-04**: Function uploads monthly snapshot `{year}y_m{month}_metadata.json` with 1-indexed months
+- [x] **BLOB-05**: Function uploads monthly snapshot `{year}y_m{month}_metadata.xml` with 1-indexed months
+- [x] **BLOB-06**: Function uploads monthly snapshot `{year}y_m{month}_metadata.zip.json` with 1-indexed months
+- [x] **BLOB-07**: Container `api-files` is auto-created with public blob access level if it doesn't exist
+- [x] **BLOB-08**: Blob uploads set correct Content-Type headers (application/json, application/xml)
 
 ### Operations
 
@@ -117,14 +117,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PROC-02 | Phase 19 | Complete |
 | PROC-03 | Phase 19 | Complete |
 | PROC-04 | Phase 19 | Complete |
-| BLOB-01 | Phase 20 | Pending |
-| BLOB-02 | Phase 20 | Pending |
-| BLOB-03 | Phase 20 | Pending |
-| BLOB-04 | Phase 20 | Pending |
-| BLOB-05 | Phase 20 | Pending |
-| BLOB-06 | Phase 20 | Pending |
-| BLOB-07 | Phase 20 | Pending |
-| BLOB-08 | Phase 20 | Pending |
+| BLOB-01 | Phase 20 | Complete |
+| BLOB-02 | Phase 20 | Complete |
+| BLOB-03 | Phase 20 | Complete |
+| BLOB-04 | Phase 20 | Complete |
+| BLOB-05 | Phase 20 | Complete |
+| BLOB-06 | Phase 20 | Complete |
+| BLOB-07 | Phase 20 | Complete |
+| BLOB-08 | Phase 20 | Complete |
 | OPS-01 | Phase 20 | Pending |
 | OPS-02 | Phase 20 | Pending |
 | OPS-03 | Phase 20 | Pending |
