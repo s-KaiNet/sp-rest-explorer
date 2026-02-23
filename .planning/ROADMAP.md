@@ -79,7 +79,9 @@
   3. Function can make a successful authenticated GET request to SharePoint `_api/web` returning a 200 response
   4. All credentials (tenant ID, client ID, certificate, SP URL) are loaded from environment variables — no hardcoded secrets
   5. TypeScript compiles in strict mode with zero errors and ESLint passes
-**Plans**: TBD
+**Plans**: 1 plan
+Plans:
+- [ ] 18-01-PLAN.md — Scaffold project, auth module, HTTP trigger with end-to-end SharePoint validation
 
 ### Phase 19: Data Pipeline
 **Goal**: Isolated, testable pipeline stages that fetch SharePoint metadata XML, parse it to the exact JSON shape the frontend consumes, and compress it
