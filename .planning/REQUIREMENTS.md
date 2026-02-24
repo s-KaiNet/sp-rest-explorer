@@ -9,16 +9,16 @@ Requirements for milestone v2.1 Connect Frontend. Each maps to roadmap phases.
 
 ### Data Source
 
-- [ ] **DSRC-01**: Frontend fetches metadata from `sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json` instead of the old storage account
-- [ ] **DSRC-02**: METADATA_URL constant updated in a single location (`constants.ts`)
+- [x] **DSRC-01**: Frontend fetches metadata from `sprestapiexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json` instead of the old storage account
+- [x] **DSRC-02**: METADATA_URL constant updated in a single location (`constants.ts`)
 
 ### Decompression
 
-- [ ] **DCMP-01**: lz-string added as a frontend production dependency
-- [ ] **DCMP-02**: Fetched compressed payload is decompressed using `decompressFromUTF16` before JSON.parse
-- [ ] **DCMP-03**: Boot pipeline works end-to-end: fetch compressed blob → decompress → parse → hydrate → app ready
-- [ ] **DCMP-04**: IndexedDB cache continues to store the decompressed Metadata object (no change to cache format)
-- [ ] **DCMP-05**: Background revalidation fetches and decompresses the compressed blob
+- [x] **DCMP-01**: lz-string added as a frontend production dependency
+- [x] **DCMP-02**: Fetched compressed payload is decompressed using `decompressFromUTF16` before JSON.parse
+- [x] **DCMP-03**: Boot pipeline works end-to-end: fetch compressed blob → decompress → parse → hydrate → app ready
+- [x] **DCMP-04**: IndexedDB cache continues to store the decompressed Metadata object (no change to cache format)
+- [x] **DCMP-05**: Background revalidation fetches and decompresses the compressed blob
 
 ## Future Requirements
 
@@ -47,13 +47,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DSRC-01 | Phase 22 | Pending |
-| DSRC-02 | Phase 22 | Pending |
-| DCMP-01 | Phase 22 | Pending |
-| DCMP-02 | Phase 22 | Pending |
-| DCMP-03 | Phase 22 | Pending |
-| DCMP-04 | Phase 22 | Pending |
-| DCMP-05 | Phase 22 | Pending |
+| DSRC-01 | Phase 22 | Complete |
+| DSRC-02 | Phase 22 | Complete |
+| DCMP-01 | Phase 22 | Complete |
+| DCMP-02 | Phase 22 | Complete |
+| DCMP-03 | Phase 22 | Complete |
+| DCMP-04 | Phase 22 | Complete |
+| DCMP-05 | Phase 22 | Complete |
 
 **Coverage:**
 - v2.1 requirements: 7 total
