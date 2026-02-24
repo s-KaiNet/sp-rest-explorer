@@ -55,6 +55,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - Phase 13-02 inserted: Gap closure for root-type color migration (root elements rendering orange instead of green)
 - Phase 16 added: Change color for entity links
 - Phase 17 added: Move icons in search modal
+- Phase 23 added: Recently visited fix
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -78,7 +79,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-24
+**Last session:** 2026-02-24T22:53:24.288Z
 **What happened:** Executed phase 22 plan 01 — switched metadata source to compressed blob with lz-string decompression. Fixed hostname typo and StrictMode double-fetch during verification. Human-verify checkpoint APPROVED.
 **Next step:** `/gsd-complete-milestone` for v2.1
 
