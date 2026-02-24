@@ -16,13 +16,13 @@ See: .planning/PROJECT.md (updated 2026-02-22)
 
 ## Current Position
 
-Phase: 20 — Function Orchestration
-Plan: 2/2 complete
-Status: Phase 20 complete — all plans executed, ready for Phase 21 (Deployment)
-Last activity: 2026-02-23 — Phase 20 Plan 02 executed (handler + triggers with structured logging, 5 unit tests)
+Phase: 21 — Deployment & Validation
+Plan: 1/1 complete
+Status: Phase 21 complete — v2.0 Backend Rework milestone DONE (all 4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓)
+Last activity: 2026-02-24 — Phase 21 Plan 01 executed (deployed to Azure, 6 blobs validated in production)
 
 ```
-v2.0 Progress: ███████████████░░░░░  75% (3/4 phases: 18 ✓, 19 ✓, 20 ✓, 21)
+v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
@@ -40,6 +40,7 @@ v1.4 Progress: ████████████████████ 100%
 | Requirements validated | 38 | 13 | 9 | 6 | 16 |
 | Timeline | 2 days | 3 days | 1 day | 1 day | 2 days |
 | Phase 20 P02 | 3min | 3 tasks | 5 files |
+| Phase 21 P01 | ~30min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,11 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - (20-02) Shared handler pattern: both timer and HTTP triggers call handleMetadataGeneration() — single orchestration source
 - (20-02) Error re-throw with enrichment: attach stageTimings/failedStage to error for HTTP JSON response extraction
 - (20-02) local.settings.json is gitignored — TIMER_SCHEDULE and AzureWebJobsStorage added on disk only
+- (21-01) Key Vault for PEM certificates — Azure app settings mangle multiline values
+- (21-01) System-assigned managed identity with Key Vault Secrets User role
+- (21-01) --dotnet-version 8.0 workaround for func tools v4.7.0 bug
+- (21-01) package.json main field: dist/src/index.js (not glob) with explicit function imports in index.ts
+- (21-01) Removed node_modules/ from .funcignore — runtime deps must deploy
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -95,10 +101,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-23T22:28:54.027Z
-**What happened:** Executed Phase 20 Plan 02 — shared handler with structured logging, timer + HTTP triggers, 5 unit tests. 3 min execution. Phase 20 complete.
-**Next step:** Plan/execute Phase 21 (Deployment) — deploy Azure Functions app
+**Last session:** 2026-02-24
+**What happened:** Executed Phase 21 Plan 01 — deployed Azure Function to sp-rest-explorer-new, configured Key Vault for certificates, validated 6 production blobs. v2.0 Backend Rework milestone complete.
+**Next step:** v2.0 complete. Next milestones: frontend compression switch (FRNT-01), CI/CD (ADDL-02), API changelog (CHLG-01+)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-23 (Phase 20 complete — function orchestration)*
+*Last updated: 2026-02-24 (Phase 21 complete — v2.0 Backend Rework shipped)*

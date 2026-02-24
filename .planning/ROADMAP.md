@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- 🔄 **v2.0 Backend Rework** — Phases 18-21 (active)
+- ✅ **v2.0 Backend Rework** — Phases 18-21 (shipped 2026-02-24)
 - ✅ **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
 - ✅ **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
 - ✅ **v1.2 UI Improvements** — Phases 9-10 (shipped 2026-02-15) — [archive](milestones/v1.2-ROADMAP.md)
@@ -16,7 +16,7 @@
 - [x] **Phase 18: Project Scaffolding & Auth Validation** — New Functions v4 project with certificate-based SharePoint auth proven end-to-end (completed 2026-02-23)
 - [x] **Phase 19: Data Pipeline** — Fetch metadata XML from SharePoint with retry/timeout, parse to JSON, compress with lz-string (completed 2026-02-23)
 - [x] **Phase 20: Function Orchestration** — Wire pipeline into daily timer function with blob upload, structured logging, and operational controls (completed 2026-02-23)
-- [ ] **Phase 21: Deployment & Validation** — Build, publish to Azure, verify production blobs consumed by frontend
+- [x] **Phase 21: Deployment & Validation** — Build, publish to Azure, verify production blobs consumed by frontend (completed 2026-02-24)
 
 <details>
 <summary>v1.0 MVP (Phases 1-5) — SHIPPED 2026-02-12</summary>
@@ -124,7 +124,7 @@ Plans:
   3. Frontend loads metadata from the new blob URLs without any changes (data format compatibility confirmed)
 **Plans**: 1 plan
 Plans:
-- [ ] 21-01-PLAN.md — Update build/deploy scripts, deploy to Azure, configure secrets, validate production blobs
+- [x] 21-01-PLAN.md — Update build/deploy scripts, deploy to Azure, configure secrets, validate production blobs
 
 ## Progress
 
@@ -133,7 +133,7 @@ Plans:
 | 18. Project Scaffolding & Auth Validation | v2.0 | Complete    | 2026-02-23 | 2026-02-23 |
 | 19. Data Pipeline | 3/3 | Complete    | 2026-02-23 | - |
 | 20. Function Orchestration | 2/2 | Complete    | 2026-02-23 | - |
-| 21. Deployment & Validation | v2.0 | 0/? | Not started | - |
+| 21. Deployment & Validation | v2.0 | 1/1 | Complete | 2026-02-24 |
 | 1. Project Scaffolding | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 2. Data Layer & UI Foundation | v1.0 | 2/2 | Complete | 2026-02-11 |
 | 3. Navigation System | v1.0 | 2/2 | Complete | 2026-02-11 |
@@ -156,4 +156,4 @@ Plans:
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-23 (v2.0 Backend Rework phases 18-21 added)*
+*Last updated: 2026-02-24 (v2.0 Backend Rework complete — Phase 21 shipped)*

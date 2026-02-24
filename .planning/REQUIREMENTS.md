@@ -55,9 +55,9 @@ Requirements for v2.0 milestone. Each maps to roadmap phases.
 
 ### Deployment
 
-- [ ] **DEPL-01**: `npm run build` compiles TypeScript to JavaScript
-- [ ] **DEPL-02**: `npm run deploy` builds and publishes to Azure via `func azure functionapp publish`
-- [ ] **DEPL-03**: `.funcignore` excludes local.settings.json, source maps, tests, and source TypeScript
+- [x] **DEPL-01**: `npm run build` compiles TypeScript to JavaScript
+- [x] **DEPL-02**: `npm run deploy` builds and publishes to Azure via `func azure functionapp publish`
+- [x] **DEPL-03**: `.funcignore` excludes local.settings.json, source maps, tests, and source TypeScript
 
 ## Future Requirements
 
@@ -132,9 +132,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | OPS-05 | Phase 20 | Complete |
 | OPS-06 | Phase 20 | Complete |
 | OPS-07 | Phase 20 | Complete |
-| DEPL-01 | Phase 21 | Pending |
-| DEPL-02 | Phase 21 | Pending |
-| DEPL-03 | Phase 21 | Pending |
+| DEPL-01 | Phase 21 | Complete |
+| DEPL-02 | Phase 21 | Complete |
+| DEPL-03 | Phase 21 | Complete |
 
 **Coverage:**
 - v1 requirements: 31 total
@@ -143,4 +143,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-22*
-*Last updated: 2026-02-23 — traceability updated with phase mappings (phases 18-21)*
+*Last updated: 2026-02-24 — all v2.0 requirements complete (DEPL-01, DEPL-02, DEPL-03 marked done)*
