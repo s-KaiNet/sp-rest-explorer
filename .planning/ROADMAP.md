@@ -12,7 +12,7 @@
 
 ## Phases
 
-- [ ] **Phase 22: Switch to Compressed Data Source** — Frontend fetches from new backend and decompresses metadata client-side with ~75% network savings
+- [ ] **Phase 22: Switch to Compressed Data Source** (1 plan) — Frontend fetches from new backend and decompresses metadata client-side with ~75% network savings
 
 <details>
 <summary>✅ v2.0 Backend Rework (Phases 18-21) — SHIPPED 2026-02-24</summary>
@@ -85,13 +85,16 @@
   3. Network transfer for metadata is ~557KB (compressed) instead of ~2.2MB (uncompressed) — verifiable in browser DevTools Network tab
   4. All existing app functionality works identically after the switch — entity browsing, search, type exploration, navigation, detail panels all render the same data
   5. METADATA_URL is defined in a single location (constants.ts) pointing to `sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`
-**Plans**: TBD
+**Plans:** 1 plan
+
+Plans:
+- [ ] 22-01-PLAN.md — Install lz-string, switch METADATA_URL, wire decompression into fetch pipeline
 
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|:--------------:|--------|-----------|
-| 22. Switch to Compressed Data Source | v2.1 | 0/? | Not started | - |
+| 22. Switch to Compressed Data Source | v2.1 | 0/1 | Not started | - |
 | 18. Project Scaffolding & Auth Validation | v2.0 | 1/1 | Complete | 2026-02-23 |
 | 19. Data Pipeline | v2.0 | 3/3 | Complete | 2026-02-23 |
 | 20. Function Orchestration | v2.0 | 2/2 | Complete | 2026-02-23 |
