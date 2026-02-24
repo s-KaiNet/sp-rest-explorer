@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- 🔄 **v2.1 Connect Frontend** — Phase 22 (in progress)
 - ✅ **v2.0 Backend Rework** — Phases 18-21 (shipped 2026-02-24) — [archive](milestones/v2.0-ROADMAP.md)
 - ✅ **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
 - ✅ **v1.1 Search, Types & Polish** — Phases 6-8 (shipped 2026-02-15) — [archive](milestones/v1.1-ROADMAP.md)
@@ -10,6 +11,8 @@
 - ✅ **v1.4 Unify Icons** — Phases 13-17 (shipped 2026-02-19) — [archive](milestones/v1.4-ROADMAP.md)
 
 ## Phases
+
+- [ ] **Phase 22: Switch to Compressed Data Source** — Frontend fetches from new backend and decompresses metadata client-side with ~75% network savings
 
 <details>
 <summary>✅ v2.0 Backend Rework (Phases 18-21) — SHIPPED 2026-02-24</summary>
@@ -70,10 +73,25 @@
 
 </details>
 
+## Phase Details
+
+### Phase 22: Switch to Compressed Data Source
+**Goal**: Frontend loads metadata from the new backend's compressed blobs with lz-string decompression, delivering ~75% network savings while preserving the existing app experience
+**Depends on**: Phase 21 (new backend must be deployed and producing blobs)
+**Requirements**: DSRC-01, DSRC-02, DCMP-01, DCMP-02, DCMP-03, DCMP-04, DCMP-05
+**Success Criteria** (what must be TRUE):
+  1. App boots successfully from a cold start (no cache) — fetches compressed blob from new storage account, decompresses, parses, and renders the home screen with live stats
+  2. App boots successfully from a warm start (cached) — loads decompressed metadata from IndexedDB instantly, then revalidates in the background by fetching and decompressing the compressed blob
+  3. Network transfer for metadata is ~557KB (compressed) instead of ~2.2MB (uncompressed) — verifiable in browser DevTools Network tab
+  4. All existing app functionality works identically after the switch — entity browsing, search, type exploration, navigation, detail panels all render the same data
+  5. METADATA_URL is defined in a single location (constants.ts) pointing to `sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`
+**Plans**: TBD
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|:--------------:|--------|-----------|
+| 22. Switch to Compressed Data Source | v2.1 | 0/? | Not started | - |
 | 18. Project Scaffolding & Auth Validation | v2.0 | 1/1 | Complete | 2026-02-23 |
 | 19. Data Pipeline | v2.0 | 3/3 | Complete | 2026-02-23 |
 | 20. Function Orchestration | v2.0 | 2/2 | Complete | 2026-02-23 |
@@ -100,4 +118,4 @@
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-24 (v2.0 Backend Rework archived)*
+*Last updated: 2026-02-24 (v2.1 Connect Frontend roadmap added)*

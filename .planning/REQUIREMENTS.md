@@ -47,19 +47,19 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DSRC-01 | — | Pending |
-| DSRC-02 | — | Pending |
-| DCMP-01 | — | Pending |
-| DCMP-02 | — | Pending |
-| DCMP-03 | — | Pending |
-| DCMP-04 | — | Pending |
-| DCMP-05 | — | Pending |
+| DSRC-01 | Phase 22 | Pending |
+| DSRC-02 | Phase 22 | Pending |
+| DCMP-01 | Phase 22 | Pending |
+| DCMP-02 | Phase 22 | Pending |
+| DCMP-03 | Phase 22 | Pending |
+| DCMP-04 | Phase 22 | Pending |
+| DCMP-05 | Phase 22 | Pending |
 
 **Coverage:**
 - v2.1 requirements: 7 total
-- Mapped to phases: 0
-- Unmapped: 7 ⚠️
+- Mapped to phases: 7 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 after initial definition*
+*Last updated: 2026-02-24 (all 7 requirements mapped to Phase 22)*

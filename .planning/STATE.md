@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-24)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Milestone v2.1 Connect Frontend
+**Current focus:** Milestone v2.1 Connect Frontend — Phase 22
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
@@ -18,12 +18,13 @@ See: .planning/PROJECT.md (updated 2026-02-24)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 22 — Switch to Compressed Data Source
 Plan: —
-Status: Defining requirements
-Last activity: 2026-02-24 — Milestone v2.1 started
+Status: Phase planned, awaiting plan creation
+Last activity: 2026-02-24 — Roadmap created for v2.1
 
 ```
+v2.1 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/1 phases: 22 pending)
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
@@ -34,13 +35,13 @@ v1.4 Progress: ████████████████████ 100%
 
 ## Performance Metrics
 
-| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 |
-|--------|------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 |
-| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days |
+| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 | v2.1 |
+|--------|------|------|------|------|------|------|------|
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 0 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 0 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 0 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 0 |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | — |
 
 ## Accumulated Context
 
@@ -58,6 +59,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
 - Zustand v5 selector instability — use scalar selectors or `useShallow`
+- lz-string decompressFromUTF16 adds ~30-80ms to boot — acceptable for ~3.5MB network savings
 
 ### Technical Debt
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
@@ -77,9 +79,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ## Session Continuity
 
 **Last session:** 2026-02-24
-**What happened:** Started milestone v2.1 Connect Frontend. Switching frontend data source from old storage account to new backend's compressed blobs with lz-string decompression.
-**Next step:** Define requirements and create roadmap
+**What happened:** Created roadmap for v2.1 Connect Frontend. Single phase (22) covering all 7 requirements — URL switch + lz-string decompression as one atomic delivery.
+**Next step:** `/gsd-plan-phase 22` to create executable plan
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-24 (v2.1 Connect Frontend started)*
+*Last updated: 2026-02-24 (v2.1 roadmap created)*
