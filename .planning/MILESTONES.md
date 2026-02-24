@@ -1,5 +1,25 @@
 # Milestones: SP REST API Explorer — New UI
 
+## v2.0 Backend Rework — Shipped 2026-02-24
+
+**Phases:** 18-21 | **Plans:** 7 | **Tasks:** 17 | **Requirements:** 31/31 validated
+
+Rewrote the Azure Functions backend from scratch — modern TypeScript Azure Functions v4 project with MSAL certificate-based auth, resilient metadata fetch pipeline, byte-identical XML-to-JSON parser, lz-string compression, simplified blob layout, and daily timer. Deployed to Azure with Key Vault-backed certificates and managed identity. ~1,016 LOC TypeScript in 2 days (16 commits).
+
+**Key accomplishments:**
+1. Azure Functions v4 backend scaffolded in `backend/` with MSAL certificate-based SharePoint auth (SHA-256 thumbprint, PEM normalization) proven end-to-end
+2. Resilient metadata fetch with 3-retry exponential backoff, 429 Retry-After respect, and 60s AbortController timeout
+3. MetadataParser ported from legacy (357 lines) — byte-identical JSON output verified via golden-reference TDD with vitest (10 tests)
+4. Full pipeline orchestrator (fetch→parse→compress) with lz-string UTF-16 compression and shared handler for timer+HTTP triggers
+5. Blob upload module writing 6 blobs per run (3 latest + 3 monthly) with Buffer.byteLength content sizing via @azure/storage-blob SDK
+6. Deployed to Azure sp-rest-explorer-new with Key Vault certificates, managed identity, daily 1 AM UTC timer — 6 production blobs validated (2.2MB JSON, 3.0MB XML, 557KB compressed in 2.5s)
+
+**Deferred:** CHLG-01-06 (API Changelog), ADDL-02 (CI/CD), FRNT-01 (frontend compression switch)
+
+**Archive:** [milestones/v2.0-ROADMAP.md](milestones/v2.0-ROADMAP.md) | [milestones/v2.0-REQUIREMENTS.md](milestones/v2.0-REQUIREMENTS.md)
+
+---
+
 ## v1.4 Unify Icons — Shipped 2026-02-19
 
 **Phases:** 13-17 | **Plans:** 7 | **Tasks:** 12 | **Requirements:** 16/16 validated
@@ -97,4 +117,4 @@ Rebuilt the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 **Archive:** [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) | [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md)
 
 ---
-*Last updated: 2026-02-19*
+*Last updated: 2026-02-24*

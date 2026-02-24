@@ -2,24 +2,26 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-22)
+See: .planning/PROJECT.md (updated 2026-02-24)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v2.0 Backend Rework — rewrite Azure Functions backend
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
-- Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
+- Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
+- Backend tech stack locked: Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12
 - GitHub Pages hosting (hash routing required)
+- Azure Functions hosting (sp-rest-explorer-new)
 - Azure Blob Storage data format is fixed
-- Desktop only for v1
+- Desktop only for frontend
 - Incremental delivery — each phase deployable
 
 ## Current Position
 
-Phase: 21 — Deployment & Validation
-Plan: 1/1 complete
-Status: Phase 21 complete — v2.0 Backend Rework milestone DONE (all 4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓)
-Last activity: 2026-02-24 — Phase 21 Plan 01 executed (deployed to Azure, 6 blobs validated in production)
+Phase: — (between milestones)
+Plan: —
+Status: v2.0 Backend Rework shipped. All milestones complete. Planning next milestone.
+Last activity: 2026-02-24 — v2.0 milestone archived
 
 ```
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
@@ -32,46 +34,18 @@ v1.4 Progress: ████████████████████ 100%
 
 ## Performance Metrics
 
-| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 |
-|--------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 |
-| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days |
-| Phase 20 P02 | 3min | 3 tasks | 5 files |
-| Phase 21 P01 | ~30min | 3 tasks | 3 files |
+| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 |
+|--------|------|------|------|------|------|------|
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days |
 
 ## Accumulated Context
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
-
-**v2.0 Decisions:**
-- (18-01) Used `backend/` directory name for new Azure Functions project
-- (18-01) authLevel: 'function' for validateAuth HTTP trigger
-- (18-01) MSAL thumbprintSha256 (not deprecated thumbprint) for certificate auth
-- (18-01) PEM newline normalization in auth module for env var encoding resilience
-- (19-01) All 7 metadata interfaces in single file (interfaces.ts) — reduces import complexity
-- (19-01) FunctionImport boolean flags made optional to match actual serialized JSON shape
-- (19-01) transformResponse override on axios to prevent XML JSON.parse
-- (19-02) Plain async function over class for parser — cleaner API, no stateful coupling
-- (19-02) Type assertions for readonly property mutation during parser construction
-- (19-02) Vitest as test runner — TypeScript-native, zero config
-- (19-03) Thin compressJson() wrapper over lz-string — single place to change compression strategy
-- (19-03) PipelineResult stores all three artifacts (xml, json, compressedJson) for Phase 20 flexibility
-- (19-03) Integration tests without mocking — exercises real parse→compress chain against golden fixtures
-- (20-01) Buffer.byteLength('utf-8') for upload content length — critical for multi-byte lz-string output
-- (20-01) Separated buildBlobList() as exported pure function for easy unit testing without SDK mocking
-- (20-01) Descriptive error throw on missing AzureWebJobsStorage env var — fail fast
-- (20-02) Shared handler pattern: both timer and HTTP triggers call handleMetadataGeneration() — single orchestration source
-- (20-02) Error re-throw with enrichment: attach stageTimings/failedStage to error for HTTP JSON response extraction
-- (20-02) local.settings.json is gitignored — TIMER_SCHEDULE and AzureWebJobsStorage added on disk only
-- (21-01) Key Vault for PEM certificates — Azure app settings mangle multiline values
-- (21-01) System-assigned managed identity with Key Vault Secrets User role
-- (21-01) --dotnet-version 8.0 workaround for func tools v4.7.0 bug
-- (21-01) package.json main field: dist/src/index.js (not glob) with explicit function imports in index.ts
-- (21-01) Removed node_modules/ from .funcignore — runtime deps must deploy
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -88,6 +62,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Technical Debt
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
 - Recently visited kind mapping relies on depth heuristic (depth 2 = root)
+- Legacy `az-funcs/` directory can be removed now that `backend/` is deployed
 
 ### Blockers
 - (None)
@@ -102,9 +77,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ## Session Continuity
 
 **Last session:** 2026-02-24
-**What happened:** Executed Phase 21 Plan 01 — deployed Azure Function to sp-rest-explorer-new, configured Key Vault for certificates, validated 6 production blobs. v2.0 Backend Rework milestone complete.
-**Next step:** v2.0 complete. Next milestones: frontend compression switch (FRNT-01), CI/CD (ADDL-02), API changelog (CHLG-01+)
+**What happened:** Archived v2.0 Backend Rework milestone. All 4 phases (18-21) shipped, 31/31 requirements validated. Milestone artifacts archived to `.planning/milestones/v2.0-*`.
+**Next step:** Run `/gsd-new-milestone` to plan next milestone (candidates: API Changelog CHLG-01+, CI/CD ADDL-02, frontend compression FRNT-01)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-24 (Phase 21 complete — v2.0 Backend Rework shipped)*
+*Last updated: 2026-02-24 (v2.0 Backend Rework archived)*

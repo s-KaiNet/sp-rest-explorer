@@ -4,28 +4,17 @@
 
 A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
 
-## Current Milestone: v2.0 Backend Rework
-
-**Goal:** Rewrite the Azure Functions backend from scratch — modern TypeScript, updated SDKs, simplified blob layout, client credentials auth, resilient daily timer.
-
-**Target features:**
-- New TypeScript Azure Functions project (v4 programming model) replacing `az-funcs/`
-- Client credentials MSAL auth (replacing deprecated ROPC username/password flow)
-- SharePoint `$metadata` XML fetch with retry logic and timeout
-- XML-to-JSON parsing pipeline (xml2js, lz-string compression)
-- Simplified blob storage layout: single `api-files` container with `metadata.latest.*` and monthly `<year>y_m<month>_metadata.*` snapshots
-- Modern SDK stack: `@azure/storage-blob` v12, `@azure/functions` v4, current versions of msal-node, axios, xml2js, lz-string, jsondiffpatch
-- Developer-friendly deployment workflow (local dev, publish to Azure)
-- No diff generation (GenerateDiff function dropped entirely)
+The backend is a clean-room Azure Functions v4 rewrite (`backend/`) replacing the legacy `az-funcs/` — MSAL certificate-based auth, resilient metadata fetch, byte-identical XML-to-JSON parser, lz-string compression, and simplified blob layout. Runs daily on Azure, producing 6 blobs consumed by the frontend.
 
 ## Current State
 
-**Shipped:** v1.4 Unify Icons (2026-02-19)
+**Shipped:** v2.0 Backend Rework (2026-02-24)
 **Frontend codebase:** ~5,175 LOC TypeScript/CSS across 67 files in `app/`
+**Backend codebase:** ~1,016 LOC TypeScript across 15 source files in `backend/src/`
 **Frontend tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, React Router 7
-**Backend codebase (legacy):** `az-funcs/` — Azure Functions v2, deprecated SDKs, ROPC auth, 2 timer functions
+**Backend tech stack:** Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12, axios, xml2js, lz-string, vitest
 
-v1.4 unified all type indicators across the app with a Lucide icon system — TypeIcon component renders distinct icons in designated colors for root (green Box), nav properties (purple Compass), functions (blue Zap), and types/entities (orange Braces). Entity links now use the type-entity color. Search modal footer reorganized for clarity.
+v2.0 rewrote the Azure Functions backend from scratch. New `backend/` project with MSAL certificate-based client credentials auth (replacing deprecated ROPC), resilient fetch with retry/backoff/timeout, golden-reference-verified MetadataParser, pipeline orchestrator, and blob upload to a single `api-files` container. Deployed to sp-rest-explorer-new with Key Vault-backed certificates and managed identity. 6 production blobs validated (2.2MB JSON, 3.0MB XML, 557KB compressed in 2.5s).
 
 ## Core Value
 
@@ -68,21 +57,24 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - LINK-01, LINK-02 — v1.4 (entity link color change to type-entity)
   - SMOD-01 — v1.4 (search modal footer layout)
 
+- **v2.0 (31 requirements):**
+  - PROJ-01 through PROJ-03 — v2.0 (Azure Functions v4 project setup, TypeScript strict, deps pinned)
+  - AUTH-01, AUTH-02 — v2.0 (MSAL certificate auth, env var config)
+  - FTCH-01 through FTCH-04 — v2.0 (metadata fetch, retry, 429 handling, timeout)
+  - PROC-01 through PROC-04 — v2.0 (byte-identical parser, interfaces, compact JSON, lz-string compression)
+  - BLOB-01 through BLOB-08 — v2.0 (6 blobs, container auto-create, content-type headers)
+  - OPS-01 through OPS-07 — v2.0 (daily timer, configurable CRON, fresh Date, structured logging, HTTP trigger, retry policy, all-or-nothing)
+  - DEPL-01 through DEPL-03 — v2.0 (build, deploy, funcignore)
+
 ### Active
 
-- [ ] Rewrite Azure Functions backend from scratch (new project, modern tooling)
-- [ ] Client credentials MSAL auth replacing ROPC flow
-- [ ] SharePoint metadata fetch with retry/timeout resilience
-- [ ] XML-to-JSON parsing pipeline with lz-string compression
-- [ ] Simplified blob layout: `api-files` only, monthly snapshots with 1-indexed months
-- [ ] Developer deployment workflow for Azure Functions
-- [ ] Drop GenerateDiff function entirely (no `diff-files` container)
+*(None — next milestone not yet planned. Run `/gsd-new-milestone` to define.)*
 
 ### Backlog (future milestones)
 
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
-- [ ] Frontend changes to consume new blob layout (if any needed)
+- [ ] FRNT-01: Frontend switches from `metadata.latest.json` to `metadata.latest.zip.json` with lz-string decompression (~30-80ms overhead, ~3.5MB network savings)
 
 ### Out of Scope
 
@@ -99,68 +91,76 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ## Context
 
-Shipped v1.4 with ~5,175 LOC TypeScript/CSS across 67 files. ~24 lines net added over v1.3 (153 insertions, 129 deletions across 10 app files).
+Shipped v2.0 Backend Rework. Combined codebase: ~6,191 LOC TypeScript across `app/` (frontend) and `backend/` (Azure Functions).
 Frontend tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, idb-keyval, React Router 7.
+Backend tech stack: Azure Functions v4, TypeScript 5.7, MSAL Node 2.16, @azure/storage-blob 12.31, axios 1.7, xml2js 0.6, lz-string 1.5, vitest 4.0.
 Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot.
 Icon system: TypeIcon component with Record-based Lucide icon/color lookup maps, OKLCH CSS custom properties for 4 type colors with dark mode variants.
-Old `web/` directory preserved as reference during development.
-
-**Legacy backend (`az-funcs/`):**
-- Azure Functions v2, TypeScript, 2 timer-triggered functions (GenerateMetadata + GenerateDiff)
-- Deprecated: `azure-storage` SDK v2, ROPC auth flow, TSLint, azure-functions-pack, bluebird promisify
-- Pain points: no retry/timeout, module-scope Date stale across warm starts, zero-indexed months, `context.done()` legacy pattern
-- Key libs to preserve logic from: xml2js XML→JSON parser (`src/metadataParser.ts`), lz-string compression, MSAL auth (switching to client credentials)
+Backend pipeline: auth → fetch (retry/backoff/timeout) → parse (xml2js) → compress (lz-string) → upload (6 blobs to `api-files` container).
+Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 
 **Known technical debt:**
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
 - Recently visited kind mapping relies on depth heuristic (depth 2 = root)
-- Legacy `az-funcs/` backend needs full rewrite (v2.0 milestone target)
+- Legacy `az-funcs/` directory can be removed now that `backend/` is deployed
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| MiniSearch over FlexSearch | Native TS, returns full docs, faster init (19ms), simpler API | Good |
-| Sidebar as contextual nav, not tree | Single node has 5-30 children, no virtualization needed | Good |
-| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | Good |
-| New `app/` directory | Keep old `web/` as reference during development | Good |
-| Desktop only for v1 | Focus on core UX, mobile responsive deferred | Good |
-| Dark mode from v1 | Trivial with shadcn/ui + Tailwind dark: variants | Good |
-| Metadata outside Zustand | Frozen 4MB singleton + useSyncExternalStore | Good |
-| @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin | Good |
-| OKLCH color space for type tokens | Perceptually uniform, dark mode adjusts lightness only | Good |
-| Composable function routing | Composable -> entity children, non-composable -> terminal | Good |
-| TypeLink for all entity references | Consistent cross-linking component | Good |
-| Contained scroll layout | h-screen + overflow-hidden + independent scrolling | Good |
-| BFS tree-walk for endpoint indexing | Comprehensive coverage of ~62K reachable paths, ~3,330 unique | Good |
-| Substring matching for path search | MiniSearch tokenization didn't work for path segments | Good |
-| Type classification heuristic | Complex = no nav props AND no function IDs AND not Collection | Good |
-| Precomputed used-by index | O(1) lookup replacing O(n*m) scans | Good |
-| GitHub Dark palette for dark mode | Blue OKLCH undertones, elevated chrome surfaces | Good |
-| Hardcoded How It Works stats | Simpler than computing from live metadata | Good |
-| Replicated TypesSidebar pattern | Different data types (EntityType[] vs ChildEntry[]) make sharing awkward | Good |
-| Namespace from entry.name not returnType | returnType caused 74% of items to land in wrong groups | Good |
-| Hardcoded home stats, live API stats | Home page needs instant render (no data), API page has data loaded | Good |
-| Scoped --modal-border CSS variable | Per-modal dark mode border control without global side effects | Good |
-| ApiType as minimal union type | No enums or utilities, type resolution deferred to consumers | Good |
-| TypeIcon Record-based lookup maps | Cleaner than if/else, easy to extend for new types | Good |
-| OKLCH chroma 0.12-0.15 for type colors | Muted/pastel appearance, consistent with existing color system | Good |
-| Caller-passed apiType prop on SidebarItem | No internal kind-to-type mapping, keeps component simple | Good |
-| Root icon as sole root indicator | Green Box icon replaces pill badge, reduces visual clutter | Good |
-| Entity link color via CSS variable | text-type-entity handles light/dark automatically, no dual classes | Good |
-| Footer hint bar justify-between | Semantic structure over spacer element, consistent Tailwind pattern | Good |
-| Switch ROPC to client credentials | ROPC deprecated by Microsoft, no MFA support, service app doesn't need user context | — Pending |
-| Drop GenerateDiff function | diff-files container not needed, simplifies blob layout | — Pending |
-| Rewrite backend from scratch | Too many deprecated deps and patterns to incrementally migrate | — Pending |
+| MiniSearch over FlexSearch | Native TS, returns full docs, faster init (19ms), simpler API | ✓ Good |
+| Sidebar as contextual nav, not tree | Single node has 5-30 children, no virtualization needed | ✓ Good |
+| cmdk via shadcn/ui CommandDialog | Fast, unstyled, accessible command menu | ✓ Good |
+| New `app/` directory | Keep old `web/` as reference during development | ✓ Good |
+| Desktop only for v1 | Focus on core UX, mobile responsive deferred | ✓ Good |
+| Dark mode from v1 | Trivial with shadcn/ui + Tailwind dark: variants | ✓ Good |
+| Metadata outside Zustand | Frozen 4MB singleton + useSyncExternalStore | ✓ Good |
+| @tailwindcss/vite over PostCSS | Tailwind CSS 4 native Vite plugin | ✓ Good |
+| OKLCH color space for type tokens | Perceptually uniform, dark mode adjusts lightness only | ✓ Good |
+| Composable function routing | Composable -> entity children, non-composable -> terminal | ✓ Good |
+| TypeLink for all entity references | Consistent cross-linking component | ✓ Good |
+| Contained scroll layout | h-screen + overflow-hidden + independent scrolling | ✓ Good |
+| BFS tree-walk for endpoint indexing | Comprehensive coverage of ~62K reachable paths, ~3,330 unique | ✓ Good |
+| Substring matching for path search | MiniSearch tokenization didn't work for path segments | ✓ Good |
+| Type classification heuristic | Complex = no nav props AND no function IDs AND not Collection | ✓ Good |
+| Precomputed used-by index | O(1) lookup replacing O(n*m) scans | ✓ Good |
+| GitHub Dark palette for dark mode | Blue OKLCH undertones, elevated chrome surfaces | ✓ Good |
+| Hardcoded How It Works stats | Simpler than computing from live metadata | ✓ Good |
+| Replicated TypesSidebar pattern | Different data types (EntityType[] vs ChildEntry[]) make sharing awkward | ✓ Good |
+| Namespace from entry.name not returnType | returnType caused 74% of items to land in wrong groups | ✓ Good |
+| Hardcoded home stats, live API stats | Home page needs instant render (no data), API page has data loaded | ✓ Good |
+| Scoped --modal-border CSS variable | Per-modal dark mode border control without global side effects | ✓ Good |
+| ApiType as minimal union type | No enums or utilities, type resolution deferred to consumers | ✓ Good |
+| TypeIcon Record-based lookup maps | Cleaner than if/else, easy to extend for new types | ✓ Good |
+| OKLCH chroma 0.12-0.15 for type colors | Muted/pastel appearance, consistent with existing color system | ✓ Good |
+| Caller-passed apiType prop on SidebarItem | No internal kind-to-type mapping, keeps component simple | ✓ Good |
+| Root icon as sole root indicator | Green Box icon replaces pill badge, reduces visual clutter | ✓ Good |
+| Entity link color via CSS variable | text-type-entity handles light/dark automatically, no dual classes | ✓ Good |
+| Footer hint bar justify-between | Semantic structure over spacer element, consistent Tailwind pattern | ✓ Good |
+| Switch ROPC to client credentials | ROPC deprecated by Microsoft, no MFA support, service app doesn't need user context | ✓ Good |
+| Drop GenerateDiff function | diff-files container not needed, simplifies blob layout | ✓ Good |
+| Rewrite backend from scratch | Too many deprecated deps and patterns to incrementally migrate | ✓ Good |
+| `backend/` directory name | Clearer separation from frontend `app/` | ✓ Good |
+| MSAL thumbprintSha256 | Modern API over deprecated thumbprint property | ✓ Good |
+| Single interfaces.ts for all types | Reduces import complexity for 7 related metadata types | ✓ Good |
+| Async function parser over class | Cleaner API, no stateful coupling, easier testing | ✓ Good |
+| Vitest as test runner | TypeScript-native, zero config, fast | ✓ Good |
+| Shared handler for timer+HTTP | Single orchestration source, no duplication | ✓ Good |
+| Key Vault for PEM certificates | Azure app settings mangle multiline values | ✓ Good |
+| Managed identity for Key Vault | No secrets to rotate or leak | ✓ Good |
+| Buffer.byteLength for blob uploads | Critical for multi-byte lz-string UTF-16 output | ✓ Good |
+| Pure buildBlobList() function | Testable without Azure SDK mocking | ✓ Good |
 
 ## Constraints
 
-- **Tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch 7, React Router 7 (hash mode) — all locked per research
-- **Hosting**: GitHub Pages — requires hash routing (`createHashRouter`), static output to `docs/`
-- **Data format**: Azure Blob Storage JSON format is fixed — cannot change the metadata or diff schema
+- **Frontend tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch 7, React Router 7 (hash mode) — all locked per research
+- **Backend tech stack**: Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12, axios, xml2js, lz-string — locked per v2.0
+- **Hosting**: GitHub Pages (frontend) — requires hash routing, static output to `docs/`
+- **Backend hosting**: Azure Functions (sp-rest-explorer-new) — daily timer + HTTP trigger
+- **Data format**: Azure Blob Storage JSON format is fixed — cannot change the metadata schema
 - **URL compatibility**: Hash routes must match current patterns for any bookmarked URLs
 - **Bundle size**: < 500KB gzipped (current is ~300KB+)
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-22 after v2.0 Backend Rework milestone started*
+*Last updated: 2026-02-24 after v2.0 Backend Rework milestone*
