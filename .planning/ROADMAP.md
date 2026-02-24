@@ -118,7 +118,7 @@ Plans:
 | 15. Cross-View Consistency | v1.4 | 2/2 | Complete | 2026-02-18 |
 | 16. Change color for entity links | v1.4 | 1/1 | Complete | 2026-02-18 |
 | 17. Move icons in search modal | v1.4 | 1/1 | Complete | 2026-02-19 |
-| 23. Recently visited fix | v2.1 | 1/1 | Complete | 2026-02-25 |
+| 23. Recently visited fix | v2.1 | Complete    | 2026-02-24 | 2026-02-25 |
 
 ### Phase 23: Recently visited fix
 
