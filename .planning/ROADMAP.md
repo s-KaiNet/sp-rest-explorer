@@ -119,6 +119,22 @@ Plans:
 | 16. Change color for entity links | v1.4 | 1/1 | Complete | 2026-02-18 |
 | 17. Move icons in search modal | v1.4 | 1/1 | Complete | 2026-02-19 |
 
+### Phase 23: Recently visited fix
+
+**Goal:** Fix three recently visited bugs: (1) clear button doesn't purge in-memory state across components, (2) entity type icon shows Box instead of Braces when selected from search, (3) endpoint icons always show function icon regardless of actual type — by migrating to a Zustand store and expanding SearchSelection with granular kinds
+**Depends on:** Phase 22
+**Requirements:** RVIS-01, RVIS-02, RVIS-03, RVIS-04, RVIS-05
+**Success Criteria** (what must be TRUE):
+  1. Clicking "Clear" on the home page removes all recently visited entries and they do not reappear on any page or after navigation
+  2. Selecting an entity from search records it with kind `'entity'` and displays the Braces icon (orange) in recently visited
+  3. Selecting an endpoint from search records it with the correct kind (`'function'`, `'navProperty'`, or `'root'`) and displays the matching icon
+  4. All consumers (App.tsx, ExplorePage, TypesPage, HomePage) share a single Zustand store instance — no independent useState for recently visited state
+  5. Old localStorage entries with buggy kinds are cleared on store upgrade
+**Plans:** 1 plan
+
+Plans:
+- [ ] 23-01-PLAN.md — Migrate to Zustand store with persist, expand SearchSelection kind, fix icon mapping
+
 ---
 *Roadmap created: 2026-02-11*
 *Last updated: 2026-02-24 (v2.1 Connect Frontend roadmap added)*

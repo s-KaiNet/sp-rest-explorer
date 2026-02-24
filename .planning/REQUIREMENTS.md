@@ -20,6 +20,14 @@ Requirements for milestone v2.1 Connect Frontend. Each maps to roadmap phases.
 - [x] **DCMP-04**: IndexedDB cache continues to store the decompressed Metadata object (no change to cache format)
 - [x] **DCMP-05**: Background revalidation fetches and decompresses the compressed blob
 
+### Recently Visited Fix
+
+- [ ] **RVIS-01**: Clear button purges recently visited entries from all consumers atomically — no stale entries reappear on any page after clearing
+- [ ] **RVIS-02**: Entity types selected from search display the correct Braces icon (entity kind), not the Box icon (root kind)
+- [ ] **RVIS-03**: Endpoint entries in recently visited show the correct icon based on actual type (function=Zap, navProperty=Compass), not always function
+- [ ] **RVIS-04**: Recently visited state managed via Zustand store with persist middleware, replacing independent useState hooks
+- [ ] **RVIS-05**: SearchSelection type expanded with granular kind field (`'entity' | 'function' | 'navProperty' | 'root'`), eliminating lossy kindMap remapping in App.tsx
+
 ## Future Requirements
 
 Deferred to future release. Tracked but not in current roadmap.
@@ -54,12 +62,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DCMP-03 | Phase 22 | Complete |
 | DCMP-04 | Phase 22 | Complete |
 | DCMP-05 | Phase 22 | Complete |
+| RVIS-01 | Phase 23 | Planned |
+| RVIS-02 | Phase 23 | Planned |
+| RVIS-03 | Phase 23 | Planned |
+| RVIS-04 | Phase 23 | Planned |
+| RVIS-05 | Phase 23 | Planned |
 
 **Coverage:**
-- v2.1 requirements: 7 total
-- Mapped to phases: 7 ✓
+- v2.1 requirements: 12 total
+- Mapped to phases: 12 ✓
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 (all 7 requirements mapped to Phase 22)*
+*Last updated: 2026-02-24 (RVIS-01 through RVIS-05 added for Phase 23)*
