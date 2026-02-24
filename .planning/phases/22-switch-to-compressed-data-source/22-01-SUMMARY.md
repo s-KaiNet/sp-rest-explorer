@@ -66,8 +66,9 @@ Each task was committed atomically:
 
 1. **Task 1: Install lz-string and wire decompression into fetch pipeline** - `fac0e01` (feat)
 2. **Task 1.5: Fix METADATA_URL hostname typo** - `8b1ac13` (fix) — continuation fix after checkpoint
+3. **Task 2 fix: Add boot guard for StrictMode idempotency** - `a76fd72` (fix) — continuation fix after second checkpoint review
 
-**Plan metadata:** (pending final commit)
+**Plan metadata:** `6f29ebd` (docs: complete plan)
 
 ## Files Created/Modified
 - `app/package.json` — Added lz-string dependency and @types/lz-string devDependency
@@ -93,13 +94,22 @@ Each task was committed atomically:
 - **Verification:** Build passes, URL now correct
 - **Committed in:** 8b1ac13
 
+**2. [Rule 1 - Bug] Added boot guard to prevent double metadata fetch in StrictMode**
+- **Found during:** Task 2 (checkpoint:human-verify) — user reported double fetch in dev mode
+- **Issue:** React StrictMode double-mounts components, causing `bootMetadata()` to be called twice with two parallel fetch+decompress requests
+- **Fix:** Added module-level `bootPromise` guard so subsequent calls return the same promise; `retryBoot()` resets the guard before re-calling so retry still works
+- **Files modified:** app/src/lib/metadata/boot.ts
+- **Verification:** Build passes, only one fetch request per boot cycle
+- **Committed in:** a76fd72
+
 ---
 
-**Total deviations:** 1 auto-fixed (1 bug — typo in URL)
-**Impact on plan:** Typo was in the plan itself (wrong hostname). Fixed across all documentation and code. No scope creep.
+**Total deviations:** 2 auto-fixed (2 bugs — URL typo and StrictMode double-fetch)
+**Impact on plan:** Both fixes necessary for correct behavior. No scope creep.
 
 ## Issues Encountered
 - METADATA_URL hostname was wrong in the original plan (sprestexplorernew vs sprestapiexplorernew). The typo propagated from planning docs into the implementation. Fixed in continuation after user reported during verification checkpoint.
+- React StrictMode double-mount caused two parallel bootMetadata() calls, resulting in duplicate fetch+decompress. Fixed with module-level promise guard.
 
 ## User Setup Required
 None - no external service configuration required.
@@ -112,7 +122,7 @@ None - no external service configuration required.
 ## Self-Check: PASSED
 
 - All key files exist on disk (package.json, constants.ts, boot.ts)
-- All commits found in git log (fac0e01, 8b1ac13)
+- All commits found in git log (fac0e01, 8b1ac13, a76fd72)
 
 ---
 *Phase: 22-switch-to-compressed-data-source*
