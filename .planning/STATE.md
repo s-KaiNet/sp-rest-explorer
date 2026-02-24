@@ -78,9 +78,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-24T01:18:35Z
-**What happened:** Executed phase 22 plan 01 — switched metadata source to compressed blob with lz-string decompression. Fixed hostname typo (sprestexplorernew → sprestapiexplorernew) found during verification.
-**Next step:** Verify in browser, then `/gsd-complete-milestone` for v2.1
+**Last session:** 2026-02-24
+**What happened:** Executed phase 22 plan 01 — switched metadata source to compressed blob with lz-string decompression. Fixed hostname typo and StrictMode double-fetch during verification. Human-verify checkpoint APPROVED.
+**Next step:** `/gsd-complete-milestone` for v2.1
 
 ---
 *State initialized: 2026-02-11*
