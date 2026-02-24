@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-24)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Planning next milestone
+**Current focus:** Milestone v2.1 Connect Frontend
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
@@ -18,10 +18,10 @@ See: .planning/PROJECT.md (updated 2026-02-24)
 
 ## Current Position
 
-Phase: — (between milestones)
+Phase: Not started (defining requirements)
 Plan: —
-Status: v2.0 Backend Rework shipped. All milestones complete. Planning next milestone.
-Last activity: 2026-02-24 — v2.0 milestone archived
+Status: Defining requirements
+Last activity: 2026-02-24 — Milestone v2.1 started
 
 ```
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
@@ -77,9 +77,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ## Session Continuity
 
 **Last session:** 2026-02-24
-**What happened:** Archived v2.0 Backend Rework milestone. All 4 phases (18-21) shipped, 31/31 requirements validated. Milestone artifacts archived to `.planning/milestones/v2.0-*`.
-**Next step:** Run `/gsd-new-milestone` to plan next milestone (candidates: API Changelog CHLG-01+, CI/CD ADDL-02, frontend compression FRNT-01)
+**What happened:** Started milestone v2.1 Connect Frontend. Switching frontend data source from old storage account to new backend's compressed blobs with lz-string decompression.
+**Next step:** Define requirements and create roadmap
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-24 (v2.0 Backend Rework archived)*
+*Last updated: 2026-02-24 (v2.1 Connect Frontend started)*

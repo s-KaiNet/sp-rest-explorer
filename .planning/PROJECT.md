@@ -68,13 +68,21 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ### Active
 
-*(None — next milestone not yet planned. Run `/gsd-new-milestone` to define.)*
+## Current Milestone: v2.1 Connect Frontend
+
+**Goal:** Switch the frontend data source from the old storage account to the new backend's compressed blobs, adding lz-string decompression for ~75% network savings.
+
+**Target features:**
+- Switch METADATA_URL to new storage account (`sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`)
+- Add lz-string as a frontend dependency for client-side decompression
+- Integrate decompression step into the metadata boot pipeline (fetch → decompress → JSON.parse → hydrate)
+- Maintain existing IndexedDB cache-then-revalidate strategy (cache stores decompressed data)
 
 ### Backlog (future milestones)
 
 - [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
-- [ ] FRNT-01: Frontend switches from `metadata.latest.json` to `metadata.latest.zip.json` with lz-string decompression (~30-80ms overhead, ~3.5MB network savings)
+- [ ] FRNT-01: Frontend switches from `metadata.latest.json` to `metadata.latest.zip.json` with lz-string decompression (~30-80ms overhead, ~3.5MB network savings) *(→ Active in v2.1)*
 
 ### Out of Scope
 
@@ -163,4 +171,4 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-24 after v2.0 Backend Rework milestone*
+*Last updated: 2026-02-24 after starting milestone v2.1 Connect Frontend*
