@@ -1,5 +1,5 @@
 export const METADATA_URL =
-  'https://sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json'
+  'https://sprestapiexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json'
 
 export const CACHE_KEY = 'sp-explorer-metadata'
 

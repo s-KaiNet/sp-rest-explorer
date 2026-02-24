@@ -6,7 +6,7 @@
 <domain>
 ## Phase Boundary
 
-Frontend loads metadata from the new backend's compressed blobs with lz-string decompression, delivering ~75% network savings while preserving the existing app experience. The METADATA_URL is updated to point to `sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`, lz-string is added as a dependency, and the boot pipeline (fetch → decompress → parse → hydrate) works end-to-end for both cold and warm starts. IndexedDB cache continues to store decompressed Metadata objects.
+Frontend loads metadata from the new backend's compressed blobs with lz-string decompression, delivering ~75% network savings while preserving the existing app experience. The METADATA_URL is updated to point to `sprestapiexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`, lz-string is added as a dependency, and the boot pipeline (fetch → decompress → parse → hydrate) works end-to-end for both cold and warm starts. IndexedDB cache continues to store decompressed Metadata objects.
 
 </domain>
 
