@@ -15,9 +15,15 @@
       })();
     </script>
     <style>
+      body { margin: 0; background-color: oklch(1 0 0); color: oklch(0.145 0 0); }
+      .dark body { background-color: oklch(0.16 0.01 260); color: oklch(0.85 0.01 250); }
+      #sp-boot-spinner {
+        position: fixed; inset: 0; display: flex;
+        align-items: center; justify-content: center; z-index: 9999;
+      }
+      #sp-boot-spinner.hidden { display: none; }
       .sp-spinner {
-        width: 32px;
-        height: 32px;
+        width: 32px; height: 32px;
         border: 3px solid oklch(0.922 0 0);
         border-top-color: oklch(0.556 0 0);
         border-radius: 50%;
@@ -33,7 +39,8 @@
     </style>
   </head>
   <body>
-    <div id="root"><div style="display:flex;align-items:center;justify-content:center;min-height:100vh"><div class="sp-spinner"></div></div></div>
+    <div id="sp-boot-spinner"><div class="sp-spinner"></div></div>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
