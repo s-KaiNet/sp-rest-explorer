@@ -22,11 +22,11 @@ Requirements for milestone v2.1 Connect Frontend. Each maps to roadmap phases.
 
 ### Recently Visited Fix
 
-- [ ] **RVIS-01**: Clear button purges recently visited entries from all consumers atomically — no stale entries reappear on any page after clearing
-- [ ] **RVIS-02**: Entity types selected from search display the correct Braces icon (entity kind), not the Box icon (root kind)
-- [ ] **RVIS-03**: Endpoint entries in recently visited show the correct icon based on actual type (function=Zap, navProperty=Compass), not always function
-- [ ] **RVIS-04**: Recently visited state managed via Zustand store with persist middleware, replacing independent useState hooks
-- [ ] **RVIS-05**: SearchSelection type expanded with granular kind field (`'entity' | 'function' | 'navProperty' | 'root'`), eliminating lossy kindMap remapping in App.tsx
+- [x] **RVIS-01**: Clear button purges recently visited entries from all consumers atomically — no stale entries reappear on any page after clearing
+- [x] **RVIS-02**: Entity types selected from search display the correct Braces icon (entity kind), not the Box icon (root kind)
+- [x] **RVIS-03**: Endpoint entries in recently visited show the correct icon based on actual type (function=Zap, navProperty=Compass), not always function
+- [x] **RVIS-04**: Recently visited state managed via Zustand store with persist middleware, replacing independent useState hooks
+- [x] **RVIS-05**: SearchSelection type expanded with granular kind field (`'entity' | 'function' | 'navProperty' | 'root'`), eliminating lossy kindMap remapping in App.tsx
 
 ## Future Requirements
 
@@ -62,11 +62,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DCMP-03 | Phase 22 | Complete |
 | DCMP-04 | Phase 22 | Complete |
 | DCMP-05 | Phase 22 | Complete |
-| RVIS-01 | Phase 23 | Planned |
-| RVIS-02 | Phase 23 | Planned |
-| RVIS-03 | Phase 23 | Planned |
-| RVIS-04 | Phase 23 | Planned |
-| RVIS-05 | Phase 23 | Planned |
+| RVIS-01 | Phase 23 | Complete |
+| RVIS-02 | Phase 23 | Complete |
+| RVIS-03 | Phase 23 | Complete |
+| RVIS-04 | Phase 23 | Complete |
+| RVIS-05 | Phase 23 | Complete |
 
 **Coverage:**
 - v2.1 requirements: 12 total
@@ -75,4 +75,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 (RVIS-01 through RVIS-05 added for Phase 23)*
+*Last updated: 2026-02-25 (RVIS-01 through RVIS-05 completed in Phase 23)*

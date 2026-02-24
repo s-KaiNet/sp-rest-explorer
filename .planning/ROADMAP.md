@@ -88,7 +88,7 @@
 **Plans:** 1/1 plans complete
 
 Plans:
-- [ ] 22-01-PLAN.md — Install lz-string, switch METADATA_URL, wire decompression into fetch pipeline
+- [x] 22-01-PLAN.md — Install lz-string, switch METADATA_URL, wire decompression into fetch pipeline
 
 ## Progress
 
@@ -118,6 +118,7 @@ Plans:
 | 15. Cross-View Consistency | v1.4 | 2/2 | Complete | 2026-02-18 |
 | 16. Change color for entity links | v1.4 | 1/1 | Complete | 2026-02-18 |
 | 17. Move icons in search modal | v1.4 | 1/1 | Complete | 2026-02-19 |
+| 23. Recently visited fix | v2.1 | 1/1 | Complete | 2026-02-25 |
 
 ### Phase 23: Recently visited fix
 
@@ -130,10 +131,10 @@ Plans:
   3. Selecting an endpoint from search records it with the correct kind (`'function'`, `'navProperty'`, or `'root'`) and displays the matching icon
   4. All consumers (App.tsx, ExplorePage, TypesPage, HomePage) share a single Zustand store instance — no independent useState for recently visited state
   5. Old localStorage entries with buggy kinds are cleared on store upgrade
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
-- [ ] 23-01-PLAN.md — Migrate to Zustand store with persist, expand SearchSelection kind, fix icon mapping
+- [x] 23-01-PLAN.md — Migrate to Zustand store with persist, expand SearchSelection kind, fix icon mapping
 
 ---
 *Roadmap created: 2026-02-11*

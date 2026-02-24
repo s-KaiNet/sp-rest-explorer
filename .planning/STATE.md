@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-24)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Milestone v2.1 Connect Frontend — Phase 22
+**Current focus:** Milestone v2.1 Connect Frontend — Phase 23
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
@@ -18,13 +18,13 @@ See: .planning/PROJECT.md (updated 2026-02-24)
 
 ## Current Position
 
-Phase: 22 — Switch to Compressed Data Source
+Phase: 23 — Recently Visited Fix
 Plan: 1 of 1 ✓
-Status: Phase 22 complete — all plans executed
-Last activity: 2026-02-24 — Phase 22 plan 01 executed (compressed metadata source)
+Status: Phase 23 complete — all plans executed
+Last activity: 2026-02-25 — Phase 23 plan 01 executed (recently visited bug fixes)
 
 ```
-v2.1 Progress: ████████████████████ 100% (1/1 phases: 22 ✓)
+v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓)
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
@@ -37,10 +37,10 @@ v1.4 Progress: ████████████████████ 100%
 
 | Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 | v2.1 |
 |--------|------|------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 1 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 1 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 2 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 7 |
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 |
 | Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 1 day |
 
 ## Accumulated Context
@@ -64,7 +64,6 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ### Technical Debt
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
-- Recently visited kind mapping relies on depth heuristic (depth 2 = root)
 - Legacy `az-funcs/` directory can be removed now that `backend/` is deployed
 
 ### Blockers
@@ -79,10 +78,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-24T22:53:24.288Z
-**What happened:** Executed phase 22 plan 01 — switched metadata source to compressed blob with lz-string decompression. Fixed hostname typo and StrictMode double-fetch during verification. Human-verify checkpoint APPROVED.
+**Last session:** 2026-02-25T00:07:00Z
+**What happened:** Executed phase 23 plan 01 — migrated recently visited to Zustand store with persist middleware, expanded SearchSelection kind, removed lossy kindMap. All three bugs fixed and verified. Human-verify checkpoint APPROVED.
 **Next step:** `/gsd-complete-milestone` for v2.1
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-24 (phase 22 plan 01 executed)*
+*Last updated: 2026-02-25 (phase 23 plan 01 executed)*
