@@ -1,3 +1,4 @@
+import { decompressFromUTF16 } from 'lz-string'
 import { METADATA_URL } from '@/lib/constants'
 import { useAppStore } from '@/stores/app-store'
 import { getCachedMetadata, setCachedMetadata } from './metadata-cache'
@@ -78,5 +79,10 @@ async function fetchFresh(): Promise<Metadata> {
   if (!res.ok) {
     throw new Error(`HTTP ${res.status}: ${res.statusText}`)
   }
-  return (await res.json()) as Metadata
+  const compressed = await res.text()
+  const json = decompressFromUTF16(compressed)
+  if (json === null) {
+    throw new Error('Decompression failed: decompressFromUTF16 returned null')
+  }
+  return JSON.parse(json) as Metadata
 }
