@@ -18,7 +18,7 @@ Load all context in one call (paths only to minimize orchestrator context):
 INIT=$(node ./.opencode/get-shit-done/bin/gsd-tools.cjs init plan-phase "$PHASE")
 ```
 
-Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`.
+Parse JSON for: `researcher_model`, `planner_model`, `checker_model`, `research_enabled`, `plan_checker_enabled`, `nyquist_validation_enabled`, `commit_docs`, `phase_found`, `phase_dir`, `phase_number`, `phase_name`, `phase_slug`, `padded_phase`, `has_research`, `has_context`, `has_plans`, `plan_count`, `planning_exists`, `roadmap_exists`.
 
 **File paths (for <files_to_read> blocks):** `state_path`, `roadmap_path`, `requirements_path`, `context_path`, `research_path`, `verification_path`, `uat_path`. These are null if files don't exist.
 
@@ -127,6 +127,31 @@ Task(
 
 - **`## RESEARCH COMPLETE`:** Display confirmation, continue to step 6
 - **`## RESEARCH BLOCKED`:** Display blocker, offer: 1) Provide context, 2) Skip research, 3) Abort
+
+## 5.5. Create Validation Strategy (if Nyquist enabled)
+
+**Skip if:** `nyquist_validation_enabled` is false from INIT JSON.
+
+After researcher completes, check if RESEARCH.md contains a Validation Architecture section:
+
+```bash
+grep -l "## Validation Architecture" "${PHASE_DIR}"/*-RESEARCH.md 2>/dev/null
+```
+
+**If found:**
+1. Read validation template from `./.opencode/get-shit-done/templates/VALIDATION.md`
+2. Write to `${PHASE_DIR}/${PADDED_PHASE}-VALIDATION.md`
+3. Fill frontmatter: replace `{N}` with phase number, `{phase-slug}` with phase slug, `{date}` with current date
+4. If `commit_docs` is true:
+```bash
+node ./.opencode/get-shit-done/bin/gsd-tools.cjs commit-docs "docs(phase-${PHASE}): add validation strategy"
+```
+
+**If not found (and nyquist enabled):** Display warning:
+```
+⚠ Nyquist validation enabled but researcher did not produce a Validation Architecture section.
+  Continuing without validation strategy. Plans may fail Dimension 8 check.
+```
 
 ## 6. Check Existing Plans
 
@@ -240,6 +265,7 @@ Checker prompt:
 - {roadmap_path} (Roadmap)
 - {requirements_path} (Requirements)
 - {context_path} (USER DECISIONS from /gsd-discuss-phase)
+- {research_path} (Technical Research — includes Validation Architecture)
 </files_to_read>
 
 **Phase requirement IDs (MUST ALL be covered):** {phase_req_ids}
@@ -340,10 +366,36 @@ Display banner:
 Plans ready. Spawning execute-phase...
 ```
 
-Spawn execute-phase as Task:
+Spawn execute-phase as Task with direct workflow file reference (do NOT use Skill tool — Skills don't resolve inside Task subagents):
 ```
 Task(
-  prompt="Run /gsd-execute-phase ${PHASE} --auto",
+  prompt="
+    <objective>
+    You are the execute-phase orchestrator. Execute all plans for Phase ${PHASE}: ${PHASE_NAME}.
+    </objective>
+
+    <execution_context>
+    @./.opencode/get-shit-done/workflows/execute-phase.md
+    @./.opencode/get-shit-done/references/checkpoints.md
+    @./.opencode/get-shit-done/references/tdd.md
+    @./.opencode/get-shit-done/references/model-profile-resolution.md
+    </execution_context>
+
+    <arguments>
+    PHASE=${PHASE}
+    ARGUMENTS='${PHASE} --auto --no-transition'
+    </arguments>
+
+    <instructions>
+    1. Read execute-phase.md from execution_context for your complete workflow
+    2. Follow ALL steps: initialize, handle_branching, validate_phase, discover_and_group_plans, execute_waves, aggregate_results, close_parent_artifacts, verify_phase_goal, update_roadmap
+    3. The --no-transition flag means: after verification + roadmap update, STOP and return status. Do NOT run transition.md.
+    4. When spawning executor agents, use subagent_type='gsd-executor' with the existing @file pattern from the workflow
+    5. When spawning verifier agents, use subagent_type='gsd-verifier'
+    6. Preserve the classifyHandoffIfNeeded workaround (spot-check on that specific error)
+    7. Do NOT use the Skill tool or /gsd- commands
+    </instructions>
+  ",
   subagent_type="general",
   description="Execute Phase ${PHASE}"
 )

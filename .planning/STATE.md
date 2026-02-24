@@ -2,27 +2,29 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-22)
+See: .planning/PROJECT.md (updated 2026-02-24)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v2.0 Backend Rework — rewrite Azure Functions backend
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
-- Tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
+- Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
+- Backend tech stack locked: Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12
 - GitHub Pages hosting (hash routing required)
+- Azure Functions hosting (sp-rest-explorer-new)
 - Azure Blob Storage data format is fixed
-- Desktop only for v1
+- Desktop only for frontend
 - Incremental delivery — each phase deployable
 
 ## Current Position
 
-Phase: 18 — Project Scaffolding & Auth Validation
+Phase: — (between milestones)
 Plan: —
-Status: Not started (roadmap created, awaiting plan)
-Last activity: 2026-02-23 — Roadmap created for v2.0
+Status: v2.0 Backend Rework shipped. All milestones complete. Planning next milestone.
+Last activity: 2026-02-24 — v2.0 milestone archived
 
 ```
-v2.0 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/4 phases: 18, 19, 20, 21)
+v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
 v1.2 Progress: ████████████████████ 100% (2/2 phases: 09, 10) — SHIPPED
@@ -32,13 +34,13 @@ v1.4 Progress: ████████████████████ 100%
 
 ## Performance Metrics
 
-| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 |
-|--------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 |
-| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days |
+| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 |
+|--------|------|------|------|------|------|------|
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days |
 
 ## Accumulated Context
 
@@ -60,6 +62,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Technical Debt
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
 - Recently visited kind mapping relies on depth heuristic (depth 2 = root)
+- Legacy `az-funcs/` directory can be removed now that `backend/` is deployed
 
 ### Blockers
 - (None)
@@ -73,10 +76,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-23T00:25:56.251Z
-**What happened:** Created roadmap for v2.0 Backend Rework — 4 phases (18-21) covering all 31 requirements. Phase structure: Scaffolding+Auth → Data Pipeline → Function Orchestration → Deployment.
-**Next step:** `/gsd-plan-phase 18` — plan Project Scaffolding & Auth Validation
+**Last session:** 2026-02-24
+**What happened:** Archived v2.0 Backend Rework milestone. All 4 phases (18-21) shipped, 31/31 requirements validated. Milestone artifacts archived to `.planning/milestones/v2.0-*`.
+**Next step:** Run `/gsd-new-milestone` to plan next milestone (candidates: API Changelog CHLG-01+, CI/CD ADDL-02, frontend compression FRNT-01)
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-23 (v2.0 roadmap created)*
+*Last updated: 2026-02-24 (v2.0 Backend Rework archived)*
