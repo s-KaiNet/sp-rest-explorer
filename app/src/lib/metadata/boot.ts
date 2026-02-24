@@ -8,8 +8,17 @@ import { initSearchIndex } from './search-index'
 import { initTypeIndexes } from './type-indexes'
 import type { Metadata } from './types'
 
+/** Module-level guard prevents duplicate boot (e.g. React StrictMode double-mount). */
+let bootPromise: Promise<void> | null = null
+
 /** Hydrate the data layer: cache → fetch → freeze → build maps → build index → ready. */
 export async function bootMetadata(): Promise<void> {
+  if (bootPromise) return bootPromise
+  bootPromise = doBootMetadata()
+  return bootPromise
+}
+
+async function doBootMetadata(): Promise<void> {
   const { setStatus } = useAppStore.getState()
   setStatus('loading')
 
@@ -62,6 +71,7 @@ export async function bootMetadata(): Promise<void> {
 /** Reset and retry the boot sequence. */
 export async function retryBoot(): Promise<void> {
   useAppStore.getState().setStatus('idle')
+  bootPromise = null
   return bootMetadata()
 }
 
