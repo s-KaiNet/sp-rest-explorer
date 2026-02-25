@@ -51,15 +51,11 @@ function App() {
     (selection: SearchSelection) => {
       navigate(selection.path)
 
-      // Map search kind to recently-visited kind
-      const kindMap: Record<SearchSelection['kind'], 'function' | 'navProperty' | 'root'> = {
-        entity: 'root',
-        endpoint: 'function',
-      }
+      // SearchSelection.kind now matches RecentlyVisitedItem.kind directly — no mapping needed
       addVisit({
         name: selection.name,
         path: selection.path,
-        kind: kindMap[selection.kind],
+        kind: selection.kind,
       })
 
       setPaletteOpen(false)

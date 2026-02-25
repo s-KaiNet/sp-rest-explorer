@@ -18,7 +18,7 @@ import type { ApiType } from '@/lib/api-types'
 export interface SearchSelection {
   path: string       // Navigation path (already resolved)
   name: string       // Display name
-  kind: 'entity' | 'endpoint'
+  kind: 'entity' | 'function' | 'navProperty' | 'root'
 }
 
 interface CommandPaletteProps {
@@ -321,13 +321,19 @@ export function CommandPalette({
     [onSelect, onOpenChange],
   )
 
-  // Handle endpoint selection
+  // Handle endpoint selection — emit granular kind for recently-visited icon correctness
   const handleEndpointSelect = useCallback(
     (result: SearchResult) => {
+      const kind: SearchSelection['kind'] = (result.isRoot as boolean)
+        ? 'root'
+        : (result.endpointKind as string) === 'function'
+          ? 'function'
+          : 'navProperty'
+
       onSelect({
         path: `/${result.path as string}`,  // path is "_api/..." so prefix with /
         name: result.name as string,
-        kind: 'endpoint',
+        kind,
       })
       onOpenChange(false)
     },
