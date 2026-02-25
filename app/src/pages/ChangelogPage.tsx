@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
-import { AlertCircle, ClipboardCheck, RefreshCw } from 'lucide-react'
+import { AlertCircle, ClipboardCheck, Filter, RefreshCw } from 'lucide-react'
+import type { ChangeType } from '@/lib/diff'
 import {
   useDiffSnapshot,
   useDiffStatus,
@@ -31,17 +32,69 @@ function parseMonthKey(key: string): { year: number; month: number } | null {
   return { year, month }
 }
 
+/** Subtract N months from the current date. Returns the comparison year/month. */
+function getComparisonDate(rangeMonths: number): { year: number; month: number } {
+  if (rangeMonths === 1) return getDefaultComparisonDate()
+
+  const now = new Date()
+  const currentMonth = now.getMonth() + 1 // 1-indexed
+  const currentYear = now.getFullYear()
+
+  // Subtract rangeMonths from current date
+  let targetMonth = currentMonth - rangeMonths
+  let targetYear = currentYear
+  while (targetMonth <= 0) {
+    targetMonth += 12
+    targetYear -= 1
+  }
+
+  return { year: targetYear, month: targetMonth }
+}
+
+// ── Filter chip config ──
+
+const chipConfig: { type: ChangeType; label: string; activeClass: string }[] = [
+  {
+    type: 'added',
+    label: 'Added',
+    activeClass:
+      'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-300 dark:border-green-700',
+  },
+  {
+    type: 'updated',
+    label: 'Updated',
+    activeClass:
+      'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-300 dark:border-blue-700',
+  },
+  {
+    type: 'removed',
+    label: 'Removed',
+    activeClass:
+      'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-300 dark:border-red-700',
+  },
+]
+
+const INACTIVE_CHIP_CLASS = 'bg-muted/50 text-muted-foreground border-border'
+
 export function ChangelogPage() {
   const { monthKey } = useParams<{ monthKey?: string }>()
 
-  // Determine comparison date from URL param or default
+  // Range selector state
+  const [rangeMonths, setRangeMonths] = useState(1)
+
+  // Filter chip state — all ON by default
+  const [activeFilters, setActiveFilters] = useState<Set<ChangeType>>(
+    () => new Set<ChangeType>(['added', 'updated', 'removed']),
+  )
+
+  // Determine comparison date from URL param or range selector
   const { year, month } = useMemo(() => {
     if (monthKey) {
       const parsed = parseMonthKey(monthKey)
       if (parsed) return parsed
     }
-    return getDefaultComparisonDate()
-  }, [monthKey])
+    return getComparisonDate(rangeMonths)
+  }, [monthKey, rangeMonths])
 
   // Kick off diff computation on mount; reset on unmount
   useEffect(() => {
@@ -53,7 +106,7 @@ export function ChangelogPage() {
   const diff = useDiffSnapshot()
   const diffError = useDiffError()
 
-  // Compute summary counts
+  // Compute summary counts (always from full diff — unaffected by filters)
   const counts = useMemo(() => {
     if (!diff) return { added: 0, updated: 0, removed: 0 }
     return {
@@ -70,9 +123,44 @@ export function ChangelogPage() {
   }, [diff])
 
   const totalChanges = counts.added + counts.updated + counts.removed
+
+  // Filtered arrays for detail content
+  const filteredFunctions = useMemo(
+    () => (diff ? diff.functions.filter((f) => activeFilters.has(f.changeType)) : []),
+    [diff, activeFilters],
+  )
+  const filteredEntities = useMemo(
+    () => (diff ? diff.entities.filter((e) => activeFilters.has(e.changeType)) : []),
+    [diff, activeFilters],
+  )
+  const filteredTotal = filteredFunctions.length + filteredEntities.length
+
   const isReady = status === 'ready'
   const isLoading = status === 'loading' || status === 'idle'
   const isError = status === 'error'
+
+  // Build subtitle text based on range
+  const subtitleText = useMemo(() => {
+    if (rangeMonths === 1) {
+      return `Changes in ${getMonthLabel(year, month)}`
+    }
+    // Multi-month range: show "from {start} to {end}"
+    // End is the current comparison month (one month ago from today)
+    const defaultEnd = getDefaultComparisonDate()
+    return `Changes from ${getMonthLabel(year, month)} to ${getMonthLabel(defaultEnd.year, defaultEnd.month)}`
+  }, [rangeMonths, year, month])
+
+  function toggleFilter(type: ChangeType) {
+    setActiveFilters((prev) => {
+      const next = new Set(prev)
+      if (next.has(type)) {
+        next.delete(type)
+      } else {
+        next.add(type)
+      }
+      return next
+    })
+  }
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -80,9 +168,37 @@ export function ChangelogPage() {
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-[28px] font-bold text-foreground mb-2">API Changelog</h1>
-          <p className="text-[15px] text-muted-foreground">
-            Changes in {getMonthLabel(year, month)}
-          </p>
+          <p className="text-[15px] text-muted-foreground">{subtitleText}</p>
+        </div>
+
+        {/* Sticky toolbar — range dropdown + filter chips */}
+        <div className="sticky top-14 z-40 bg-background/95 backdrop-blur-sm py-3 -mx-6 px-6 border-b border-border/50 flex items-center justify-between gap-4 mb-6">
+          {/* Range dropdown */}
+          <select
+            value={String(rangeMonths)}
+            onChange={(e) => setRangeMonths(Number(e.target.value))}
+            className="rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          >
+            <option value="1">Current month</option>
+            <option value="3">Last 3 months</option>
+            <option value="6">Last 6 months</option>
+          </select>
+
+          {/* Filter chips */}
+          <div className="flex items-center gap-2">
+            {chipConfig.map(({ type, label, activeClass }) => (
+              <button
+                key={type}
+                type="button"
+                onClick={() => toggleFilter(type)}
+                className={`rounded-full px-3 py-1 text-xs font-medium border cursor-pointer transition-colors ${
+                  activeFilters.has(type) ? activeClass : INACTIVE_CHIP_CLASS
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Loading state */}
@@ -117,7 +233,7 @@ export function ChangelogPage() {
         {/* Ready state */}
         {isReady && (
           <>
-            {/* Summary bar — always show 3 stat cards */}
+            {/* Summary bar — always show 3 stat cards with FULL totals */}
             <div className="flex gap-4">
               <div className="flex-1 rounded-xl border border-border bg-background p-5 text-center">
                 <div className="text-3xl font-bold leading-none mb-1 text-green-600 dark:text-green-400">
@@ -139,7 +255,7 @@ export function ChangelogPage() {
               </div>
             </div>
 
-            {/* Empty state — all counts zero */}
+            {/* Empty state — diff itself has zero results */}
             {totalChanges === 0 && (
               <div className="flex flex-col items-center py-12">
                 <ClipboardCheck className="size-12 text-muted-foreground/40" />
@@ -151,29 +267,40 @@ export function ChangelogPage() {
               </div>
             )}
 
-            {/* Detail views — root functions then entities */}
-            {totalChanges > 0 && diff && (
+            {/* Filter empty state — all chips off */}
+            {totalChanges > 0 && activeFilters.size === 0 && (
+              <div className="flex flex-col items-center py-12">
+                <Filter className="size-10 text-muted-foreground/40" />
+                <p className="text-sm text-muted-foreground mt-3">No change types selected</p>
+                <p className="text-xs text-muted-foreground/60 mt-1">
+                  Toggle the filter chips above to show changes
+                </p>
+              </div>
+            )}
+
+            {/* Detail views — filtered root functions then entities */}
+            {totalChanges > 0 && filteredTotal > 0 && diff && (
               <div className="mt-8 space-y-2">
                 {/* Root Functions section — before entities per user decision */}
                 <CollapsibleSection
                   id="root-functions"
                   title="Root Functions"
-                  count={diff.functions.length}
+                  count={filteredFunctions.length}
                   emptyMessage="No root function changes"
                 >
-                  <RootFunctionsTable functions={diff.functions} />
+                  <RootFunctionsTable functions={filteredFunctions} />
                 </CollapsibleSection>
 
                 {/* Entities section */}
                 <CollapsibleSection
                   id="entities"
                   title="Entities"
-                  count={diff.entities.length}
+                  count={filteredEntities.length}
                   emptyMessage="No entity changes"
                 >
                   <div className="space-y-3 pt-2">
-                    {[...diff.entities]
-                      .sort((a, b) => a.name.localeCompare(b.name))
+                    {filteredEntities
+                      .toSorted((a, b) => a.name.localeCompare(b.name))
                       .map((entity) => (
                         <EntityChangeCard key={entity.name} entity={entity} />
                       ))}
