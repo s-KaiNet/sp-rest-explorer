@@ -16,7 +16,7 @@
 
 ### v2.3 GH Pages
 
-- [ ] **Phase 29: Automated GitHub Pages Deployment** — Replace committed docs/ with GitHub Actions CI/CD pipeline
+- [x] **Phase 29: Automated GitHub Pages Deployment** — Replace committed docs/ with GitHub Actions CI/CD pipeline (completed 2026-02-25)
 
 <details>
 <summary>✅ v2.2 API Changelog (Phases 24-28) — SHIPPED 2026-02-25</summary>
@@ -117,7 +117,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 29. Automated GitHub Pages Deployment | 2/2 | Complete   | 2026-02-25 |
+| 29. Automated GitHub Pages Deployment | 2/2 | Complete    | 2026-02-25 |
 
 ---
 *Roadmap created: 2026-02-11*
