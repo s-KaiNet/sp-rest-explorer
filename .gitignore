@@ -2,3 +2,4 @@
 .vite/
 docs/
 app/dist/
+.opencode/
