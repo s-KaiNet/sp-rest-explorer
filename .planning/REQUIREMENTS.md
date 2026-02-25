@@ -9,9 +9,9 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 
 ### Data Pipeline
 
-- [ ] **DATA-01**: User can view changelog computed by fetching compressed metadata.latest.zip.json and historical monthly blob via client-side download
-- [ ] **DATA-02**: App decompresses fetched blobs client-side using lz-string decompressFromUTF16
-- [ ] **DATA-03**: App computes diff using DiffGenerator class (ported from az-funcs/) with jsondiffpatch
+- [x] **DATA-01**: User can view changelog computed by fetching compressed metadata.latest.zip.json and historical monthly blob via client-side download
+- [x] **DATA-02**: App decompresses fetched blobs client-side using lz-string decompressFromUTF16
+- [x] **DATA-03**: App computes diff using DiffGenerator class (ported from az-funcs/) with jsondiffpatch
 - [ ] **DATA-04**: User can select a range of 1-6 months; app compares current metadata vs the blob from N months ago for a merged cumulative diff
 
 ### Changelog UI
@@ -62,9 +62,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | Phase 24 | Pending |
-| DATA-02 | Phase 24 | Pending |
-| DATA-03 | Phase 24 | Pending |
+| DATA-01 | Phase 24 | Complete |
+| DATA-02 | Phase 24 | Complete |
+| DATA-03 | Phase 24 | Complete |
 | DATA-04 | Phase 27 | Pending |
 | VIEW-01 | Phase 25 | Pending |
 | VIEW-02 | Phase 25 | Pending |

@@ -19,12 +19,12 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 ## Current Position
 
 Phase: 24 — Diff Engine
-Plan: —
-Status: Roadmap created, awaiting plan
-Last activity: 2026-02-25 — v2.2 roadmap created
+Plan: 2 of 2
+Status: Plan 01 complete, executing Plan 02 next
+Last activity: 2026-02-25 — Plan 01 (diff core modules) complete
 
 ```
-v2.2 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/4 phases: 24, 25, 26, 27)
+v2.2 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/4 phases: 24 [1/2 plans], 25, 26, 27)
 v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -43,11 +43,14 @@ v1.4 Progress: ████████████████████ 100%
 | Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 0 |
 | Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 0 |
 | Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | — |
+| Phase 24 P01 | 2 min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
+
+**Phase 24-01:** ChangeType as string union (not enum) — codebase convention. structuredClone() for deep copy. null-on-404 for missing historical blobs. Renamed functionIds→functions in DiffEntity.
 
 ### v2.2 Phase Design Rationale
 - **Phase 24 (Diff Engine)** is pure data: fetch historical blobs, decompress, port DiffGenerator, compute diffs. No UI — this is the foundation everything else renders.
@@ -86,10 +89,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T02:30:54.535Z
-**What happened:** Created v2.2 API Changelog roadmap. 18 requirements mapped to 4 phases (24-27): Diff Engine → Page Shell → Detail Views → Filtering & Range Selection.
-**Next step:** Plan Phase 24 (Diff Engine) — port DiffGenerator from az-funcs/, install jsondiffpatch, wire blob fetch pipeline
+**Last session:** 2026-02-25T02:51:45.630Z
+**What happened:** Executed Plan 24-01 (diff core modules). Installed jsondiffpatch, created DiffChanges types, ported compute-diff + transform-delta + fetch-historical utilities.
+**Next step:** Execute Plan 24-02 (diff-store) — orchestrate the diff pipeline with useSyncExternalStore singleton
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (v2.2 roadmap created)*
+*Last updated: 2026-02-25 (plan 24-01 complete)*
