@@ -37,6 +37,15 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 - [x] **INTG-03**: User sees a loading indicator while metadata blobs are being fetched and diff is being computed
 - [x] **INTG-04**: App handles fetch failures and missing blobs gracefully with an error message
 
+## Changelog Refinements (Phase 28)
+
+Post-v2.2 visual/interaction refinements to the API Changelog page.
+
+- [ ] **CHLG-01**: Range selector uses a segmented control (connected button group) instead of a native dropdown
+- [ ] **CHLG-02**: Full-width stat cards removed; change counts integrated into filter buttons
+- [ ] **CHLG-03**: Filter buttons are medium-sized rounded rectangles with integrated counts (e.g., "Added (12)")
+- [ ] **CHLG-04**: Change-type colors are muted in light mode (emerald/sky/rose); dark mode unchanged
+
 ## Future Requirements
 
 ### Enhancements (deferred)
@@ -80,12 +89,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INTG-02 | Phase 25 | Complete |
 | INTG-03 | Phase 25 | Complete |
 | INTG-04 | Phase 25 | Complete |
+| CHLG-01 | Phase 28 | Planned |
+| CHLG-02 | Phase 28 | Planned |
+| CHLG-03 | Phase 28 | Planned |
+| CHLG-04 | Phase 28 | Planned |
 
 **Coverage:**
-- v2.2 requirements: 18 total
-- Mapped to phases: 18
+- v2.2 requirements: 18 total (all complete)
+- Changelog refinements: 4 total (Phase 28)
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-25*
-*Last updated: 2026-02-25 — all 18 requirements mapped to phases 24-27*
+*Last updated: 2026-02-25 — Phase 28 changelog refinement requirements added*

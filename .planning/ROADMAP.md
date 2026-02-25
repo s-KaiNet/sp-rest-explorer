@@ -179,6 +179,16 @@ Plans:
 | 16. Change color for entity links | v1.4 | 1/1 | Complete | 2026-02-18 |
 | 17. Move icons in search modal | v1.4 | 1/1 | Complete | 2026-02-19 |
 
+### Phase 28: API Changelog changes
+
+**Goal:** Refine the changelog page toolbar and colors — replace the range dropdown with a segmented control, remove stat cards, redesign filter buttons with integrated counts, and mute change-type colors in light mode
+**Depends on:** Phase 27
+**Requirements:** CHLG-01, CHLG-02, CHLG-03, CHLG-04
+**Plans:** 1 plan
+
+Plans:
+- [ ] 28-01-PLAN.md — Toolbar refactoring (segmented control, filter buttons) and muted color palette
+
 ---
 *Roadmap created: 2026-02-11*
 *Last updated: 2026-02-25 (v2.2 API Changelog roadmap created)*
