@@ -42,7 +42,7 @@ export function RootFunctionsTable({ functions }: RootFunctionsTableProps) {
           >
             <td className="truncate border-b border-border/50 py-1.5 pr-3">
               {fn.changeType !== 'removed' ? (
-                <Link to="/_api/" className="hover:underline" title="View in Explore API">
+                <Link to={`/_api/${fn.name}`} className="hover:underline" title={`View ${fn.name} in Explore API`}>
                   <CodeText variant="fn">{fn.name}</CodeText>
                 </Link>
               ) : (
