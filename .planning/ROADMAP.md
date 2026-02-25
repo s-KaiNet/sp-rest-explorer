@@ -138,7 +138,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|:--------------:|--------|-----------|
-| 24. Diff Engine | 2/2 | Complete   | 2026-02-25 | - |
+| 24. Diff Engine | 2/2 | Complete    | 2026-02-25 | - |
 | 25. Changelog Page Shell | v2.2 | 0/? | Not started | - |
 | 26. Change Detail Views | v2.2 | 0/? | Not started | - |
 | 27. Filtering & Range Selection | v2.2 | 0/? | Not started | - |
