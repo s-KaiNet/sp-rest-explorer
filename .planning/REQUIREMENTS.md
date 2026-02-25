@@ -9,16 +9,24 @@ Requirements for milestone v2.1 Connect Frontend. Each maps to roadmap phases.
 
 ### Data Source
 
-- [ ] **DSRC-01**: Frontend fetches metadata from `sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json` instead of the old storage account
-- [ ] **DSRC-02**: METADATA_URL constant updated in a single location (`constants.ts`)
+- [x] **DSRC-01**: Frontend fetches metadata from `sprestapiexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json` instead of the old storage account
+- [x] **DSRC-02**: METADATA_URL constant updated in a single location (`constants.ts`)
 
 ### Decompression
 
-- [ ] **DCMP-01**: lz-string added as a frontend production dependency
-- [ ] **DCMP-02**: Fetched compressed payload is decompressed using `decompressFromUTF16` before JSON.parse
-- [ ] **DCMP-03**: Boot pipeline works end-to-end: fetch compressed blob → decompress → parse → hydrate → app ready
-- [ ] **DCMP-04**: IndexedDB cache continues to store the decompressed Metadata object (no change to cache format)
-- [ ] **DCMP-05**: Background revalidation fetches and decompresses the compressed blob
+- [x] **DCMP-01**: lz-string added as a frontend production dependency
+- [x] **DCMP-02**: Fetched compressed payload is decompressed using `decompressFromUTF16` before JSON.parse
+- [x] **DCMP-03**: Boot pipeline works end-to-end: fetch compressed blob → decompress → parse → hydrate → app ready
+- [x] **DCMP-04**: IndexedDB cache continues to store the decompressed Metadata object (no change to cache format)
+- [x] **DCMP-05**: Background revalidation fetches and decompresses the compressed blob
+
+### Recently Visited Fix
+
+- [ ] **RVIS-01**: Clear button purges recently visited entries from all consumers atomically — no stale entries reappear on any page after clearing
+- [ ] **RVIS-02**: Entity types selected from search display the correct Braces icon (entity kind), not the Box icon (root kind)
+- [ ] **RVIS-03**: Endpoint entries in recently visited show the correct icon based on actual type (function=Zap, navProperty=Compass), not always function
+- [ ] **RVIS-04**: Recently visited state managed via Zustand store with persist middleware, replacing independent useState hooks
+- [ ] **RVIS-05**: SearchSelection type expanded with granular kind field (`'entity' | 'function' | 'navProperty' | 'root'`), eliminating lossy kindMap remapping in App.tsx
 
 ## Future Requirements
 
@@ -47,19 +55,24 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DSRC-01 | Phase 22 | Pending |
-| DSRC-02 | Phase 22 | Pending |
-| DCMP-01 | Phase 22 | Pending |
-| DCMP-02 | Phase 22 | Pending |
-| DCMP-03 | Phase 22 | Pending |
-| DCMP-04 | Phase 22 | Pending |
-| DCMP-05 | Phase 22 | Pending |
+| DSRC-01 | Phase 22 | Complete |
+| DSRC-02 | Phase 22 | Complete |
+| DCMP-01 | Phase 22 | Complete |
+| DCMP-02 | Phase 22 | Complete |
+| DCMP-03 | Phase 22 | Complete |
+| DCMP-04 | Phase 22 | Complete |
+| DCMP-05 | Phase 22 | Complete |
+| RVIS-01 | Phase 23 | Planned |
+| RVIS-02 | Phase 23 | Planned |
+| RVIS-03 | Phase 23 | Planned |
+| RVIS-04 | Phase 23 | Planned |
+| RVIS-05 | Phase 23 | Planned |
 
 **Coverage:**
-- v2.1 requirements: 7 total
-- Mapped to phases: 7 ✓
+- v2.1 requirements: 12 total
+- Mapped to phases: 12 ✓
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 (all 7 requirements mapped to Phase 22)*
+*Last updated: 2026-02-24 (RVIS-01 through RVIS-05 added for Phase 23)*

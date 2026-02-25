@@ -73,7 +73,7 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 **Goal:** Switch the frontend data source from the old storage account to the new backend's compressed blobs, adding lz-string decompression for ~75% network savings.
 
 **Target features:**
-- Switch METADATA_URL to new storage account (`sprestexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`)
+- Switch METADATA_URL to new storage account (`sprestapiexplorernew.blob.core.windows.net/api-files/metadata.latest.zip.json`)
 - Add lz-string as a frontend dependency for client-side decompression
 - Integrate decompression step into the metadata boot pipeline (fetch → decompress → JSON.parse → hydrate)
 - Maintain existing IndexedDB cache-then-revalidate strategy (cache stores decompressed data)

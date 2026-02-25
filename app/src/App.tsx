@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router'
 import { Header } from '@/components/layout'
 import { CommandPalette } from '@/components/search'
 import type { SearchSelection } from '@/components/search'
-import { LoadingState, ErrorState } from '@/components/loading'
+import { ErrorState } from '@/components/loading'
 import { bootMetadata } from '@/lib/metadata'
 import { useRecentlyVisited } from '@/hooks'
 import { useAppStore } from '@/stores/app-store'
@@ -17,6 +17,13 @@ function App() {
   useEffect(() => {
     void bootMetadata()
   }, [])
+
+  // Hide the HTML boot spinner once React takes over loading UI
+  useEffect(() => {
+    if (status === 'ready' || status === 'error') {
+      document.getElementById('sp-boot-spinner')?.classList.add('hidden')
+    }
+  }, [status])
 
   // Global Cmd+K / Ctrl+K shortcut — toggle palette (only when metadata ready)
   useEffect(() => {
@@ -70,9 +77,7 @@ function App() {
           </div>
         ) : status === 'error' ? (
           <ErrorState />
-        ) : (
-          <LoadingState />
-        )}
+        ) : null}
       </main>
       <CommandPalette
         open={paletteOpen}
