@@ -112,7 +112,10 @@ Plans:
   3. User sees a summary bar displaying counts of added, updated, and removed entities/functions once the diff completes
   4. User sees a friendly empty state message when no changes exist for the selected period
   5. User sees a clear error message if blob fetching fails or a historical blob is missing
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 25-01-PLAN.md — Implement changelog page shell with summary bar, loading/error/empty states
 
 ### Phase 26: Change Detail Views
 **Goal**: Users can inspect the full details of API changes — expandable entity cards with property-level diffs, a root functions change table, and color-coded change-type badges on every item
