@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v2.2 API Changelog — Phase 24 (Diff Engine)
+**Current focus:** v2.2 API Changelog — Phase 25 (Changelog Page Shell)
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, lz-string, React Router 7
@@ -18,13 +18,13 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: 24 — Diff Engine ✓
-Plan: 2 of 2 ✓
-Status: Phase 24 complete — all plans executed
-Last activity: 2026-02-25 — Plan 02 (diff-store) complete, phase done
+Phase: 25 — Changelog Page Shell ✓
+Plan: 1 of 1 ✓
+Status: Phase 25 complete — all plans executed
+Last activity: 2026-02-25 — Plan 01 (changelog page shell) complete, phase done
 
 ```
-v2.2 Progress: █████░░░░░░░░░░░░░░░  25% (1/4 phases: 24 ✓, 25, 26, 27)
+v2.2 Progress: ██████████░░░░░░░░░░  50% (2/4 phases: 24 ✓, 25 ✓, 26, 27)
 v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -38,13 +38,14 @@ v1.4 Progress: ████████████████████ 100%
 
 | Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 | v2.1 | v2.2 |
 |--------|------|------|------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 | 1 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 | 2 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 5 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 3 |
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 | 2 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 | 3 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 7 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 11 |
 | Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | — |
 | Phase 24 P01 | 2 min | 3 tasks | 7 files |
 | Phase 24 P02 | 1 min | 2 tasks | 2 files |
+| Phase 25 P01 | 3 min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -53,6 +54,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 **Phase 24-01:** ChangeType as string union (not enum) — codebase convention. structuredClone() for deep copy. null-on-404 for missing historical blobs. Renamed functionIds→functions in DiffEntity.
 **Phase 24-02:** Same useSyncExternalStore singleton pattern as metadata-store.ts. 404 blobs → empty DiffChanges (not error). Separate hooks for result/status/error for fine-grained re-renders.
+**Phase 25-01:** Combined entity+function counts per stat card. Always show 3 stat cards even with zero counts. Empty state below zero-count cards, not replacing them. parseMonthKey helper with null-on-invalid for safe URL param parsing.
 
 ### v2.2 Phase Design Rationale
 - **Phase 24 (Diff Engine)** is pure data: fetch historical blobs, decompress, port DiffGenerator, compute diffs. No UI — this is the foundation everything else renders.
@@ -91,10 +93,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T08:56:03.504Z
-**What happened:** Executed Plan 24-02 (diff-store). Created reactive diff-store singleton with useSyncExternalStore hooks, computeDiff orchestrator, and barrel index.ts. Phase 24 complete.
-**Next step:** Plan Phase 25 (Changelog Page Shell) — wire diff output into a visible page
+**Last session:** 2026-02-25T12:24:58.434Z
+**What happened:** Executed Plan 25-01 (changelog page shell). Replaced placeholder ChangelogPage with complete 4-state reactive UI wired to diff engine. Phase 25 complete.
+**Next step:** Plan Phase 26 (Detail Views) — add expandable entity cards and function tables
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (phase 24 complete)*
+*Last updated: 2026-02-25 (phase 25 complete)*

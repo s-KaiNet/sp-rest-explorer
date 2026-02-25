@@ -16,11 +16,11 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 
 ### Changelog UI
 
-- [ ] **VIEW-01**: User can navigate to an API Changelog page via a dedicated route
-- [ ] **VIEW-02**: User sees a summary bar with counts of added, updated, and removed entities/functions
+- [x] **VIEW-01**: User can navigate to an API Changelog page via a dedicated route
+- [x] **VIEW-02**: User sees a summary bar with counts of added, updated, and removed entities/functions
 - [ ] **VIEW-03**: User sees expandable entity cards showing property-level and function-level changes
 - [ ] **VIEW-04**: User sees a root functions table showing added/updated/removed top-level functions
-- [ ] **VIEW-05**: User sees a friendly empty state when no changes exist for the selected period
+- [x] **VIEW-05**: User sees a friendly empty state when no changes exist for the selected period
 - [ ] **VIEW-06**: User sees change-type badges (New, Added, Removed, Updated) on entities and individual rows
 
 ### Filtering & Navigation
@@ -28,14 +28,14 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 - [ ] **FILT-01**: User can toggle filter chips to show/hide Added, Updated, and Removed changes
 - [ ] **FILT-02**: User can select a range (1-6 months) via a range selector control (default: 1 month)
 - [ ] **FILT-03**: User can click entity names in the changelog to navigate to the Explore Types detail page
-- [ ] **FILT-04**: User sees "API Changelog" as a navigation entry in the app header
+- [x] **FILT-04**: User sees "API Changelog" as a navigation entry in the app header
 
 ### Integration
 
-- [ ] **INTG-01**: Changelog route is registered in React Router with hash routing
-- [ ] **INTG-02**: Changelog page matches the app's existing dark mode, typography, and layout patterns
-- [ ] **INTG-03**: User sees a loading indicator while metadata blobs are being fetched and diff is being computed
-- [ ] **INTG-04**: App handles fetch failures and missing blobs gracefully with an error message
+- [x] **INTG-01**: Changelog route is registered in React Router with hash routing
+- [x] **INTG-02**: Changelog page matches the app's existing dark mode, typography, and layout patterns
+- [x] **INTG-03**: User sees a loading indicator while metadata blobs are being fetched and diff is being computed
+- [x] **INTG-04**: App handles fetch failures and missing blobs gracefully with an error message
 
 ## Future Requirements
 
@@ -66,20 +66,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-02 | Phase 24 | Complete |
 | DATA-03 | Phase 24 | Complete |
 | DATA-04 | Phase 27 | Pending |
-| VIEW-01 | Phase 25 | Pending |
-| VIEW-02 | Phase 25 | Pending |
+| VIEW-01 | Phase 25 | Complete |
+| VIEW-02 | Phase 25 | Complete |
 | VIEW-03 | Phase 26 | Pending |
 | VIEW-04 | Phase 26 | Pending |
-| VIEW-05 | Phase 25 | Pending |
+| VIEW-05 | Phase 25 | Complete |
 | VIEW-06 | Phase 26 | Pending |
 | FILT-01 | Phase 27 | Pending |
 | FILT-02 | Phase 27 | Pending |
 | FILT-03 | Phase 27 | Pending |
-| FILT-04 | Phase 25 | Pending |
-| INTG-01 | Phase 25 | Pending |
-| INTG-02 | Phase 25 | Pending |
-| INTG-03 | Phase 25 | Pending |
-| INTG-04 | Phase 25 | Pending |
+| FILT-04 | Phase 25 | Complete |
+| INTG-01 | Phase 25 | Complete |
+| INTG-02 | Phase 25 | Complete |
+| INTG-03 | Phase 25 | Complete |
+| INTG-04 | Phase 25 | Complete |
 
 **Coverage:**
 - v2.2 requirements: 18 total
