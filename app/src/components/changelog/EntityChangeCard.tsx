@@ -23,6 +23,11 @@ export function EntityChangeCard({ entity }: EntityChangeCardProps) {
     a.name.localeCompare(b.name),
   )
 
+  const hasContent =
+    sortedProperties.length > 0 ||
+    sortedNavProperties.length > 0 ||
+    sortedFunctions.length > 0
+
   return (
     <div className="rounded-lg border border-border bg-background">
       {/* Card header — clickable to toggle expand/collapse */}
@@ -38,15 +43,15 @@ export function EntityChangeCard({ entity }: EntityChangeCardProps) {
           }
         }}
       >
-        <span className="font-mono text-sm font-bold">{entity.name}</span>
+        <span className="min-w-0 truncate font-mono text-sm font-bold">{entity.name}</span>
         <ChangeBadge changeType={entity.changeType} />
-        <span className="ml-auto text-xs text-muted-foreground">
+        <span className="ml-auto shrink-0 text-xs text-muted-foreground">
           {isExpanded ? '▲' : '▼'}
         </span>
       </div>
 
       {/* Expanded content */}
-      {isExpanded && (
+      {isExpanded && hasContent && (
         <div className="space-y-4 px-4 pb-4">
           {sortedProperties.length > 0 && (
             <PropertySubSection
@@ -89,20 +94,20 @@ function PropertySubSection({ title, items }: PropertySubSectionProps) {
         </span>
       </div>
 
-      {/* Property rows */}
+      {/* Property rows — grid layout for consistent alignment */}
       <div className="space-y-0">
         {items.map((item) => (
           <div
             key={item.name}
-            className="flex items-center gap-2 py-1"
+            className="grid grid-cols-[1fr_1fr_auto] items-center gap-3 py-1"
           >
-            <span className="font-mono text-sm font-medium">{item.name}</span>
-            <span className="font-mono text-xs text-muted-foreground">
+            <span className="min-w-0 truncate font-mono text-sm font-medium">
+              {item.name}
+            </span>
+            <span className="min-w-0 truncate font-mono text-xs text-muted-foreground">
               {item.typeName}
             </span>
-            <span className="ml-auto">
-              <ChangeBadge changeType={item.changeType} />
-            </span>
+            <ChangeBadge changeType={item.changeType} />
           </div>
         ))}
       </div>

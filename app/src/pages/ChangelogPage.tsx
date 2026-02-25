@@ -76,7 +76,7 @@ export function ChangelogPage() {
 
   return (
     <div className="flex-1 overflow-y-auto">
-      <div className="mx-auto max-w-[720px] px-6 py-10">
+      <div className="px-6 py-10">
         {/* Page header */}
         <div className="mb-8">
           <h1 className="text-[28px] font-bold text-foreground mb-2">API Changelog</h1>
