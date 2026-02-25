@@ -2,19 +2,19 @@
 
 ## What This Is
 
-A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
+A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, an API Changelog view with month-over-month diff comparison, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
 
 The backend is a clean-room Azure Functions v4 rewrite (`backend/`) replacing the legacy `az-funcs/` — MSAL certificate-based auth, resilient metadata fetch, byte-identical XML-to-JSON parser, lz-string compression, and simplified blob layout. Runs daily on Azure, producing 6 blobs. The frontend fetches the compressed blob (~557KB) and decompresses client-side with lz-string for ~75% network savings over the uncompressed 2.2MB JSON.
 
 ## Current State
 
-**Shipped:** v2.1 Connect Frontend (2026-02-25)
-**Frontend codebase:** ~5,198 LOC TypeScript/CSS across 68 files in `app/`
+**Shipped:** v2.2 API Changelog (2026-02-25)
+**Frontend codebase:** ~6,300 LOC TypeScript/CSS across 78 files in `app/`
 **Backend codebase:** ~1,016 LOC TypeScript across 15 source files in `backend/src/`
-**Frontend tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, React Router 7
+**Frontend tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, jsondiffpatch, React Router 7
 **Backend tech stack:** Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12, axios, xml2js, lz-string, vitest
 
-v2.1 connected the frontend to the new backend's compressed blobs. The metadata fetch pipeline now downloads ~557KB instead of ~2.2MB, decompressing client-side with lz-string. Recently visited was migrated to a Zustand store with persist middleware for atomic state management across all consumers. The full stack (backend + frontend) is now running on the new infrastructure.
+v2.2 added the API Changelog — the last missing feature from the original site. Users can view month-over-month changes in the SharePoint REST API metadata with cumulative diffs for 1-6 month ranges. The client-side diff engine (ported from the backend's DiffGenerator) uses jsondiffpatch for property-level diffing. The changelog page features a segmented control for range selection, filter buttons with integrated counts, expandable entity cards with property-level details, a root functions change table, and cross-navigation links to Explore Types and API endpoints.
 
 ## Core Value
 
@@ -71,28 +71,24 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - DCMP-01 through DCMP-05 — v2.1 (lz-string decompression, boot pipeline, cache, revalidation)
   - RVIS-01 through RVIS-05 — v2.1 (recently visited atomic clear, correct icons, Zustand persist store, granular kind type)
 
+- **v2.2 (22 requirements):**
+  - DATA-01 through DATA-04 — v2.2 (client-side diff engine, historical blob fetch, jsondiffpatch, cumulative ranges)
+  - VIEW-01 through VIEW-06 — v2.2 (changelog page, summary bar, entity cards, root functions table, empty state, badges)
+  - FILT-01 through FILT-04 — v2.2 (filter chips, range selector, entity links, header nav)
+  - INTG-01 through INTG-04 — v2.2 (route registration, dark mode, loading indicator, error handling)
+  - CHLG-01 through CHLG-04 — v2.2 (segmented control, stat card removal, filter button redesign, muted colors)
+
 ### Active
 
-## Current Milestone: v2.2 API Changelog
-
-**Goal:** Add the API Changelog view — the last missing feature — showing month-over-month changes in the SharePoint REST API metadata with cumulative diff support for up to 6 months.
-
-**Target features:**
-- API Changelog page with range selector (1-6 months, default 1)
-- Client-side diff computation using DiffGenerator (ported from az-funcs/) with jsondiffpatch
-- Merged cumulative diff view (e.g., "3 months" = current vs 3 months ago)
-- Summary bar with added/updated/removed counts
-- Filter chips to show/hide change types
-- Expandable entity cards with property-level change details
-- Root functions change table
-- Entity names link to Explore Types detail
-- Empty state for months with no changes
-- Blob fetching: metadata.latest.zip.json + historical {year}y_m{month}_metadata.zip.json
-- Fresh fetch each visit (no IndexedDB caching for changelog data)
+(No active milestone — planning next)
 
 ### Backlog (future milestones)
 
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
+- [ ] CHLG-FUT-01: URL state for selected range (shareable changelog links)
+- [ ] CHLG-FUT-02: Search within changelog results
+- [ ] CHLG-FUT-03: IndexedDB caching for changelog blobs
+- [ ] CHLG-FUT-04: Keyboard navigation within changelog cards
 
 ### Out of Scope
 
@@ -109,10 +105,11 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ## Context
 
-Shipped v2.1 Connect Frontend. Combined codebase: ~6,214 LOC TypeScript across `app/` (frontend) and `backend/` (Azure Functions).
-Frontend tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, idb-keyval, React Router 7.
+Shipped v2.2 API Changelog. Combined codebase: ~7,300 LOC TypeScript across `app/` (frontend) and `backend/` (Azure Functions).
+Frontend tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, jsondiffpatch, idb-keyval, React Router 7.
 Backend tech stack: Azure Functions v4, TypeScript 5.7, MSAL Node 2.16, @azure/storage-blob 12.31, axios 1.7, xml2js 0.6, lz-string 1.5, vitest 4.0.
 Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot. Frontend fetches compressed blob (~557KB) and decompresses with lz-string (~75% network savings).
+Diff engine: DiffGenerator ported from az-funcs/ to app/src/lib/diff/ — fetches historical monthly blobs, decompresses, computes structured diff with jsondiffpatch. Diff store singleton with useSyncExternalStore hooks. 404-tolerant (missing blobs → empty diff, not error).
 Icon system: TypeIcon component with Record-based Lucide icon/color lookup maps, OKLCH CSS custom properties for 4 type colors with dark mode variants.
 Recently visited: Zustand persist store with granular SearchSelection.kind (`entity`/`function`/`navProperty`/`root`), atomic clear, correct icon mapping.
 Backend pipeline: auth → fetch (retry/backoff/timeout) → parse (xml2js) → compress (lz-string) → upload (6 blobs to `api-files` container).
@@ -121,6 +118,8 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 **Known technical debt:**
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
 - Legacy `az-funcs/` directory can be removed now that `backend/` is deployed
+- Changelog URL state not persisted — range/filter selections lost on navigation (CHLG-FUT-01)
+- No IndexedDB caching for changelog blobs — fresh fetch each visit (CHLG-FUT-03)
 
 ## Key Decisions
 
@@ -173,6 +172,15 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 | Module-level boot promise guard | Prevents StrictMode double-mount duplicate fetch+decompress | ✓ Good |
 | Zustand persist v2 with wipe migration | Simpler than migrating buggy old localStorage entries | ✓ Good |
 | Granular kind at source (CommandPalette) | Eliminates lossy kindMap remapping, kind correct from selection | ✓ Good |
+| ChangeType as string union (not enum) | Matches codebase convention, simpler than enum | ✓ Good |
+| structuredClone() for deep copy in diff | Safer than manual cloning for nested metadata objects | ✓ Good |
+| null-on-404 for missing historical blobs | Graceful empty diff instead of error for months without data | ✓ Good |
+| useSyncExternalStore for diff store | Same singleton pattern as metadata-store, fine-grained re-renders | ✓ Good |
+| Native HTML select for range (later segmented control) | No deps initially, upgraded to segmented control for better UX | ✓ Good |
+| Set<ChangeType> for filter state | O(1) membership test, clean toggle semantics | ✓ Good |
+| bg-foreground/text-background for active segment | Neutral inversion that works in both light and dark mode | ✓ Good |
+| Muted emerald/sky/rose for light mode | -50 for badges, -100 for buttons — readable without visual noise | ✓ Good |
+| Counts in filter buttons replacing stat cards | Less vertical space, counts visible alongside filter controls | ✓ Good |
 
 ## Constraints
 
@@ -186,4 +194,4 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-25 after v2.2 milestone started*
+*Last updated: 2026-02-25 after v2.2 milestone shipped*

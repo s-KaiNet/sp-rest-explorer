@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v2.2 API Changelog — Phase 24 (Diff Engine)
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, lz-string, React Router 7
@@ -18,13 +18,11 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: 24 — Diff Engine
-Plan: —
-Status: Roadmap created, awaiting plan
-Last activity: 2026-02-25 — v2.2 roadmap created
+Status: Between milestones — v2.2 shipped, next milestone not started
+Last activity: 2026-02-25 — v2.2 API Changelog milestone completed and archived
 
 ```
-v2.2 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/4 phases: 24, 25, 26, 27)
+v2.2 Progress: ████████████████████ 100% (5/5 phases: 24 ✓, 25 ✓, 26 ✓, 27 ✓, 28 ✓) — SHIPPED
 v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
@@ -38,16 +36,31 @@ v1.4 Progress: ████████████████████ 100%
 
 | Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 | v2.1 | v2.2 |
 |--------|------|------|------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 | 0 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 | 0 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 0 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 0 |
-| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | — |
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 | 5 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 | 8 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 13 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 22 |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | 1 day |
+| Phase 24 P01 | 2 min | 3 tasks | 7 files |
+| Phase 24 P02 | 1 min | 2 tasks | 2 files |
+| Phase 25 P01 | 3 min | 2 tasks | 1 files |
+| Phase 26 P01 | 2 min | 2 tasks | 3 files |
+| Phase 27 P01 | 3 min | 2 tasks | 1 files |
+| Phase 27 P02 | 2 min | 2 tasks | 2 files |
+| Phase 28 P01 | 2 min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
+
+**Phase 24-01:** ChangeType as string union (not enum) — codebase convention. structuredClone() for deep copy. null-on-404 for missing historical blobs. Renamed functionIds→functions in DiffEntity.
+**Phase 24-02:** Same useSyncExternalStore singleton pattern as metadata-store.ts. 404 blobs → empty DiffChanges (not error). Separate hooks for result/status/error for fine-grained re-renders.
+**Phase 25-01:** Combined entity+function counts per stat card. Always show 3 stat cards even with zero counts. Empty state below zero-count cards, not replacing them. parseMonthKey helper with null-on-invalid for safe URL param parsing.
+**Phase 26-01:** Hide empty sub-sections rather than showing empty state headers. PropertySubSection extracted as internal helper (not separate file) for reuse across 3 sub-sections. No card shadow — clean flat border.
+**Phase 27-01:** Native HTML select for range dropdown (no deps). Set<ChangeType> for filter state. Summary cards always show full totals. Subtitle shows current month (not comparison month).
+**Phase 27-02:** Root function links navigate to /_api/{functionName} (user override from /_api/ root). stopPropagation on entity name links. Removed items dimmed with text-muted-foreground.
+**Phase 28-01:** bg-foreground/text-background for segmented control active state (neutral inversion). Muted emerald/sky/rose light-mode palette — -50 for badges, -100 for filter buttons. Counts integrated into filter button labels replacing stat cards.
 
 ### v2.2 Phase Design Rationale
 - **Phase 24 (Diff Engine)** is pure data: fetch historical blobs, decompress, port DiffGenerator, compute diffs. No UI — this is the foundation everything else renders.
@@ -63,6 +76,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - Phase 16 added: Change color for entity links
 - Phase 17 added: Move icons in search modal
 - Phase 23 added: Recently visited fix
+- Phase 28 added: API Changelog changes
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -86,10 +100,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T02:30:54.535Z
-**What happened:** Created v2.2 API Changelog roadmap. 18 requirements mapped to 4 phases (24-27): Diff Engine → Page Shell → Detail Views → Filtering & Range Selection.
-**Next step:** Plan Phase 24 (Diff Engine) — port DiffGenerator from az-funcs/, install jsondiffpatch, wire blob fetch pipeline
+**Last session:** 2026-02-25
+**What happened:** Completed v2.2 API Changelog milestone. Archived roadmap and requirements to milestones/. Evolved PROJECT.md. Tagged v2.2.
+**Next step:** `/gsd-new-milestone` to plan next milestone
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (v2.2 roadmap created)*
+*Last updated: 2026-02-25 (v2.2 milestone shipped and archived)*
