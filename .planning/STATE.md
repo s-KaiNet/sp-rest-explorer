@@ -76,6 +76,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 - Phase 16 added: Change color for entity links
 - Phase 17 added: Move icons in search modal
 - Phase 23 added: Recently visited fix
+- Phase 28 added: API Changelog changes
 
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
@@ -99,7 +100,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T16:53:39Z
+**Last session:** 2026-02-25T20:45:23.425Z
 **What happened:** Executed Plan 27-02 (entity & function name linking). Added clickable entity names linking to Explore Types, root function names linking to /_api/{functionName}. Fixed link target per user feedback.
 **Next step:** Phase 27 complete — v2.2 API Changelog ready for final verification
 
