@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 import type { DiffEntity, DiffPropertyChange } from '@/lib/diff'
 import { ChangeBadge } from './ChangeBadge'
 
@@ -43,7 +44,20 @@ export function EntityChangeCard({ entity }: EntityChangeCardProps) {
           }
         }}
       >
-        <span className="min-w-0 truncate font-mono text-sm font-bold">{entity.name}</span>
+        {entity.changeType !== 'removed' ? (
+          <Link
+            to={`/entity/${encodeURIComponent(entity.name)}`}
+            className="min-w-0 truncate font-mono text-sm font-bold hover:underline"
+            onClick={(e) => e.stopPropagation()}
+            title={`View ${entity.name} details`}
+          >
+            {entity.name}
+          </Link>
+        ) : (
+          <span className="min-w-0 truncate font-mono text-sm font-bold text-muted-foreground">
+            {entity.name}
+          </span>
+        )}
         <ChangeBadge changeType={entity.changeType} />
         <span className="ml-auto shrink-0 text-xs text-muted-foreground">
           {isExpanded ? '▲' : '▼'}

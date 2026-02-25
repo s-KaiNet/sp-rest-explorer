@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import type { DiffFunction } from '@/lib/diff'
 import { CodeText } from '@/components/ui/code-text'
 import { ChangeBadge } from './ChangeBadge'
@@ -40,7 +41,15 @@ export function RootFunctionsTable({ functions }: RootFunctionsTableProps) {
             className="transition-colors hover:bg-muted/50"
           >
             <td className="truncate border-b border-border/50 py-1.5 pr-3">
-              <CodeText variant="fn">{fn.name}</CodeText>
+              {fn.changeType !== 'removed' ? (
+                <Link to="/_api/" className="hover:underline" title="View in Explore API">
+                  <CodeText variant="fn">{fn.name}</CodeText>
+                </Link>
+              ) : (
+                <span className="text-muted-foreground">
+                  <CodeText variant="fn">{fn.name}</CodeText>
+                </span>
+              )}
             </td>
             <td className="truncate border-b border-border/50 py-1.5 pr-3">
               <CodeText>{fn.returnType}</CodeText>
