@@ -30,7 +30,7 @@ human_verification:
 | 5 | Vite base path remains /sp-rest-explorer/ | ✓ VERIFIED | `app/vite.config.ts` line 9: `base: '/sp-rest-explorer/'` — unchanged, verified on both branches. |
 | 6 | Workflow has proper concurrency, permissions, and caching | ✓ VERIFIED | `cancel-in-progress: true`, permissions `pages: write` + `id-token: write` + `contents: read`, `cache: 'npm'` with `cache-dependency-path: 'app/package-lock.json'`, Node 22. All 17 content checks passed. |
 | 7 | docs/ removal is committed in git history | ✓ VERIFIED | Commit `35ac816` (`chore(29-02): remove committed docs/ build output`) removes all 5 files. Verified via `git log`. |
-| 8 | Live site verified working (human checkpoint) | ✓ VERIFIED | Summary 29-01 documents user approved checkpoint — live site at `https://nicklasmansson.github.io/sp-rest-explorer/` verified working during Plan 01 execution. |
+| 8 | Live site verified working (human checkpoint) | ✓ VERIFIED | Summary 29-01 documents user approved checkpoint — live site at `https://s-kainet.github.io/sp-rest-explorer/` verified working during Plan 01 execution. |
 
 **Score:** 8/8 truths verified
 
@@ -81,7 +81,7 @@ No TODOs, FIXMEs, placeholders, empty implementations, or stub patterns detected
 
 #### 1. Live Site Post-Merge Verification
 
-**Test:** After merging feature branch to master, visit `https://nicklasmansson.github.io/sp-rest-explorer/`
+**Test:** After merging feature branch to master, visit `https://s-kainet.github.io/sp-rest-explorer/`
 **Expected:** Site loads with hash routing working, data loading (API endpoints, entities, functions), all pages rendering (home, explore API, explore types, changelog)
 **Why human:** Live site behavior requires browser interaction; the checkpoint during Plan 01 already verified this but the docs/ removal commit hasn't been merged to master yet
 

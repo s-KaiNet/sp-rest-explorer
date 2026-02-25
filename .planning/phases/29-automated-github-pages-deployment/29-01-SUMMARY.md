@@ -58,7 +58,7 @@ completed: 2026-02-25
 - Created GitHub Actions CI/CD pipeline that builds and deploys frontend on every push to master
 - Changed Vite build output from `../docs` to `dist` (inside app/ directory)
 - Updated .gitignore to block both `docs/` and `app/dist/` from being committed
-- Live site verified working at https://nicklasmansson.github.io/sp-rest-explorer/
+- Live site verified working at https://s-kainet.github.io/sp-rest-explorer/
 
 ## Task Commits
 
