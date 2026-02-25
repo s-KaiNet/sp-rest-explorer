@@ -139,7 +139,11 @@ Plans:
   1. User can select a range of 1-6 months via a range selector control (default: 1 month) and the changelog updates to show the cumulative diff for that period
   2. User can toggle filter chips to show/hide Added, Updated, and Removed change categories, and the changelog view updates immediately
   3. User can click any entity name in the changelog to navigate to the Explore Types detail page (/types/{fullName})
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 27-01-PLAN.md — Sticky toolbar with range dropdown and filter chips
+- [ ] 27-02-PLAN.md — Entity name and root function name clickable links
 
 ## Progress
 
