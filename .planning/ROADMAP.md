@@ -13,7 +13,7 @@
 
 ## Phases
 
-- [ ] **Phase 24: Diff Engine** - Port DiffGenerator and wire blob fetch + diff computation pipeline
+- [x] **Phase 24: Diff Engine** - Port DiffGenerator and wire blob fetch + diff computation pipeline (completed 2026-02-25)
 - [ ] **Phase 25: Changelog Page Shell** - Routable page with header nav, summary bar, loading/error/empty states
 - [ ] **Phase 26: Change Detail Views** - Entity cards with property-level changes, root functions table, badges
 - [ ] **Phase 27: Filtering & Range Selection** - Range selector (1-6 months), filter chips, entity name links
@@ -138,7 +138,7 @@ Plans:
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|:--------------:|--------|-----------|
-| 24. Diff Engine | 1/2 | In Progress|  | - |
+| 24. Diff Engine | 2/2 | Complete   | 2026-02-25 | - |
 | 25. Changelog Page Shell | v2.2 | 0/? | Not started | - |
 | 26. Change Detail Views | v2.2 | 0/? | Not started | - |
 | 27. Filtering & Range Selection | v2.2 | 0/? | Not started | - |
