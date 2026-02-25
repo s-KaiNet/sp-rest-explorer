@@ -2,20 +2,21 @@
 
 ## What This Is
 
-A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, an API Changelog view with month-over-month diff comparison, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA hosted on GitHub Pages.
+A modern rebuild of the SharePoint REST API Metadata Explorer — from Vue 2 + Webpack 3 to React 19 + Vite 7 + Tailwind CSS 4 + shadcn/ui. The app lets SharePoint developers browse and understand every endpoint in the SharePoint REST API by parsing the ~4MB `$metadata` JSON (2,449 entities, 3,528 functions, 11,967 properties). It features Cmd+K deep search across all 5,779 indexed items, contextual sidebar navigation with namespace-grouped collapsible sections, breadcrumb-driven browsing, entity/function detail panels, a full Explore Types surface, an API Changelog view with month-over-month diff comparison, and curated home screens with branding and live stats. Unified Lucide icon system with color-coded type indicators across all views. GitHub Dark-inspired dark mode. Static SPA deployed automatically to GitHub Pages via GitHub Actions CI/CD pipeline.
 
 The backend is a clean-room Azure Functions v4 rewrite (`backend/`) replacing the legacy `az-funcs/` — MSAL certificate-based auth, resilient metadata fetch, byte-identical XML-to-JSON parser, lz-string compression, and simplified blob layout. Runs daily on Azure, producing 6 blobs. The frontend fetches the compressed blob (~557KB) and decompresses client-side with lz-string for ~75% network savings over the uncompressed 2.2MB JSON.
 
 ## Current State
 
-**Shipped:** v2.2 API Changelog (2026-02-25)
-**Active:** v2.3 GH Pages (CI/CD pipeline)
+**Shipped:** v2.3 GH Pages (2026-02-25)
+**Active:** Planning next milestone
 **Frontend codebase:** ~6,300 LOC TypeScript/CSS across 78 files in `app/`
 **Backend codebase:** ~1,016 LOC TypeScript across 15 source files in `backend/src/`
 **Frontend tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, jsondiffpatch, React Router 7
 **Backend tech stack:** Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12, axios, xml2js, lz-string, vitest
+**CI/CD:** GitHub Actions workflow deploys frontend to GitHub Pages on push to master. Build output is `app/dist/` (never committed).
 
-v2.2 added the API Changelog — the last missing feature from the original site. Users can view month-over-month changes in the SharePoint REST API metadata with cumulative diffs for 1-6 month ranges. The client-side diff engine (ported from the backend's DiffGenerator) uses jsondiffpatch for property-level diffing. The changelog page features a segmented control for range selection, filter buttons with integrated counts, expandable entity cards with property-level details, a root functions change table, and cross-navigation links to Explore Types and API endpoints.
+v2.3 automated the frontend deployment — GitHub Actions builds and deploys on every push to master, replacing the previously committed `docs/` folder. The `docs/` directory has been removed from the repository and `.gitignore` blocks accidental build output commits.
 
 ## Core Value
 
@@ -79,26 +80,24 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
   - INTG-01 through INTG-04 — v2.2 (route registration, dark mode, loading indicator, error handling)
   - CHLG-01 through CHLG-04 — v2.2 (segmented control, stat card removal, filter button redesign, muted colors)
 
+- **v2.3 (8 requirements):**
+  - CICD-01 through CICD-04 — v2.3 (GitHub Actions workflow, Node.js setup, Vite build, deploy-pages)
+  - BLDG-01, BLDG-02 — v2.3 (Vite outDir to dist, base path verification)
+  - REPO-01, REPO-02 — v2.3 (docs/ deletion, .gitignore update)
+
 ### Active
 
-## Current Milestone: v2.3 GH Pages
-
-**Goal:** Automate frontend deployment to GitHub Pages via GitHub Actions CI/CD pipeline triggered on push to `gh-pages` branch.
-
-**Target features:**
-- GitHub Actions workflow triggered on push to `gh-pages` branch
-- Vite build config updated to output `dist/` (no more committed `docs/`)
-- `actions/deploy-pages` for modern artifact-based deployment
-- Remove committed `docs/` build output from repo
-- `.gitignore` updated to prevent accidental build output commits
+No active milestone. Run `/gsd-new-milestone` to start next milestone planning.
 
 ### Backlog (future milestones)
 
-- [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
 - [ ] CHLG-FUT-01: URL state for selected range (shareable changelog links)
 - [ ] CHLG-FUT-02: Search within changelog results
 - [ ] CHLG-FUT-03: IndexedDB caching for changelog blobs
 - [ ] CHLG-FUT-04: Keyboard navigation within changelog cards
+- [ ] CICD-FUT-01: Build caching for faster CI runs (node_modules cache)
+- [ ] CICD-FUT-02: Branch protection rules for gh-pages branch
+- [ ] CICD-FUT-03: Build status badges in README
 
 ### Out of Scope
 
@@ -115,7 +114,7 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ## Context
 
-Shipped v2.2 API Changelog. Combined codebase: ~7,300 LOC TypeScript across `app/` (frontend) and `backend/` (Azure Functions).
+Shipped v2.3 GH Pages. Combined codebase: ~7,300 LOC TypeScript across `app/` (frontend) and `backend/` (Azure Functions).
 Frontend tech stack: React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, jsondiffpatch, idb-keyval, React Router 7.
 Backend tech stack: Azure Functions v4, TypeScript 5.7, MSAL Node 2.16, @azure/storage-blob 12.31, axios 1.7, xml2js 0.6, lz-string 1.5, vitest 4.0.
 Data layer: frozen 4MB metadata singleton + useSyncExternalStore, pre-computed O(1) lookup Maps, BFS tree-walk endpoint indexing (~3,330 unique endpoints), MiniSearch dual indexes (name + path), type classification + used-by + derived-type indexes, IndexedDB cache with cache-then-revalidate boot. Frontend fetches compressed blob (~557KB) and decompresses with lz-string (~75% network savings).
@@ -123,6 +122,7 @@ Diff engine: DiffGenerator ported from az-funcs/ to app/src/lib/diff/ — fetche
 Icon system: TypeIcon component with Record-based Lucide icon/color lookup maps, OKLCH CSS custom properties for 4 type colors with dark mode variants.
 Recently visited: Zustand persist store with granular SearchSelection.kind (`entity`/`function`/`navProperty`/`root`), atomic clear, correct icon mapping.
 Backend pipeline: auth → fetch (retry/backoff/timeout) → parse (xml2js) → compress (lz-string) → upload (6 blobs to `api-files` container).
+CI/CD: GitHub Actions workflow (`.github/workflows/deploy.yml`) builds and deploys frontend on push to master. Concurrency group cancels in-progress runs. Build output is `app/dist/` — never committed to the repository.
 Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 
 **Known technical debt:**
@@ -191,12 +191,17 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 | bg-foreground/text-background for active segment | Neutral inversion that works in both light and dark mode | ✓ Good |
 | Muted emerald/sky/rose for light mode | -50 for badges, -100 for buttons — readable without visual noise | ✓ Good |
 | Counts in filter buttons replacing stat cards | Less vertical space, counts visible alongside filter controls | ✓ Good |
+| Trigger workflow on master (not main) | Repository default branch is master | ✓ Good |
+| Single build-and-deploy job | Simple pipeline, no need for separate jobs | ✓ Good |
+| Concurrency group with cancel-in-progress | Prevents resource waste on rapid pushes | ✓ Good |
+| Build output to app/dist/ (not ../docs) | Output stays inside project root, cleaner structure | ✓ Good |
+| Widen objectHash + ES2023 lib | CI strict mode catches type errors dev mode doesn't | ✓ Good |
 
 ## Constraints
 
 - **Frontend tech stack**: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch 7, React Router 7 (hash mode) — all locked per research
 - **Backend tech stack**: Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12, axios, xml2js, lz-string — locked per v2.0
-- **Hosting**: GitHub Pages (frontend) — requires hash routing, static output to `docs/`
+- **Hosting**: GitHub Pages (frontend) — requires hash routing, deployed via GitHub Actions from `app/dist/`
 - **Backend hosting**: Azure Functions (sp-rest-explorer-new) — daily timer + HTTP trigger
 - **Data format**: Azure Blob Storage JSON format is fixed — cannot change the metadata schema
 - **URL compatibility**: Hash routes must match current patterns for any bookmarked URLs
@@ -204,4 +209,4 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-25 after v2.3 milestone started*
+*Last updated: 2026-02-25 after v2.3 milestone*

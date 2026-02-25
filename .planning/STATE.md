@@ -5,12 +5,12 @@
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v2.3 GH Pages — Phase 29: Automated GitHub Pages Deployment
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, lz-string, React Router 7
 - Backend tech stack locked: Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12
-- GitHub Pages hosting (hash routing required)
+- GitHub Pages hosting (hash routing required, deployed via GitHub Actions)
 - Azure Functions hosting (sp-rest-explorer-new)
 - Azure Blob Storage data format is fixed
 - Desktop only for frontend
@@ -18,13 +18,13 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: 29 — Automated GitHub Pages Deployment
-Plan: —
-Status: Roadmap created, awaiting plan
-Last activity: 2026-02-25 — v2.3 roadmap created
+Phase: None — between milestones
+Plan: N/A
+Status: v2.3 milestone complete — ready for next milestone planning
+Last activity: 2026-02-25 — v2.3 GH Pages milestone archived
 
 ```
-v2.3 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/1 phases)
+v2.3 Progress: ████████████████████ 100% (1/1 phases: 29 ✓) — SHIPPED
 v2.2 Progress: ████████████████████ 100% (5/5 phases: 24 ✓, 25 ✓, 26 ✓, 27 ✓, 28 ✓) — SHIPPED
 v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
@@ -37,29 +37,21 @@ v1.4 Progress: ████████████████████ 100%
 
 ## Performance Metrics
 
-| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 | v2.1 | v2.2 |
-|--------|------|------|------|------|------|------|------|------|
-| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 | 5 |
-| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 | 8 |
-| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 13 |
-| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 22 |
-| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | 1 day |
+| Metric | v1.0 | v1.1 | v1.2 | v1.3 | v1.4 | v2.0 | v2.1 | v2.2 | v2.3 |
+|--------|------|------|------|------|------|------|------|------|------|
+| Phases completed | 5 | 5 | 2 | 2 | 5 | 4 | 2 | 5 | 1 |
+| Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 | 8 | 2 |
+| Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 13 | 4 |
+| Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 22 | 8 |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | 1 day | 1 day |
 
 ## Accumulated Context
 
 ### Key Decisions
 See PROJECT.md Key Decisions table for full list with outcomes.
 
-**Phase 24-01:** ChangeType as string union (not enum) — codebase convention. structuredClone() for deep copy. null-on-404 for missing historical blobs. Renamed functionIds→functions in DiffEntity.
-**Phase 24-02:** Same useSyncExternalStore singleton pattern as metadata-store.ts. 404 blobs → empty DiffChanges (not error). Separate hooks for result/status/error for fine-grained re-renders.
-**Phase 25-01:** Combined entity+function counts per stat card. Always show 3 stat cards even with zero counts. Empty state below zero-count cards, not replacing them. parseMonthKey helper with null-on-invalid for safe URL param parsing.
-**Phase 26-01:** Hide empty sub-sections rather than showing empty state headers. PropertySubSection extracted as internal helper (not separate file) for reuse across 3 sub-sections. No card shadow — clean flat border.
-**Phase 27-01:** Native HTML select for range dropdown (no deps). Set<ChangeType> for filter state. Summary cards always show full totals. Subtitle shows current month (not comparison month).
-**Phase 27-02:** Root function links navigate to /_api/{functionName} (user override from /_api/ root). stopPropagation on entity name links. Removed items dimmed with text-muted-foreground.
-**Phase 28-01:** bg-foreground/text-background for segmented control active state (neutral inversion). Muted emerald/sky/rose light-mode palette — -50 for badges, -100 for filter buttons. Counts integrated into filter button labels replacing stat cards.
-
-### v2.3 Phase Design Rationale
-- **Phase 29 (Automated GitHub Pages Deployment)** is a single phase because all 8 requirements are tightly coupled: the GH Actions workflow depends on the Vite config change (BLDG-01), which depends on docs/ cleanup (REPO-01/02), and the workflow itself (CICD-01-04) is one atomic deliverable. Splitting this into multiple phases would create artificial boundaries between work that must ship together.
+**Phase 29-01:** Trigger on master branch (not main) — repo default branch. Single build-and-deploy job. Widen objectHash type + ES2023 lib for CI strict mode compatibility.
+**Phase 29-02:** Clean atomic deletion of docs/ build artifacts — single git rm -r commit.
 
 ### Roadmap Evolution
 - Phase 07.1 inserted after Phase 7: Fix search experience (URGENT)
@@ -91,10 +83,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T21:44:52.406Z
-**What happened:** Created v2.3 roadmap. Single phase (29) covering all 8 requirements — tightly coupled CI/CD pipeline, build config, and repo cleanup work.
-**Next step:** Plan Phase 29 (`/gsd-plan-phase 29`)
+**Last session:** 2026-02-25
+**What happened:** Completed v2.3 GH Pages milestone — archived to milestones/, updated ROADMAP.md, PROJECT.md, MILESTONES.md. Git tagged v2.3.
+**Next step:** Run `/gsd-new-milestone` to start next milestone (questioning → research → requirements → roadmap).
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (v2.3 roadmap created)*
+*Last updated: 2026-02-25 (v2.3 milestone archived)*

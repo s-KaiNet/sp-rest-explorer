@@ -1,5 +1,24 @@
 # Milestones: SP REST API Explorer — New UI
 
+## v2.3 GH Pages — Shipped 2026-02-25
+
+**Phases:** 29 | **Plans:** 2 | **Tasks:** 4 | **Requirements:** 8/8 validated
+
+Automated frontend deployment to GitHub Pages via GitHub Actions CI/CD pipeline. Replaced committed `docs/` build output with CI/CD-managed deployment from `app/dist/`. Repository no longer carries build artifacts in version control. +463/-290 lines across 17 files in 1 day (7 commits).
+
+**Key accomplishments:**
+1. GitHub Actions CI/CD pipeline — automated build and deploy to GitHub Pages on every push to master, with concurrency group cancelling in-progress runs
+2. Vite build output redirected from `../docs` to `app/dist/` (inside project root) — no more committed build artifacts
+3. Repository cleanup — removed all 5 committed build artifact files from `docs/` directory
+4. CI strict mode compatibility — widened objectHash return type and added ES2023 lib for Array.toSorted()
+5. Live site verified working at https://nicklasmansson.github.io/sp-rest-explorer/ via automated deployment
+
+**Deferred:** CICD-FUT-01-03 (build caching, branch protection, status badges)
+
+**Archive:** [milestones/v2.3-ROADMAP.md](milestones/v2.3-ROADMAP.md) | [milestones/v2.3-REQUIREMENTS.md](milestones/v2.3-REQUIREMENTS.md)
+
+---
+
 ## v2.2 API Changelog — Shipped 2026-02-25
 
 **Phases:** 24-28 | **Plans:** 8 | **Tasks:** 13 | **Requirements:** 22/22 validated
@@ -156,4 +175,4 @@ Rebuilt the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 **Archive:** [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) | [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md)
 
 ---
-*Last updated: 2026-02-25*
+*Last updated: 2026-02-25 (v2.3 archived)*
