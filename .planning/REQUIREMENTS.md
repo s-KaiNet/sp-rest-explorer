@@ -62,30 +62,30 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DATA-01 | — | Pending |
-| DATA-02 | — | Pending |
-| DATA-03 | — | Pending |
-| DATA-04 | — | Pending |
-| VIEW-01 | — | Pending |
-| VIEW-02 | — | Pending |
-| VIEW-03 | — | Pending |
-| VIEW-04 | — | Pending |
-| VIEW-05 | — | Pending |
-| VIEW-06 | — | Pending |
-| FILT-01 | — | Pending |
-| FILT-02 | — | Pending |
-| FILT-03 | — | Pending |
-| FILT-04 | — | Pending |
-| INTG-01 | — | Pending |
-| INTG-02 | — | Pending |
-| INTG-03 | — | Pending |
-| INTG-04 | — | Pending |
+| DATA-01 | Phase 24 | Pending |
+| DATA-02 | Phase 24 | Pending |
+| DATA-03 | Phase 24 | Pending |
+| DATA-04 | Phase 27 | Pending |
+| VIEW-01 | Phase 25 | Pending |
+| VIEW-02 | Phase 25 | Pending |
+| VIEW-03 | Phase 26 | Pending |
+| VIEW-04 | Phase 26 | Pending |
+| VIEW-05 | Phase 25 | Pending |
+| VIEW-06 | Phase 26 | Pending |
+| FILT-01 | Phase 27 | Pending |
+| FILT-02 | Phase 27 | Pending |
+| FILT-03 | Phase 27 | Pending |
+| FILT-04 | Phase 25 | Pending |
+| INTG-01 | Phase 25 | Pending |
+| INTG-02 | Phase 25 | Pending |
+| INTG-03 | Phase 25 | Pending |
+| INTG-04 | Phase 25 | Pending |
 
 **Coverage:**
 - v2.2 requirements: 18 total
-- Mapped to phases: 0
-- Unmapped: 18
+- Mapped to phases: 18
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-25*
-*Last updated: 2026-02-25 after initial definition*
+*Last updated: 2026-02-25 — all 18 requirements mapped to phases 24-27*

@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- 🔄 **v2.2 API Changelog** — Phases 24-27 (in progress)
 - ✅ **v2.1 Connect Frontend** — Phases 22-23 (shipped 2026-02-25) — [archive](milestones/v2.1-ROADMAP.md)
 - ✅ **v2.0 Backend Rework** — Phases 18-21 (shipped 2026-02-24) — [archive](milestones/v2.0-ROADMAP.md)
 - ✅ **v1.0 MVP** — Phases 1-5 (shipped 2026-02-12) — [archive](milestones/v1.0-ROADMAP.md)
@@ -11,6 +12,11 @@
 - ✅ **v1.4 Unify Icons** — Phases 13-17 (shipped 2026-02-19) — [archive](milestones/v1.4-ROADMAP.md)
 
 ## Phases
+
+- [ ] **Phase 24: Diff Engine** - Port DiffGenerator and wire blob fetch + diff computation pipeline
+- [ ] **Phase 25: Changelog Page Shell** - Routable page with header nav, summary bar, loading/error/empty states
+- [ ] **Phase 26: Change Detail Views** - Entity cards with property-level changes, root functions table, badges
+- [ ] **Phase 27: Filtering & Range Selection** - Range selector (1-6 months), filter chips, entity name links
 
 <details>
 <summary>✅ v2.1 Connect Frontend (Phases 22-23) — SHIPPED 2026-02-25</summary>
@@ -79,10 +85,59 @@
 
 </details>
 
+## Phase Details
+
+### Phase 24: Diff Engine
+**Goal**: App can fetch current and historical metadata blobs, decompress them, and compute a structured diff describing added/updated/removed entities and functions
+**Depends on**: Phase 23 (existing metadata fetch pipeline and lz-string decompression)
+**Requirements**: DATA-01, DATA-02, DATA-03
+**Success Criteria** (what must be TRUE):
+  1. App fetches metadata.latest.zip.json and a historical monthly blob (e.g., 2026y_m1_metadata.zip.json) from Azure Blob Storage
+  2. Both blobs are decompressed client-side using lz-string decompressFromUTF16 into parsed metadata objects
+  3. DiffGenerator (ported from az-funcs/ to app/src/lib/) produces a structured diff result with added, updated, and removed entities and root functions
+  4. jsondiffpatch is installed as a project dependency and used by DiffGenerator for property-level diffing
+**Plans**: TBD
+
+### Phase 25: Changelog Page Shell
+**Goal**: Users can navigate to the API Changelog page and see a functional page skeleton with summary counts, loading feedback, and graceful handling of errors and empty results
+**Depends on**: Phase 24 (diff engine must produce data for the page to render)
+**Requirements**: VIEW-01, VIEW-02, VIEW-05, INTG-01, INTG-02, INTG-03, INTG-04, FILT-04
+**Success Criteria** (what must be TRUE):
+  1. User can click "API Changelog" in the app header and land on the changelog page at a dedicated hash route
+  2. User sees a loading indicator while metadata blobs are being fetched and the diff is being computed
+  3. User sees a summary bar displaying counts of added, updated, and removed entities/functions once the diff completes
+  4. User sees a friendly empty state message when no changes exist for the selected period
+  5. User sees a clear error message if blob fetching fails or a historical blob is missing
+**Plans**: TBD
+
+### Phase 26: Change Detail Views
+**Goal**: Users can inspect the full details of API changes — expandable entity cards with property-level diffs, a root functions change table, and color-coded change-type badges on every item
+**Depends on**: Phase 25 (page shell must exist to render detail content into)
+**Requirements**: VIEW-03, VIEW-04, VIEW-06
+**Success Criteria** (what must be TRUE):
+  1. User sees expandable entity cards that reveal property-level and function-level changes (added/removed/updated properties and bound functions)
+  2. User sees a root functions section showing added, updated, and removed top-level functions in a table layout
+  3. Every entity card and individual change row displays a color-coded badge indicating the change type (New, Added, Removed, Updated)
+**Plans**: TBD
+
+### Phase 27: Filtering & Range Selection
+**Goal**: Users can control what they see in the changelog — selecting a time range for cumulative diffs and filtering by change type — and can navigate from changelog entries to detailed type information
+**Depends on**: Phase 26 (detail views must exist to be filtered and linked)
+**Requirements**: DATA-04, FILT-01, FILT-02, FILT-03
+**Success Criteria** (what must be TRUE):
+  1. User can select a range of 1-6 months via a range selector control (default: 1 month) and the changelog updates to show the cumulative diff for that period
+  2. User can toggle filter chips to show/hide Added, Updated, and Removed change categories, and the changelog view updates immediately
+  3. User can click any entity name in the changelog to navigate to the Explore Types detail page (/types/{fullName})
+**Plans**: TBD
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|:--------------:|--------|-----------|
+| 24. Diff Engine | v2.2 | 0/? | Not started | - |
+| 25. Changelog Page Shell | v2.2 | 0/? | Not started | - |
+| 26. Change Detail Views | v2.2 | 0/? | Not started | - |
+| 27. Filtering & Range Selection | v2.2 | 0/? | Not started | - |
 | 22. Switch to Compressed Data Source | v2.1 | 1/1 | Complete | 2026-02-24 |
 | 23. Recently Visited Fix | v2.1 | 1/1 | Complete | 2026-02-25 |
 | 18. Project Scaffolding & Auth Validation | v2.0 | 1/1 | Complete | 2026-02-23 |
@@ -111,4 +166,4 @@
 
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-25 (v2.1 Connect Frontend shipped)*
+*Last updated: 2026-02-25 (v2.2 API Changelog roadmap created)*
