@@ -125,7 +125,11 @@ Plans:
   1. User sees expandable entity cards that reveal property-level and function-level changes (added/removed/updated properties and bound functions)
   2. User sees a root functions section showing added, updated, and removed top-level functions in a table layout
   3. Every entity card and individual change row displays a color-coded badge indicating the change type (New, Added, Removed, Updated)
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 26-01-PLAN.md — Create changelog detail components (ChangeBadge, RootFunctionsTable, EntityChangeCard)
+- [ ] 26-02-PLAN.md — Wire detail components into ChangelogPage + visual verification
 
 ### Phase 27: Filtering & Range Selection
 **Goal**: Users can control what they see in the changelog — selecting a time range for cumulative diffs and filtering by change type — and can navigate from changelog entries to detailed type information
@@ -143,7 +147,7 @@ Plans:
 |-------|-----------|:--------------:|--------|-----------|
 | 24. Diff Engine | 2/2 | Complete    | 2026-02-25 | - |
 | 25. Changelog Page Shell | 1/1 | Complete    | 2026-02-25 | - |
-| 26. Change Detail Views | v2.2 | 0/? | Not started | - |
+| 26. Change Detail Views | v2.2 | 0/2 | Planned | - |
 | 27. Filtering & Range Selection | v2.2 | 0/? | Not started | - |
 | 22. Switch to Compressed Data Source | v2.1 | 1/1 | Complete | 2026-02-24 |
 | 23. Recently Visited Fix | v2.1 | 1/1 | Complete | 2026-02-25 |
