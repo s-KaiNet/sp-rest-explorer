@@ -147,7 +147,7 @@ Plans:
 |-------|-----------|:--------------:|--------|-----------|
 | 24. Diff Engine | 2/2 | Complete    | 2026-02-25 | - |
 | 25. Changelog Page Shell | 1/1 | Complete    | 2026-02-25 | - |
-| 26. Change Detail Views | 2/2 | Complete   | 2026-02-25 | - |
+| 26. Change Detail Views | 2/2 | Complete    | 2026-02-25 | - |
 | 27. Filtering & Range Selection | v2.2 | 0/? | Not started | - |
 | 22. Switch to Compressed Data Source | v2.1 | 1/1 | Complete | 2026-02-24 |
 | 23. Recently Visited Fix | v2.1 | 1/1 | Complete | 2026-02-25 |
