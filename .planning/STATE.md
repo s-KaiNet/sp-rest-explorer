@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Planning next milestone
+**Current focus:** v2.2 API Changelog
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, lz-string, React Router 7
@@ -18,9 +18,10 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: (none active — between milestones)
-Status: v2.1 Connect Frontend shipped
-Last activity: 2026-02-25 — v2.1 milestone completed
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-02-25 — Milestone v2.2 started
 
 ```
 v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
@@ -77,9 +78,9 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ## Session Continuity
 
 **Last session:** 2026-02-25
-**What happened:** Completed v2.1 Connect Frontend milestone. Archived roadmap and requirements to milestones/. All 12 requirements validated. Git tagged v2.1.
-**Next step:** `/gsd-new-milestone` to plan next milestone
+**What happened:** Started v2.2 API Changelog milestone. Gathered goals: client-side diff computation, range selector (1-6 months), cumulative merged diffs, entity cards, filter chips.
+**Next step:** Define requirements, create roadmap
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (v2.1 milestone completed)*
+*Last updated: 2026-02-25 (v2.2 milestone started)*

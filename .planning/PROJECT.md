@@ -73,11 +73,25 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ### Active
 
-*(No active milestone — planning next)*
+## Current Milestone: v2.2 API Changelog
+
+**Goal:** Add the API Changelog view — the last missing feature — showing month-over-month changes in the SharePoint REST API metadata with cumulative diff support for up to 6 months.
+
+**Target features:**
+- API Changelog page with range selector (1-6 months, default 1)
+- Client-side diff computation using DiffGenerator (ported from az-funcs/) with jsondiffpatch
+- Merged cumulative diff view (e.g., "3 months" = current vs 3 months ago)
+- Summary bar with added/updated/removed counts
+- Filter chips to show/hide change types
+- Expandable entity cards with property-level change details
+- Root functions change table
+- Entity names link to Explore Types detail
+- Empty state for months with no changes
+- Blob fetching: metadata.latest.zip.json + historical {year}y_m{month}_metadata.zip.json
+- Fresh fetch each visit (no IndexedDB caching for changelog data)
 
 ### Backlog (future milestones)
 
-- [ ] CHLG-01 through CHLG-06: API Changelog view (monthly diffs, summary stats, filter chips)
 - [ ] ADDL-02: GitHub Actions CI/CD auto-deployment
 
 ### Out of Scope
@@ -172,4 +186,4 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-25 after v2.1 milestone*
+*Last updated: 2026-02-25 after v2.2 milestone started*
