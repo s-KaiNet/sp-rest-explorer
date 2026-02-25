@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- [ ] **v2.3 GH Pages** — Phase 29 (active)
+- [x] **v2.3 GH Pages** — Phase 29 (active) (completed 2026-02-25)
 - ✅ **v2.2 API Changelog** — Phases 24-28 (shipped 2026-02-25) — [archive](milestones/v2.2-ROADMAP.md)
 - ✅ **v2.1 Connect Frontend** — Phases 22-23 (shipped 2026-02-25) — [archive](milestones/v2.1-ROADMAP.md)
 - ✅ **v2.0 Backend Rework** — Phases 18-21 (shipped 2026-02-24) — [archive](milestones/v2.0-ROADMAP.md)
@@ -107,7 +107,7 @@
   2. The `docs/` folder no longer exists in the repository, and `app/dist/` is the build output directory (never committed)
   3. The live site at `https://{user}.github.io/sp-rest-explorer/` serves the latest build with all features working (hash routing, data loading, all pages)
   4. Accidentally running `npm run build` locally does not create committable build artifacts (`.gitignore` blocks both `docs/` and `app/dist/`)
-**Plans:** 1/2 plans executed
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 29-01-PLAN.md — CI/CD pipeline + build config + .gitignore (Wave 1) — completed 2026-02-25
@@ -117,7 +117,7 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 29. Automated GitHub Pages Deployment | 1/2 | In Progress|  |
+| 29. Automated GitHub Pages Deployment | 2/2 | Complete   | 2026-02-25 |
 
 ---
 *Roadmap created: 2026-02-11*

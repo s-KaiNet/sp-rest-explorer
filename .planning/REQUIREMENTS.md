@@ -21,7 +21,7 @@ Requirements for GH Pages milestone. Automate frontend deployment via GitHub Act
 
 ### Repo Cleanup
 
-- [ ] **REPO-01**: Committed `docs/` folder deleted from repository
+- [x] **REPO-01**: Committed `docs/` folder deleted from repository
 - [x] **REPO-02**: `.gitignore` updated to exclude `docs/` and `app/dist/` build output directories
 
 ## Future Requirements
@@ -55,7 +55,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CICD-04 | Phase 29 | Complete |
 | BLDG-01 | Phase 29 | Complete |
 | BLDG-02 | Phase 29 | Complete |
-| REPO-01 | Phase 29 | Pending |
+| REPO-01 | Phase 29 | Complete |
 | REPO-02 | Phase 29 | Complete |
 
 **Coverage:**

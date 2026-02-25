@@ -19,12 +19,12 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 ## Current Position
 
 Phase: 29 — Automated GitHub Pages Deployment
-Plan: 2 of 2
-Status: Plan 01 complete, Plan 02 next
-Last activity: 2026-02-25 — Plan 01 complete (CI/CD pipeline deployed and verified)
+Plan: 2 of 2 (complete)
+Status: Phase 29 complete — all plans executed
+Last activity: 2026-02-25 — Plan 02 complete (docs/ removed from repository)
 
 ```
-v2.3 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/1 phases)
+v2.3 Progress: ████████████████████ 100% (1/1 phases: 29 ✓)
 v2.2 Progress: ████████████████████ 100% (5/5 phases: 24 ✓, 25 ✓, 26 ✓, 27 ✓, 28 ✓) — SHIPPED
 v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
@@ -44,6 +44,7 @@ v1.4 Progress: ████████████████████ 100%
 | Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 | 13 |
 | Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 | 22 |
 | Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days | 1 day |
+| Phase 29 P02 | 1min | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -58,6 +59,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 **Phase 27-02:** Root function links navigate to /_api/{functionName} (user override from /_api/ root). stopPropagation on entity name links. Removed items dimmed with text-muted-foreground.
 **Phase 28-01:** bg-foreground/text-background for segmented control active state (neutral inversion). Muted emerald/sky/rose light-mode palette — -50 for badges, -100 for filter buttons. Counts integrated into filter button labels replacing stat cards.
 **Phase 29-01:** Trigger on master (not main) — repo default branch. Single build-and-deploy job. Widen objectHash type + ES2023 lib for CI strict mode compatibility.
+**Phase 29-02:** Clean atomic deletion of docs/ build artifacts — single git rm -r commit.
 
 ### v2.3 Phase Design Rationale
 - **Phase 29 (Automated GitHub Pages Deployment)** is a single phase because all 8 requirements are tightly coupled: the GH Actions workflow depends on the Vite config change (BLDG-01), which depends on docs/ cleanup (REPO-01/02), and the workflow itself (CICD-01-04) is one atomic deliverable. Splitting this into multiple phases would create artificial boundaries between work that must ship together.
@@ -92,10 +94,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T22:10:00Z
-**What happened:** Completed Plan 29-01: CI/CD pipeline + build config. GitHub Actions workflow deploys to GitHub Pages on push to master. Two deviations fixed (TS build errors, branch name). User verified live site works.
-**Next step:** Execute Plan 29-02 (`/gsd-execute-phase 29`) — delete committed docs/ folder
+**Last session:** 2026-02-25T22:15:05.057Z
+**What happened:** Completed Plan 29-02: Removed committed docs/ build output (5 files). Phase 29 is now complete — both CI/CD pipeline and repo cleanup done.
+**Next step:** Phase 29 complete. Run `/gsd-verify-work 29` or `/gsd-complete-milestone`.
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (Plan 29-01 complete — CI/CD pipeline deployed)*
+*Last updated: 2026-02-25 (Phase 29 complete — all plans executed)*
