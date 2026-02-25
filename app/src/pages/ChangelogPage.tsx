@@ -58,20 +58,28 @@ const chipConfig: { type: ChangeType; label: string; activeClass: string }[] = [
     type: 'added',
     label: 'Added',
     activeClass:
-      'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border-green-300 dark:border-green-700',
+      'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-green-900/30 dark:text-green-400 dark:border-green-700',
   },
   {
     type: 'updated',
     label: 'Updated',
     activeClass:
-      'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-300 dark:border-blue-700',
+      'bg-sky-100 text-sky-800 border-sky-300 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-700',
   },
   {
     type: 'removed',
     label: 'Removed',
     activeClass:
-      'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border-red-300 dark:border-red-700',
+      'bg-rose-100 text-rose-800 border-rose-300 dark:bg-red-900/30 dark:text-red-400 dark:border-red-700',
   },
+]
+
+// ── Segmented control config ──
+
+const rangeOptions: { value: number; label: string }[] = [
+  { value: 1, label: 'Current month' },
+  { value: 3, label: 'Last 3' },
+  { value: 6, label: 'Last 6' },
 ]
 
 const INACTIVE_CHIP_CLASS = 'bg-muted/50 text-muted-foreground border-border'
@@ -183,31 +191,47 @@ export function ChangelogPage() {
           <p className="text-[15px] text-muted-foreground">{subtitleText}</p>
         </div>
 
-        {/* Toolbar — range dropdown + filter chips */}
+        {/* Toolbar — segmented control + filter buttons */}
         <div className="flex items-center justify-between gap-4 mb-6">
-          {/* Range dropdown */}
-          <select
-            value={String(rangeMonths)}
-            onChange={(e) => setRangeMonths(Number(e.target.value))}
-            className="rounded-md border border-input bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-          >
-            <option value="1">Current month</option>
-            <option value="3">Last 3 months</option>
-            <option value="6">Last 6 months</option>
-          </select>
+          {/* Segmented control */}
+          <div className="inline-flex border border-input rounded-md">
+            {rangeOptions.map(({ value, label }, i) => {
+              const isActive = rangeMonths === value
+              const isFirst = i === 0
+              const isLast = i === rangeOptions.length - 1
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => setRangeMonths(value)}
+                  className={`px-3 py-1.5 text-sm font-medium cursor-pointer transition-colors ${
+                    isFirst ? 'rounded-l-md' : ''
+                  } ${isLast ? 'rounded-r-md' : ''} ${
+                    !isFirst ? 'border-l border-input' : ''
+                  } ${
+                    isActive
+                      ? 'bg-foreground text-background'
+                      : 'bg-background text-muted-foreground hover:bg-muted/50'
+                  }`}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
 
-          {/* Filter chips */}
+          {/* Filter buttons */}
           <div className="flex items-center gap-2">
             {chipConfig.map(({ type, label, activeClass }) => (
               <button
                 key={type}
                 type="button"
                 onClick={() => toggleFilter(type)}
-                className={`rounded-full px-3 py-1 text-xs font-medium border cursor-pointer transition-colors ${
+                className={`rounded-md px-4 py-2 text-sm font-medium border cursor-pointer transition-colors ${
                   activeFilters.has(type) ? activeClass : INACTIVE_CHIP_CLASS
                 }`}
               >
-                {label}
+                {label} ({counts[type]})
               </button>
             ))}
           </div>
@@ -245,28 +269,6 @@ export function ChangelogPage() {
         {/* Ready state */}
         {isReady && (
           <>
-            {/* Summary bar — always show 3 stat cards with FULL totals */}
-            <div className="flex gap-4">
-              <div className="flex-1 rounded-xl border border-border bg-background p-5 text-center">
-                <div className="text-3xl font-bold leading-none mb-1 text-green-600 dark:text-green-400">
-                  {counts.added}
-                </div>
-                <div className="text-xs font-medium text-muted-foreground">Added</div>
-              </div>
-              <div className="flex-1 rounded-xl border border-border bg-background p-5 text-center">
-                <div className="text-3xl font-bold leading-none mb-1 text-blue-600 dark:text-blue-400">
-                  {counts.updated}
-                </div>
-                <div className="text-xs font-medium text-muted-foreground">Updated</div>
-              </div>
-              <div className="flex-1 rounded-xl border border-border bg-background p-5 text-center">
-                <div className="text-3xl font-bold leading-none mb-1 text-red-600 dark:text-red-400">
-                  {counts.removed}
-                </div>
-                <div className="text-xs font-medium text-muted-foreground">Removed</div>
-              </div>
-            </div>
-
             {/* Empty state — diff itself has zero results */}
             {totalChanges === 0 && (
               <div className="flex flex-col items-center py-12">
