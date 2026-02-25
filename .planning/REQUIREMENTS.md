@@ -27,7 +27,7 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 
 - [x] **FILT-01**: User can toggle filter chips to show/hide Added, Updated, and Removed changes
 - [x] **FILT-02**: User can select a range (1-6 months) via a range selector control (default: 1 month)
-- [ ] **FILT-03**: User can click entity names in the changelog to navigate to the Explore Types detail page
+- [x] **FILT-03**: User can click entity names in the changelog to navigate to the Explore Types detail page
 - [x] **FILT-04**: User sees "API Changelog" as a navigation entry in the app header
 
 ### Integration
@@ -74,7 +74,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIEW-06 | Phase 26 | Complete |
 | FILT-01 | Phase 27 | Complete |
 | FILT-02 | Phase 27 | Complete |
-| FILT-03 | Phase 27 | Pending |
+| FILT-03 | Phase 27 | Complete |
 | FILT-04 | Phase 25 | Complete |
 | INTG-01 | Phase 25 | Complete |
 | INTG-02 | Phase 25 | Complete |

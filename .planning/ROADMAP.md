@@ -16,7 +16,7 @@
 - [x] **Phase 24: Diff Engine** - Port DiffGenerator and wire blob fetch + diff computation pipeline (completed 2026-02-25)
 - [x] **Phase 25: Changelog Page Shell** - Routable page with header nav, summary bar, loading/error/empty states (completed 2026-02-25)
 - [x] **Phase 26: Change Detail Views** - Entity cards with property-level changes, root functions table, badges (completed 2026-02-25)
-- [ ] **Phase 27: Filtering & Range Selection** - Range selector (1-6 months), filter chips, entity name links
+- [x] **Phase 27: Filtering & Range Selection** - Range selector (1-6 months), filter chips, entity name links (completed 2026-02-25)
 
 <details>
 <summary>✅ v2.1 Connect Frontend (Phases 22-23) — SHIPPED 2026-02-25</summary>
@@ -152,7 +152,7 @@ Plans:
 | 24. Diff Engine | 2/2 | Complete    | 2026-02-25 | - |
 | 25. Changelog Page Shell | 1/1 | Complete    | 2026-02-25 | - |
 | 26. Change Detail Views | 2/2 | Complete    | 2026-02-25 | - |
-| 27. Filtering & Range Selection | 1/2 | In Progress|  | - |
+| 27. Filtering & Range Selection | 2/2 | Complete   | 2026-02-25 | - |
 | 22. Switch to Compressed Data Source | v2.1 | 1/1 | Complete | 2026-02-24 |
 | 23. Recently Visited Fix | v2.1 | 1/1 | Complete | 2026-02-25 |
 | 18. Project Scaffolding & Auth Validation | v2.0 | 1/1 | Complete | 2026-02-23 |
