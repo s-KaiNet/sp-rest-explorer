@@ -140,14 +140,26 @@ export function ChangelogPage() {
   const isError = status === 'error'
 
   // Build subtitle text based on range
+  // The label reflects the CURRENT month (what the user views changes for),
+  // not the comparison date (which is the end of the previous month used for diffing).
   const subtitleText = useMemo(() => {
+    const now = new Date()
+    const currentYear = now.getFullYear()
+    const currentMonth = now.getMonth() + 1 // 1-indexed
+
     if (rangeMonths === 1) {
-      return `Changes in ${getMonthLabel(year, month)}`
+      return `Changes in ${getMonthLabel(currentYear, currentMonth)}`
     }
-    // Multi-month range: show "from {start} to {end}"
-    // End is the current comparison month (one month ago from today)
-    const defaultEnd = getDefaultComparisonDate()
-    return `Changes from ${getMonthLabel(year, month)} to ${getMonthLabel(defaultEnd.year, defaultEnd.month)}`
+    // Multi-month range: "from {start month + 1} to {current month}"
+    // year/month is the comparison date (start of the range); the label shows one month after
+    // because the comparison snapshot represents the END of that month, so changes start the next month
+    let startLabelMonth = month + 1
+    let startLabelYear = year
+    if (startLabelMonth > 12) {
+      startLabelMonth = 1
+      startLabelYear += 1
+    }
+    return `Changes from ${getMonthLabel(startLabelYear, startLabelMonth)} to ${getMonthLabel(currentYear, currentMonth)}`
   }, [rangeMonths, year, month])
 
   function toggleFilter(type: ChangeType) {
