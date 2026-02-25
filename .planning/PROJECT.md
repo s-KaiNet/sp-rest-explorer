@@ -9,6 +9,7 @@ The backend is a clean-room Azure Functions v4 rewrite (`backend/`) replacing th
 ## Current State
 
 **Shipped:** v2.2 API Changelog (2026-02-25)
+**Active:** v2.3 GH Pages (CI/CD pipeline)
 **Frontend codebase:** ~6,300 LOC TypeScript/CSS across 78 files in `app/`
 **Backend codebase:** ~1,016 LOC TypeScript across 15 source files in `backend/src/`
 **Frontend tech stack:** React 19, Vite 7, TypeScript 5.9, Zustand 5 (with persist), Tailwind CSS 4, shadcn/ui, Lucide React, MiniSearch, lz-string, jsondiffpatch, React Router 7
@@ -80,7 +81,16 @@ Cmd+K deep search now covers all 5,779 items (2,449 entities + 3,330 API endpoin
 
 ### Active
 
-(No active milestone — planning next)
+## Current Milestone: v2.3 GH Pages
+
+**Goal:** Automate frontend deployment to GitHub Pages via GitHub Actions CI/CD pipeline triggered on push to `gh-pages` branch.
+
+**Target features:**
+- GitHub Actions workflow triggered on push to `gh-pages` branch
+- Vite build config updated to output `dist/` (no more committed `docs/`)
+- `actions/deploy-pages` for modern artifact-based deployment
+- Remove committed `docs/` build output from repo
+- `.gitignore` updated to prevent accidental build output commits
 
 ### Backlog (future milestones)
 
@@ -194,4 +204,4 @@ Legacy `az-funcs/` preserved as reference. Legacy `web/` preserved as reference.
 - **Delivery**: Incremental — each phase should produce a deployable state
 
 ---
-*Last updated: 2026-02-25 after v2.2 milestone shipped*
+*Last updated: 2026-02-25 after v2.3 milestone started*
