@@ -19,9 +19,9 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 ## Current Position
 
 Phase: 29 — Automated GitHub Pages Deployment
-Plan: —
-Status: Roadmap created, awaiting plan
-Last activity: 2026-02-25 — v2.3 roadmap created
+Plan: 2 of 2
+Status: Plan 01 complete, Plan 02 next
+Last activity: 2026-02-25 — Plan 01 complete (CI/CD pipeline deployed and verified)
 
 ```
 v2.3 Progress: ░░░░░░░░░░░░░░░░░░░░   0% (0/1 phases)
@@ -57,6 +57,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 **Phase 27-01:** Native HTML select for range dropdown (no deps). Set<ChangeType> for filter state. Summary cards always show full totals. Subtitle shows current month (not comparison month).
 **Phase 27-02:** Root function links navigate to /_api/{functionName} (user override from /_api/ root). stopPropagation on entity name links. Removed items dimmed with text-muted-foreground.
 **Phase 28-01:** bg-foreground/text-background for segmented control active state (neutral inversion). Muted emerald/sky/rose light-mode palette — -50 for badges, -100 for filter buttons. Counts integrated into filter button labels replacing stat cards.
+**Phase 29-01:** Trigger on master (not main) — repo default branch. Single build-and-deploy job. Widen objectHash type + ES2023 lib for CI strict mode compatibility.
 
 ### v2.3 Phase Design Rationale
 - **Phase 29 (Automated GitHub Pages Deployment)** is a single phase because all 8 requirements are tightly coupled: the GH Actions workflow depends on the Vite config change (BLDG-01), which depends on docs/ cleanup (REPO-01/02), and the workflow itself (CICD-01-04) is one atomic deliverable. Splitting this into multiple phases would create artificial boundaries between work that must ship together.
@@ -91,10 +92,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T21:44:52.406Z
-**What happened:** Created v2.3 roadmap. Single phase (29) covering all 8 requirements — tightly coupled CI/CD pipeline, build config, and repo cleanup work.
-**Next step:** Plan Phase 29 (`/gsd-plan-phase 29`)
+**Last session:** 2026-02-25T22:10:00Z
+**What happened:** Completed Plan 29-01: CI/CD pipeline + build config. GitHub Actions workflow deploys to GitHub Pages on push to master. Two deviations fixed (TS build errors, branch name). User verified live site works.
+**Next step:** Execute Plan 29-02 (`/gsd-execute-phase 29`) — delete committed docs/ folder
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (v2.3 roadmap created)*
+*Last updated: 2026-02-25 (Plan 29-01 complete — CI/CD pipeline deployed)*

@@ -107,17 +107,17 @@
   2. The `docs/` folder no longer exists in the repository, and `app/dist/` is the build output directory (never committed)
   3. The live site at `https://{user}.github.io/sp-rest-explorer/` serves the latest build with all features working (hash routing, data loading, all pages)
   4. Accidentally running `npm run build` locally does not create committable build artifacts (`.gitignore` blocks both `docs/` and `app/dist/`)
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 29-01-PLAN.md — CI/CD pipeline + build config + .gitignore (Wave 1)
+- [x] 29-01-PLAN.md — CI/CD pipeline + build config + .gitignore (Wave 1) — completed 2026-02-25
 - [ ] 29-02-PLAN.md — Delete committed docs/ folder (Wave 2)
 
 ## Progress
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 29. Automated GitHub Pages Deployment | 0/2 | Not started | - |
+| 29. Automated GitHub Pages Deployment | 1/2 | In Progress|  |
 
 ---
 *Roadmap created: 2026-02-11*

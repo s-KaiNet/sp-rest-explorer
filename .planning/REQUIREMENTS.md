@@ -9,20 +9,20 @@ Requirements for GH Pages milestone. Automate frontend deployment via GitHub Act
 
 ### CI/CD Pipeline
 
-- [ ] **CICD-01**: GitHub Actions workflow triggers on push to `gh-pages` branch and builds the frontend app
-- [ ] **CICD-02**: Workflow uses Node.js setup with `npm ci` to install dependencies in `app/` directory
-- [ ] **CICD-03**: Workflow builds frontend with `npm run build` producing `app/dist/` output
-- [ ] **CICD-04**: Workflow deploys build output to GitHub Pages via `actions/upload-pages-artifact` and `actions/deploy-pages`
+- [x] **CICD-01**: GitHub Actions workflow triggers on push to `gh-pages` branch and builds the frontend app
+- [x] **CICD-02**: Workflow uses Node.js setup with `npm ci` to install dependencies in `app/` directory
+- [x] **CICD-03**: Workflow builds frontend with `npm run build` producing `app/dist/` output
+- [x] **CICD-04**: Workflow deploys build output to GitHub Pages via `actions/upload-pages-artifact` and `actions/deploy-pages`
 
 ### Build Configuration
 
-- [ ] **BLDG-01**: Vite `build.outDir` changed from `'../docs'` to `'dist'` (output stays inside `app/`)
-- [ ] **BLDG-02**: Vite `base` path remains `/sp-rest-explorer/` (unchanged, verification only)
+- [x] **BLDG-01**: Vite `build.outDir` changed from `'../docs'` to `'dist'` (output stays inside `app/`)
+- [x] **BLDG-02**: Vite `base` path remains `/sp-rest-explorer/` (unchanged, verification only)
 
 ### Repo Cleanup
 
 - [ ] **REPO-01**: Committed `docs/` folder deleted from repository
-- [ ] **REPO-02**: `.gitignore` updated to exclude `docs/` and `app/dist/` build output directories
+- [x] **REPO-02**: `.gitignore` updated to exclude `docs/` and `app/dist/` build output directories
 
 ## Future Requirements
 
@@ -49,14 +49,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CICD-01 | Phase 29 | Pending |
-| CICD-02 | Phase 29 | Pending |
-| CICD-03 | Phase 29 | Pending |
-| CICD-04 | Phase 29 | Pending |
-| BLDG-01 | Phase 29 | Pending |
-| BLDG-02 | Phase 29 | Pending |
+| CICD-01 | Phase 29 | Complete |
+| CICD-02 | Phase 29 | Complete |
+| CICD-03 | Phase 29 | Complete |
+| CICD-04 | Phase 29 | Complete |
+| BLDG-01 | Phase 29 | Complete |
+| BLDG-02 | Phase 29 | Complete |
 | REPO-01 | Phase 29 | Pending |
-| REPO-02 | Phase 29 | Pending |
+| REPO-02 | Phase 29 | Complete |
 
 **Coverage:**
 - v2.3 requirements: 8 total
