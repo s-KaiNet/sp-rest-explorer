@@ -184,7 +184,7 @@ Plans:
 **Goal:** Refine the changelog page toolbar and colors — replace the range dropdown with a segmented control, remove stat cards, redesign filter buttons with integrated counts, and mute change-type colors in light mode
 **Depends on:** Phase 27
 **Requirements:** CHLG-01, CHLG-02, CHLG-03, CHLG-04
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 Plans:
 - [ ] 28-01-PLAN.md — Toolbar refactoring (segmented control, filter buttons) and muted color palette

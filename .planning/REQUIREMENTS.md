@@ -41,10 +41,10 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 
 Post-v2.2 visual/interaction refinements to the API Changelog page.
 
-- [ ] **CHLG-01**: Range selector uses a segmented control (connected button group) instead of a native dropdown
-- [ ] **CHLG-02**: Full-width stat cards removed; change counts integrated into filter buttons
-- [ ] **CHLG-03**: Filter buttons are medium-sized rounded rectangles with integrated counts (e.g., "Added (12)")
-- [ ] **CHLG-04**: Change-type colors are muted in light mode (emerald/sky/rose); dark mode unchanged
+- [x] **CHLG-01**: Range selector uses a segmented control (connected button group) instead of a native dropdown
+- [x] **CHLG-02**: Full-width stat cards removed; change counts integrated into filter buttons
+- [x] **CHLG-03**: Filter buttons are medium-sized rounded rectangles with integrated counts (e.g., "Added (12)")
+- [x] **CHLG-04**: Change-type colors are muted in light mode (emerald/sky/rose); dark mode unchanged
 
 ## Future Requirements
 
