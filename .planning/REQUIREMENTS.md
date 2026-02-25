@@ -49,20 +49,20 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CICD-01 | — | Pending |
-| CICD-02 | — | Pending |
-| CICD-03 | — | Pending |
-| CICD-04 | — | Pending |
-| BLDG-01 | — | Pending |
-| BLDG-02 | — | Pending |
-| REPO-01 | — | Pending |
-| REPO-02 | — | Pending |
+| CICD-01 | Phase 29 | Pending |
+| CICD-02 | Phase 29 | Pending |
+| CICD-03 | Phase 29 | Pending |
+| CICD-04 | Phase 29 | Pending |
+| BLDG-01 | Phase 29 | Pending |
+| BLDG-02 | Phase 29 | Pending |
+| REPO-01 | Phase 29 | Pending |
+| REPO-02 | Phase 29 | Pending |
 
 **Coverage:**
 - v2.3 requirements: 8 total
-- Mapped to phases: 0
-- Unmapped: 8 (pending roadmap creation)
+- Mapped to phases: 8
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-02-25*
-*Last updated: 2026-02-25 after initial definition*
+*Last updated: 2026-02-25 (traceability updated — all 8 requirements mapped to Phase 29)*

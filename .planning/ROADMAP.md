@@ -2,6 +2,7 @@
 
 ## Milestones
 
+- [ ] **v2.3 GH Pages** — Phase 29 (active)
 - ✅ **v2.2 API Changelog** — Phases 24-28 (shipped 2026-02-25) — [archive](milestones/v2.2-ROADMAP.md)
 - ✅ **v2.1 Connect Frontend** — Phases 22-23 (shipped 2026-02-25) — [archive](milestones/v2.1-ROADMAP.md)
 - ✅ **v2.0 Backend Rework** — Phases 18-21 (shipped 2026-02-24) — [archive](milestones/v2.0-ROADMAP.md)
@@ -12,6 +13,10 @@
 - ✅ **v1.4 Unify Icons** — Phases 13-17 (shipped 2026-02-19) — [archive](milestones/v1.4-ROADMAP.md)
 
 ## Phases
+
+### v2.3 GH Pages
+
+- [ ] **Phase 29: Automated GitHub Pages Deployment** — Replace committed docs/ with GitHub Actions CI/CD pipeline
 
 <details>
 <summary>✅ v2.2 API Changelog (Phases 24-28) — SHIPPED 2026-02-25</summary>
@@ -91,6 +96,25 @@
 
 </details>
 
+## Phase Details
+
+### Phase 29: Automated GitHub Pages Deployment
+**Goal**: Frontend deploys automatically to GitHub Pages on push — no more committed build output in the repository
+**Depends on**: Nothing (first phase of v2.3)
+**Requirements**: CICD-01, CICD-02, CICD-03, CICD-04, BLDG-01, BLDG-02, REPO-01, REPO-02
+**Success Criteria** (what must be TRUE):
+  1. Pushing to the `gh-pages` branch triggers a GitHub Actions workflow that builds and deploys the frontend to GitHub Pages without any manual steps
+  2. The `docs/` folder no longer exists in the repository, and `app/dist/` is the build output directory (never committed)
+  3. The live site at `https://{user}.github.io/sp-rest-explorer/` serves the latest build with all features working (hash routing, data loading, all pages)
+  4. Accidentally running `npm run build` locally does not create committable build artifacts (`.gitignore` blocks both `docs/` and `app/dist/`)
+**Plans**: TBD
+
+## Progress
+
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 29. Automated GitHub Pages Deployment | 0/TBD | Not started | - |
+
 ---
 *Roadmap created: 2026-02-11*
-*Last updated: 2026-02-25 (v2.2 API Changelog shipped)*
+*Last updated: 2026-02-25 (v2.3 roadmap created)*
