@@ -171,8 +171,8 @@ export function ChangelogPage() {
           <p className="text-[15px] text-muted-foreground">{subtitleText}</p>
         </div>
 
-        {/* Sticky toolbar — range dropdown + filter chips */}
-        <div className="sticky top-14 z-40 bg-background/95 backdrop-blur-sm py-3 -mx-6 px-6 border-b border-border/50 flex items-center justify-between gap-4 mb-6">
+        {/* Toolbar — range dropdown + filter chips */}
+        <div className="flex items-center justify-between gap-4 mb-6">
           {/* Range dropdown */}
           <select
             value={String(rangeMonths)}
