@@ -5,9 +5,9 @@ interface ChangeBadgeProps {
 }
 
 const badgeStyles: Record<ChangeType, string> = {
-  added: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  updated: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  removed: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  added: 'bg-emerald-50 text-emerald-700 dark:bg-green-900/30 dark:text-green-400',
+  updated: 'bg-sky-50 text-sky-700 dark:bg-blue-900/30 dark:text-blue-400',
+  removed: 'bg-rose-50 text-rose-700 dark:bg-red-900/30 dark:text-red-400',
 }
 
 const badgeLabels: Record<ChangeType, string> = {
