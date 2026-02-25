@@ -12,7 +12,7 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 - [x] **DATA-01**: User can view changelog computed by fetching compressed metadata.latest.zip.json and historical monthly blob via client-side download
 - [x] **DATA-02**: App decompresses fetched blobs client-side using lz-string decompressFromUTF16
 - [x] **DATA-03**: App computes diff using DiffGenerator class (ported from az-funcs/) with jsondiffpatch
-- [ ] **DATA-04**: User can select a range of 1-6 months; app compares current metadata vs the blob from N months ago for a merged cumulative diff
+- [x] **DATA-04**: User can select a range of 1-6 months; app compares current metadata vs the blob from N months ago for a merged cumulative diff
 
 ### Changelog UI
 
@@ -25,8 +25,8 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 
 ### Filtering & Navigation
 
-- [ ] **FILT-01**: User can toggle filter chips to show/hide Added, Updated, and Removed changes
-- [ ] **FILT-02**: User can select a range (1-6 months) via a range selector control (default: 1 month)
+- [x] **FILT-01**: User can toggle filter chips to show/hide Added, Updated, and Removed changes
+- [x] **FILT-02**: User can select a range (1-6 months) via a range selector control (default: 1 month)
 - [ ] **FILT-03**: User can click entity names in the changelog to navigate to the Explore Types detail page
 - [x] **FILT-04**: User sees "API Changelog" as a navigation entry in the app header
 
@@ -65,15 +65,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-01 | Phase 24 | Complete |
 | DATA-02 | Phase 24 | Complete |
 | DATA-03 | Phase 24 | Complete |
-| DATA-04 | Phase 27 | Pending |
+| DATA-04 | Phase 27 | Complete |
 | VIEW-01 | Phase 25 | Complete |
 | VIEW-02 | Phase 25 | Complete |
 | VIEW-03 | Phase 26 | Complete |
 | VIEW-04 | Phase 26 | Complete |
 | VIEW-05 | Phase 25 | Complete |
 | VIEW-06 | Phase 26 | Complete |
-| FILT-01 | Phase 27 | Pending |
-| FILT-02 | Phase 27 | Pending |
+| FILT-01 | Phase 27 | Complete |
+| FILT-02 | Phase 27 | Complete |
 | FILT-03 | Phase 27 | Pending |
 | FILT-04 | Phase 25 | Complete |
 | INTG-01 | Phase 25 | Complete |
