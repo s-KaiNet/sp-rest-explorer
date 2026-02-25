@@ -9,6 +9,9 @@ import {
   resetDiff,
   getDefaultComparisonDate,
 } from '@/lib/diff'
+import { CollapsibleSection } from '@/components/entity/CollapsibleSection'
+import { RootFunctionsTable } from '@/components/changelog/RootFunctionsTable'
+import { EntityChangeCard } from '@/components/changelog/EntityChangeCard'
 
 /** Format year/month as "January 2026". */
 function getMonthLabel(year: number, month: number): string {
@@ -148,11 +151,35 @@ export function ChangelogPage() {
               </div>
             )}
 
-            {/* Detail views placeholder (Phase 26) */}
-            {totalChanges > 0 && (
-              <p className="mt-8 text-center text-sm text-muted-foreground">
-                Detailed change views coming in a future update.
-              </p>
+            {/* Detail views — root functions then entities */}
+            {totalChanges > 0 && diff && (
+              <div className="mt-8 space-y-2">
+                {/* Root Functions section — before entities per user decision */}
+                <CollapsibleSection
+                  id="root-functions"
+                  title="Root Functions"
+                  count={diff.functions.length}
+                  emptyMessage="No root function changes"
+                >
+                  <RootFunctionsTable functions={diff.functions} />
+                </CollapsibleSection>
+
+                {/* Entities section */}
+                <CollapsibleSection
+                  id="entities"
+                  title="Entities"
+                  count={diff.entities.length}
+                  emptyMessage="No entity changes"
+                >
+                  <div className="space-y-3 pt-2">
+                    {[...diff.entities]
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((entity) => (
+                        <EntityChangeCard key={entity.name} entity={entity} />
+                      ))}
+                  </div>
+                </CollapsibleSection>
+              </div>
             )}
           </>
         )}
