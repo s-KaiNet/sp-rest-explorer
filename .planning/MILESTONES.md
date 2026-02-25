@@ -1,5 +1,25 @@
 # Milestones: SP REST API Explorer — New UI
 
+## v2.2 API Changelog — Shipped 2026-02-25
+
+**Phases:** 24-28 | **Plans:** 8 | **Tasks:** 13 | **Requirements:** 22/22 validated
+
+Added the API Changelog view — the last missing feature — showing month-over-month changes in the SharePoint REST API metadata. Client-side diff engine ports DiffGenerator from the backend with jsondiffpatch for property-level diffing. Cumulative diffs for 1-6 month ranges via segmented control, filter chips for change types, expandable entity cards with property-level details, root functions table, and cross-navigation links. +1,141/-5 lines across 13 app files in 1 day (13 commits).
+
+**Key accomplishments:**
+1. Client-side diff engine — ported DiffGenerator from az-funcs/ with jsondiffpatch, computing structured diffs between compressed current and historical metadata blobs
+2. Diff store singleton with useSyncExternalStore — reactive hooks for diff result, loading status, and error state with 404-tolerant empty-diff handling
+3. Changelog page shell with loading spinner, error display, empty state, and summary bar at /#/api-diff route
+4. Expandable entity cards with property-level and function-level change sub-sections, color-coded ChangeBadge components, and root functions change table
+5. Segmented control range selector (1/3/6 months) with filter buttons showing integrated counts (e.g., "Added (12)"), replacing dropdown + stat cards
+6. Cross-navigation — entity names link to Explore Types detail, function names link to /_api/{functionName} endpoints, removed items dimmed
+
+**Deferred:** CHLG-FUT-01-04 (URL state, search, IndexedDB caching, keyboard nav), ADDL-02 (CI/CD)
+
+**Archive:** [milestones/v2.2-ROADMAP.md](milestones/v2.2-ROADMAP.md) | [milestones/v2.2-REQUIREMENTS.md](milestones/v2.2-REQUIREMENTS.md)
+
+---
+
 ## v2.1 Connect Frontend — Shipped 2026-02-25
 
 **Phases:** 22-23 | **Plans:** 2 | **Tasks:** 5 | **Requirements:** 12/12 validated
