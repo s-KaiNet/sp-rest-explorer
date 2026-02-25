@@ -4,11 +4,15 @@ import type { Metadata, FunctionImport } from '@/lib/metadata/types'
 // ── jsondiffpatch instance with SP-specific config ──
 
 const jsdiff = create({
-  objectHash: (obj: Record<string, unknown>, index: number) =>
-    (obj.id as string) ||
-    (obj.name as string) ||
-    (obj._id as string) ||
-    `$$index:${index}`,
+  objectHash: (obj: object, index?: number) => {
+    const record = obj as Record<string, unknown>
+    return (
+      (record.id as string) ||
+      (record.name as string) ||
+      (record._id as string) ||
+      `$$index:${index}`
+    )
+  },
   propertyFilter: (name: string) => !name.startsWith('SP.Data.'),
 })
 
