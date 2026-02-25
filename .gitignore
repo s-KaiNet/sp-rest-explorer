@@ -1,2 +1,4 @@
 .codenomad/
 .vite/
+docs/
+app/dist/

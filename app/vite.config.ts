@@ -8,8 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/sp-rest-explorer/',
   build: {
-    outDir: '../docs',
-    emptyOutDir: true,
+    outDir: 'dist',
   },
   resolve: {
     alias: {
