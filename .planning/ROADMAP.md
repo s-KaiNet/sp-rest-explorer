@@ -96,7 +96,11 @@
   2. Both blobs are decompressed client-side using lz-string decompressFromUTF16 into parsed metadata objects
   3. DiffGenerator (ported from az-funcs/ to app/src/lib/) produces a structured diff result with added, updated, and removed entities and root functions
   4. jsondiffpatch is installed as a project dependency and used by DiffGenerator for property-level diffing
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 24-01-PLAN.md — Install jsondiffpatch, define diff types, port DiffGenerator, create historical blob fetch
+- [ ] 24-02-PLAN.md — Create diff store singleton with reactive hooks and orchestration
 
 ### Phase 25: Changelog Page Shell
 **Goal**: Users can navigate to the API Changelog page and see a functional page skeleton with summary counts, loading feedback, and graceful handling of errors and empty results
