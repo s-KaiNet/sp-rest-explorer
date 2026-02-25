@@ -18,10 +18,10 @@ Requirements for API Changelog milestone. Each maps to roadmap phases.
 
 - [x] **VIEW-01**: User can navigate to an API Changelog page via a dedicated route
 - [x] **VIEW-02**: User sees a summary bar with counts of added, updated, and removed entities/functions
-- [ ] **VIEW-03**: User sees expandable entity cards showing property-level and function-level changes
-- [ ] **VIEW-04**: User sees a root functions table showing added/updated/removed top-level functions
+- [x] **VIEW-03**: User sees expandable entity cards showing property-level and function-level changes
+- [x] **VIEW-04**: User sees a root functions table showing added/updated/removed top-level functions
 - [x] **VIEW-05**: User sees a friendly empty state when no changes exist for the selected period
-- [ ] **VIEW-06**: User sees change-type badges (New, Added, Removed, Updated) on entities and individual rows
+- [x] **VIEW-06**: User sees change-type badges (New, Added, Removed, Updated) on entities and individual rows
 
 ### Filtering & Navigation
 
@@ -68,10 +68,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DATA-04 | Phase 27 | Pending |
 | VIEW-01 | Phase 25 | Complete |
 | VIEW-02 | Phase 25 | Complete |
-| VIEW-03 | Phase 26 | Pending |
-| VIEW-04 | Phase 26 | Pending |
+| VIEW-03 | Phase 26 | Complete |
+| VIEW-04 | Phase 26 | Complete |
 | VIEW-05 | Phase 25 | Complete |
-| VIEW-06 | Phase 26 | Pending |
+| VIEW-06 | Phase 26 | Complete |
 | FILT-01 | Phase 27 | Pending |
 | FILT-02 | Phase 27 | Pending |
 | FILT-03 | Phase 27 | Pending |

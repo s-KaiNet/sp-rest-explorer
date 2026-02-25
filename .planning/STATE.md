@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** v2.2 API Changelog — Phase 25 (Changelog Page Shell)
+**Current focus:** v2.2 API Changelog — Phase 26 (Change Detail Views)
 
 **Key Constraints:**
 - Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, lz-string, React Router 7
@@ -18,10 +18,10 @@ See: .planning/PROJECT.md (updated 2026-02-25)
 
 ## Current Position
 
-Phase: 25 — Changelog Page Shell ✓
-Plan: 1 of 1 ✓
-Status: Phase 25 complete — all plans executed
-Last activity: 2026-02-25 — Plan 01 (changelog page shell) complete, phase done
+Phase: 26 — Change Detail Views
+Plan: 1 of 2 ✓
+Status: Plan 26-01 complete — detail components created
+Last activity: 2026-02-25 — Plan 01 (change detail components) complete
 
 ```
 v2.2 Progress: ██████████░░░░░░░░░░  50% (2/4 phases: 24 ✓, 25 ✓, 26, 27)
@@ -46,6 +46,7 @@ v1.4 Progress: ████████████████████ 100%
 | Phase 24 P01 | 2 min | 3 tasks | 7 files |
 | Phase 24 P02 | 1 min | 2 tasks | 2 files |
 | Phase 25 P01 | 3 min | 2 tasks | 1 files |
+| Phase 26 P01 | 2 min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -55,6 +56,7 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 **Phase 24-01:** ChangeType as string union (not enum) — codebase convention. structuredClone() for deep copy. null-on-404 for missing historical blobs. Renamed functionIds→functions in DiffEntity.
 **Phase 24-02:** Same useSyncExternalStore singleton pattern as metadata-store.ts. 404 blobs → empty DiffChanges (not error). Separate hooks for result/status/error for fine-grained re-renders.
 **Phase 25-01:** Combined entity+function counts per stat card. Always show 3 stat cards even with zero counts. Empty state below zero-count cards, not replacing them. parseMonthKey helper with null-on-invalid for safe URL param parsing.
+**Phase 26-01:** Hide empty sub-sections rather than showing empty state headers. PropertySubSection extracted as internal helper (not separate file) for reuse across 3 sub-sections. No card shadow — clean flat border.
 
 ### v2.2 Phase Design Rationale
 - **Phase 24 (Diff Engine)** is pure data: fetch historical blobs, decompress, port DiffGenerator, compute diffs. No UI — this is the foundation everything else renders.
@@ -93,10 +95,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T13:19:19.712Z
-**What happened:** Executed Plan 25-01 (changelog page shell). Replaced placeholder ChangelogPage with complete 4-state reactive UI wired to diff engine. Phase 25 complete.
-**Next step:** Plan Phase 26 (Detail Views) — add expandable entity cards and function tables
+**Last session:** 2026-02-25T13:29:28Z
+**What happened:** Executed Plan 26-01 (change detail components). Created ChangeBadge, RootFunctionsTable, and EntityChangeCard components.
+**Next step:** Execute Plan 26-02 — wire detail components into ChangelogPage shell
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (phase 25 complete)*
+*Last updated: 2026-02-25 (plan 26-01 complete)*
