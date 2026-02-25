@@ -1,5 +1,24 @@
 # Milestones: SP REST API Explorer — New UI
 
+## v2.1 Connect Frontend — Shipped 2026-02-25
+
+**Phases:** 22-23 | **Plans:** 2 | **Tasks:** 5 | **Requirements:** 12/12 validated
+
+Switched the frontend data source to the new backend's compressed blobs with lz-string decompression (~75% network savings, ~557KB vs ~2.2MB). Fixed three recently visited bugs by migrating to a Zustand store with persist middleware and expanding SearchSelection with granular kind types. +103/-80 lines across 7 app files in 2 days (14 commits).
+
+**Key accomplishments:**
+1. lz-string decompression wired into metadata fetch pipeline — frontend fetches compressed blob from new storage account, decompresses client-side with ~75% network savings
+2. Boot guard for React StrictMode idempotency preventing double metadata fetch+decompress
+3. Zustand recently-visited store with persist middleware — atomic clear across all consumers, replacing independent useState hooks
+4. SearchSelection.kind expanded to granular 4-value union (`entity`/`function`/`navProperty`/`root`) — correct icons for all recently visited items
+5. Boot spinner visibility and dialog animation consistency fixes
+
+**Deferred:** CHLG-01-06 (API Changelog), ADDL-02 (CI/CD)
+
+**Archive:** [milestones/v2.1-ROADMAP.md](milestones/v2.1-ROADMAP.md) | [milestones/v2.1-REQUIREMENTS.md](milestones/v2.1-REQUIREMENTS.md)
+
+---
+
 ## v2.0 Backend Rework — Shipped 2026-02-24
 
 **Phases:** 18-21 | **Plans:** 7 | **Tasks:** 17 | **Requirements:** 31/31 validated
@@ -117,4 +136,4 @@ Rebuilt the SharePoint REST API Metadata Explorer from Vue 2 + Webpack 3 to Reac
 **Archive:** [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md) | [milestones/v1.0-REQUIREMENTS.md](milestones/v1.0-REQUIREMENTS.md)
 
 ---
-*Last updated: 2026-02-24*
+*Last updated: 2026-02-25*

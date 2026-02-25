@@ -2,13 +2,13 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-02-24)
+See: .planning/PROJECT.md (updated 2026-02-25)
 
 **Core value:** Developers can find any SharePoint REST API endpoint — at any nesting depth — in seconds, and immediately understand its parameters, return types, and navigation properties.
-**Current focus:** Milestone v2.1 Connect Frontend — Phase 23
+**Current focus:** Planning next milestone
 
 **Key Constraints:**
-- Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, React Router 7
+- Frontend tech stack locked: React 19, Vite 7, TypeScript 5, Zustand 5, Tailwind CSS 4, shadcn/ui, Lucide React, lz-string, React Router 7
 - Backend tech stack locked: Azure Functions v4, TypeScript 5.7, MSAL Node 2, @azure/storage-blob 12
 - GitHub Pages hosting (hash routing required)
 - Azure Functions hosting (sp-rest-explorer-new)
@@ -18,13 +18,12 @@ See: .planning/PROJECT.md (updated 2026-02-24)
 
 ## Current Position
 
-Phase: 23 — Recently Visited Fix
-Plan: 1 of 1 ✓
-Status: Phase 23 complete — all plans executed
-Last activity: 2026-02-25 — Phase 23 plan 01 executed (recently visited bug fixes)
+Phase: (none active — between milestones)
+Status: v2.1 Connect Frontend shipped
+Last activity: 2026-02-25 — v2.1 milestone completed
 
 ```
-v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓)
+v2.1 Progress: ████████████████████ 100% (2/2 phases: 22 ✓, 23 ✓) — SHIPPED
 v2.0 Progress: ████████████████████ 100% (4/4 phases: 18 ✓, 19 ✓, 20 ✓, 21 ✓) — SHIPPED
 v1.0 Progress: ████████████████████ 100% (5/5 phases: 1-5) — SHIPPED
 v1.1 Progress: ████████████████████ 100% (5/5 phases: 06, 07, 07.1, 07.2, 08) — SHIPPED
@@ -41,7 +40,7 @@ v1.4 Progress: ████████████████████ 100%
 | Plans executed | 11 | 13 | 5 | 4 | 7 | 7 | 2 |
 | Tasks completed | 25 | 28 | 9 | 8 | 12 | 17 | 5 |
 | Requirements validated | 38 | 13 | 9 | 6 | 16 | 31 | 12 |
-| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 1 day |
+| Timeline | 2 days | 3 days | 1 day | 1 day | 2 days | 2 days | 2 days |
 
 ## Accumulated Context
 
@@ -60,7 +59,6 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 ### Known Risks
 - JSON.parse() may block main thread 200-800ms on 4MB fetch — CSS spinner in index.html as mitigation
 - Zustand v5 selector instability — use scalar selectors or `useShallow`
-- lz-string decompressFromUTF16 adds ~30-80ms to boot — acceptable for ~3.5MB network savings
 
 ### Technical Debt
 - TypeLink navigates to /entity/{fullName} for all types — no entity-to-API-path resolver
@@ -78,10 +76,10 @@ See PROJECT.md Key Decisions table for full list with outcomes.
 
 ## Session Continuity
 
-**Last session:** 2026-02-25T00:07:00Z
-**What happened:** Executed phase 23 plan 01 — migrated recently visited to Zustand store with persist middleware, expanded SearchSelection kind, removed lossy kindMap. All three bugs fixed and verified. Human-verify checkpoint APPROVED.
-**Next step:** `/gsd-complete-milestone` for v2.1
+**Last session:** 2026-02-25
+**What happened:** Completed v2.1 Connect Frontend milestone. Archived roadmap and requirements to milestones/. All 12 requirements validated. Git tagged v2.1.
+**Next step:** `/gsd-new-milestone` to plan next milestone
 
 ---
 *State initialized: 2026-02-11*
-*Last updated: 2026-02-25 (phase 23 plan 01 executed)*
+*Last updated: 2026-02-25 (v2.1 milestone completed)*
