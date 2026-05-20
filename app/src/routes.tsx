@@ -1,5 +1,6 @@
 import { createHashRouter } from 'react-router'
 import App from '@/App'
+import { RouteErrorState } from '@/components/loading'
 import {
   ExplorePage,
   HomePage,
@@ -13,6 +14,7 @@ export const router = createHashRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <RouteErrorState />,
     children: [
       // Home screen
       { index: true, element: <HomePage /> },
