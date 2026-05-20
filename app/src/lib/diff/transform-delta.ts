@@ -1,4 +1,3 @@
-import type { Metadata } from '@/lib/metadata/types'
 import type {
   ChangeType,
   DiffChanges,
@@ -17,7 +16,6 @@ import type {
  */
 export function transformDelta(
   delta: Record<string, unknown> | null | undefined,
-  _currentMetadata: Metadata,
 ): DiffChanges {
   if (!delta) return { entities: [], functions: [] }
 
@@ -167,6 +165,9 @@ function extractChildChanges(
     const propertyValue = sub[idx]
     // Only process array entries (jsondiffpatch delta nodes)
     if (!Array.isArray(propertyValue)) continue
+    // jsondiffpatch array move records look like ['', newIndex, 3].
+    // Function order changes are not meaningful changelog entries.
+    if (isArrayMoveDelta(propertyValue)) continue
 
     const item = propertyValue[0] as Record<string, unknown>
     changes.push({
@@ -178,4 +179,8 @@ function extractChildChanges(
   }
 
   return changes
+}
+
+function isArrayMoveDelta(node: unknown[]): boolean {
+  return node.length === 3 && node[2] === 3
 }

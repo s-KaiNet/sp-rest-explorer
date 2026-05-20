@@ -133,10 +133,7 @@ export async function computeDiff(
       return
     }
 
-    const result = transformDelta(
-      delta as Record<string, unknown>,
-      currentMetadata,
-    )
+    const result = transformDelta(delta as Record<string, unknown>)
     setReady(result)
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
