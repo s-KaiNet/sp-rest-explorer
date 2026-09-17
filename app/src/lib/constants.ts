@@ -1,5 +1,5 @@
 export const BLOB_BASE_URL =
-  'https://sprestapiexplorernew.blob.core.windows.net/api-files'
+  'https://sprestapiexplorer2.blob.core.windows.net/api-files'
 
 export const METADATA_URL = `${BLOB_BASE_URL}/metadata.latest.zip.json`
 
